@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.SignatureHelp;
+//using IntrinsicsDude.SignatureHelp;
 using IntrinsicsDude.Tools;
 using AsmTools;
 using System;
@@ -32,40 +32,40 @@ using System.Windows;
 namespace IntrinsicsDude.Tools {
 
     public class IntrinsicsStore {
-        private readonly IDictionary<Mnemonic, IList<IntrinsicsSignatureElement>> _data;
+        // private readonly IDictionary<Mnemonic, IList<IntrinsicsSignatureElement>> _data;
         private readonly IDictionary<Mnemonic, IList<Arch>> _arch;
         private readonly IDictionary<Mnemonic, string> _htmlRef;
         private readonly IDictionary<Mnemonic, string> _description;
 
         public IntrinsicsStore(string filename_RegularData) {
-            this._data = new Dictionary<Mnemonic, IList<IntrinsicsSignatureElement>>();
+            //this._data = new Dictionary<Mnemonic, IList<IntrinsicsSignatureElement>>();
             this._arch = new Dictionary<Mnemonic, IList<Arch>>();
             this._htmlRef = new Dictionary<Mnemonic, string>();
             this._description = new Dictionary<Mnemonic, string>();
 
             this.loadRegularData(filename_RegularData);
         }
+        /*
+                public bool hasElement(Mnemonic mnemonic) {
+                    return this._data.ContainsKey(mnemonic);
+                }
 
-        public bool hasElement(Mnemonic mnemonic) {
-            return this._data.ContainsKey(mnemonic);
-        }
+                public IList<IntrinsicsSignatureElement> getSignatures(Mnemonic mnemonic) {
+                    IList<IntrinsicsSignatureElement> list;
+                    if (this._data.TryGetValue(mnemonic, out list)) {
+                        return list;
+                    }
+                    return new List<IntrinsicsSignatureElement>(0);
+                }
 
-        public IList<IntrinsicsSignatureElement> getSignatures(Mnemonic mnemonic) {
-            IList<IntrinsicsSignatureElement> list;
-            if (this._data.TryGetValue(mnemonic, out list)) {
-                return list;
-            }
-            return new List<IntrinsicsSignatureElement>(0);
-        }
-
-        public IList<Arch> getArch(Mnemonic mnemonic) {
-            IList<Arch> value;
-            if (this._arch.TryGetValue(mnemonic, out value)) {
-                return value;
-            }
-            return new List<Arch>(0);
-        }
-
+                public IList<Arch> getArch(Mnemonic mnemonic) {
+                    IList<Arch> value;
+                    if (this._arch.TryGetValue(mnemonic, out value)) {
+                        return value;
+                    }
+                    return new List<Arch>(0);
+                }
+                */
         public string getHtmlRef(Mnemonic mnemonic) {
             string value;
             if (this._htmlRef.TryGetValue(mnemonic, out value)) {
@@ -78,6 +78,7 @@ namespace IntrinsicsDude.Tools {
             this._htmlRef[mnemonic] = value;
         }
 
+        /*
         public void setDescription(Mnemonic mnemonic, string value) {
             this._description[mnemonic] = value;
             if (this._data.ContainsKey(mnemonic)) {
@@ -86,7 +87,6 @@ namespace IntrinsicsDude.Tools {
                 }
             }
         }
-
         public string getDescription(Mnemonic mnemonic) {
             string value = null;
             if (this._description.TryGetValue(mnemonic, out value)) {
@@ -134,52 +134,54 @@ namespace IntrinsicsDude.Tools {
             }
             return result;
         }
+        */
 
         private void loadRegularData(string filename) {
             //AsmDudeToolsStatic.Output("INFO: MnemonicStore:loadRegularData: filename=" + filename);
             try {
-                System.IO.StreamReader file = new System.IO.StreamReader(filename);
-                string line;
-                while ((line = file.ReadLine()) != null) {
-                    if ((line.Length > 0) && (!line.StartsWith(";"))) {
-                        string[] columns = line.Split('\t');
-                        if (columns.Length == 4) { // general description
-                            #region
-                            Mnemonic mnemonic = AsmSourceTools.parseMnemonic(columns[1]);
-                            if (mnemonic == Mnemonic.UNKNOWN) {
-                                // ignore the unknown mnemonic
-                                //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: unknown mnemonic in line: " + line);
-                            } else {
-                                if (!this._description.ContainsKey(mnemonic)) {
-                                    this._description.Add(mnemonic, columns[2]);
-                                } else {
-                                    // this happens when the mnemonic is defined in multiple files, using the data from the first file
-                                    //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: mnemonic " + mnemonic + " already has a description");
-                                }
-                                if (!this._htmlRef.ContainsKey(mnemonic)) {
-                                    this._htmlRef.Add(mnemonic, columns[3]);
-                                } else {
-                                    // this happens when the mnemonic is defined in multiple files, using the data from the first file
-                                    //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: mnemonic " + mnemonic + " already has a html ref");
-                                }
-                            }
-                            #endregion
-                        } else if ((columns.Length == 5) || (columns.Length == 6)) { // signature description, ignore an old sixth column
-                            #region
-                            Mnemonic mnemonic = AsmSourceTools.parseMnemonic(columns[0]);
-                            if (mnemonic == Mnemonic.UNKNOWN) {
-                                IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: unknown mnemonic in line: " + line);
-                            } else {
-                                IntrinsicsSignatureElement se = new IntrinsicsSignatureElement(mnemonic, columns[1], columns[2], columns[3], columns[4]);
-                                if (this.add(se)) {
-                                    IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: signature already exists" + se.ToString());
-                                }
-                            }
-                            #endregion
+                /*
+        System.IO.StreamReader file = new System.IO.StreamReader(filename);
+        string line;
+        while ((line = file.ReadLine()) != null) {
+            if ((line.Length > 0) && (!line.StartsWith(";"))) {
+                string[] columns = line.Split('\t');
+                if (columns.Length == 4) { // general description
+                    #region
+                    Mnemonic mnemonic = AsmSourceTools.parseMnemonic(columns[1]);
+                    if (mnemonic == Mnemonic.UNKNOWN) {
+                        // ignore the unknown mnemonic
+                        //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: unknown mnemonic in line: " + line);
+                    } else {
+                        if (!this._description.ContainsKey(mnemonic)) {
+                            this._description.Add(mnemonic, columns[2]);
                         } else {
-                            IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: s.Length=" + columns.Length + "; funky line" + line);
+                            // this happens when the mnemonic is defined in multiple files, using the data from the first file
+                            //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: mnemonic " + mnemonic + " already has a description");
+                        }
+                        if (!this._htmlRef.ContainsKey(mnemonic)) {
+                            this._htmlRef.Add(mnemonic, columns[3]);
+                        } else {
+                            // this happens when the mnemonic is defined in multiple files, using the data from the first file
+                            //AsmDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: mnemonic " + mnemonic + " already has a html ref");
                         }
                     }
+                    #endregion
+                } else if ((columns.Length == 5) || (columns.Length == 6)) { // signature description, ignore an old sixth column
+                    #region
+                    Mnemonic mnemonic = AsmSourceTools.parseMnemonic(columns[0]);
+                    if (mnemonic == Mnemonic.UNKNOWN) {
+                        IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: unknown mnemonic in line: " + line);
+                    } else {
+                        IntrinsicsSignatureElement se = new IntrinsicsSignatureElement(mnemonic, columns[1], columns[2], columns[3], columns[4]);
+                        if (this.add(se)) {
+                            IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: signature already exists" + se.ToString());
+                        }
+                    }
+                    #endregion
+                } else {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: MnemonicStore:loadRegularData: s.Length=" + columns.Length + "; funky line" + line);
+                }
+            }
                 }
                 file.Close();
 
@@ -198,6 +200,7 @@ namespace IntrinsicsDude.Tools {
                     this._arch[pair.Key] = list;
                 }
                 #endregion
+                */
             } catch (FileNotFoundException) {
                 IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicsStore: could not find file \"" + filename + "\".");
                 //MessageBox.Show("ERROR: AsmTokenTagger: could not find file \"" + filename + "\".");

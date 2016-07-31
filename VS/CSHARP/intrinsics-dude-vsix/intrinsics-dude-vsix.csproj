@@ -45,14 +45,6 @@
     <Compile Include="Properties\Guids.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SignatureHelp\IntrinsicParameter.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignature.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureElement.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureEnum.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureHelpCommandFilter.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureHelpCommandProvider.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureHelpSource.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignatureHelpSourceProvider.cs" />
     <Compile Include="Tools\ApplicationInformation.cs" />
     <Compile Include="Tools\IntrinsicsDudeTools.cs" />
     <Compile Include="Tools\IntrinsicsDudeToolsStatic.cs" />
@@ -86,7 +78,9 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Windows" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SignatureHelp\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj">
       <Project>{9F5C800F-83F8-4866-AE3C-97602B39C536}</Project>

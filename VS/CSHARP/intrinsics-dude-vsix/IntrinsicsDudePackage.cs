@@ -8,41 +8,27 @@ using System.Text;
 
 using EnvDTE;
 using IntrinsicsDude.Tools;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IntrinsicsDude {
 
-    /// <summary>
-    /// This class implements a Visual Studio package that is registered for the Visual Studio IDE.
-    /// The package class uses a number of registration attributes to specify integration parameters.
-    /// </summary>
-
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("IntrinsicsDude", "Intrinsics-Dude", "0.1")] // for the help about information
-
-    [ProvideMenuResource("Menus.ctmenu", 1)] // needed when showing menus
-    [ProvideAutoLoad(UIContextGuids.NoSolution)]
-    [Guid(Guids.GuidPackage_str)]
-    [ComVisible(false)]
-    
-    //[ProvideOptionPage(typeof(AsmDudeOptionsPage), "AsmDude", "General", 0, 0, true)]
-    //[ProvideProfile(typeof(AsmDudeOptionsPage), "AsmDude", "General", 100, 104, isToolsOptionPage: false, DescriptionResourceID = 100)]
-
+    [InstalledProductRegistration("#110", "#112", "0.2", IconResourceID = 400)] // Info on this package for Help/About
+    [Guid(IntrinsicsDudePackage.PackageGuidString)]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class IntrinsicsDudePackage : Package {
 
-        #region Global Constants
+        public const string PackageGuidString = "ede82d96-80b5-4f47-b68a-320d6e2342fd";
+        internal const string IntrinsicsDudeContentType = "asm!";
+        //internal const string IntrinsicsDudeContentType = "C/C++";
 
-        internal const string IntrinsicsDudeContentType = "C/C++";
-        internal const double slowWarningThresholdSec = 0.4; // threshold to warn that actions are considered slow
-        internal const double slowShutdownThresholdSec = 4.0; // threshold to switch of components
-        internal const int maxNumberOfCharsInToolTips = 150;
-        internal const int msSleepBeforeAsyncExecution = 1000;
-
-        #endregion Global Constants
 
         public IntrinsicsDudePackage() {
             Debug.WriteLine("=========================================\nINFO: IntrinsicsDudePackage: Entering constructor\n=========================================\n");
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudePackage: Entering constructor");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudePackage: Entering constructor");
         }
+
+        #region Package Members
 
         /// <summary>
         /// Initialization of the package. This is where you should put all initialization
@@ -50,7 +36,7 @@ namespace IntrinsicsDude {
         /// </summary>
         protected override void Initialize() {
             base.Initialize();
-
+            /*
             StringBuilder sb = new StringBuilder();
             sb.Append("Welcome to Instrinsics Dude\n");
             //sb.Append(" _____           ____        _     \n");
@@ -62,6 +48,9 @@ namespace IntrinsicsDude {
             sb.Append("INFO: More info at https://github.com/HJLebbink/instrinsics-dude \n");
             sb.Append("----------------------------------");
             IntrinsicsDudeToolsStatic.Output(sb.ToString());
+            */
         }
+
+        #endregion
     }
 }

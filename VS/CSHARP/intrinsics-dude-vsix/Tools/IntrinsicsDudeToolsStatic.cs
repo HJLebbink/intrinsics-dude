@@ -33,17 +33,6 @@ namespace IntrinsicsDude.Tools {
 
     public static class IntrinsicsDudeToolsStatic {
 
-        #region Singleton Factories
-        
-        public static void printSpeedWarning(DateTime startTime, string component) {
-            double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
-            if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec) {
-                IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
-            }
-        }
-
-        #endregion Singleton Factories
-
         /// <summary>
         /// get the full filename (with path) for the provided buffer
         /// </summary>
@@ -76,17 +65,6 @@ namespace IntrinsicsDude.Tools {
             }
         }
 
-        /// <summary>
-        /// Cleans the provided line by removing multiple white spaces and cropping if the line is too long
-        /// </summary>
-        public static string cleanup(string line) {
-            string cleanedString = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
-            if (cleanedString.Length > IntrinsicsDudePackage.maxNumberOfCharsInToolTips) {
-                return cleanedString.Substring(0, IntrinsicsDudePackage.maxNumberOfCharsInToolTips - 3) + "...";
-            } else {
-                return cleanedString;
-            }
-        }
         /// <summary>
         /// Output message to the AsmDude window
         /// </summary>

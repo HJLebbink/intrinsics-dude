@@ -35,13 +35,6 @@ namespace IntrinsicsDude {
 
     public sealed class IntrinsicsDudeTools {
 
-        private IDictionary<string, AssemblerEnum> _assembler;
-        private IDictionary<string, Arch> _arch;
-        private IDictionary<string, string> _description;
-        private readonly ErrorListProvider _errorListProvider;
-
-        private readonly IntrinsicsStore _intrisicsStore;
-
         #region Singleton Stuff
         private static readonly Lazy<IntrinsicsDudeTools> lazy = new Lazy<IntrinsicsDudeTools>(() => new IntrinsicsDudeTools());
         public static IntrinsicsDudeTools Instance { get { return lazy.Value; } }
@@ -65,10 +58,6 @@ namespace IntrinsicsDude {
 
         #region Public Methods
 
-        public ErrorListProvider errorListProvider { get { return this._errorListProvider; } }
-
-        public IntrinsicsStore mnemonicStore { get { return this._intrisicsStore; } }
-
         /// <summary>
         /// get url for the provided keyword. Returns empty string if the keyword does not exist or the keyword does not have an url.
         /// </summary>
@@ -78,7 +67,7 @@ namespace IntrinsicsDude {
                 string keywordUpper = keyword.ToUpper();
                 Mnemonic mnemonic = AsmSourceTools.parseMnemonic(keyword);
                 if (mnemonic != Mnemonic.UNKNOWN) {
-                    string url = this.mnemonicStore.getHtmlRef(mnemonic);
+                    string url = "";// this.mnemonicStore.getHtmlRef(mnemonic);
                     //AsmDudeToolsStatic.Output(string.Format("INFO: {0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
                     return url;
                 }
@@ -94,9 +83,9 @@ namespace IntrinsicsDude {
         /// </summary>
         public string getDescription(string keyword) {
             string description;
-            if (!this._description.TryGetValue(keyword, out description)) {
+            //if (!this._description.TryGetValue(keyword, out description)) {
                 description = "";
-            }
+            //}
             return description;
         }
 
@@ -104,7 +93,7 @@ namespace IntrinsicsDude {
         /// Get architecture of the provided keyword
         /// </summary>
         public Arch getArchitecture(string keyword) {
-            return this._arch[keyword.ToUpper()];
+            return Arch.NONE;// this._arch[keyword.ToUpper()];
         }
 
         #endregion Public Methods
