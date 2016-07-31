@@ -1,18 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-  <Metadata>
-    <Identity Id="VSIXProject1.Henk-Jan Lebbink.54a1d5a1-4835-46d0-b218-efc1a1d6627a" Version="1.0" Language="en-US" Publisher="Henk-Jan Lebbink" />
-    <DisplayName>VSIXProject1</DisplayName>
-    <Description>Empty VSIX Project.</Description>
-  </Metadata>
-  <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
-  </Installation>
-  <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
-  </Dependencies>
-  <Assets>
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+	<Metadata>
+		<Identity Id="IntrinsicsDude.54a1d5a1-4835-46d0-b218-efc1a1d6627a" Version="0.1.0.0" Language="en-US" Publisher="Henk-Jan Lebbink" />
+		<DisplayName>IntrinsicsDude</DisplayName>
+		<Description xml:space="preserve">Improved Code completion and Signature Help for Compiler Intrinsics</Description>
+		<MoreInfo>https://github.com/HJLebbink/instrinsics-dude</MoreInfo>
+		<License>LICENSE.txt</License>
+		<GettingStartedGuide>https://github.com/HJLebbink/instrinsics-dude</GettingStartedGuide>
+		<Icon>IntrinsicsDudePackage.ico</Icon>
+		<Tags>Code Completion, Signature Help, Compiler Intrinsics, Visual Studio 2015</Tags>
+	</Metadata>
+	<Installation>
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+		<Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+	</Dependencies>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+	</Assets>
 </PackageManifest>

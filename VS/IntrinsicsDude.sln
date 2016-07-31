@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "intrinsics-dude-vsix\intrinsics-dude-vsix.csproj", "{0DFC8FCC-226D-4D91-9CBD-408D64306C13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSHARP\intrinsics-dude-vsix\intrinsics-dude-vsix.csproj", "{0DFC8FCC-226D-4D91-9CBD-408D64306C13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asm-tools-lib", "..\..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj", "{9F5C800F-83F8-4866-AE3C-97602B39C536}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asm-tools-lib", "..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj", "{9F5C800F-83F8-4866-AE3C-97602B39C536}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
