@@ -35,6 +35,9 @@ namespace IntrinsicsDude {
 
     public sealed class IntrinsicsDudeTools {
 
+        private readonly IntrinsicsStore _instrinsicsStore;
+
+
         #region Singleton Stuff
         private static readonly Lazy<IntrinsicsDudeTools> lazy = new Lazy<IntrinsicsDudeTools>(() => new IntrinsicsDudeTools());
         public static IntrinsicsDudeTools Instance { get { return lazy.Value; } }
@@ -46,17 +49,19 @@ namespace IntrinsicsDude {
         /// </summary>
         private IntrinsicsDudeTools() {
             IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeTools constructor");
-            /*
+            
             #region load signature store
             string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
             //string filename = path + "mnemonics-nasm.txt";
-            string filename_Regular = path + "signature-june2016.txt";
-            this._intrisicsStore = new IntrinsicsStore(filename_Regular);
+            string filename_Regular = path + "Intel Intrinsics Guide.xml";
+            this._instrinsicsStore = new IntrinsicsStore(filename_Regular);
             #endregion
-            */
         }
 
         #region Public Methods
+
+        public IntrinsicsStore Store { get { return this._instrinsicsStore; } }
+
 
         /// <summary>
         /// get url for the provided keyword. Returns empty string if the keyword does not exist or the keyword does not have an url.

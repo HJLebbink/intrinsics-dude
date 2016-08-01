@@ -54,9 +54,3 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 [assembly: Guid("59E4A0A9-AD3D-4922-A4ED-64BC32AC764E")]
-
-// Mark the assembly as not CLSCompliant
-//[assembly: System.CLSCompliant(false)]
-
-
-//[assembly: Guid("TODO")]

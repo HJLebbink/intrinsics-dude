@@ -69,7 +69,6 @@ namespace IntrinsicsDude.Tools {
         /// Output message to the AsmDude window
         /// </summary>
         public static void Output(string msg) {
-            /*
             IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
             if (outputWindow == null) {
@@ -82,7 +81,6 @@ namespace IntrinsicsDude.Tools {
                 pane.OutputString(msg2);
                 pane.Activate();
             }
-            */
         }
     }
 }

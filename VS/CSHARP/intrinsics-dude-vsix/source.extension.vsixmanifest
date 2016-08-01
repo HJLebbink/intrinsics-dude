@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Id="IntrinsicsDude.54a1d5a1-4835-46d0-b218-efc1a1d6627a" Version="0.1.0.0" Language="en-US" Publisher="Henk-Jan Lebbink" />
+		<Identity Id="C83A6BD0-26D4-43FD-8E7F-2AFF8B8C9D6E" Version="1.0.0.1" Language="en-US" Publisher="Henk-Jan Lebbink" />
 		<DisplayName>IntrinsicsDude</DisplayName>
 		<Description xml:space="preserve">Improved Code completion and Signature Help for Compiler Intrinsics</Description>
 		<MoreInfo>https://github.com/HJLebbink/instrinsics-dude</MoreInfo>

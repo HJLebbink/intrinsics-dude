@@ -38,7 +38,7 @@ namespace IntrinsicsDude.SignatureHelp {
         public AsmSignatureHelpSource(ITextBuffer buffer) {
             IntrinsicsDudeToolsStatic.Output("INFO: AsmSignatureHelpSource:constructor");
             this._buffer = buffer;
-            this._store = IntrinsicsDudeTools.Instance.mnemonicStore;
+            this._store = IntrinsicsDudeTools.Instance.Store;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace IntrinsicsDude.SignatureHelp {
                     signatures.Add(this.createSignature(_buffer, se, applicableToSpan));
                 }
                 */
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
+                //IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
             } catch (Exception e) {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:AugmentSignatureHelpSession; e={1}", this.ToString(), e.ToString()));
             }

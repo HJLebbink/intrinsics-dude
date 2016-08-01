@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "asm-tools-lib", "..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj", "{9F5C800F-83F8-4866-AE3C-97602B39C536}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix-2", "CSHARP\intrinsics-dude-vsix-2\intrinsics-dude-vsix-2.csproj", "{6BB67359-A10C-4688-9383-E989E971F0EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OokLanguage", "..\..\VSSDK-Extensibility-Samples\Ook_Language_Integration\C#\OokLanguage.csproj", "{F091221E-FD10-41A7-AAC4-C9359178BDB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,30 @@ Global
 		{9F5C800F-83F8-4866-AE3C-97602B39C536}.Release|x64.Build.0 = Release|x64
 		{9F5C800F-83F8-4866-AE3C-97602B39C536}.Release|x86.ActiveCfg = Release|x86
 		{9F5C800F-83F8-4866-AE3C-97602B39C536}.Release|x86.Build.0 = Release|x86
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|x64.Build.0 = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|x86.Build.0 = Debug|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x64.ActiveCfg = Release|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x64.Build.0 = Release|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x86.Build.0 = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x64.Build.0 = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x86.Build.0 = Debug|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x64.ActiveCfg = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x64.Build.0 = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x86.ActiveCfg = Release|Any CPU
+		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

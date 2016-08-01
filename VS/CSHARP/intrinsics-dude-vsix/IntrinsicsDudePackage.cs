@@ -32,17 +32,19 @@ using IntrinsicsDude.Tools;
 namespace IntrinsicsDude {
 
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("#110", "#112", "0.2", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", "1.0.1.A", IconResourceID = 400)] // Info on this package for Help/About
 
     [ProvideAutoLoad(UIContextGuids.NoSolution)] //load this package once visual studio starts.
-    [Guid(PackageGuidString)]
+    [Guid("F5281774-B3EE-41D0-BA5A-E05C3D73BBCD")]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+
+    [ComVisible(false)]
+
     public sealed class IntrinsicsDudePackage : Package {
 
         #region Global Constants
-        public const string PackageGuidString = "ede82d96-80b5-4f47-b68a-320d6e2342fd";
-        //internal const string IntrinsicsDudeContentType = "asm!";
-        internal const string IntrinsicsDudeContentType = "C/C++";
+        internal const string IntrinsicsDudeContentType = "asm!";
+        //internal const string IntrinsicsDudeContentType = "C/C++";
 
         #endregion Global Constants
 
@@ -59,6 +61,7 @@ namespace IntrinsicsDude {
         /// </summary>
         protected override void Initialize() {
             base.Initialize();
+            Debug.WriteLine("=========================================\nINFO: IntrinsicsDudePackage: Entering Initialize\n=========================================\n");
 
             StringBuilder sb = new StringBuilder();
             sb.Append("Welcome to Instrinsics Dude\n");
