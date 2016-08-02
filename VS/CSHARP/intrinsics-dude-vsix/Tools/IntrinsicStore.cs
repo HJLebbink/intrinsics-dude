@@ -1,14 +1,32 @@
-﻿using AsmTools;
+﻿// The MIT License (MIT)
+//
+// Copyright (c) 2016 Henk-Jan Lebbink
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+using AsmTools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Intrinsics.IntrinsicTools;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace Intrinsics
+namespace IntrinsicsDude.Tools
 {
     public class IntrinsicStore
     {
@@ -27,9 +45,11 @@ namespace Intrinsics
         }
 
 
+        #region Private Methods
+
         private void load(string filename)
         {
-            Debug.WriteLine("INFO: IntrinsicStore: load: filename " + filename);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: filename " + filename);
             try
             {
                 HtmlDocument doc = new HtmlDocument();
@@ -60,7 +80,7 @@ namespace Intrinsics
                                 dataElement.instruction = AsmSourceTools.parseMnemonic(instruction);
                                 break;
                             case "SIGNATURE":
-                                foreach (HtmlNode element2 in element.Descendants())
+                                foreach (HtmlNode element2 in element.Descendants(1))
                                 {
                                     switch (element2.GetAttributeValue("class", "NONE").ToUpper())
                                     {
@@ -77,7 +97,7 @@ namespace Intrinsics
                                 {
                                     switch (element2.GetAttributeValue("class", "NONE").ToUpper())
                                     {
-                                        case "DESCRIPTION": dataElement.description = element2.InnerHtml; break;
+                                        case "DESCRIPTION": dataElement.description = removeHtml(element2.InnerText); break;
                                         case "OPERATION": dataElement.operation = element2.InnerHtml; break;
                                         case "CPUID": cpuidList.Add(element2.InnerText); break;
                                         case "PERFORMANCE": dataElement.performance = element2.InnerHtml; break;
@@ -98,19 +118,26 @@ namespace Intrinsics
                         {
                             dataElement.cpuID |= IntrinsicTools.parseCpuID(cpuidList[i]);
                         }
-
                     }
                     #endregion
-
-                    this._data.Add(dataElement.intrinsic, dataElement);
+                    if (!this._data.ContainsKey(dataElement.intrinsic))
+                    {
+                        this._data.Add(dataElement.intrinsic, dataElement);
+                    }
                     //Console.WriteLine("id " + dataElement.id + ":" + dataElement.returnType + " " + intrinsic_name + "(" + string.Join(",", paramName.ToArray()) + "); cpuid=" + string.Join(",", cpuidList.ToArray()) + "; instruction=" + instruction);
                 }
-
             }
             catch (Exception e)
             {
-                Debug.WriteLine("ERROR: IntrinsicStore: load: exception " + e.ToString() + e.StackTrace);
+                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: load: exception " + e.ToString());
             }
         }
+
+        private static string removeHtml(string str)
+        {
+            return str;
+        }
+
+        #endregion
     }
 }

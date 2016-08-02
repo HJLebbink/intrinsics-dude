@@ -28,7 +28,6 @@ using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using AsmTools;
 using System.Text;
-using Intrinsics;
 
 namespace IntrinsicsDude.SignatureHelp {
 

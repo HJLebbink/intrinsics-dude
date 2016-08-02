@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 using IntrinsicsDude.Tools;
-using AsmTools;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
@@ -30,7 +29,6 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Runtime.InteropServices;
-using Intrinsics;
 
 namespace IntrinsicsDude.SignatureHelp {
 

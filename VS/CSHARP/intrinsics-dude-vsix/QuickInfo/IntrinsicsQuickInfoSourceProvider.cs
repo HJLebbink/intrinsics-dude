@@ -23,14 +23,14 @@
 using IntrinsicsDude.SyntaxHighlighting;
 using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.QuickInfo {
+namespace IntrinsicsDude.QuickInfo
+{
 
     /// <summary>
     /// Factory for quick info sources
@@ -38,25 +38,19 @@ namespace IntrinsicsDude.QuickInfo {
     [Export(typeof(IQuickInfoSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("IntrinsicsQuickInfo")]
-    internal sealed class IntrinsicsQuickInfoSourceProvider : IQuickInfoSourceProvider {
-
+    internal sealed class IntrinsicsQuickInfoSourceProvider : IQuickInfoSourceProvider
+    {
         [Import]
         private IBufferTagAggregatorFactoryService _aggregatorFactory = null;
 
-        [Import]
-        private ITextDocumentFactoryService _docFactory = null;
-
-        [Import]
-        private IContentTypeRegistryService _contentService = null;
-
-        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer buffer) {
-
-            Func<IntrinsicsQuickInfoSource> sc = delegate () {
+        public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer buffer)
+        {
+            Func<IntrinsicsQuickInfoSource> sc = delegate ()
+            {
                 ITagAggregator<AsmTokenTag> aggregator = IntrinsicsDudeToolsStatic.getAggregator(buffer, _aggregatorFactory);
-                ILabelGraph labelGraph = IntrinsicsDudeToolsStatic.getLabelGraph(buffer, _aggregatorFactory, _docFactory, _contentService);
-                return new IntrinsicsQuickInfoSource(buffer, aggregator, labelGraph);
+                return new IntrinsicsQuickInfoSource(buffer, aggregator);
             };
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSourceProvider: TryCreateQuickInfoSource");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSourceProvider: TryCreateQuickInfoSource");
 
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

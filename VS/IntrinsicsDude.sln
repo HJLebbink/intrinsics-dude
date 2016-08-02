@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSH
 		{3D21486D-183F-4177-8890-B9DFA39B582B} = {3D21486D-183F-4177-8890-B9DFA39B582B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-lib", "CSHARP\intrinsics-lib\intrinsics-lib.csproj", "{3D21486D-183F-4177-8890-B9DFA39B582B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-main", "CSHARP\intrinsics-lib\intrinsics-main.csproj", "{3D21486D-183F-4177-8890-B9DFA39B582B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9F5C800F-83F8-4866-AE3C-97602B39C536} = {9F5C800F-83F8-4866-AE3C-97602B39C536}
 	EndProjectSection

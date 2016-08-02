@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataGenerator
+namespace IntrinsicsDude.Tools
 {
     class DataGenerator
     {
@@ -24,7 +24,7 @@ namespace DataGenerator
         }
 
         static void payload() {
-
+            /*
             string filenameIn = @"H:\Dropbox\sc\GitHub\intrinsics-dude\VS\CSHARP\intrinsics-lib\Resources\Intel-Intrinsics-Guide.html";
             string filenameOut = @"H:\Dropbox\sc\GitHub\intrinsics-dude\VS\CSHARP\intrinsics-lib\Resources\output.txt";
             HtmlDocument doc = new HtmlDocument();
@@ -32,6 +32,8 @@ namespace DataGenerator
 
 
             StringBuilder sb = new StringBuilder();
+            ISet<string> allTypes = new SortedSet<string>();
+
 
             foreach (HtmlNode item in doc.GetElementbyId("intrinsics_list").ChildNodes)
             {
@@ -46,6 +48,8 @@ namespace DataGenerator
                 IList<string> paramName = new List<string>(2);
                 IList<string> paramType = new List<string>(2);
                 IList<string> cpuidList = new List<string>(1);
+
+
 
                 foreach (HtmlNode element in item.ChildNodes)
                 {
@@ -81,16 +85,47 @@ namespace DataGenerator
                         default: break;
                     }
                 }
-                //Console.WriteLine("    case \"" + intrinsic_name + "\": return Intrinsic." + intrinsic_name +";");
+
+                if (false)
+                {   // generate intrinsic enum
+                    sb.AppendLine("///<summary>"+ description+" (" + string.Join(", ", cpuidList.ToArray())+")</summary>");
+                    sb.AppendLine(intrinsic_name + ",");
+                }
+                if (false)
+                {   // generate intrinsic parse
+                    sb.AppendLine("case \"" + intrinsic_name + "\": return Intrinsic." + intrinsic_name +";");
+                }
+                if (true)
+                {
+                    allTypes.Add(returnType);
+                    foreach (string type in paramType)
+                    {
+                        //allTypes.Add(type);
+                    }
+                }
+                if (false)
+                {
+                    foreach (string type in cpuidList)
+                    {
+                        allTypes.Add(type);
+                    }
+                }
 
 
-                sb.AppendLine("///<summary>"+ description+" (" + string.Join(", ", cpuidList.ToArray())+")</summary>");
-                sb.AppendLine(intrinsic_name + ",");
-
-                //Console.WriteLine("id "+id+ ":"+ returnType+" "+intrinsic_name + "("+ string.Join(",", paramName.ToArray()) +"); cpuid=" + string.Join(",", cpuidList.ToArray()) + "; instruction="+ instruction);
+                //Console.WriteLine("id " + id + ":" + returnType + " " + intrinsic_name + "(" + string.Join(",", paramName.ToArray()) + "); cpuid=" + string.Join(",", cpuidList.ToArray()) + "; instruction=" + instruction);
             }
 
+            if (true)
+            {
+                foreach (string type in allTypes)
+                {
+                    sb.AppendLine("case \"" + type.ToUpper() + "\": return ParamType." + type.ToUpper() + ";");
+                }
+            }
+
+
             System.IO.File.WriteAllText(filenameOut, sb.ToString());
+        */
         }
     }
 }

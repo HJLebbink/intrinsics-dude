@@ -20,27 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using AsmTools;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.Utilities;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace IntrinsicsDude.QuickInfo
+namespace IntrinsicsDude.Tools
 {
-    [Export(typeof(IIntellisenseControllerProvider))]
-    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Name("QuickInfo Controller")]
-    internal sealed class IntrinsicsQuickInfoControllerProvider : IIntellisenseControllerProvider
+    public class IntrinsicDataElement
     {
-        [Import]
-        internal IQuickInfoBroker _quickInfoBroker = null;
+        public Intrinsic intrinsic;
+        public ReturnType returnType;
+        public readonly IList<Tuple<ParamType, string>> parameters;
+        public CpuID cpuID;
+        public int id;
+        public Mnemonic instruction;
+        public bool isSVML;
 
-        public IIntellisenseController TryCreateIntellisenseController(ITextView textView, IList<ITextBuffer> subjectBuffers)
+        public string description;
+        public string performance;
+        public string operation;
+
+        
+        /// <summary>Constructor</summary>
+        public IntrinsicDataElement()
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoControllerProvider: TryCreateIntellisenseController");
-            return new IntrinsicsQuickInfoController(textView, subjectBuffers, this);
+            parameters = new List<Tuple<ParamType, string>>();
         }
     }
 }
