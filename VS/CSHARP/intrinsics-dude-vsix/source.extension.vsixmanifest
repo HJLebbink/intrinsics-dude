@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Id="C83A6BD0-26D4-43FD-8E7F-2AFF8B8C9D6E" Version="1.0.0.1" Language="en-US" Publisher="Henk-Jan Lebbink" />
+		<Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="0.0.0.1" Language="en-US" Publisher="Henk-Jan Lebbink" />
 		<DisplayName>IntrinsicsDude</DisplayName>
-		<Description xml:space="preserve">Improved Code completion and Signature Help for Compiler Intrinsics</Description>
-		<MoreInfo>https://github.com/HJLebbink/instrinsics-dude</MoreInfo>
+		<Description xml:space="preserve">Syntax Highlighting and Signature Help for Compiler Intrinsics in Visual Studio 2015</Description>
+		<MoreInfo>https://github.com/HJLebbink/asm-dude</MoreInfo>
 		<License>LICENSE.txt</License>
-		<GettingStartedGuide>https://github.com/HJLebbink/instrinsics-dude</GettingStartedGuide>
-		<Icon>IntrinsicsDudePackage.ico</Icon>
-		<Tags>Code Completion, Signature Help, Compiler Intrinsics, Visual Studio 2015</Tags>
+		<GettingStartedGuide>https://github.com/HJLebbink/asm-dude</GettingStartedGuide>
+		<Icon>Resources\images\asm.png</Icon>
+		<PreviewImage>Resources\images\AsmDude.bmp</PreviewImage>
+		<Tags>Syntax Highlighting, Signature Help, Compiler Intrinsics, Visual Studio 2015</Tags>
 	</Metadata>
 	<Installation>
 		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />

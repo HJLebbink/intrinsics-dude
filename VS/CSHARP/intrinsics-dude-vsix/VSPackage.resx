@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="110" xml:space="preserve">
-    <value>IntrinsicsDude</value>
+    <value>Intrinsics Dude</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Improved Code completion and Signature Help for Compiler Intrinsics</value>
+    <value>Syntax highlighting and Signature Help for Compiler Intrinsics in Visual Studio 2015</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>IntrinsicsDudePackage.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>AsmDudePackage.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
