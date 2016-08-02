@@ -30,6 +30,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Runtime.InteropServices;
+using Intrinsics;
 
 namespace IntrinsicsDude.SignatureHelp {
 

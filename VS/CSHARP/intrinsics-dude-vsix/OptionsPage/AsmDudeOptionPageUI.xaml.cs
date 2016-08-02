@@ -32,7 +32,7 @@ namespace IntrinsicsDude.OptionsPage {
 
         public AsmDudeOptionsPageUI() {
             InitializeComponent();
-            version_UI.Content = "AsmDude v" + typeof(IntrinsicsDudePackage2).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
+            version_UI.Content = "AsmDude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
         }
 
         #region Asm Documentation

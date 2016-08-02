@@ -2,7 +2,7 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
 		<Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="0.0.0.1" Language="en-US" Publisher="Henk-Jan Lebbink" />
-		<DisplayName>IntrinsicsDude</DisplayName>
+		<DisplayName>Intrinsics Dude</DisplayName>
 		<Description xml:space="preserve">Syntax Highlighting and Signature Help for Compiler Intrinsics in Visual Studio 2015</Description>
 		<MoreInfo>https://github.com/HJLebbink/asm-dude</MoreInfo>
 		<License>LICENSE.txt</License>

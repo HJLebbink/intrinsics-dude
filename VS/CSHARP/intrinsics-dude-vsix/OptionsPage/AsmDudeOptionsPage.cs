@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Text;
+using Intrinsics;
 
 namespace IntrinsicsDude.OptionsPage
 {
@@ -218,12 +219,12 @@ namespace IntrinsicsDude.OptionsPage
         }
 
         private string makeToolTip(Arch arch) {
-            MnemonicStore store = IntrinsicsDudeTools.Instance.mnemonicStore;
+            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
             ISet<Mnemonic> usedMnemonics = new HashSet<Mnemonic>();
             foreach (Mnemonic mnemonic in Enum.GetValues(typeof(Mnemonic))) {
-                if (store.getArch(mnemonic).Contains(arch)) {
-                    usedMnemonics.Add(mnemonic);
-                }
+                //if (store.getArch(mnemonic).Contains(arch)) {
+                //    usedMnemonics.Add(mnemonic);
+                //}
             }
             StringBuilder sb = new StringBuilder();
             string docArch = ArchTools.ArchDocumentation(arch);
@@ -235,7 +236,7 @@ namespace IntrinsicsDude.OptionsPage
                 sb.Append(", ");
             }
             sb.Length -= 2; // get rid of last comma.
-            return AsmSourceTools.linewrap(sb.ToString(), IntrinsicsDudePackage2.maxNumberOfCharsInToolTips);
+            return AsmSourceTools.linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
         }
 
         /// <summary>

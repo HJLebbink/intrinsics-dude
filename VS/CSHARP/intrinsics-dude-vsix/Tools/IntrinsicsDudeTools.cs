@@ -33,6 +33,7 @@ using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Shell;
 using IntrinsicsDude.SignatureHelp;
 using Amib.Threading;
+using Intrinsics;
 
 namespace IntrinsicsDude {
 
@@ -45,7 +46,7 @@ namespace IntrinsicsDude {
         private IDictionary<string, string> _description;
         private readonly ErrorListProvider _errorListProvider;
 
-        private readonly MnemonicStore _mnemonicStore;
+        private readonly IntrinsicStore _intrinsicStore;
         private readonly SmartThreadPool _smartThreadPool;
 
         #region Singleton Stuff
@@ -69,13 +70,19 @@ namespace IntrinsicsDude {
 
             this._smartThreadPool = new SmartThreadPool();
 
-            #region load signature store
-            string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            //string filename = path + "mnemonics-nasm.txt";
-            string filename_Regular = path + "signature-june2016.txt";
-            string filename_Hand = path + "signature-hand-1.txt";
-            this._mnemonicStore = new MnemonicStore(filename_Regular, filename_Hand);
-            #endregion
+            try
+            {
+                #region load intrinsic store
+                string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
+               // string filename_intrinsics = path + "Intel-Intrinsics-Guide.html";
+                string filename_intrinsics = @"H:\Dropbox\sc\GitHub\intrinsics-dude\VS\CSHARP\intrinsics-dude-vsix\Resources\Intel-Intrinsics-Guide.html";
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: filename " + filename_intrinsics);
+                this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
+                #endregion
+            } catch (Exception e)
+            {
+
+            }
 
             this.initData();
         }
@@ -84,7 +91,7 @@ namespace IntrinsicsDude {
 
         public ErrorListProvider errorListProvider { get { return this._errorListProvider; } }
 
-        public MnemonicStore mnemonicStore { get { return this._mnemonicStore; } }
+        public IntrinsicStore intrinsicStore { get { return this._intrinsicStore; } }
 
         public SmartThreadPool threadPool { get { return this._smartThreadPool; } }
 
@@ -123,10 +130,9 @@ namespace IntrinsicsDude {
         public string getUrl(string keyword) {
             // no need to pre-process this information.
             try {
-                string keywordUpper = keyword.ToUpper();
-                Mnemonic mnemonic = AsmSourceTools.parseMnemonic(keyword);
-                if (mnemonic != Mnemonic.UNKNOWN) {
-                    string url = this.mnemonicStore.getHtmlRef(mnemonic);
+                Intrinsic mnemonic = IntrinsicTools.parseIntrinsic(keyword);
+                if (mnemonic != Intrinsic.NONE) {
+                    string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand="+this._intrinsicStore.get(mnemonic).id;
                     //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
                     return url;
                 }

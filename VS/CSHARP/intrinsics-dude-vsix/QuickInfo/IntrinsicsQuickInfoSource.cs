@@ -37,6 +37,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using AsmTools;
 using System.IO;
+using Intrinsics;
 
 namespace IntrinsicsDude.QuickInfo {
 
@@ -87,24 +88,23 @@ namespace IntrinsicsDude.QuickInfo {
                     keyword = tagSpan.GetText();
 
                     IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession. keyword=\"" + keyword + "\".");
-                    string keywordUpper = keyword.ToUpper();
-                    applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
+                    if (intrinsic != Intrinsic.NONE)
+                    {
+                        TextBlock description = null;
 
-                    TextBlock description = null;
+                        description = new TextBlock();
+                        description.Inlines.Add(makeRun1("Keyword "+keyword));
 
-                    description = new TextBlock();
-                    description.Inlines.Add(makeRun1("Keyword "));
-                    description.Inlines.Add(makeRun2(keyword, Settings.Default.SyntaxHighlighting_Misc));
+                        string descr = this._asmDudeTools.intrinsicStore.get(intrinsic).description;
+                        if (descr.Length > 0)
+                        {
+                            description.Inlines.Add(new Run(AsmSourceTools.linewrap(": " + descr, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+                        }
 
-                    string descr = this._asmDudeTools.getDescription(keywordUpper);
-                    if (descr.Length > 0) {
-                        description.Inlines.Add(new Run(AsmSourceTools.linewrap(": " + descr, IntrinsicsDudePackage2.maxNumberOfCharsInToolTips)));
-                    }
-
-                    if (description != null) {
                         description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
                         description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
-                        //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
+                        IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
                         quickInfoContent.Add(description);
                     }
                 }

@@ -131,6 +131,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\Intel-Intrinsics-Guide.html">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\signature-hand-1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -156,7 +160,7 @@
     <Compile Include="AsmDoc\AsmDocClassifier.cs" />
     <Compile Include="AsmDoc\AsmDocMouseHandler.cs" />
     <Compile Include="ErrorSquiggles\AsmErrorEnum.cs" />
-    <Compile Include="IntrinsicsDudePackage2.cs" />
+    <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="OptionsPage\AsmDudeOptionPageUI.xaml.cs">
       <DependentUpon>AsmDudeOptionPageUI.xaml</DependentUpon>
     </Compile>
@@ -194,13 +198,10 @@
     <Compile Include="SyntaxHighlighting\ClassificationFormat.cs" />
     <Compile Include="SyntaxHighlighting\NasmTokenTagger.cs" />
     <Compile Include="Tools\ApplicationInformation.cs" />
-    <Compile Include="Tools\AsmDudeTools.cs" />
+    <Compile Include="Tools\IntrinsicsDudeTools.cs" />
     <Compile Include="Tools\ILabelGraph.cs" />
-    <Compile Include="Tools\Intrinsic.cs" />
     <Compile Include="Tools\IntrinsicsDudeToolsStatic.cs" />
     <Compile Include="Tools\CustomEventArgs.cs" />
-    <Compile Include="Tools\IntrinsicTools.cs" />
-    <Compile Include="Tools\IntrinsicStore.cs" />
     <Compile Include="Tools\LabelGraph.cs" />
     <Compile Include="Tools\MnemonicStore.cs" />
   </ItemGroup>
@@ -400,6 +401,10 @@
     <ProjectReference Include="..\..\..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj">
       <Project>{9f5c800f-83f8-4866-ae3c-97602b39c536}</Project>
       <Name>asm-tools-lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\intrinsics-lib\intrinsics-lib.csproj">
+      <Project>{3D21486D-183F-4177-8890-B9DFA39B582B}</Project>
+      <Name>intrinsics-lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -28,17 +28,18 @@ using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using AsmTools;
 using System.Text;
+using Intrinsics;
 
 namespace IntrinsicsDude.SignatureHelp {
 
     internal class IntrinsicsSignatureHelpSource : ISignatureHelpSource {
         private readonly ITextBuffer _buffer;
-        private readonly MnemonicStore _store;
+        private readonly IntrinsicStore _store;
 
         public IntrinsicsSignatureHelpSource(ITextBuffer buffer) {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: constructor");
             this._buffer = buffer;
-            this._store = IntrinsicsDudeTools.Instance.mnemonicStore;
+            this._store = IntrinsicsDudeTools.Instance.intrinsicStore;
         }
 
         /// <summary>
@@ -105,9 +106,9 @@ namespace IntrinsicsDude.SignatureHelp {
                 ISet<Arch> selectedArchitectures = IntrinsicsDudeToolsStatic.getArchSwithedOn();
                 IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: AugmentSignatureHelpSession: selected architectures=" + ArchTools.ToString(selectedArchitectures));
 
-                foreach (AsmSignatureElement se in IntrinsicsSignatureHelpSource.constrainSignatures(this._store.getSignatures(mnemonic), operands, selectedArchitectures)) {
-                    signatures.Add(this.createSignature(_buffer, se, applicableToSpan));
-                }
+                //foreach (AsmSignatureElement se in IntrinsicsSignatureHelpSource.constrainSignatures(this._store.getSignatures(mnemonic), operands, selectedArchitectures)) {
+                //    signatures.Add(this.createSignature(_buffer, se, applicableToSpan));
+                //}
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
             } catch (Exception e) {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:AugmentSignatureHelpSession; e={1}", this.ToString(), e.ToString()));

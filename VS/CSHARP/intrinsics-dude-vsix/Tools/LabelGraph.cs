@@ -223,7 +223,7 @@ namespace IntrinsicsDude.Tools {
             if (!this._enabled) return;
 
             this._waiting = true;
-            Thread.Sleep(IntrinsicsDudePackage2.msSleepBeforeAsyncExecution);
+            Thread.Sleep(IntrinsicsDudePackage.msSleepBeforeAsyncExecution);
             this._busy = true;
             this._waiting = false;
 
@@ -242,7 +242,7 @@ namespace IntrinsicsDude.Tools {
 
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "LabelGraph");
                 double elapsedSec = (double)(DateTime.Now.Ticks - time1.Ticks) / 10000000;
-                if (elapsedSec > IntrinsicsDudePackage2.slowShutdownThresholdSec) {
+                if (elapsedSec > IntrinsicsDudePackage.slowShutdownThresholdSec) {
                     this.disable();
                 }
             }

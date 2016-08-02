@@ -31,7 +31,7 @@ using IntrinsicsDude.Tools;
 namespace IntrinsicsDude.QuickInfo {
 
     [Export(typeof(IIntellisenseControllerProvider))]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("QuickInfo Controller")]
     internal sealed class IntrinsicsQuickInfoControllerProvider : IIntellisenseControllerProvider {
 

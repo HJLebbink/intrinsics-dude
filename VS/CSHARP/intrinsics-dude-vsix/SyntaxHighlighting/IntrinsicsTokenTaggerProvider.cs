@@ -33,7 +33,7 @@ using AsmTools;
 namespace IntrinsicsDude {
 
     [Export(typeof(ITaggerProvider))]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [TagType(typeof(AsmTokenTag))]
     internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
 

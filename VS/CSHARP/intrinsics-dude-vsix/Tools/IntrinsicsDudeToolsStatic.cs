@@ -62,7 +62,7 @@ namespace IntrinsicsDude.Tools {
             IContentTypeRegistryService contentService) {
 
             Func<LabelGraph> sc1 = delegate () {
-                IContentType contentType = contentService.GetContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType);
+                IContentType contentType = contentService.GetContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType);
                 return new LabelGraph(buffer, aggregatorFactory, IntrinsicsDudeTools.Instance.errorListProvider, docFactory, contentType);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc1);
@@ -70,7 +70,7 @@ namespace IntrinsicsDude.Tools {
         
         public static void printSpeedWarning(DateTime startTime, string component) {
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
-            if (elapsedSec > IntrinsicsDudePackage2.slowWarningThresholdSec) {
+            if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec) {
                 IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
             }
         }
@@ -246,8 +246,8 @@ namespace IntrinsicsDude.Tools {
         /// </summary>
         public static string cleanup(string line) {
             string cleanedString = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
-            if (cleanedString.Length > IntrinsicsDudePackage2.maxNumberOfCharsInToolTips) {
-                return cleanedString.Substring(0, IntrinsicsDudePackage2.maxNumberOfCharsInToolTips - 3) + "...";
+            if (cleanedString.Length > IntrinsicsDudePackage.maxNumberOfCharsInToolTips) {
+                return cleanedString.Substring(0, IntrinsicsDudePackage.maxNumberOfCharsInToolTips - 3) + "...";
             } else {
                 return cleanedString;
             }

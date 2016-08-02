@@ -36,7 +36,7 @@ namespace IntrinsicsDude.QuickInfo {
     /// Factory for quick info sources
     /// </summary>
     [Export(typeof(IQuickInfoSourceProvider))]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("IntrinsicsQuickInfo")]
     internal sealed class IntrinsicsQuickInfoSourceProvider : IQuickInfoSourceProvider {
 

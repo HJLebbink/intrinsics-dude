@@ -40,7 +40,7 @@ using IntrinsicsDude.Tools;
 namespace IntrinsicsDude.AsmDoc {
 
     [Export(typeof(IKeyProcessorProvider))]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("AsmDoc")]
     [Order(Before = "VisualStudioKeyboardProcessor")]
     internal sealed class AsmDocKeyProcessorProvider : IKeyProcessorProvider {
@@ -110,7 +110,7 @@ namespace IntrinsicsDude.AsmDoc {
     }
 
     [Export(typeof(IMouseProcessorProvider))]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("IntrinsicsDoc")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     [Order(Before = "WordSelection")]

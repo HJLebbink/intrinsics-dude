@@ -47,7 +47,7 @@ namespace IntrinsicsDude {
     [ProvideOptionPage(typeof(AsmDudeOptionsPage), "Intrinsics Dude", "General", 0, 0, true)]
     //[ProvideProfile(typeof(AsmDudeOptionsPage), "IntrinsicsDude", "General", 100, 104, isToolsOptionPage: false, DescriptionResourceID = 100)]
 
-    public sealed class IntrinsicsDudePackage2 : Package {
+    public sealed class IntrinsicsDudePackage : Package {
 
         #region Global Constants
 
@@ -59,7 +59,7 @@ namespace IntrinsicsDude {
 
         #endregion Global Constants
 
-        public IntrinsicsDudePackage2() {
+        public IntrinsicsDudePackage() {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "=========================================\nINFO: IntrinsicsDudePackage2: Entering constructor"));
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudePackage2: Entering constructor");
         }
@@ -77,7 +77,7 @@ namespace IntrinsicsDude {
             sb.Append("|    |___| |_ ___|_|___ ___|_|___ ___  |    \\ _ _ _| |___ \n");
             sb.Append("|-  -|   |  _|  _| |   |_ -| |  _|_ -| |  |  | | | . | -_|\n");
             sb.Append("|____|_|_|_| |_| |_|_|_|___|_|___|___| |____/|___|___|___|\n");
-            sb.Append("INFO: Loaded IntrinsicsDude version " + typeof(IntrinsicsDudePackage2).Assembly.GetName().Version + " (" + ApplicationInformation.CompileDate.ToString() + ")\n");
+            sb.Append("INFO: Loaded IntrinsicsDude version " + typeof(IntrinsicsDudePackage).Assembly.GetName().Version + " (" + ApplicationInformation.CompileDate.ToString() + ")\n");
             sb.Append("INFO: More info at https://github.com/HJLebbink/intrinsics-dude \n");
             sb.Append("----------------------------------");
             IntrinsicsDudeToolsStatic.Output(sb.ToString());

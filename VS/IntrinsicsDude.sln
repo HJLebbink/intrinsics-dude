@@ -13,6 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSH
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-lib", "CSHARP\intrinsics-lib\intrinsics-lib.csproj", "{3D21486D-183F-4177-8890-B9DFA39B582B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F5C800F-83F8-4866-AE3C-97602B39C536} = {9F5C800F-83F8-4866-AE3C-97602B39C536}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-tests-intrinsics-lib", "CSHARP\unit-tests-intrinsics-lib\unit-tests-intrinsics-lib.csproj", "{8C2F2ADB-0160-41C8-AB20-E3443E65A465}"
 EndProject
