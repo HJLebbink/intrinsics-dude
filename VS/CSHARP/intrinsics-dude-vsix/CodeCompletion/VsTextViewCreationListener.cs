@@ -29,20 +29,21 @@ using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 
-namespace IntrinsicsDude.CodeCompletion {
-
+namespace IntrinsicsDude.CodeCompletion
+{
     [Export(typeof(IVsTextViewCreationListener))]
-    [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [TextViewRole(PredefinedTextViewRoles.Interactive)]
-    internal sealed class VsTextViewCreationListener : IVsTextViewCreationListener {
-
+    internal sealed class VsTextViewCreationListener : IVsTextViewCreationListener
+    {
         [Import]
         private IVsEditorAdaptersFactoryService _adaptersFactory = null;
 
         [Import]
         private ICompletionBroker _completionBroker = null;
 
-        public void VsTextViewCreated(IVsTextView textViewAdapter) {
+        public void VsTextViewCreated(IVsTextView textViewAdapter)
+        {
             IWpfTextView view = _adaptersFactory.GetWpfTextView(textViewAdapter);
             Debug.Assert(view != null);
             CodeCompletionCommandFilter filter = new CodeCompletionCommandFilter(view, _completionBroker);

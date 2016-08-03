@@ -20,15 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Text.Tagging;
+using System;
 
-namespace IntrinsicsDude.SyntaxHighlighting {
+namespace IntrinsicsDude.ErrorSquiggles
+{
+    [Flags]
+    public enum IntrinsicErrorEnum
+    {
+        NONE = 0,
+        LABEL_UNDEFINED = 1 << 1,
+        LABEL_CLASH = 1 << 2,
+        OTHER = 1 << 3,
 
-    public class AsmTokenTag : ITag {
-        public AsmTokenType type { get; private set; }
-
-        public AsmTokenTag(AsmTokenType type) {
-            this.type = type;
-        }
+        LABEL = LABEL_UNDEFINED | LABEL_CLASH
     }
 }

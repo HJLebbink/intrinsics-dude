@@ -38,6 +38,7 @@ namespace IntrinsicsDude.QuickInfo
     [Export(typeof(IQuickInfoSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("IntrinsicsQuickInfo")]
+    [Order(Before = "default")]
     internal sealed class IntrinsicsQuickInfoSourceProvider : IQuickInfoSourceProvider
     {
         [Import]
@@ -47,7 +48,7 @@ namespace IntrinsicsDude.QuickInfo
         {
             Func<IntrinsicsQuickInfoSource> sc = delegate ()
             {
-                ITagAggregator<AsmTokenTag> aggregator = IntrinsicsDudeToolsStatic.getAggregator(buffer, _aggregatorFactory);
+                ITagAggregator<IntrinsicTokenTag> aggregator = IntrinsicsDudeToolsStatic.getAggregator(buffer, _aggregatorFactory);
                 return new IntrinsicsQuickInfoSource(buffer, aggregator);
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSourceProvider: TryCreateQuickInfoSource");

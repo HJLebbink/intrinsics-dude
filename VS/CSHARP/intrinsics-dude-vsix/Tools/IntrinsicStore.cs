@@ -41,9 +41,24 @@ namespace IntrinsicsDude.Tools
 
         public IntrinsicDataElement get(Intrinsic intrinsic)
         {
-            return _data[intrinsic];
+            IntrinsicDataElement value;
+            if (this._data.TryGetValue(intrinsic, out value))
+            {
+                return value;
+            }
+            IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore:get; intrinsic=" + intrinsic +" does not have a data element.");
+            return null;
         }
 
+        public CpuID getCpuID(Intrinsic intrinsic)
+        {
+            IntrinsicDataElement value;
+            if (this._data.TryGetValue(intrinsic, out value))
+            {
+                return value.cpuID;
+            }
+            return CpuID.NONE;
+        }
 
         #region Private Methods
 
@@ -61,6 +76,10 @@ namespace IntrinsicsDude.Tools
 
                     dataElement.id = item.GetAttributeValue("id", -1);
                     dataElement.intrinsic = Intrinsic.NONE;
+                    dataElement.alsoKnc = false;
+
+                    bool printit = false;// dataElement.id == 8;
+
 
                     IList<string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
@@ -69,7 +88,9 @@ namespace IntrinsicsDude.Tools
                     #region payload
                     foreach (HtmlNode element in item.ChildNodes)
                     {
-                        switch (element.GetAttributeValue("class", "NONE").ToUpper())
+                        string elementClass = element.GetAttributeValue("class", "NONE").ToUpper();
+                        if (printit) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: element.class=" + elementClass);
+                        switch (elementClass)
                         {
                             case "INSTRUCTION":
                                 string instruction = element.InnerText.ToUpper();
@@ -80,32 +101,49 @@ namespace IntrinsicsDude.Tools
                                 dataElement.instruction = AsmSourceTools.parseMnemonic(instruction);
                                 break;
                             case "SIGNATURE":
-                                foreach (HtmlNode element2 in element.Descendants(1))
-                                {
-                                    switch (element2.GetAttributeValue("class", "NONE").ToUpper())
-                                    {
-                                        case "RETTYPE": dataElement.returnType = IntrinsicTools.parseReturnType(element2.InnerText); break;
-                                        case "NAME": dataElement.intrinsic = IntrinsicTools.parseIntrinsic(element2.InnerText); break;
-                                        case "PARAM_NAME": paramName.Add(element2.InnerText); break;
-                                        case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
-                                        default: break;
-                                    }
-                                }
                                 break;
                             case "DETAILS":
                                 foreach (HtmlNode element2 in element.Descendants())
                                 {
-                                    switch (element2.GetAttributeValue("class", "NONE").ToUpper())
+                                    string element2Class = element2.GetAttributeValue("class", "NONE").ToUpper();
+                                    if (printit) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
+                                    switch (element2Class)
                                     {
+                                        case "NAME": dataElement.intrinsic = IntrinsicTools.parseIntrinsic(element2.InnerText); break;
+                                        case "RETTYPE": dataElement.returnType = IntrinsicTools.parseReturnType(element2.InnerText); break;
+                                        case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
+                                        case "PARAM_NAME": paramName.Add(element2.InnerText); break;
+                                        case "DESC_VAR": break;
+
                                         case "DESCRIPTION": dataElement.description = removeHtml(element2.InnerText); break;
                                         case "OPERATION": dataElement.operation = element2.InnerHtml; break;
                                         case "CPUID": cpuidList.Add(element2.InnerText); break;
-                                        case "PERFORMANCE": dataElement.performance = element2.InnerHtml; break;
-                                        default: break;
+                                        case "PERFORMANCE": dataElement.performance = element2.InnerText; break;
+                                        case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
+
+                                        case "SIG":
+                                        case "SYNOPSIS":
+                                        case "DESC_NOTE":
+                                        case "NONE":
+                                            break;
+
+                                        default:
+                                            if (element2Class.StartsWith("DESC_VAR")) {
+                                                // ok
+                                            } else
+                                            {
+                                                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: B: found unexpected element2Class=" + element2Class + "; " + element2.InnerHtml);
+                                            }
+                                            break;
                                     }
                                 }
                                 break;
-                            default: break;
+                            case "ALSOKNC":
+                                dataElement.alsoKnc = true;
+                                break;
+                            default:
+                                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: found unexpected elementClass=" + elementClass);
+                                break;
                         }
 
                         for (int i = 0; i < paramName.Count; ++i)

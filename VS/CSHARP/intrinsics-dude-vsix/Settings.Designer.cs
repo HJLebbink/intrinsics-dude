@@ -49,66 +49,6 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
-        public global::System.Drawing.Color SyntaxHighlighting_Remark {
-            get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Remark"]));
-            }
-            set {
-                this["SyntaxHighlighting_Remark"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Magenta")]
-        public global::System.Drawing.Color SyntaxHighlighting_Directive {
-            get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Directive"]));
-            }
-            set {
-                this["SyntaxHighlighting_Directive"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
-        public global::System.Drawing.Color SyntaxHighlighting_Jump {
-            get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Jump"]));
-            }
-            set {
-                this["SyntaxHighlighting_Jump"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("OrangeRed")]
-        public global::System.Drawing.Color SyntaxHighlighting_Label {
-            get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Label"]));
-            }
-            set {
-                this["SyntaxHighlighting_Label"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Chocolate")]
-        public global::System.Drawing.Color SyntaxHighlighting_Constant {
-            get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Constant"]));
-            }
-            set {
-                this["SyntaxHighlighting_Constant"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DarkOrange")]
         public global::System.Drawing.Color SyntaxHighlighting_Misc {
             get {
@@ -128,42 +68,6 @@ namespace IntrinsicsDude {
             }
             set {
                 this["SyntaxHighlighting_On"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CodeFolding_On {
-            get {
-                return ((bool)(this["CodeFolding_On"]));
-            }
-            set {
-                this["CodeFolding_On"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#region")]
-        public string CodeFolding_BeginTag {
-            get {
-                return ((string)(this["CodeFolding_BeginTag"]));
-            }
-            set {
-                this["CodeFolding_BeginTag"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#endregion")]
-        public string CodeFolding_EndTag {
-            get {
-                return ((string)(this["CodeFolding_EndTag"]));
-            }
-            set {
-                this["CodeFolding_EndTag"] = value;
             }
         }
         
@@ -200,174 +104,6 @@ namespace IntrinsicsDude {
             }
             set {
                 this["AsmDoc_On"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool KeywordHighlight_On {
-            get {
-                return ((bool)(this["KeywordHighlight_On"]));
-            }
-            set {
-                this["KeywordHighlight_On"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Magenta")]
-        public global::System.Drawing.Color KeywordHighlightColor {
-            get {
-                return ((global::System.Drawing.Color)(this["KeywordHighlightColor"]));
-            }
-            set {
-                this["KeywordHighlightColor"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CodeFolding_IsDefaultCollapsed {
-            get {
-                return ((bool)(this["CodeFolding_IsDefaultCollapsed"]));
-            }
-            set {
-                this["CodeFolding_IsDefaultCollapsed"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool useAssemblerMasm {
-            get {
-                return ((bool)(this["useAssemblerMasm"]));
-            }
-            set {
-                this["useAssemblerMasm"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool useAssemblerNasm {
-            get {
-                return ((bool)(this["useAssemblerNasm"]));
-            }
-            set {
-                this["useAssemblerNasm"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IntelliSenseShowUndefinedLabels {
-            get {
-                return ((bool)(this["IntelliSenseShowUndefinedLabels"]));
-            }
-            set {
-                this["IntelliSenseShowUndefinedLabels"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IntelliSenseShowClashingLabels {
-            get {
-                return ((bool)(this["IntelliSenseShowClashingLabels"]));
-            }
-            set {
-                this["IntelliSenseShowClashingLabels"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IntelliSenseDecorateUndefinedLabels {
-            get {
-                return ((bool)(this["IntelliSenseDecorateUndefinedLabels"]));
-            }
-            set {
-                this["IntelliSenseDecorateUndefinedLabels"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool IntelliSenseDecorateClashingLabels {
-            get {
-                return ((bool)(this["IntelliSenseDecorateClashingLabels"]));
-            }
-            set {
-                this["IntelliSenseDecorateClashingLabels"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_8086 {
-            get {
-                return ((bool)(this["ARCH_8086"]));
-            }
-            set {
-                this["ARCH_8086"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_186 {
-            get {
-                return ((bool)(this["ARCH_186"]));
-            }
-            set {
-                this["ARCH_186"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_286 {
-            get {
-                return ((bool)(this["ARCH_286"]));
-            }
-            set {
-                this["ARCH_286"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_386 {
-            get {
-                return ((bool)(this["ARCH_386"]));
-            }
-            set {
-                this["ARCH_386"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_486 {
-            get {
-                return ((bool)(this["ARCH_486"]));
-            }
-            set {
-                this["ARCH_486"] = value;
             }
         }
         
@@ -457,30 +193,6 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_SSE4A {
-            get {
-                return ((bool)(this["ARCH_SSE4A"]));
-            }
-            set {
-                this["ARCH_SSE4A"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_SSE5 {
-            get {
-                return ((bool)(this["ARCH_SSE5"]));
-            }
-            set {
-                this["ARCH_SSE5"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_AVX {
             get {
@@ -512,18 +224,6 @@ namespace IntrinsicsDude {
             }
             set {
                 this["ARCH_AVX512VL"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512PF {
-            get {
-                return ((bool)(this["ARCH_AVX512PF"]));
-            }
-            set {
-                this["ARCH_AVX512PF"] = value;
             }
         }
         
@@ -590,18 +290,6 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_X64 {
-            get {
-                return ((bool)(this["ARCH_X64"]));
-            }
-            set {
-                this["ARCH_X64"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_BMI1 {
             get {
                 return ((bool)(this["ARCH_BMI1"]));
@@ -626,30 +314,6 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_P6 {
-            get {
-                return ((bool)(this["ARCH_P6"]));
-            }
-            set {
-                this["ARCH_P6"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_IA64 {
-            get {
-                return ((bool)(this["ARCH_IA64"]));
-            }
-            set {
-                this["ARCH_IA64"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_FMA {
             get {
                 return ((bool)(this["ARCH_FMA"]));
@@ -662,132 +326,12 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_TBM {
-            get {
-                return ((bool)(this["ARCH_TBM"]));
-            }
-            set {
-                this["ARCH_TBM"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_AMD {
-            get {
-                return ((bool)(this["ARCH_AMD"]));
-            }
-            set {
-                this["ARCH_AMD"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_PENT {
-            get {
-                return ((bool)(this["ARCH_PENT"]));
-            }
-            set {
-                this["ARCH_PENT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_3DNOW {
-            get {
-                return ((bool)(this["ARCH_3DNOW"]));
-            }
-            set {
-                this["ARCH_3DNOW"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_CYRIX {
-            get {
-                return ((bool)(this["ARCH_CYRIX"]));
-            }
-            set {
-                this["ARCH_CYRIX"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_CYRIXM {
-            get {
-                return ((bool)(this["ARCH_CYRIXM"]));
-            }
-            set {
-                this["ARCH_CYRIXM"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_VMX {
-            get {
-                return ((bool)(this["ARCH_VMX"]));
-            }
-            set {
-                this["ARCH_VMX"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_RTM {
-            get {
-                return ((bool)(this["ARCH_RTM"]));
-            }
-            set {
-                this["ARCH_RTM"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_MPX {
             get {
                 return ((bool)(this["ARCH_MPX"]));
             }
             set {
                 this["ARCH_MPX"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_SHA {
-            get {
-                return ((bool)(this["ARCH_SHA"]));
-            }
-            set {
-                this["ARCH_SHA"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_BND {
-            get {
-                return ((bool)(this["ARCH_BND"]));
-            }
-            set {
-                this["ARCH_BND"] = value;
             }
         }
         
@@ -817,55 +361,19 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_F16C {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ARCH_FP16C {
             get {
-                return ((bool)(this["ARCH_F16C"]));
+                return ((bool)(this["ARCH_FP16C"]));
             }
             set {
-                this["ARCH_F16C"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_FSGSBASE {
-            get {
-                return ((bool)(this["ARCH_FSGSBASE"]));
-            }
-            set {
-                this["ARCH_FSGSBASE"] = value;
+                this["ARCH_FP16C"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_HLE {
-            get {
-                return ((bool)(this["ARCH_HLE"]));
-            }
-            set {
-                this["ARCH_HLE"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_INVPCID {
-            get {
-                return ((bool)(this["ARCH_INVPCID"]));
-            }
-            set {
-                this["ARCH_INVPCID"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ARCH_PCLMULQDQ {
             get {
                 return ((bool)(this["ARCH_PCLMULQDQ"]));
@@ -878,96 +386,36 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_LZCNT {
+        public bool ARCH_CLFLUSHOPT {
             get {
-                return ((bool)(this["ARCH_LZCNT"]));
+                return ((bool)(this["ARCH_CLFLUSHOPT"]));
             }
             set {
-                this["ARCH_LZCNT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_PREFETCHWT1 {
-            get {
-                return ((bool)(this["ARCH_PREFETCHWT1"]));
-            }
-            set {
-                this["ARCH_PREFETCHWT1"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_PREFETCHW {
-            get {
-                return ((bool)(this["ARCH_PREFETCHW"]));
-            }
-            set {
-                this["ARCH_PREFETCHW"] = value;
+                this["ARCH_CLFLUSHOPT"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_RDPID {
+        public bool ARCH_FXSR {
             get {
-                return ((bool)(this["ARCH_RDPID"]));
+                return ((bool)(this["ARCH_FXSR"]));
             }
             set {
-                this["ARCH_RDPID"] = value;
+                this["ARCH_FXSR"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_RDRAND {
+        public bool ARCH_KNCNI {
             get {
-                return ((bool)(this["ARCH_RDRAND"]));
+                return ((bool)(this["ARCH_KNCNI"]));
             }
             set {
-                this["ARCH_RDRAND"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_RDSEED {
-            get {
-                return ((bool)(this["ARCH_RDSEED"]));
-            }
-            set {
-                this["ARCH_RDSEED"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_XSAVEOPT {
-            get {
-                return ((bool)(this["ARCH_XSAVEOPT"]));
-            }
-            set {
-                this["ARCH_XSAVEOPT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_UNDOC {
-            get {
-                return ((bool)(this["ARCH_UNDOC"]));
-            }
-            set {
-                this["ARCH_UNDOC"] = value;
+                this["ARCH_KNCNI"] = value;
             }
         }
         

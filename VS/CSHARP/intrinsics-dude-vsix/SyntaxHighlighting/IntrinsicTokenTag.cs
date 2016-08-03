@@ -20,12 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace IntrinsicsDude {
+using Microsoft.VisualStudio.Text.Tagging;
 
-    /// <summary>
-    /// Types of token used in assembly source files. Mnemonic, Register, Remark, Directive, Constant, Jump, Label, LabelDef, Misc, UNKNOWN
-    /// </summary>
-    public enum AsmTokenType {
-        Mnemonic, Register, Remark, Directive, Constant, Jump, Label, LabelDef, Misc, UNKNOWN
+namespace IntrinsicsDude.SyntaxHighlighting
+{
+    public class IntrinsicTokenTag : ITag
+    {
+        public IntrinsicTokenType type { get; private set; }
+
+        public IntrinsicTokenTag(IntrinsicTokenType type)
+        {
+            this.type = type;
+        }
     }
 }

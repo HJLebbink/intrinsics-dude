@@ -20,30 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.Utilities;
-using System;
+using Microsoft.VisualStudio.Text;
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Utilities;
 
-namespace IntrinsicsDude.BraceMatching {
+using IntrinsicsDude.SyntaxHighlighting;
+using System;
 
-    [Export(typeof(IViewTaggerProvider))]
-    [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
-    [TagType(typeof(TextMarkerTag))]
-    internal sealed class BraceMatchingTaggerProvider : IViewTaggerProvider {
-        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag {
-            if (textView == null) {
-                return null;
-            }
-            //provide highlighting only on the top-level buffer
-            if (textView.TextBuffer != buffer) {
-                return null;
-            }
-            Func<ITagger<T>> sc = delegate () {
-                return new BraceMatchingTagger(textView, buffer) as ITagger<T>;
+namespace IntrinsicsDude
+{
+    [Export(typeof(ITaggerProvider))]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    [TagType(typeof(IntrinsicTokenTag))]
+    [Order(After = "default")]
+    internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
+
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag {
+            Func <ITagger<T>> sc = delegate () {
+                return new IntrinsicTokenTagger(buffer) as ITagger<T>;
             };
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }

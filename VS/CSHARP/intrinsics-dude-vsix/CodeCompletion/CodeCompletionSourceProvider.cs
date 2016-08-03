@@ -20,34 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude {
-
+namespace IntrinsicsDude
+{
     [Export(typeof(ICompletionSourceProvider))]
-    [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
-    [Name("asmCompletion")]
-    public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider {
-
-        [Import]
-        private IBufferTagAggregatorFactoryService _aggregatorFactory = null;
-
-        [Import]
-        private ITextDocumentFactoryService _docFactory = null;
-
-        [Import]
-        private IContentTypeRegistryService _contentService = null;
-
-        public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer) {
-            Func<CodeCompletionSource> sc = delegate () {
-                ILabelGraph labelGraph = IntrinsicsDudeToolsStatic.getLabelGraph(buffer, _aggregatorFactory, _docFactory, _contentService);
-                return new CodeCompletionSource(buffer, labelGraph);
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    [Order(Before = "default")]
+    [Name("intrinsicCompletion")]
+    public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
+    {
+        public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
+        {
+            Func<CodeCompletionSource> sc = delegate ()
+            {
+                return new CodeCompletionSource(buffer);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

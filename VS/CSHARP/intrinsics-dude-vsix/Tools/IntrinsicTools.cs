@@ -21,11 +21,30 @@
 // SOFTWARE.
 
 using System;
+using System.Text;
 
 namespace IntrinsicsDude.Tools
 {
-
     public static partial class IntrinsicTools {
+
+        public enum IntrinsicRegisterType
+        {
+            NONE,
+            __M128,
+            __M128D,
+            __M128I,
+            __M256,
+            __M256D,
+            __M256I,
+            __M512,
+            __M512D,
+            __M512I,
+            __M64,
+            __MMASK16,
+            __MMASK32,
+            __MMASK64,
+            __MMASK8,
+        }
 
         [Flags]
         public enum CpuID
@@ -62,7 +81,6 @@ namespace IntrinsicsDude.Tools
         public enum ReturnType
         {
             NONE,
-
             __INT16,
             __INT32,
             __INT64,
@@ -97,7 +115,6 @@ namespace IntrinsicsDude.Tools
         public enum ParamType
         {
             NONE,
-
             __INT32,
             __INT32_PTR,
             __INT64,
@@ -155,6 +172,30 @@ namespace IntrinsicsDude.Tools
             VOID,
             VOID_PTR,
             VOID_CONST_PTR
+        }
+
+        public static IntrinsicRegisterType parseIntrinsicRegisterType(string str)
+        {
+            switch (str.ToUpper())
+            {
+                case "__M128": return IntrinsicRegisterType.__M128;
+                case "__M128D": return IntrinsicRegisterType.__M128D;
+                case "__M128I": return IntrinsicRegisterType.__M128I;
+                case "__M256": return IntrinsicRegisterType.__M256;
+                case "__M256D": return IntrinsicRegisterType.__M256D;
+                case "__M256I": return IntrinsicRegisterType.__M256I;
+                case "__M512": return IntrinsicRegisterType.__M512;
+                case "__M512D": return IntrinsicRegisterType.__M512D;
+                case "__M512I": return IntrinsicRegisterType.__M512I;
+                case "__M64": return IntrinsicRegisterType.__M64;
+                case "__MMASK16": return IntrinsicRegisterType.__MMASK16;
+                case "__MMASK32": return IntrinsicRegisterType.__MMASK32;
+                case "__MMASK64": return IntrinsicRegisterType.__MMASK64;
+                case "__MMASK8": return IntrinsicRegisterType.__MMASK8;
+                default:
+                    Console.WriteLine("parseIntrinsicRegisterType: unknown return type \"" + str + "\".");
+                    return IntrinsicRegisterType.NONE;
+            }
         }
 
         public static ReturnType parseReturnType(string str)
@@ -269,7 +310,194 @@ namespace IntrinsicsDude.Tools
 
         public static CpuID parseCpuID(string str)
         {
-            return CpuID.NONE;
+            switch (str.ToUpper())
+            {
+                case "ADX": return CpuID.ADX;
+                case "AES": return CpuID.AES;
+                case "AVX": return CpuID.AVX;
+                case "AVX2": return CpuID.AVX2;
+                case "AVX512BW": return CpuID.AVX512BW;
+                case "AVX512CD": return CpuID.AVX512CD;
+                case "AVX512DQ": return CpuID.AVX512DQ;
+                case "AVX512ER": return CpuID.AVX512ER;
+                case "AVX512F": return CpuID.AVX512F;
+                case "AVX512VL": return CpuID.AVX512VL;
+                case "BMI1": return CpuID.BMI1;
+                case "BMI2": return CpuID.BMI2;
+                case "CLFLUSHOPT": return CpuID.CLFLUSHOPT;
+                case "FMA": return CpuID.FMA;
+                case "FP16C": return CpuID.FP16C;
+                case "FXSR": return CpuID.FXSR;
+                case "KNCNI": return CpuID.KNCNI;
+                case "MMX": return CpuID.MMX;
+                case "MPX": return CpuID.MPX;
+                case "PCLMULQDQ": return CpuID.PCLMULQDQ;
+                case "SSE": return CpuID.SSE;
+                case "SSE2": return CpuID.SSE2;
+                case "SSE3": return CpuID.SSE3;
+                case "SSE4.1": return CpuID.SSE4_1;
+                case "SSE4.2": return CpuID.SSE4_2;
+                case "SSSE3": return CpuID.SSSE3;
+                default: return CpuID.NONE;
+            }
+        }
+
+        public static string ToString(CpuID cpuIDs)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
+            {
+                if ((value != CpuID.NONE) && cpuIDs.HasFlag(value))
+                {
+                    sb.Append(value.ToString());
+                    sb.Append(", ");
+                }
+            }
+            if (sb.Length > 0) sb.Length -= 2;
+            return sb.ToString();
+        }
+
+        public static string ToString(ParamType type)
+        {
+            switch (type)
+            {
+                case ParamType.__INT32: return "__int32";
+                case ParamType.__INT32_PTR: return "__int32 *";
+                case ParamType.__INT64: return "__int64";
+                case ParamType.__INT64_CONST_PTR: return "__int64 const *";
+                case ParamType.__INT64_PTR: return "__int64 *";
+                case ParamType.__M128: return "__m128";
+                case ParamType.__M128_CONST_PTR: return "__m128 const *";
+                case ParamType.__M128D: return "__m128d";
+                case ParamType.__M128D_CONST_PTR: return "__m128d";
+                case ParamType.__M128I: return "__m128i";
+                case ParamType.__M256: return "__m256";
+                case ParamType.__M256D: return "__m256d";
+                case ParamType.__M256I: return "__m256i";
+                case ParamType.__M512: return "__m512";
+                case ParamType.__M512D: return "__m512d";
+                case ParamType.__M512I: return "__m512i";
+                case ParamType.__M64: return "__m64";
+                case ParamType.__MMASK16: return "__mmask16";
+                case ParamType.__MMASK16_PTR: return "__mmask16 *";
+                case ParamType.__MMASK32: return "__mmask32";
+                case ParamType.__MMASK64: return "__mmask64";
+                case ParamType.__MMASK8: return "__mmask8";
+                case ParamType._MM_BROADCAST32_ENUM: return "_MM_BROADCAST32_ENUM";
+                case ParamType._MM_BROADCAST64_ENUM: return "_MM_BROADCAST64_ENUM";
+                case ParamType._MM_DOWNCONV_EPI32_ENUM: return "_MM_DOWNCONV_EPI32_ENUM";
+                case ParamType._MM_DOWNCONV_EPI64_ENUM: return "_MM_DOWNCONV_EPI64_ENUM";
+                case ParamType._MM_DOWNCONV_PD_ENUM: return "_MM_DOWNCONV_PD_ENUM";
+                case ParamType._MM_DOWNCONV_PS_ENUM: return "_MM_DOWNCONV_PS_ENUM";
+                case ParamType._MM_EXP_ADJ_ENUM: return "_MM_EXP_ADJ_ENUM";
+                case ParamType._MM_MANTISSA_NORM_ENUM: return "_MM_MANTISSA_NORM_ENUM";
+                case ParamType._MM_MANTISSA_SIGN_ENUM: return "_MM_MANTISSA_SIGN_ENUM";
+                case ParamType._MM_UPCONV_EPI32_ENUM: return "_MM_UPCONV_EPI32_ENUM";
+                case ParamType._MM_UPCONV_EPI64_ENUM: return "_MM_UPCONV_EPI64_ENUM";
+                case ParamType._MM_UPCONV_PD_ENUM: return "_MM_UPCONV_PD_ENUM";
+                case ParamType._MM_UPCONV_PS_ENUM: return "_MM_UPCONV_PS_ENUM";
+                case ParamType.CONST_MM_CMPINT_ENUM: return "CONST_MM_CMPINT_ENUM";
+                case ParamType.CONST_INT: return "const int";
+                case ParamType.CONST_VOID_PTR: return "const void *";
+                case ParamType.CONST_VOID_PTR_PTR: return "const void **";
+                case ParamType.DOUBLE: return "double";
+                case ParamType.DOUBLE_CONST_PTR: return "double const *";
+                case ParamType.FLOAT: return "float";
+                case ParamType.FLOAT_CONST_PTR: return "float";
+                case ParamType.INT: return "int";
+                case ParamType.INT_CONST_PTR: return "int const *";
+                case ParamType.SIZE_T: return "size_t";
+                case ParamType.UNSIGNED__INT32: return "unsigned __int32";
+                case ParamType.UNSIGNED__INT32_PTR: return "unsigned __int32 *";
+                case ParamType.UNSIGNED__INT64: return "unsigned __int64";
+                case ParamType.UNSIGNED__INT64_PTR: return "unsigned __int64 *";
+                case ParamType.UNSIGNED_CHAR: return "unsigned char";
+                case ParamType.UNSIGNED_INT: return "unsigned int";
+                case ParamType.UNSIGNED_INT_PTR: return "unsigned int *";
+                case ParamType.UNSIGNED_SHORT: return "unsigned short";
+                case ParamType.VOID: return "void";
+                case ParamType.VOID_PTR: return "void *";
+                case ParamType.VOID_CONST_PTR: return "void const *";
+                default:
+                    return "UNKNOWN";
+                    break;
+            }
+        }
+
+        public static string ToString(ReturnType type)
+        {
+            switch (type)
+            {
+                case ReturnType.__INT16: return "__int16";
+                case ReturnType.__INT32: return "__int32";
+                case ReturnType.__INT64: return "__int64";
+                case ReturnType.__INT8: return "__int8";
+                case ReturnType.__M128: return "__m128";
+                case ReturnType.__M128D: return "__m128d";
+                case ReturnType.__M128I: return "__m128d";
+                case ReturnType.__M256: return "__m256";
+                case ReturnType.__M256D: return "__m256d";
+                case ReturnType.__M256I: return "__m256i";
+                case ReturnType.__M512: return "__m512";
+                case ReturnType.__M512D: return "__m512d";
+                case ReturnType.__M512I: return "__m512i";
+                case ReturnType.__M64: return "__m64";
+                case ReturnType.__MMASK16: return "__mmask16";
+                case ReturnType.__MMASK32: return "__mmask32";
+                case ReturnType.__MMASK64: return "__mmask64";
+                case ReturnType.__MMASK8: return "__mmask8";
+                case ReturnType.CONST_VOID_PTR: return "const void *";
+                case ReturnType.DOUBLE: return "double";
+                case ReturnType.FLOAT: return "float";
+                case ReturnType.INT: return "int";
+                case ReturnType.UNSIGNED__INT32: return "unsigned __int32";
+                case ReturnType.UNSIGNED__INT64: return "unsigned __int64";
+                case ReturnType.UNSIGNED_CHAR: return "unsigned char";
+                case ReturnType.UNSIGNED_INT: return "unsigned int";
+                case ReturnType.UNSIGNED_SHORT: return "unsigned short";
+                case ReturnType.VOID: return "void";
+                case ReturnType.VOID_PTR: return "void *";
+                default:
+                    return "UNKNOWN";
+                    break;
+            }
+        }
+
+        public static string getCpuID_Documentation(CpuID cpuID)
+        {
+            switch (cpuID)
+            {
+                case CpuID.NONE: return "";
+                case CpuID.ADX: return "Multi-Precision Add-Carry Instruction Extension";
+                case CpuID.AES: return "Advanced Encryption Standard Extension";
+                case CpuID.AVX: return "";
+                case CpuID.AVX2: return "";
+                case CpuID.AVX512F: return "Instruction set AVX512 Foundation (Knights Landing, Intel Xeon)";
+                case CpuID.AVX512CD: return "Instruction set AVX512 Conflict Detection (Knights Landing, Intel Xeon)";
+                case CpuID.AVX512ER: return "Instruction set AVX512 Exponential and Reciprocal (Knights Landing)";
+                //case CpuID.AVX512PF: return "Instruction set AVX512 Prefetch (Knights Landing)";
+                case CpuID.AVX512BW: return "Instruction set AVX512 Byte and Word (Intel Xeon)";
+                case CpuID.AVX512DQ: return "Instruction set AVX512 Doubleword and QuadWord (Intel Xeon)";
+                case CpuID.AVX512VL: return "Instruction set AVX512 Vector Length Extensions (Intel Xeon)";
+                case CpuID.BMI1: return "Bit Manipulation Instruction Set 1";
+                case CpuID.BMI2: return "Bit Manipulation Instruction Set 2";
+                case CpuID.CLFLUSHOPT: return "";
+                case CpuID.FMA: return "Fused Multiply-Add Instructions";
+                case CpuID.FP16C: return "Half Precision Floating Point Conversion Instructions";
+                case CpuID.FXSR: return "";
+                case CpuID.KNCNI: return "";
+                case CpuID.MMX: return "";
+                case CpuID.MPX: return "Memory Protection Extensions";
+                case CpuID.PCLMULQDQ: return "Carry-Less Multiplication Instructions";
+                case CpuID.SSE: return "";
+                case CpuID.SSE2: return "";
+                case CpuID.SSE3: return "";
+                case CpuID.SSE4_1: return "";
+                case CpuID.SSE4_2: return "";
+                case CpuID.SSSE3: return "";
+                default:
+                    return "";
+            }
         }
 
         /// <summary>

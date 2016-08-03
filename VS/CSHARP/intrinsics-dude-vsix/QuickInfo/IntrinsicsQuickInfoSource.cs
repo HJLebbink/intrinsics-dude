@@ -33,7 +33,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using AsmTools;
 using System.Text;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
@@ -45,14 +44,14 @@ namespace IntrinsicsDude.QuickInfo
     internal sealed class IntrinsicsQuickInfoSource : IQuickInfoSource
     {
         private readonly ITextBuffer _sourceBuffer;
-        private readonly ITagAggregator<AsmTokenTag> _aggregator;
+        private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
         private readonly IntrinsicsDudeTools _asmDudeTools;
 
         public object CSharpEditorResources { get; private set; }
 
         public IntrinsicsQuickInfoSource(
                 ITextBuffer buffer,
-                ITagAggregator<AsmTokenTag> aggregator)
+                ITagAggregator<IntrinsicTokenTag> aggregator)
         {
             this._sourceBuffer = buffer;
             this._aggregator = aggregator;
@@ -76,48 +75,52 @@ namespace IntrinsicsDude.QuickInfo
                     return;
                 }
 
-                IEnumerable<IMappingTagSpan<AsmTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
+                IEnumerable<IMappingTagSpan<IntrinsicTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
 
                 if (enumerator.Count() > 0)
                 {
-                    IMappingTagSpan<AsmTokenTag> asmTokenTag = enumerator.First();
-                    SnapshotSpan tagSpan = asmTokenTag.Span.GetSpans(_sourceBuffer).First();
-                    string keyword = tagSpan.GetText();
-
-                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession. keyword=\"" + keyword + "\".");
-                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
-                    if (intrinsic != Intrinsic.NONE)
+                    IMappingTagSpan<IntrinsicTokenTag> tokenTag = enumerator.First();
+                    switch (tokenTag.Tag.type)
                     {
-                        IntrinsicDataElement dataElement = this._asmDudeTools.intrinsicStore.get(intrinsic);
-                        if (dataElement != null)
-                        {
-                            StringBuilder sb = new StringBuilder();
-
-                            sb.Append(dataElement.returnType);
-                            sb.Append(" ");
-                            sb.Append(dataElement.intrinsic);
-                            sb.Append("(");
-                            foreach (Tuple<ParamType, string> param in dataElement.parameters)
+                        case IntrinsicTokenType.Intrinsic:
                             {
-                                sb.Append(param.Item1);
-                                sb.Append(" ");
-                                sb.Append(param.Item2);
-                                sb.Append(", ");
-                            }
-                            if (dataElement.parameters.Count > 0)
-                            {
-                                sb.Length -= 2; // remove the last comma
-                            }
-                            sb.AppendLine(")");
-                            sb.Append(dataElement.description);
+                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(_sourceBuffer).First();
+                                string keyword = tagSpan.GetText();
+                                applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                            TextBlock description = new TextBlock();
-                            description.Inlines.Add(new Run(AsmSourceTools.linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
-                            description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
-                            //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
-                            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
-                            quickInfoContent.Add(description);
-                        }
+                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
+                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
+                                if (intrinsic != Intrinsic.NONE)
+                                {
+                                    TextBlock description = this.makeIntrinsicDescription(intrinsic);
+                                    if (description != null)
+                                    {
+                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
+                                        //quickInfoContent.Clear(); // throw the existing quickinfo away
+                                        quickInfoContent.Add(description);
+                                    }
+                                }
+                            }
+                            break;
+                        case IntrinsicTokenType.RegType:
+                            {
+                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(_sourceBuffer).First();
+                                string keyword = tagSpan.GetText();
+                                applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
+
+                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword);
+                                if (reg != IntrinsicRegisterType.NONE)
+                                {
+                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
+                                    TextBlock description = this.makeRegisterDescription(reg);
+                                    if (description != null)
+                                    {
+                                        quickInfoContent.Add(description);
+                                    }
+                                }
+                            }
+                            break;
+                        default: break;
                     }
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "QuickInfo");
@@ -135,7 +138,57 @@ namespace IntrinsicsDude.QuickInfo
 
         #region Private Methods
 
-        private static Run makeRun1(string str)
+        private TextBlock makeRegisterDescription(IntrinsicRegisterType reg)
+        {
+            TextBlock description = new TextBlock();
+            description.Inlines.Add(makeRunBold(reg.ToString()));
+            return description;
+        }
+
+        private TextBlock makeIntrinsicDescription(Intrinsic intrinsic)
+        {
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: makeIntrinsicDescription: intrinsic=" + intrinsic);
+
+            IntrinsicDataElement dataElement = this._asmDudeTools.intrinsicStore.get(intrinsic);
+            if (dataElement == null) return null;
+
+            TextBlock description = new TextBlock();
+            #region Add intrinsic signature
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(IntrinsicTools.ToString(dataElement.returnType));
+            sb.Append(" ");
+            sb.Append(dataElement.intrinsic);
+            sb.Append("(");
+            foreach (Tuple<ParamType, string> param in dataElement.parameters)
+            {
+                sb.Append(IntrinsicTools.ToString(param.Item1));
+                sb.Append(" ");
+                sb.Append(param.Item2);
+                sb.Append(", ");
+            }
+            if (dataElement.parameters.Count > 0)
+            {
+                sb.Length -= 2; // remove the last comma
+            }
+            sb.AppendLine(")");
+            description.Inlines.Add(makeRunBold(sb.ToString()));
+            #endregion
+
+            description.Inlines.Add(new Run(AsmTools.AsmSourceTools.linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+            description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
+            description.Inlines.Add(new Run(dataElement.operation));
+
+            description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
+            //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
+
+            return description;
+        }
+
+
+        private static Run makeRunBold(string str)
         {
             Run r1 = new Run(str);
             r1.FontWeight = FontWeights.Bold;

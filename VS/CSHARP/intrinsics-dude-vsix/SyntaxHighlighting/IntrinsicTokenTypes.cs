@@ -20,29 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.Text;
-using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Utilities;
-
-using IntrinsicsDude.SyntaxHighlighting;
-using System;
-using IntrinsicsDude.Tools;
-using AsmTools;
-
-namespace IntrinsicsDude {
-
-    [Export(typeof(ITaggerProvider))]
-    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [TagType(typeof(AsmTokenTag))]
-    internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
-
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag {
-            Func <ITagger<T>> sc = delegate () {
-                return new NasmTokenTagger(buffer) as ITagger<T>;
-            };
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
-            return buffer.Properties.GetOrCreateSingletonProperty(sc);
-        }
+namespace IntrinsicsDude
+{
+    public enum IntrinsicTokenType
+    {
+        Intrinsic, RegType, Misc, UNKNOWN
     }
 }

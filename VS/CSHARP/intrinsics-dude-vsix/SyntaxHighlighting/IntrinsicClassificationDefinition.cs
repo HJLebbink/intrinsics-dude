@@ -20,17 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
+using Microsoft.VisualStudio.Text.Classification;
+using Microsoft.VisualStudio.Utilities;
+using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.ErrorSquiggles {
+namespace IntrinsicsDude.SyntaxHighlighting {
 
-    [Flags]
-    public enum AsmErrorEnum {
-        NONE = 0,
-        LABEL_UNDEFINED = 1 << 1,
-        LABEL_CLASH = 1 << 2,
-        OTHER = 1 << 3,
+    internal static class IntrinsicClassificationDefinition {
 
-        LABEL = LABEL_UNDEFINED | LABEL_CLASH
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("mnemonic")]
+        internal static ClassificationTypeDefinition mnemonic = null;
+
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("register")]
+        internal static ClassificationTypeDefinition register = null;
+
+        [Export(typeof(ClassificationTypeDefinition))]
+        [Name("misc")]
+        internal static ClassificationTypeDefinition misc = null;
     }
 }

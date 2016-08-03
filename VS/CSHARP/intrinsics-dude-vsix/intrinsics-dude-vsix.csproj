@@ -85,16 +85,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="AsmDudePackage.ico" />
-    <Content Include="Resources\AsmDudeData.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\example.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -111,37 +102,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\images\icon-L.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\images\icon-M.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\images\icon-question.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\images\icon-R-blue.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\images\icon-R.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\Intel-Intrinsics-Guide.html">
       <IncludeInVSIX>true</IncludeInVSIX>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\signature-hand-1.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\signature-june2016.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +126,10 @@
   <ItemGroup>
     <Compile Include="AsmDoc\AsmDocClassifier.cs" />
     <Compile Include="AsmDoc\AsmDocMouseHandler.cs" />
-    <Compile Include="ErrorSquiggles\AsmErrorEnum.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionCommandFilter.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
+    <Compile Include="CodeCompletion\VsTextViewCreationListener.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="OptionsPage\AsmDudeOptionPageUI.xaml.cs">
       <DependentUpon>AsmDudeOptionPageUI.xaml</DependentUpon>
@@ -181,23 +151,16 @@
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
-    <Compile Include="SignatureHelp\AsmParameter.cs" />
-    <Compile Include="SignatureHelp\AsmSignature.cs" />
-    <Compile Include="SignatureHelp\AsmSignatureElement.cs" />
-    <Compile Include="SignatureHelp\AsmSignatureEnum.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandFilter.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandProvider.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSource.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSourceProvider.cs" />
-    <Compile Include="SyntaxHighlighting\AsmClassificationDefinition.cs" />
-    <Compile Include="SyntaxHighlighting\AsmClassifier.cs" />
-    <Compile Include="SyntaxHighlighting\AsmClassifierProvider.cs" />
-    <Compile Include="SyntaxHighlighting\AsmTokenTag.cs" />
-    <Compile Include="SyntaxHighlighting\IntrinsicsTokenTaggerProvider.cs" />
-    <Compile Include="SyntaxHighlighting\AsmTokenTypes.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicClassificationDefinition.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicClassifier.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicClassifierProvider.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicTokenTag.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicTokenTaggerProvider.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicTokenTypes.cs" />
     <Compile Include="SyntaxHighlighting\ClassificationFormat.cs" />
-    <Compile Include="SyntaxHighlighting\NasmTokenTagger.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicTokenTagger.cs" />
     <Compile Include="Tools\ApplicationInformation.cs" />
+    <Compile Include="Tools\IntrinsicErrorEnum.cs" />
     <Compile Include="Tools\Intrinsic.cs" />
     <Compile Include="Tools\IntrinsicDataElement.cs" />
     <Compile Include="Tools\IntrinsicsDudeTools.cs" />
@@ -206,8 +169,6 @@
     <Compile Include="Tools\CustomEventArgs.cs" />
     <Compile Include="Tools\IntrinsicStore.cs" />
     <Compile Include="Tools\IntrinsicTools.cs" />
-    <Compile Include="Tools\LabelGraph.cs" />
-    <Compile Include="Tools\MnemonicStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">

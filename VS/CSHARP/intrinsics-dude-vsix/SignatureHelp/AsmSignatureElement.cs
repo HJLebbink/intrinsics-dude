@@ -21,26 +21,26 @@
 // SOFTWARE.
 
 using IntrinsicsDude.Tools;
-using AsmTools;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.SignatureHelp {
 
     public class AsmSignatureElement {
-        private readonly Mnemonic _mnemonic;
-        private readonly IList<IList<AsmSignatureEnum>> _operands;
-        private readonly IList<Arch> _arch;
+        private readonly Intrinsic _mnemonic;
+        private readonly IList<IList<IntrinsicSignatureEnum>> _operands;
+        private CpuID _arch;
 
         private string[] _operandStr;
         private readonly string[] _operandDoc;
         private string _doc;
 
-        public AsmSignatureElement(Mnemonic mnem, string operandStr2, string archStr, string operandDoc, string doc) {
+        public AsmSignatureElement(Intrinsic mnem, string operandStr2, string archStr, string operandDoc, string doc) {
             this._mnemonic = mnem;
-            this._operands = new List<IList<AsmSignatureEnum>>();
-            this._arch = new List<Arch>();
+            this._operands = new List<IList<IntrinsicSignatureEnum>>();
+            this._arch = CpuID.NONE;
 
             {
                 string[] x = operandDoc.Split(' ');
@@ -56,9 +56,9 @@ namespace IntrinsicsDude.SignatureHelp {
             this.archStr = archStr;
         }
 
-        public static String makeDoc(IList<AsmSignatureEnum> operandType) {
+        public static String makeDoc(IList<IntrinsicSignatureEnum> operandType) {
             StringBuilder sb = new StringBuilder();
-            foreach (AsmSignatureEnum op in operandType) {
+            foreach (IntrinsicSignatureEnum op in operandType) {
                 sb.Append(AsmSignatureTools.getDoc(op) + " or ");
             }
             sb.Length -= 4;
@@ -66,47 +66,48 @@ namespace IntrinsicsDude.SignatureHelp {
         }
 
         /// <summary>Return true if this Signature Element is allowed with the constraints of the provided operand</summary>
-        public bool isAllowed(Operand op, int operandIndex) {
+        public bool isAllowed(string op, int operandIndex) {
+            return true;
+/*
             if (op == null) { return true; }
             if (operandIndex >= this.operands.Count) {
                 return false;
             }
-            foreach (AsmSignatureEnum operandType in this.operands[operandIndex]) {
+            foreach (IntrinsicSignatureEnum operandType in this.operands[operandIndex]) {
                 if (AsmSignatureTools.isAllowedOperand(op, operandType)) {
                     return true;
                 }
             }
             return false;
-        }
+*/        }
 
         /// <summary>Return true if this Signature Element is allowed in the provided architectures</summary>
-        public bool isAllowed(ISet<Arch> selectedArchitectures) {
-            foreach (Arch a in this._arch) {
+        public bool isAllowed(CpuID selectedArchitectures) {
+            return true;
+            /*
+            foreach (CpuID a in this._arch) {
                 if (selectedArchitectures.Contains(a)) {
                     //IntrinsicsDudeToolsStatic.Output("INFO: AsmSignatureElement: isAllowed: selected architectures=" + ArchTools.ToString(selectedArchitectures) + "; arch = " + ArchTools.ToString(_arch));
                     return true;
                 }
             }
             return false;
+            */
         }
 
         public string documentation { get { return this._doc; } set { this._doc = value; } }
         public string archStr {
-            get { return ArchTools.ToString(this._arch); }
+            get { return IntrinsicTools.ToString(this._arch); }
             set {
-                this._arch.Clear();
-                if (value == "") {
-                    //this._arch.Add(Arch.ARCH_486);
-                } else {
-                    foreach (string arch2 in value.Split(',')) {
-                        this._arch.Add(ArchTools.parseArch(arch2));
-                    }
+                this._arch = CpuID.NONE;
+                foreach (string arch2 in value.Split(',')) {
+                    this._arch |= IntrinsicTools.parseCpuID(arch2.Trim());
                 }
             }
         }
-        public IList<Arch> arch { get { return this._arch; } }
+        public CpuID arch { get { return this._arch; } }
 
-        public Mnemonic mnemonic { get { return this._mnemonic; } }
+        public Tools.Intrinsic mnemonic { get { return this._mnemonic; } }
 
         public string operandsStr {
             get {
@@ -126,12 +127,12 @@ namespace IntrinsicsDude.SignatureHelp {
                     this._operandStr[i] = this._operandStr[i].Trim();
                     if (this._operandStr[i].Length > 0) {
                         //IntrinsicsDudeToolsStatic.Output("INFO: SignatureStore:load: operandStr " + operandStr);
-                        IList<AsmSignatureEnum> operandList = new List<AsmSignatureEnum>();
-                        AsmSignatureEnum[] operandTypes = AsmSignatureTools.parseOperandTypeEnum(this._operandStr[i]);
-                        if ((operandTypes.Length == 1) && ((operandTypes[0] == AsmSignatureEnum.NONE) || (operandTypes[0] == AsmSignatureEnum.UNKNOWN))) {
+                        IList<IntrinsicSignatureEnum> operandList = new List<IntrinsicSignatureEnum>();
+                        IntrinsicSignatureEnum[] operandTypes = AsmSignatureTools.parseOperandTypeEnum(this._operandStr[i]);
+                        if ((operandTypes.Length == 1) && ((operandTypes[0] == IntrinsicSignatureEnum.NONE) || (operandTypes[0] == IntrinsicSignatureEnum.UNKNOWN))) {
                             // do nothing
                         } else {
-                            foreach (AsmSignatureEnum op in operandTypes) {
+                            foreach (IntrinsicSignatureEnum op in operandTypes) {
                                 operandList.Add(op);
                             }
                         }
@@ -143,7 +144,7 @@ namespace IntrinsicsDude.SignatureHelp {
             }
         }
 
-        public IList<IList<AsmSignatureEnum>> operands { get { return this._operands; } }
+        public IList<IList<IntrinsicSignatureEnum>> operands { get { return this._operands; } }
 
         public string getOperandStr(int index) {
             return _operandStr[index];

@@ -35,7 +35,9 @@ namespace IntrinsicsDude.Tools
         public CpuID cpuID;
         public int id;
         public Mnemonic instruction;
+        public string instructionNote;
         public bool isSVML;
+        public bool alsoKnc;
 
         public string description;
         public string performance;

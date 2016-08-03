@@ -38,6 +38,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.Tools {
 
@@ -45,29 +46,16 @@ namespace IntrinsicsDude.Tools {
 
         #region Singleton Factories
 
-        public static ITagAggregator<AsmTokenTag> getAggregator(
+        public static ITagAggregator<IntrinsicTokenTag> getAggregator(
             ITextBuffer buffer, 
             IBufferTagAggregatorFactoryService aggregatorFactory) {
 
-            Func<ITagAggregator<AsmTokenTag>> sc = delegate () {
-                return aggregatorFactory.CreateTagAggregator<AsmTokenTag>(buffer);
+            Func<ITagAggregator<IntrinsicTokenTag>> sc = delegate () {
+                return aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
 
-        public static ILabelGraph getLabelGraph(
-            ITextBuffer buffer,
-            IBufferTagAggregatorFactoryService aggregatorFactory,
-            ITextDocumentFactoryService docFactory,
-            IContentTypeRegistryService contentService) {
-
-            Func<LabelGraph> sc1 = delegate () {
-                IContentType contentType = contentService.GetContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType);
-                return new LabelGraph(buffer, aggregatorFactory, IntrinsicsDudeTools.Instance.errorListProvider, docFactory, contentType);
-            };
-            return buffer.Properties.GetOrCreateSingletonProperty(sc1);
-        }
-        
         public static void printSpeedWarning(DateTime startTime, string component) {
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
             if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec) {
@@ -76,32 +64,6 @@ namespace IntrinsicsDude.Tools {
         }
 
         #endregion Singleton Factories
-
-        public static AssemblerEnum usedAssembler {
-            get {
-                if (Settings.Default.useAssemblerMasm) {
-                    return AssemblerEnum.MASM;
-                }
-                if (Settings.Default.useAssemblerNasm) {
-                    return AssemblerEnum.NASM;
-                }
-                Output("WARNING: IntrinsicsDudeToolsStatic.usedAssebler: no assembler specified, assuming MASM");
-
-                return AssemblerEnum.MASM;
-            }
-            set {
-                Settings.Default.useAssemblerMasm = false;
-                Settings.Default.useAssemblerNasm = false;
-
-                switch (value) {
-                    case AssemblerEnum.MASM: Settings.Default.useAssemblerMasm = true; break;
-                    case AssemblerEnum.NASM: Settings.Default.useAssemblerNasm = true; break;
-                    case AssemblerEnum.UNKNOWN:
-                    default:
-                        Settings.Default.useAssemblerMasm = true; break;
-                }
-            }
-        }
 
         /// <summary>
         /// get the full filename (with path) for the provided buffer
@@ -351,7 +313,7 @@ namespace IntrinsicsDude.Tools {
             }
 
             ErrorTask errorTask = new ErrorTask();
-            errorTask.SubcategoryIndex = (int)AsmErrorEnum.OTHER;
+            errorTask.SubcategoryIndex = (int)IntrinsicErrorEnum.OTHER;
             errorTask.Text = msg;
             errorTask.ErrorCategory = TaskErrorCategory.Message;
             errorTask.Document = filename;
@@ -363,69 +325,49 @@ namespace IntrinsicsDude.Tools {
         }
 
 
-        public static ISet<Arch> getArchSwithedOn() {
-            ISet<Arch> set = new HashSet<Arch>();
-            foreach (Arch arch in Enum.GetValues(typeof(Arch))) {
-                if (isArchSwitchedOn(arch)) {
-                    set.Add(arch);
+        public static CpuID getCpuIDSwithedOn() {
+            CpuID cpuID = CpuID.NONE;
+
+            foreach (CpuID value in Enum.GetValues(typeof(CpuID))) {
+                if (isArchSwitchedOn(value)) {
+                    cpuID |= value;
                 }
             }
-            return set;
+            return cpuID;
         }
 
-        public static bool isArchSwitchedOn(Arch arch) {
+        public static bool isArchSwitchedOn(CpuID arch) {
             switch (arch) {
-                case Arch.ARCH_8086: return Settings.Default.ARCH_8086;
-                case Arch.ARCH_186: return Settings.Default.ARCH_186;
-                case Arch.ARCH_286: return Settings.Default.ARCH_286;
-                case Arch.ARCH_386: return Settings.Default.ARCH_386;
-                case Arch.ARCH_486: return Settings.Default.ARCH_486;
-                case Arch.PENT: return Settings.Default.ARCH_PENT;
-                case Arch.P6: return Settings.Default.ARCH_P6;
-
-                case Arch.ARCH_3DNOW: return Settings.Default.ARCH_3DNOW;
-                case Arch.MMX: return Settings.Default.ARCH_MMX;
-                case Arch.SSE: return Settings.Default.ARCH_SSE;
-                case Arch.SSE2: return Settings.Default.ARCH_SSE2;
-                case Arch.SSE3: return Settings.Default.ARCH_SSE3;
-                case Arch.SSSE3: return Settings.Default.ARCH_SSSE3;
-                case Arch.SSE4_1: return Settings.Default.ARCH_SSE41;
-                case Arch.SSE4_2: return Settings.Default.ARCH_SSE42;
-                case Arch.SSE4A: return Settings.Default.ARCH_SSE4A;
-                case Arch.SSE5: return Settings.Default.ARCH_SSE5;
-
-                case Arch.AVX: return Settings.Default.ARCH_AVX;
-                case Arch.AVX2: return Settings.Default.ARCH_AVX2;
-                case Arch.AVX512F: return Settings.Default.ARCH_AVX512F;
-                case Arch.AVX512CD: return Settings.Default.ARCH_AVX512CD;
-                case Arch.AVX512ER: return Settings.Default.ARCH_AVX512ER;
-                case Arch.AVX512PF: return Settings.Default.ARCH_AVX512PF;
-                case Arch.AVX512VL: return Settings.Default.ARCH_AVX512VL;
-                case Arch.AVX512DQ: return Settings.Default.ARCH_AVX512DQ;
-                case Arch.AVX512BW: return Settings.Default.ARCH_AVX512BW;
-
-                case Arch.X64: return Settings.Default.ARCH_X64;
-                case Arch.BMI1: return Settings.Default.ARCH_BMI1;
-                case Arch.BMI2: return Settings.Default.ARCH_BMI2;
-                case Arch.IA64: return Settings.Default.ARCH_IA64;
-                case Arch.FMA: return Settings.Default.ARCH_FMA;
-                case Arch.TBM: return Settings.Default.ARCH_TBM;
-                case Arch.AMD: return Settings.Default.ARCH_AMD;
-                case Arch.CYRIX: return Settings.Default.ARCH_CYRIX;
-                case Arch.INVPCID: return false;
-                case Arch.CYRIXM: return Settings.Default.ARCH_CYRIXM;
-                case Arch.VMX: return Settings.Default.ARCH_VMX;
-                case Arch.RTM: return Settings.Default.ARCH_RTM;
-                case Arch.HLE: return false;
-                case Arch.MPX: return Settings.Default.ARCH_MPX;
-                case Arch.SHA: return Settings.Default.ARCH_SHA;
-                case Arch.UNDOC: return false;
-                case Arch.PREFETCHWT1: return false;
+                case CpuID.ADX: return Settings.Default.ARCH_ADX;
+                case CpuID.AES: return Settings.Default.ARCH_AES;
+                case CpuID.AVX: return Settings.Default.ARCH_AVX;
+                case CpuID.AVX2: return Settings.Default.ARCH_AVX2;
+                case CpuID.AVX512F: return Settings.Default.ARCH_AVX512F;
+                case CpuID.AVX512CD: return Settings.Default.ARCH_AVX512CD;
+                case CpuID.AVX512ER: return Settings.Default.ARCH_AVX512ER;
+                case CpuID.AVX512VL: return Settings.Default.ARCH_AVX512VL;
+                case CpuID.AVX512DQ: return Settings.Default.ARCH_AVX512DQ;
+                case CpuID.AVX512BW: return Settings.Default.ARCH_AVX512BW;
+                case CpuID.BMI1: return Settings.Default.ARCH_BMI1;
+                case CpuID.BMI2: return Settings.Default.ARCH_BMI2;
+                case CpuID.CLFLUSHOPT: return Settings.Default.ARCH_CLFLUSHOPT;
+                case CpuID.FMA: return Settings.Default.ARCH_FMA;
+                case CpuID.FP16C: return Settings.Default.ARCH_FP16C;
+                case CpuID.FXSR: return Settings.Default.ARCH_FXSR;
+                case CpuID.KNCNI: return Settings.Default.ARCH_KNCNI;
+                case CpuID.MMX: return Settings.Default.ARCH_MMX;
+                case CpuID.MPX: return Settings.Default.ARCH_MPX;
+                case CpuID.PCLMULQDQ: return Settings.Default.ARCH_PCLMULQDQ;
+                case CpuID.SSE: return Settings.Default.ARCH_SSE;
+                case CpuID.SSE2: return Settings.Default.ARCH_SSE2;
+                case CpuID.SSE3: return Settings.Default.ARCH_SSE3;
+                case CpuID.SSE4_1: return Settings.Default.ARCH_SSE41;
+                case CpuID.SSE4_2: return Settings.Default.ARCH_SSE42;
+                case CpuID.SSSE3: return Settings.Default.ARCH_SSSE3;
                 default:
                     Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:isArch2SwitchedOn; unsupported arch {0}", arch));
                     return false;
             }
         }
-
     }
 }
