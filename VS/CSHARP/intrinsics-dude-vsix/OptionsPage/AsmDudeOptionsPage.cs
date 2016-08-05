@@ -78,6 +78,7 @@ namespace IntrinsicsDude.OptionsPage
             #region Code Completion
             this._asmDudeOptionsPageUI.useCodeCompletion = Settings.Default.CodeCompletion_On;
             this._asmDudeOptionsPageUI.useSignatureHelp = Settings.Default.SignatureHelp_On;
+            this._asmDudeOptionsPageUI.useSvml = Settings.Default.USE_SVML;
 
             this._asmDudeOptionsPageUI.useArch_ADX = Settings.Default.ARCH_ADX;
             this._asmDudeOptionsPageUI.useArch_ADX_UI.ToolTip = this.makeToolTip(CpuID.ADX);
@@ -225,6 +226,11 @@ namespace IntrinsicsDude.OptionsPage
             if (Settings.Default.SignatureHelp_On != this._asmDudeOptionsPageUI.useSignatureHelp)
             {
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: useSignatureHelp=" + this._asmDudeOptionsPageUI.useSignatureHelp);
+                changed = true;
+            }
+            if (Settings.Default.USE_SVML != this._asmDudeOptionsPageUI.useSvml)
+            {
+                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: useSvml=" + this._asmDudeOptionsPageUI.useSvml);
                 changed = true;
             }
             if (Settings.Default.ARCH_MMX != this._asmDudeOptionsPageUI.useArch_MMX)
@@ -444,6 +450,11 @@ namespace IntrinsicsDude.OptionsPage
             if (Settings.Default.SignatureHelp_On != this._asmDudeOptionsPageUI.useSignatureHelp)
             {
                 Settings.Default.SignatureHelp_On = this._asmDudeOptionsPageUI.useSignatureHelp;
+                changed = true;
+            }
+            if (Settings.Default.USE_SVML != this._asmDudeOptionsPageUI.useSvml)
+            {
+                Settings.Default.USE_SVML = this._asmDudeOptionsPageUI.useSvml;
                 changed = true;
             }
             if (Settings.Default.ARCH_MMX != this._asmDudeOptionsPageUI.useArch_MMX)

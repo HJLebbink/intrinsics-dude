@@ -26,9 +26,10 @@ using Microsoft.VisualStudio.Text;
 using System;
 using System.Collections.ObjectModel;
 
-namespace IntrinsicsDude.SignatureHelp {
-
-    internal class AsmSignature : ISignature {
+namespace IntrinsicsDude.SignatureHelp
+{
+    internal class IntrinsicSignature : ISignature
+    {
         private readonly ITextBuffer _subjectBuffer;
 
         private IParameter _currentParameter;
@@ -38,7 +39,8 @@ namespace IntrinsicsDude.SignatureHelp {
         private ReadOnlyCollection<IParameter> _parameters;
         private string _printContent;
 
-        internal AsmSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters) {
+        internal IntrinsicSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
+        {
             _subjectBuffer = subjectBuffer;
             _content = content;
             _documentation = doc;
@@ -50,7 +52,8 @@ namespace IntrinsicsDude.SignatureHelp {
         public IParameter CurrentParameter {
             get { return this._currentParameter; }
             internal set {
-                if (this._currentParameter != value) {
+                if (this._currentParameter != value)
+                {
                     IParameter prevCurrentParameter = this._currentParameter;
                     this._currentParameter = value;
                     this.RaiseCurrentParameterChanged(prevCurrentParameter, this._currentParameter);
@@ -58,19 +61,24 @@ namespace IntrinsicsDude.SignatureHelp {
             }
         }
 
-        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter) {
+        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
+        {
             EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
-            if (tempHandler != null) {
+            if (tempHandler != null)
+            {
                 tempHandler(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
             }
         }
 
-        public static int countCommas(string str) {
+        public static int countCommas(string str)
+        {
             int currentIndex = 0;
             int commaCount = 0;
-            while (currentIndex < str.Length) {
+            while (currentIndex < str.Length)
+            {
                 int commaIndex = str.IndexOf(',', currentIndex);
-                if (commaIndex == -1) {
+                if (commaIndex == -1)
+                {
                     break;
                 }
                 commaCount++;
@@ -79,11 +87,13 @@ namespace IntrinsicsDude.SignatureHelp {
             return commaCount;
         }
 
-        internal void computeCurrentParameter() {
+        internal void computeCurrentParameter()
+        {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter");
 
             int nParameters = this.Parameters.Count;
-            if (nParameters == 0) {
+            if (nParameters == 0)
+            {
                 this.CurrentParameter = null;
                 return;
             }
@@ -93,17 +103,21 @@ namespace IntrinsicsDude.SignatureHelp {
             string lineStr = _subjectBuffer.CurrentSnapshot.GetLineFromPosition(position).GetText();
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter. lineStr=" + lineStr);
 
-            int commaCount = AsmSignature.countCommas(lineStr);
+            int commaCount = IntrinsicSignature.countCommas(lineStr);
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter. commaCount="+ commaCount);
 
-            if (commaCount < nParameters) {
+            if (commaCount < nParameters)
+            {
                 this.CurrentParameter = this.Parameters[commaCount];
-            } else {
+            }
+            else
+            {
                 this.CurrentParameter = null;
             }
         }
 
-        internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e) {
+        internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
+        {
             this.computeCurrentParameter();
         }
 

@@ -52,10 +52,10 @@ namespace IntrinsicsDude.Tools
 
         public CpuID getCpuID(Intrinsic intrinsic)
         {
-            IntrinsicDataElement value;
-            if (this._data.TryGetValue(intrinsic, out value))
+            IntrinsicDataElement dataElement;
+            if (this._data.TryGetValue(intrinsic, out dataElement))
             {
-                return value.cpuID;
+                return dataElement.cpuID;
             }
             return CpuID.NONE;
         }
@@ -76,7 +76,6 @@ namespace IntrinsicsDude.Tools
 
                     dataElement.id = item.GetAttributeValue("id", -1);
                     dataElement.intrinsic = Intrinsic.NONE;
-                    dataElement.alsoKnc = false;
 
                     bool printit = false;// dataElement.id == 8;
 
@@ -84,6 +83,7 @@ namespace IntrinsicsDude.Tools
                     IList<string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
                     IList<string> cpuidList = new List<string>(1);
+                    bool CpuID_KNCNI = false;
 
                     #region payload
                     foreach (HtmlNode element in item.ChildNodes)
@@ -139,7 +139,7 @@ namespace IntrinsicsDude.Tools
                                 }
                                 break;
                             case "ALSOKNC":
-                                dataElement.alsoKnc = true;
+                                CpuID_KNCNI = true;
                                 break;
                             default:
                                 IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: found unexpected elementClass=" + elementClass);
@@ -151,11 +151,17 @@ namespace IntrinsicsDude.Tools
                             dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.parseParamType(paramType[i]), paramName[i]));
                         }
 
+                        #region Set CpuID
                         dataElement.cpuID = CpuID.NONE;
                         for (int i = 0; i < cpuidList.Count; ++i)
                         {
                             dataElement.cpuID |= IntrinsicTools.parseCpuID(cpuidList[i]);
                         }
+                        if (CpuID_KNCNI)
+                        {
+                            dataElement.cpuID |= CpuID.KNCNI;
+                        }
+                        #endregion
                     }
                     #endregion
                     if (!this._data.ContainsKey(dataElement.intrinsic))

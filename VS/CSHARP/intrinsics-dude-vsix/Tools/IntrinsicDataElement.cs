@@ -37,7 +37,6 @@ namespace IntrinsicsDude.Tools
         public Mnemonic instruction;
         public string instructionNote;
         public bool isSVML;
-        public bool alsoKnc;
 
         public string description;
         public string performance;

@@ -430,5 +430,17 @@ namespace IntrinsicsDude {
                 this["ARCH_AES"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool USE_SVML {
+            get {
+                return ((bool)(this["USE_SVML"]));
+            }
+            set {
+                this["USE_SVML"] = value;
+            }
+        }
     }
 }

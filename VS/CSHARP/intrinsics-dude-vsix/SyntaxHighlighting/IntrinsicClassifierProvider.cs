@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -35,26 +34,6 @@ namespace IntrinsicsDude.SyntaxHighlighting
     [TagType(typeof(ClassificationTag))]
     internal sealed class IntrinsicClassifierProvider : ITaggerProvider
     {
-     /*        [Export]
-               [Name("asm!")]
-               [BaseDefinition("code")]
-               internal static ContentTypeDefinition AsmContentType = null;
-
-               [Export]
-               [FileExtension(".asm")]
-               [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
-               internal static FileExtensionToContentTypeDefinition AsmFileType = null;
-
-               [Export]
-               [FileExtension(".cod")]
-               [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
-               internal static FileExtensionToContentTypeDefinition AsmFileType_cod = null;
-
-               [Export]
-               [FileExtension(".inc")]
-               [ContentType(IntrinsicsDudePackage2.AsmDudeContentType)]
-               internal static FileExtensionToContentTypeDefinition AsmFileType_inc = null;
-*/
         [Import]
         private IClassificationTypeRegistryService _classificationTypeRegistry = null;
 

@@ -36,7 +36,9 @@ namespace IntrinsicsDude.QuickInfo
     internal sealed class IntrinsicsQuickInfoControllerProvider : IIntellisenseControllerProvider
     {
         [Import]
-        internal IQuickInfoBroker _quickInfoBroker = null;
+        private IQuickInfoBroker _quickInfoBroker = null;
+
+        internal IQuickInfoBroker quickInfoBroker { get { return _quickInfoBroker; } }
 
         public IIntellisenseController TryCreateIntellisenseController(ITextView textView, IList<ITextBuffer> subjectBuffers)
         {

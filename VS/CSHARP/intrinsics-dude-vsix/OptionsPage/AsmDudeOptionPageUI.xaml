@@ -8,17 +8,17 @@
 	<Grid RenderTransformOrigin="0.5,0.818" VerticalAlignment="Top">
 		<ScrollViewer>
 			<StackPanel>
-				<Label x:Name="version_UI" Content="AsmDude version" />
+				<Label x:Name="version_UI" Content="Intrinsics Dude version" />
 				<GroupBox Header="Syntax Highlighting" BorderBrush="DarkGray">
 					<Grid>
 						<StackPanel>
 							<CheckBox x:Name="useSyntaxHighlighting_UI" ToolTip="Syntax Highlighting Enabled" Content="Enable Syntax Highlighting" Margin="0,4,0,4"/>
 							<Grid>
-								<Label Content="Mnemonic:" HorizontalAlignment="Left"/>
+								<Label Content="Intrinsic:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorMnemonic_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for mnemonics." Margin="140,0,0,0"/>
 							</Grid>
 							<Grid>
-								<Label Content="Register:" HorizontalAlignment="Left"/>
+								<Label Content="Register Type:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorRegister_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for registers" Margin="140,0,0,0"/>
 							</Grid>
 							<Grid>
@@ -35,7 +35,7 @@
 							<CheckBox x:Name="useAsmDoc_UI" ToolTip="Assembly Documentation Enabled" Content="Enable Documentation" Margin="0,4,0,4" />
 							<Grid>
 								<Label Content="Documentation URL:" HorizontalAlignment="Left"/>
-								<TextBox x:Name="asmDocUrl_UI" ToolTip="URL to the documentation. E.g. http://www.felixcloutier.com/x86/" TextWrapping="Wrap" Text="http://www.felixcloutier.com/x86/" Margin="140,3,0,2"/>
+								<TextBox x:Name="asmDocUrl_UI" ToolTip="URL to the documentation. E.g. https://hjlebbink.github.io/x86doc/html/" TextWrapping="Wrap" Text="https://hjlebbink.github.io/x86doc/html/" Margin="140,3,0,2"/>
 							</Grid>
 						</StackPanel>
 					</Grid>
@@ -45,6 +45,13 @@
 						<StackPanel>
 							<CheckBox x:Name="useCodeCompletion_UI" Content="Enable Code Completion" ToolTip="Code Completion Enabled" Margin="0,4,0,2" />
 							<CheckBox x:Name="useSignatureHelp_UI" Content="Enable Signature Help" ToolTip="Signature Help Enabled" Margin="0,2,0,2" />
+						</StackPanel>
+					</Grid>
+				</GroupBox>
+				<GroupBox Header="Intel Compiler" BorderBrush="DarkGray">
+					<Grid>
+						<StackPanel>
+							<CheckBox x:Name="useSvml_UI" Content="Enable SMVL" ToolTip="Short Vector Math Library for Intel Compiler" Margin="0,2,0,2" />
 						</StackPanel>
 					</Grid>
 				</GroupBox>

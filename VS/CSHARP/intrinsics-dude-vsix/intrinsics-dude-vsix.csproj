@@ -148,6 +148,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SignatureHelp\IntrinsicParameter.cs" />
+    <Compile Include="SignatureHelp\IntrinsicSignature.cs" />
+    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandFilter.cs" />
+    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandProvider.cs" />
+    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSource.cs" />
+    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSourceProvider.cs" />
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>

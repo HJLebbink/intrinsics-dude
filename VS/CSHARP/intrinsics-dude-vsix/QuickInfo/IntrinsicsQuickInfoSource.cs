@@ -76,7 +76,10 @@ namespace IntrinsicsDude.QuickInfo
                 }
 
                 IEnumerable<IMappingTagSpan<IntrinsicTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
-
+                if (enumerator.Count() > 1)
+                {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: enumerator has " + enumerator.Count() + " elements");
+                }
                 if (enumerator.Count() > 0)
                 {
                     IMappingTagSpan<IntrinsicTokenTag> tokenTag = enumerator.First();
@@ -111,7 +114,7 @@ namespace IntrinsicsDude.QuickInfo
                                 IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword);
                                 if (reg != IntrinsicRegisterType.NONE)
                                 {
-                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
+                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
                                     TextBlock description = this.makeRegisterDescription(reg);
                                     if (description != null)
                                     {
@@ -172,7 +175,10 @@ namespace IntrinsicsDude.QuickInfo
             {
                 sb.Length -= 2; // remove the last comma
             }
-            sb.AppendLine(")");
+            sb.Append(")  ");
+            string cpuID = "[" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
+            sb.AppendLine(cpuID);
+
             description.Inlines.Add(makeRunBold(sb.ToString()));
             #endregion
 

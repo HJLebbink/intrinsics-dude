@@ -20,25 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.SignatureHelp {
-
-    /*
-
+namespace IntrinsicsDude.SignatureHelp
+{
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Signature Help source")]
     [Order(Before = "default")]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
-    internal class IntrinsicsSignatureHelpSourceProvider : ISignatureHelpSourceProvider {
-
-        public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer) {
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    internal class IntrinsicsSignatureHelpSourceProvider : ISignatureHelpSourceProvider
+    {
+        public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
+        {
+            //XXX BUG this is never reached!
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSourceProvider: TryCreateSignatureHelpSource");
             return new IntrinsicsSignatureHelpSource(textBuffer);
         }
     }
-    */
 }

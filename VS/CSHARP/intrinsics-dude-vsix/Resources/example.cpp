@@ -17,6 +17,8 @@ void main() {
 		__m256 bla2 = _mm256_abs_epi16(a);
 		__m256 bla3 = _mm256_abs_epi64();
 		__m256 bla4 = _mm256_abs_epi16(a);
+
+		_mm512_addn_round_ps()
 	}
 
 

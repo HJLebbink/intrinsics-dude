@@ -36,7 +36,7 @@ namespace IntrinsicsDude
     {
         public OpcodeP()
         {
-            //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO: Entering constructor for: {0}", this.ToString()));
+            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Instruction"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Opcode);
         }
@@ -51,6 +51,7 @@ namespace IntrinsicsDude
     {
         public RegisterP()
         {
+            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Register Type"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Register);
         }
@@ -65,6 +66,7 @@ namespace IntrinsicsDude
     {
         public MiscP()
         {
+            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Misc"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Misc);
         }

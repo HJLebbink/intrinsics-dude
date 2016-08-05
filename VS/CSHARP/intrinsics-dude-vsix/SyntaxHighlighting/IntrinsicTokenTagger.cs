@@ -94,7 +94,7 @@ namespace IntrinsicsDude
                         if (length > 0)
                         {
                             string keyword = line.Substring(startPos, length);
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found keyword \"" + keyword+"\".");
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found keyword \"" + keyword+"\".");
                             Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
                             if (intrinsic == Intrinsic.NONE)
                             {

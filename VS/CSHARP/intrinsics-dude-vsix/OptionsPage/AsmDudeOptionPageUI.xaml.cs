@@ -32,7 +32,7 @@ namespace IntrinsicsDude.OptionsPage {
 
         public AsmDudeOptionsPageUI() {
             InitializeComponent();
-            version_UI.Content = "AsmDude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
+            version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
         }
 
         #region Asm Documentation
@@ -101,6 +101,10 @@ namespace IntrinsicsDude.OptionsPage {
         public bool useSignatureHelp {
             get { return (useSignatureHelp_UI.IsChecked.HasValue) ? useSignatureHelp_UI.IsChecked.Value : false; }
             set { useSignatureHelp_UI.IsChecked = value; }
+        }
+        public bool useSvml {
+            get { return (useSvml_UI.IsChecked.HasValue) ? useSvml_UI.IsChecked.Value : false; }
+            set { useSvml_UI.IsChecked = value; }
         }
 
         public bool useArch_MMX {

@@ -65,8 +65,8 @@ namespace IntrinsicsDude.QuickInfo {
                 ITrackingPoint triggerPoint = point.Value.Snapshot.CreateTrackingPoint(point.Value.Position, PointTrackingMode.Positive);
 
                 // Find the broker for this buffer
-                if (!this._componentContext._quickInfoBroker.IsQuickInfoActive(_textView)) {
-                    this._session = this._componentContext._quickInfoBroker.CreateQuickInfoSession(this._textView, triggerPoint, true);
+                if (!this._componentContext.quickInfoBroker.IsQuickInfoActive(_textView)) {
+                    this._session = this._componentContext.quickInfoBroker.CreateQuickInfoSession(this._textView, triggerPoint, true);
                     this._session.Start();
                 }
             }

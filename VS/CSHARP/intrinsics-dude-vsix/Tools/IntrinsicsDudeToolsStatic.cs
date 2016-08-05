@@ -31,34 +31,36 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Microsoft.VisualStudio.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace IntrinsicsDude.Tools {
-
-    public static class IntrinsicsDudeToolsStatic {
-
+namespace IntrinsicsDude.Tools
+{
+    public static class IntrinsicsDudeToolsStatic
+    {
         #region Singleton Factories
 
         public static ITagAggregator<IntrinsicTokenTag> getAggregator(
-            ITextBuffer buffer, 
-            IBufferTagAggregatorFactoryService aggregatorFactory) {
+            ITextBuffer buffer,
+            IBufferTagAggregatorFactoryService aggregatorFactory)
+        {
 
-            Func<ITagAggregator<IntrinsicTokenTag>> sc = delegate () {
+            Func<ITagAggregator<IntrinsicTokenTag>> sc = delegate ()
+            {
                 return aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
 
-        public static void printSpeedWarning(DateTime startTime, string component) {
+        public static void printSpeedWarning(DateTime startTime, string component)
+        {
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
-            if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec) {
+            if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec)
+            {
                 IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
             }
         }
@@ -68,33 +70,43 @@ namespace IntrinsicsDude.Tools {
         /// <summary>
         /// get the full filename (with path) for the provided buffer
         /// </summary>
-        public static string GetFileName(ITextBuffer buffer) {
+        public static string GetFileName(ITextBuffer buffer)
+        {
             Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer bufferAdapter;
             buffer.Properties.TryGetProperty(typeof(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer), out bufferAdapter);
-            if (bufferAdapter != null) {
+            if (bufferAdapter != null)
+            {
                 IPersistFileFormat persistFileFormat = bufferAdapter as IPersistFileFormat;
 
                 string filename = null;
                 uint dummyInteger;
-                if (persistFileFormat != null) {
+                if (persistFileFormat != null)
+                {
                     persistFileFormat.GetCurFile(out filename, out dummyInteger);
                 }
                 return filename;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }
 
-        public static void openDisassembler() {
-            try {
+        public static void openDisassembler()
+        {
+            try
+            {
                 DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
                 dte.ExecuteCommand("Debug.Disassembly");
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:openDisassembler {0}", e.Message));
             }
         }
 
-        public static int getFontSize() {
+        public static int getFontSize()
+        {
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
             Property prop = propertiesList.Item("FontSize");
@@ -102,7 +114,8 @@ namespace IntrinsicsDude.Tools {
             return fontSize;
         }
 
-        public static FontFamily getFontType() {
+        public static FontFamily getFontType()
+        {
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
             Property prop = propertiesList.Item("FontFamily");
@@ -111,19 +124,23 @@ namespace IntrinsicsDude.Tools {
             return new FontFamily(font);
         }
 
-        public static void errorTaskNavigateHandler(object sender, EventArgs arguments) {
+        public static void errorTaskNavigateHandler(object sender, EventArgs arguments)
+        {
             Microsoft.VisualStudio.Shell.Task task = sender as Microsoft.VisualStudio.Shell.Task;
 
-            if (task == null) {
+            if (task == null)
+            {
                 throw new ArgumentException("sender parm cannot be null");
             }
-            if (String.IsNullOrEmpty(task.Document)) {
+            if (String.IsNullOrEmpty(task.Document))
+            {
                 Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: task.Document is empty");
                 return;
             }
 
             IVsUIShellOpenDocument openDoc = Package.GetGlobalService(typeof(IVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
-            if (openDoc == null) {
+            if (openDoc == null)
+            {
                 Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: openDoc is null");
                 return;
             }
@@ -135,7 +152,8 @@ namespace IntrinsicsDude.Tools {
             Guid logicalView = VSConstants.LOGVIEWID_Code;
 
             int hr = openDoc.OpenDocumentViaProject(task.Document, ref logicalView, out serviceProvider, out hierarchy, out itemId, out frame);
-            if (ErrorHandler.Failed(hr) || (frame == null)) {
+            if (ErrorHandler.Failed(hr) || (frame == null))
+            {
                 Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: OpenDocumentViaProject failed");
                 return;
             }
@@ -144,21 +162,25 @@ namespace IntrinsicsDude.Tools {
             frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocData, out docData);
 
             VsTextBuffer buffer = docData as VsTextBuffer;
-            if (buffer == null) {
+            if (buffer == null)
+            {
                 IVsTextBufferProvider bufferProvider = docData as IVsTextBufferProvider;
-                if (bufferProvider != null) {
+                if (bufferProvider != null)
+                {
                     IVsTextLines lines;
                     ErrorHandler.ThrowOnFailure(bufferProvider.GetTextBuffer(out lines));
                     buffer = lines as VsTextBuffer;
 
-                    if (buffer == null) {
+                    if (buffer == null)
+                    {
                         Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: buffer is null");
                         return;
                     }
                 }
             }
             IVsTextManager mgr = Package.GetGlobalService(typeof(SVsTextManager)) as IVsTextManager;
-            if (mgr == null) {
+            if (mgr == null)
+            {
                 Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: IVsTextManager is null");
                 return;
             }
@@ -172,32 +194,42 @@ namespace IntrinsicsDude.Tools {
         /// <summary>
         /// Get the path where this visual studio extension is installed.
         /// </summary>
-        public static string getInstallPath() {
-            try {
+        public static string getInstallPath()
+        {
+            try
+            {
                 string fullPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string filenameDll = "IntrinsicsDude.dll";
                 return fullPath.Substring(0, fullPath.Length - filenameDll.Length);
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 return "";
             }
         }
 
-        public static System.Windows.Media.Color convertColor(System.Drawing.Color drawingColor) {
+        public static System.Windows.Media.Color convertColor(System.Drawing.Color drawingColor)
+        {
             return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
-        public static System.Drawing.Color convertColor(System.Windows.Media.Color mediaColor) {
+        public static System.Drawing.Color convertColor(System.Windows.Media.Color mediaColor)
+        {
             return System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
         }
 
-        public static ImageSource bitmapFromUri(Uri bitmapUri) {
+        public static ImageSource bitmapFromUri(Uri bitmapUri)
+        {
             var bitmap = new BitmapImage();
-            try {
+            try
+            {
                 bitmap.BeginInit();
                 bitmap.UriSource = bitmapUri;
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 IntrinsicsDudeToolsStatic.Output("WARNING: bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
             }
             return bitmap;
@@ -206,23 +238,31 @@ namespace IntrinsicsDude.Tools {
         /// <summary>
         /// Cleans the provided line by removing multiple white spaces and cropping if the line is too long
         /// </summary>
-        public static string cleanup(string line) {
+        public static string cleanup(string line)
+        {
             string cleanedString = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
-            if (cleanedString.Length > IntrinsicsDudePackage.maxNumberOfCharsInToolTips) {
+            if (cleanedString.Length > IntrinsicsDudePackage.maxNumberOfCharsInToolTips)
+            {
                 return cleanedString.Substring(0, IntrinsicsDudePackage.maxNumberOfCharsInToolTips - 3) + "...";
-            } else {
+            }
+            else
+            {
                 return cleanedString;
             }
         }
         /// <summary>
         /// Output message to the AsmDude window
         /// </summary>
-        public static void Output(string msg) {
+        public static void Output(string msg)
+        {
             IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
-            if (outputWindow == null) {
+            if (outputWindow == null)
+            {
                 Debug.Write(msg2);
-            } else {
+            }
+            else
+            {
                 Guid paneGuid = Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.GeneralPane_guid;
                 IVsOutputWindowPane pane;
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
@@ -232,9 +272,11 @@ namespace IntrinsicsDude.Tools {
             }
         }
 
-        public static string getKeywordStr(SnapshotPoint? bufferPosition) {
+        public static string getKeywordStr(SnapshotPoint? bufferPosition)
+        {
 
-            if (bufferPosition != null) {
+            if (bufferPosition != null)
+            {
                 string line = bufferPosition.Value.GetContainingLine().GetText();
                 int startLine = bufferPosition.Value.GetContainingLine().Start;
                 int currentPos = bufferPosition.Value.Position;
@@ -252,9 +294,11 @@ namespace IntrinsicsDude.Tools {
             return null;
         }
 
-        public static TextExtent? getKeyword(SnapshotPoint? bufferPosition) {
+        public static TextExtent? getKeyword(SnapshotPoint? bufferPosition)
+        {
 
-            if (bufferPosition != null) {
+            if (bufferPosition != null)
+            {
                 string line = bufferPosition.Value.GetContainingLine().GetText();
                 int startLine = bufferPosition.Value.GetContainingLine().Start;
                 int currentPos = bufferPosition.Value.Position;
@@ -283,7 +327,8 @@ namespace IntrinsicsDude.Tools {
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public static string getPreviousKeyword(SnapshotPoint begin, SnapshotPoint end) {
+        public static string getPreviousKeyword(SnapshotPoint begin, SnapshotPoint end)
+        {
             // return getPreviousKeyword(begin.GetContainingLine.)
             if (end == 0) return "";
 
@@ -293,21 +338,27 @@ namespace IntrinsicsDude.Tools {
             return AsmSourceTools.getPreviousKeyword(beginPos, endPos, begin.GetContainingLine().GetText());
         }
 
-        public static bool isAllUpper(string input) {
-            for (int i = 0; i < input.Length; i++) {
-                if (Char.IsLetter(input[i]) && !Char.IsUpper(input[i])) {
+        public static bool isAllUpper(string input)
+        {
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (Char.IsLetter(input[i]) && !Char.IsUpper(input[i]))
+                {
                     return false;
                 }
             }
             return true;
         }
 
-        public static void disableMessage(string msg, string filename, ErrorListProvider errorListProvider) {
+        public static void disableMessage(string msg, string filename, ErrorListProvider errorListProvider)
+        {
             IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: " + msg));
 
-            for (int i = 0; i < errorListProvider.Tasks.Count; ++i) {
+            for (int i = 0; i < errorListProvider.Tasks.Count; ++i)
+            {
                 Task t = errorListProvider.Tasks[i];
-                if (t.Text.Equals(msg)) {
+                if (t.Text.Equals(msg))
+                {
                     return;
                 }
             }
@@ -325,19 +376,30 @@ namespace IntrinsicsDude.Tools {
         }
 
 
-        public static CpuID getCpuIDSwithedOn() {
+        public static CpuID getCpuIDSwithedOn()
+        {
             CpuID cpuID = CpuID.NONE;
-
-            foreach (CpuID value in Enum.GetValues(typeof(CpuID))) {
-                if (isArchSwitchedOn(value)) {
+            foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
+            {
+                if (isArchSwitchedOn(value))
+                {
                     cpuID |= value;
                 }
             }
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuID));
             return cpuID;
         }
 
-        public static bool isArchSwitchedOn(CpuID arch) {
-            switch (arch) {
+        public static bool isSvmlSwitchedOn()
+        {
+            return Settings.Default.USE_SVML;
+        }
+
+        public static bool isArchSwitchedOn(CpuID arch)
+        {
+            switch (arch)
+            {
+                case CpuID.NONE: return true;
                 case CpuID.ADX: return Settings.Default.ARCH_ADX;
                 case CpuID.AES: return Settings.Default.ARCH_AES;
                 case CpuID.AVX: return Settings.Default.ARCH_AVX;
@@ -365,7 +427,7 @@ namespace IntrinsicsDude.Tools {
                 case CpuID.SSE4_2: return Settings.Default.ARCH_SSE42;
                 case CpuID.SSSE3: return Settings.Default.ARCH_SSSE3;
                 default:
-                    Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:isArch2SwitchedOn; unsupported arch {0}", arch));
+                    Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:IntrinsicsDudeToolsStatic:isArchSwitchedOn; unsupported arch {0}", arch));
                     return false;
             }
         }

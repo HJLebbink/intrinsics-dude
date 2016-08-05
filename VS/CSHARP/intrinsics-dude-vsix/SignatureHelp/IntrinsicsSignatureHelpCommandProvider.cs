@@ -27,33 +27,29 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.SignatureHelp {
-
-    /*
-
+namespace IntrinsicsDude.SignatureHelp
+{
     [Export(typeof(IVsTextViewCreationListener))]
     [Name("Signature Help controller")]
     [TextViewRole(PredefinedTextViewRoles.Editable)]
-    [ContentType(IntrinsicsDudePackage2.IntrinsicsDudeContentType)]
-    internal sealed class IntrinsicsSignatureHelpCommandProvider : IVsTextViewCreationListener {
-
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    internal sealed class IntrinsicsSignatureHelpCommandProvider : IVsTextViewCreationListener
+    {
         [Import]
         private IVsEditorAdaptersFactoryService _adapterService = null;
 
         [Import]
         private ISignatureHelpBroker _signatureHelpBroker = null;
 
-        public void VsTextViewCreated(IVsTextView textViewAdapter) {
-            //if (Settings.Default.SignatureHelp_On) {
-                ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
-                if (textView == null) {
-                    return;
-                }
+        public void VsTextViewCreated(IVsTextView textViewAdapter)
+        {
+            ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
+            if (textView != null)
+            {
                 textView.Properties.GetOrCreateSingletonProperty(
                      () => new IntrinsicsSignatureHelpCommandFilter(textViewAdapter, textView, _signatureHelpBroker)
                 );
-            //}
+            }
         }
     }
-    */
 }

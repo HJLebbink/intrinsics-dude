@@ -87,7 +87,7 @@ namespace IntrinsicsDude
                 SortedSet<Completion> completions = null;
                 if (partialKeyword.StartsWith("_mm", StringComparison.OrdinalIgnoreCase))
                 {
-                    completions = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
+                    completions = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), IntrinsicsDudeToolsStatic.isSvmlSwitchedOn());
                 }
                 //IntrinsicsDudeToolsStatic.Output("INFO: AsmCompletionSource:AugmentCompletionSession; nCompletions=" + completions.Count);
                 #endregion
@@ -112,7 +112,7 @@ namespace IntrinsicsDude
 
         #region Private Methods
 
-        private SortedSet<Completion> getAllowedMnemonics(CpuID selectedArchitectures)
+        private SortedSet<Completion> getAllowedMnemonics(CpuID selectedArchitectures, bool svml)
         {
             IntrinsicStore store = this._intrinsicsDudeTools.intrinsicStore;
             SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
@@ -120,16 +120,26 @@ namespace IntrinsicsDude
             {
                 if (mnemonic != Intrinsic.NONE)
                 {
-                    IntrinsicDataElement element = store.get(mnemonic);
-                    if (element != null)
+                    IntrinsicDataElement dataElement = store.get(mnemonic);
+                    if (dataElement != null)
                     {
-                        bool selected = (selectedArchitectures & element.cpuID) != 0;
+                        bool selected = true;
+                        if (!svml && dataElement.isSVML)
+                        {
+                            selected = false;
+                        }
                         if (selected)
                         {
-                            string description = element.description;
-                            string cpuID = IntrinsicTools.ToString(element.cpuID);
-                            string displayText = IntrinsicsDudeToolsStatic.cleanup(element.intrinsic.ToString() + " ["+cpuID+"] - " + description);
-                            string insertionText = element.intrinsic.ToString().ToLower();
+                            if ((selectedArchitectures & dataElement.cpuID) == CpuID.NONE) {
+                                selected = false;
+                            }
+                        }
+                        if (selected)
+                        {
+                            string description = dataElement.description;
+                            string cpuID = " [" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
+                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString() + cpuID +" - " + description);
+                            string insertionText = dataElement.intrinsic.ToString().ToLower();
                             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
                             set.Add(new Completion(displayText, insertionText, null, null, ""));
                         }
