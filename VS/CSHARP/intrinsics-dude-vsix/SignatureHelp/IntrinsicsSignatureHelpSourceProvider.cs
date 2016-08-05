@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Utilities;
@@ -29,15 +28,14 @@ using System.ComponentModel.Composition;
 namespace IntrinsicsDude.SignatureHelp
 {
     [Export(typeof(ISignatureHelpSourceProvider))]
-    [Name("Signature Help source")]
+    [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
     [Order(Before = "default")]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal class IntrinsicsSignatureHelpSourceProvider : ISignatureHelpSourceProvider
     {
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            //XXX BUG this is never reached!
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSourceProvider: TryCreateSignatureHelpSource");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSourceProvider: TryCreateSignatureHelpSource");
             return new IntrinsicsSignatureHelpSource(textBuffer);
         }
     }

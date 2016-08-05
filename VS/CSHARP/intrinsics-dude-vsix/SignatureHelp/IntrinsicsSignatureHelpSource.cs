@@ -37,16 +37,14 @@ namespace IntrinsicsDude.SignatureHelp
 
         public IntrinsicsSignatureHelpSource(ITextBuffer buffer)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: constructor");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: constructor");
             this._buffer = buffer;
             this._store = IntrinsicsDudeTools.Instance.intrinsicStore;
         }
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: AugmentSignatureHelpSession");
-
-            //if (true) return;
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: AugmentSignatureHelpSession");
             if (!Settings.Default.SignatureHelp_On) return;
 
             try
@@ -54,7 +52,7 @@ namespace IntrinsicsDude.SignatureHelp
                 DateTime time1 = DateTime.Now;
 
                 ITextSnapshot snapshot = this._buffer.CurrentSnapshot;
-                int triggerPoint = session.GetTriggerPoint(_buffer).GetPosition(snapshot);
+                int triggerPoint = session.GetTriggerPoint(_buffer).GetPosition(snapshot) - 1; // TODO why the minus 1?
                 Intrinsic intrinsic = IntrinsicsSignatureHelpCommandFilter.getCurrentIntrinsic(snapshot, triggerPoint, '(');
                 IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: AugmentSignatureHelpSession: intrinsic=" + intrinsic);
 

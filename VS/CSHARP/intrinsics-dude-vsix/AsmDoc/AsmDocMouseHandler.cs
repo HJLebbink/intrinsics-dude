@@ -41,7 +41,7 @@ namespace IntrinsicsDude.AsmDoc {
 
     [Export(typeof(IKeyProcessorProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Name("AsmDoc")]
+    [Name("Intrinsic Documentation Key Processor")]
     [Order(Before = "VisualStudioKeyboardProcessor")]
     internal sealed class AsmDocKeyProcessorProvider : IKeyProcessorProvider {
         public KeyProcessor GetAssociatedProcessor(IWpfTextView view) {

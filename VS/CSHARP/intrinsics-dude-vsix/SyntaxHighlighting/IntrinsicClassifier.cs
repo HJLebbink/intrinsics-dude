@@ -37,7 +37,7 @@ namespace IntrinsicsDude
         private readonly ITextBuffer _buffer;
         private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
 
-        private readonly ClassificationTag _mnemonic;
+        private readonly ClassificationTag _intrinsic;
         private readonly ClassificationTag _register;
         private readonly ClassificationTag _misc;
 
@@ -52,9 +52,9 @@ namespace IntrinsicsDude
             this._buffer = buffer;
             this._aggregator = asmTagAggregator;
 
-            this._mnemonic = new ClassificationTag(typeService.GetClassificationType("mnemonic"));
-            this._register = new ClassificationTag(typeService.GetClassificationType("register"));
-            this._misc = new ClassificationTag(typeService.GetClassificationType("misc"));
+            this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.IntrinsicTypeName));
+            this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.RegisterTypeName));
+            this._misc = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.MiscTypeName));
         }
 
         event EventHandler<SnapshotSpanEventArgs> ITagger<ClassificationTag>.TagsChanged {
@@ -80,7 +80,7 @@ namespace IntrinsicsDude
                     NormalizedSnapshotSpanCollection tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
                     switch (tagSpan.Tag.type)
                     {
-                        case IntrinsicTokenType.Intrinsic: yield return new TagSpan<ClassificationTag>(tagSpans[0], _mnemonic); break;
+                        case IntrinsicTokenType.Intrinsic: yield return new TagSpan<ClassificationTag>(tagSpans[0], _intrinsic); break;
                         case IntrinsicTokenType.RegType: yield return new TagSpan<ClassificationTag>(tagSpans[0], _register); break;
                         case IntrinsicTokenType.Misc: yield return new TagSpan<ClassificationTag>(tagSpans[0], _misc); break;
                         default:

@@ -27,46 +27,53 @@ using IntrinsicsDude.Tools;
 
 namespace IntrinsicsDude
 {
-    [Export(typeof(EditorFormatDefinition))] // export as EditorFormatDefinition otherwise the syntax coloring does not work
-    [ClassificationType(ClassificationTypeNames = "mnemonic")]
-    [Name("mnemonic")]  //this should be visible to the end user
-    [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
-    [Order(After = Priority.Default, Before = Priority.High)] //set the priority to be after the default classifiers
-    internal sealed class OpcodeP : ClassificationFormatDefinition
+    public static class IntrinsicsClassificationTypeNames
     {
-        public OpcodeP()
+        public const string IntrinsicTypeName = "intrinsic-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+        public const string RegisterTypeName = "register-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+        public const string MiscTypeName = "misc-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+    }
+
+    [Export(typeof(EditorFormatDefinition))] // export as EditorFormatDefinition otherwise the syntax coloring does not work
+    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.IntrinsicTypeName)]
+    [Name("intrinsic-737B803B-8D26-4222-9AD3-C901E69657A7")]
+    [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
+    [Order(After = Priority.High)] //set the priority to be after the default classifiers
+    internal sealed class IntrinsicP : ClassificationFormatDefinition
+    {
+        public IntrinsicP()
         {
-            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Instruction"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Opcode);
         }
     }
 
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "register")]
-    [Name("register")] //this should be visible to the end user
+    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.RegisterTypeName)]
+    [Name("register-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
-    [Order(After = Priority.Default, Before = Priority.High)] //set the priority to be after the default classifiers
+    [Order(After = Priority.High)] //set the priority to be after the default classifiers
     internal sealed class RegisterP : ClassificationFormatDefinition
     {
         public RegisterP()
         {
-            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Register Type"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Register);
         }
     }
 
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = "misc")]
-    [Name("misc")] //this should be visible to the end user
+    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.MiscTypeName)]
+    [Name("misc-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
-    [Order(After = Priority.Default, Before = Priority.High)] //set the priority to be after the default classifiers
+    [Order(After = Priority.High)] //set the priority to be after the default classifiers
     internal sealed class MiscP : ClassificationFormatDefinition
     {
         public MiscP()
         {
-            IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             DisplayName = "IntrinsicsDude - Syntax Highlighting - Misc"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
             ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Misc);
         }

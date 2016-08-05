@@ -31,7 +31,7 @@ namespace IntrinsicsDude
     [Export(typeof(ICompletionSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Order(Before = "default")]
-    [Name("intrinsicCompletion")]
+    [Name("Intrinsic Completion Source Provider")]
     public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
     {
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)

@@ -33,6 +33,7 @@ namespace IntrinsicsDude
     [Export(typeof(ITaggerProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [TagType(typeof(IntrinsicTokenTag))]
+    [Name("Intrinsic Token Tag Provider")]
     [Order(After = "default")]
     internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
 

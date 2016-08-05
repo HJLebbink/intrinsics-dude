@@ -31,6 +31,7 @@ namespace IntrinsicsDude.SyntaxHighlighting
 {
     [Export(typeof(ITaggerProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    [Name("Intrinsic Classifier Provider")]
     [TagType(typeof(ClassificationTag))]
     internal sealed class IntrinsicClassifierProvider : ITaggerProvider
     {

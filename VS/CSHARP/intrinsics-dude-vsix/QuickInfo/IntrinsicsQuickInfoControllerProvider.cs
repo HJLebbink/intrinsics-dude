@@ -31,7 +31,7 @@ namespace IntrinsicsDude.QuickInfo
 {
     [Export(typeof(IIntellisenseControllerProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Name("QuickInfo Controller")]
+    [Name("Intrinsics QuickInfo Controller")]
     [Order(After = "default")]
     internal sealed class IntrinsicsQuickInfoControllerProvider : IIntellisenseControllerProvider
     {

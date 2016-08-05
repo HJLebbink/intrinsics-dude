@@ -29,15 +29,15 @@ namespace IntrinsicsDude.SyntaxHighlighting {
     internal static class IntrinsicClassificationDefinition {
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("mnemonic")]
-        internal static ClassificationTypeDefinition mnemonic = null;
+        [Name(IntrinsicsClassificationTypeNames.IntrinsicTypeName)]
+        internal static ClassificationTypeDefinition intrinsic = null;
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("register")]
+        [Name(IntrinsicsClassificationTypeNames.RegisterTypeName)]
         internal static ClassificationTypeDefinition register = null;
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name("misc")]
+        [Name(IntrinsicsClassificationTypeNames.MiscTypeName)]
         internal static ClassificationTypeDefinition misc = null;
     }
 }

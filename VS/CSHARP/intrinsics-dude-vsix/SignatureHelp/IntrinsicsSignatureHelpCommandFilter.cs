@@ -107,11 +107,11 @@ namespace IntrinsicsDude.SignatureHelp
 
         public static Intrinsic getCurrentIntrinsic(ITextSnapshot snapshot, int triggerPoint, char typedChar)
         {
-            int bufferStartIndex = Math.Max(0, triggerPoint - 5000);
+            int bufferStartIndex = Math.Max(0, triggerPoint - 500);
             int length = (triggerPoint + 1) - bufferStartIndex;
 
             char[] buffer = snapshot.ToCharArray(bufferStartIndex, length);
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: triggerPoint=" + triggerPoint + "; bufferStartIndex=" + bufferStartIndex+ "; buffer=\""+new string(buffer)+"\".");
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: triggerPoint=" + triggerPoint + "; bufferStartIndex=" + bufferStartIndex+ "; buffer=\""+new string(buffer)+"\".");
 
             int endPositionIntrinsic = -1;
             #region Find the end position of the intrinsic
@@ -119,7 +119,7 @@ namespace IntrinsicsDude.SignatureHelp
                 if (typedChar.Equals('('))
                 {
                     endPositionIntrinsic = buffer.Length;
-                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found end position " + endPositionIntrinsic);
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found end position " + endPositionIntrinsic);
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace IntrinsicsDude.SignatureHelp
                         else
                         { // found the beginning of the intrinsic
                             beginPositionIntrinsic = i + 1;
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found begin position " + beginPositionIntrinsic);
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found begin position " + beginPositionIntrinsic);
                             break;
                         }
                     }
@@ -195,7 +195,7 @@ namespace IntrinsicsDude.SignatureHelp
                     subBuffer[i] = buffer[i + beginPositionIntrinsic];
                 }
                 string intrinsicStr = new string(subBuffer);
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found intrinsicStr \"" + intrinsicStr+"\".");
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpCommandFilter: getCurrentIntrinsic: found intrinsicStr \"" + intrinsicStr+"\".");
                 return IntrinsicTools.parseIntrinsic(intrinsicStr);
             }
             #endregion

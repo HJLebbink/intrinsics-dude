@@ -30,7 +30,7 @@ using System.ComponentModel.Composition;
 namespace IntrinsicsDude.SignatureHelp
 {
     [Export(typeof(IVsTextViewCreationListener))]
-    [Name("Signature Help controller")]
+    [Name("Intrinsic Signature Help controller")]
     [TextViewRole(PredefinedTextViewRoles.Editable)]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal sealed class IntrinsicsSignatureHelpCommandProvider : IVsTextViewCreationListener
