@@ -238,12 +238,12 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Cleans the provided line by removing multiple white spaces and cropping if the line is too long
         /// </summary>
-        public static string cleanup(string line)
+        public static string cleanup(string line, int maxNumOfChars)
         {
             string cleanedString = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
-            if (cleanedString.Length > IntrinsicsDudePackage.maxNumberOfCharsInToolTips)
+            if (cleanedString.Length > maxNumOfChars)
             {
-                return cleanedString.Substring(0, IntrinsicsDudePackage.maxNumberOfCharsInToolTips - 3) + "...";
+                return cleanedString.Substring(0, maxNumOfChars - 3) + "...";
             }
             else
             {

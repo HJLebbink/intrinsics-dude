@@ -30,7 +30,6 @@ using Microsoft.VisualStudio.Text.Editor;
 
 namespace IntrinsicsDude
 {
-
     internal sealed class CodeCompletionCommandFilter : IOleCommandTarget
     {
         private ICompletionSession _currentSession;
@@ -53,97 +52,6 @@ namespace IntrinsicsDude
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
-        {
-
-            //if (VsShellUtilities.IsInAutomationFunction(m_provider.ServiceProvider)) {
-            //    return _nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-            //}
-
-            if (false)
-            {
-                return ExecMethod1(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-            }
-            else
-            {
-                return ExecMethod2(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-            }
-        }
-
-        private int ExecMethod1(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
-        {
-            //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO: {0}:Exec", this.ToString()));
-            char typedChar = char.MinValue;
-
-            //make sure the input is a char before getting it
-            if ((pguidCmdGroup == VSConstants.VSStd2K) && (nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR))
-            {
-                typedChar = this.GetTypeChar(pvaIn);
-            }
-            //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO: {0}:Exec: typedChar={1}", this.ToString(), typedChar));
-
-            //check for a commit character
-            if (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN ||
-                nCmdID == (uint)VSConstants.VSStd2KCmdID.TAB ||
-                char.IsWhiteSpace(typedChar) ||
-                char.IsPunctuation(typedChar))
-            {
-
-                //check for a selection
-                if ((this._currentSession != null) && !this._currentSession.IsDismissed)
-                {
-                    //if the selection is fully selected, commit the current session
-                    if (this._currentSession.SelectedCompletionSet.SelectionStatus.IsSelected)
-                    {
-                        this._currentSession.Commit();
-
-                        //pass along the command so the char is added to the buffer, except if the command is an enter
-                        if (nCmdID != (uint)VSConstants.VSStd2KCmdID.RETURN)
-                        {
-                            this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-                        }
-                        return VSConstants.S_OK;
-                    }
-                    else
-                    { //if there is no selection, dismiss the session
-                        this._currentSession.Dismiss();
-                    }
-                }
-            }
-            //pass along the command so the char is added to the buffer
-            int retVal = this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-            bool handled = false;
-            if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
-            {
-                if (this._currentSession == null || this._currentSession.IsDismissed)
-                { // If there is no active session, bring up completion
-                    if (this.StartSession())
-                    {
-                        if (this._currentSession != null)
-                        {
-                            this._currentSession.Filter();
-                        }
-                    }
-                }
-                else
-                {   //the completion session is already active, so just filter
-                    this._currentSession.Filter();
-                }
-                handled = true;
-            }
-            else if (nCmdID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE   //redo the filter if there is a deletion
-                  || nCmdID == (uint)VSConstants.VSStd2KCmdID.DELETE)
-            {
-                if (this._currentSession != null && !this._currentSession.IsDismissed)
-                {
-                    this._currentSession.Filter();
-                }
-                handled = true;
-            }
-            if (handled) return VSConstants.S_OK;
-            return retVal;
-        }
-
-        private int ExecMethod2(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:ExecMethod2", this.ToString()));
 

@@ -31,7 +31,6 @@ using System.ComponentModel.Composition;
 
 namespace IntrinsicsDude.QuickInfo
 {
-
     /// <summary>
     /// Factory for quick info sources
     /// </summary>

@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
@@ -52,9 +51,9 @@ namespace IntrinsicsDude
             this._buffer = buffer;
             this._aggregator = asmTagAggregator;
 
-            this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.IntrinsicTypeName));
-            this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.RegisterTypeName));
-            this._misc = new ClassificationTag(typeService.GetClassificationType(IntrinsicsClassificationTypeNames.MiscTypeName));
+            this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic));
+            this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Register));
+            this._misc = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Misc));
         }
 
         event EventHandler<SnapshotSpanEventArgs> ITagger<ClassificationTag>.TagsChanged {
@@ -67,8 +66,7 @@ namespace IntrinsicsDude
         /// </summary>
         public IEnumerable<ITagSpan<ClassificationTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            //if (Settings.Default.SyntaxHighlighting_On)
-            if (true)
+            if (Settings.Default.SyntaxHighlighting_On)
             {
                 if (spans.Count == 0)
                 {  //there is no content in the buffer

@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
+using System.Windows.Controls;
 
 namespace IntrinsicsDude
 {
@@ -136,12 +137,11 @@ namespace IntrinsicsDude
                         }
                         if (selected)
                         {
-                            string description = dataElement.description;
                             string cpuID = " [" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
-                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString() + cpuID +" - " + description);
+                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString() + cpuID +" - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                             string insertionText = dataElement.intrinsic.ToString().ToLower();
                             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
-                            set.Add(new Completion(displayText, insertionText, null, null, ""));
+                            set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, null, ""));
                         }
                     }
                 }

@@ -23,11 +23,11 @@
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 
-namespace IntrinsicsDude.SignatureHelp
+namespace IntrinsicsDude.SignHelp
 {
-    internal class IntrinsicParameter : IParameter
+    internal class IntrParam : IParameter
     {
-        public IntrinsicParameter(string documentation, Span locus, string name, ISignature signature)
+        public IntrParam(string documentation, Span locus, string name, ISignature signature)
         {
             Documentation = documentation;
             Locus = locus;

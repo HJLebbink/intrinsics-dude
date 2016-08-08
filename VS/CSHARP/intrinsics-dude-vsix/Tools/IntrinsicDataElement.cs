@@ -23,6 +23,11 @@
 using AsmTools;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.Tools
@@ -42,11 +47,106 @@ namespace IntrinsicsDude.Tools
         public string performance;
         public string operation;
 
-        
+
         /// <summary>Constructor</summary>
         public IntrinsicDataElement()
         {
             parameters = new List<Tuple<ParamType, string>>();
+        }
+
+        public TextBlock descriptionTextBlock {
+            get {
+                TextBlock description = new TextBlock();
+                #region Add intrinsic signature
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append(IntrinsicTools.ToString(this.returnType));
+                sb.Append(" ");
+                sb.Append(this.intrinsic);
+                sb.Append("(");
+                foreach (Tuple<ParamType, string> param in this.parameters)
+                {
+                    sb.Append(IntrinsicTools.ToString(param.Item1));
+                    sb.Append(" ");
+                    sb.Append(param.Item2);
+                    sb.Append(", ");
+                }
+                if (this.parameters.Count > 0)
+                {
+                    sb.Length -= 2; // remove the last comma
+                }
+                sb.Append(")  ");
+                string cpuID = "[" + IntrinsicTools.ToString(this.cpuID) + ((this.isSVML ? ", SVML]" : "]"));
+                sb.AppendLine(cpuID);
+
+                description.Inlines.Add(makeRunBold(sb.ToString()));
+                #endregion
+
+                description.Inlines.Add(new Run(AsmTools.AsmSourceTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+                if ((this.operation != null) && (this.operation.Length > 0))
+                {
+                    description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
+                    description.Inlines.Add(new Run(this.operation));
+                }
+
+                description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
+                //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
+                //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
+
+                return description;
+            }
+        }
+
+        public string descriptionString {
+            get {
+                #region Add intrinsic signature
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append(IntrinsicTools.ToString(this.returnType));
+                sb.Append(" ");
+                sb.Append(this.intrinsic);
+                sb.Append("(");
+                foreach (Tuple<ParamType, string> param in this.parameters)
+                {
+                    sb.Append(IntrinsicTools.ToString(param.Item1));
+                    sb.Append(" ");
+                    sb.Append(param.Item2);
+                    sb.Append(", ");
+                }
+                if (this.parameters.Count > 0)
+                {
+                    sb.Length -= 2; // remove the last comma
+                }
+                sb.Append(")  ");
+                string cpuID = "[" + IntrinsicTools.ToString(this.cpuID) + ((this.isSVML ? ", SVML]" : "]"));
+                sb.AppendLine(cpuID);
+                #endregion
+
+                sb.Append(AsmTools.AsmSourceTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));
+                if ((this.operation != null) && (this.operation.Length > 0))
+                {
+                    sb.Append("\n\nOperation:\n");
+                    sb.Append(this.operation);
+                }
+                return sb.ToString();
+            }
+        }
+
+        private static Run makeRunBold(string str)
+        {
+            Run r1 = new Run(str);
+            r1.FontWeight = FontWeights.Bold;
+            return r1;
+        }
+
+        private static Run makeRun2(string str, System.Drawing.Color color)
+        {
+            Run r1 = new Run(str);
+            r1.FontWeight = FontWeights.Bold;
+            r1.Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.convertColor(color));
+            return r1;
         }
     }
 }

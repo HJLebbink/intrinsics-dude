@@ -25,32 +25,37 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
-namespace IntrinsicsDude.QuickInfo {
-
-    internal sealed class IntrinsicsQuickInfoController : IIntellisenseController {
-
+namespace IntrinsicsDude.QuickInfo
+{
+    internal sealed class IntrinsicsQuickInfoController : IIntellisenseController
+    {
         private readonly IList<ITextBuffer> _subjectBuffers;
         private readonly IntrinsicsQuickInfoControllerProvider _componentContext;
         private IQuickInfoSession _session;
         private ITextView _textView;
 
-        internal IntrinsicsQuickInfoController(ITextView textView, IList<ITextBuffer> subjectBuffers, IntrinsicsQuickInfoControllerProvider componentContext) {
+        internal IntrinsicsQuickInfoController(ITextView textView, IList<ITextBuffer> subjectBuffers, IntrinsicsQuickInfoControllerProvider componentContext)
+        {
             _textView = textView;
             _subjectBuffers = subjectBuffers;
             _componentContext = componentContext;
             _textView.MouseHover += OnTextViewMouseHover;
         }
 
-        public void ConnectSubjectBuffer(ITextBuffer subjectBuffer) {
+        public void ConnectSubjectBuffer(ITextBuffer subjectBuffer)
+        {
             //empty
         }
 
-        public void DisconnectSubjectBuffer(ITextBuffer subjectBuffer) {
+        public void DisconnectSubjectBuffer(ITextBuffer subjectBuffer)
+        {
             //empty
         }
 
-        public void Detach(ITextView textView) {
-            if (_textView == textView) {
+        public void Detach(ITextView textView)
+        {
+            if (_textView == textView)
+            {
                 _textView.MouseHover -= OnTextViewMouseHover;
                 _textView = null;
             }
@@ -59,13 +64,16 @@ namespace IntrinsicsDude.QuickInfo {
         /// <summary>
         /// Determine if the mouse is hovering over a token. If so, highlight the token and display QuickInfo
         /// </summary>
-        private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e) {
+        private void OnTextViewMouseHover(object sender, MouseHoverEventArgs e)
+        {
             SnapshotPoint? point = this.GetMousePosition(new SnapshotPoint(this._textView.TextSnapshot, e.Position));
-            if (point != null) {
+            if (point != null)
+            {
                 ITrackingPoint triggerPoint = point.Value.Snapshot.CreateTrackingPoint(point.Value.Position, PointTrackingMode.Positive);
 
                 // Find the broker for this buffer
-                if (!this._componentContext.quickInfoBroker.IsQuickInfoActive(_textView)) {
+                if (!this._componentContext.quickInfoBroker.IsQuickInfoActive(_textView))
+                {
                     this._session = this._componentContext.quickInfoBroker.CreateQuickInfoSession(this._textView, triggerPoint, true);
                     this._session.Start();
                 }
@@ -75,7 +83,8 @@ namespace IntrinsicsDude.QuickInfo {
         /// <summary>
         /// get mouse location on screen. Used to determine what word the cursor is currently hovering over
         /// </summary>
-        private SnapshotPoint? GetMousePosition(SnapshotPoint topPosition) {
+        private SnapshotPoint? GetMousePosition(SnapshotPoint topPosition)
+        {
             // Map this point down to the appropriate subject buffer.
 
             return _textView.BufferGraph.MapDownToFirstMatch(

@@ -26,12 +26,12 @@ using Microsoft.VisualStudio.Text;
 using System;
 using System.Collections.ObjectModel;
 
-namespace IntrinsicsDude.SignatureHelp
+namespace IntrinsicsDude.SignHelp
 {
-    internal class IntrinsicSignature : ISignature
+    internal class IntrSign : ISignature
     {
         private readonly ITextBuffer _subjectBuffer;
-
+        private readonly EventHandler<TextContentChangedEventArgs> _handler;
         private IParameter _currentParameter;
         private string _content;
         private string _documentation;
@@ -39,13 +39,17 @@ namespace IntrinsicsDude.SignatureHelp
         private ReadOnlyCollection<IParameter> _parameters;
         private string _printContent;
 
-        internal IntrinsicSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
+
+        internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
-            _subjectBuffer = subjectBuffer;
-            _content = content;
-            _documentation = doc;
-            _parameters = parameters;
-            _subjectBuffer.Changed += new EventHandler<TextContentChangedEventArgs>(this.OnSubjectBufferChanged);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
+
+            this._subjectBuffer = subjectBuffer;
+            this._content = content;
+            this._documentation = doc;
+            this._parameters = parameters;
+            this._handler = new EventHandler<TextContentChangedEventArgs>(this.OnSubjectBufferChanged);
+            this._subjectBuffer.Changed += this._handler;
         }
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
 
@@ -63,6 +67,7 @@ namespace IntrinsicsDude.SignatureHelp
 
         private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
             EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
             if (tempHandler != null)
             {
@@ -70,54 +75,30 @@ namespace IntrinsicsDude.SignatureHelp
             }
         }
 
-        public static int countCommas(string str)
-        {
-            int currentIndex = 0;
-            int commaCount = 0;
-            while (currentIndex < str.Length)
-            {
-                int commaIndex = str.IndexOf(',', currentIndex);
-                if (commaIndex == -1)
-                {
-                    break;
-                }
-                commaCount++;
-                currentIndex = commaIndex + 1;
-            }
-            return commaCount;
-        }
-
         internal void computeCurrentParameter()
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter");
-
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter");
             int nParameters = this.Parameters.Count;
             if (nParameters == 0)
             {
                 this.CurrentParameter = null;
-                return;
-            }
-
-            //the number of commas in the current line is the index of the current parameter
-            SnapshotPoint position = _applicableToSpan.GetStartPoint(_subjectBuffer.CurrentSnapshot);
-            string lineStr = _subjectBuffer.CurrentSnapshot.GetLineFromPosition(position).GetText();
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter. lineStr=" + lineStr);
-
-            int commaCount = IntrinsicSignature.countCommas(lineStr);
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsSignatureHelpSource: computeCurrentParameter. commaCount="+ commaCount);
-
-            if (commaCount < nParameters)
-            {
-                this.CurrentParameter = this.Parameters[commaCount];
             }
             else
             {
-                this.CurrentParameter = null;
+                ITextSnapshot snapshot = this._subjectBuffer.CurrentSnapshot;
+                SnapshotPoint triggerPoint = this._applicableToSpan.GetStartPoint(snapshot);
+
+                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Position);
+                int paramIndex = tup.Item2;
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint=" + triggerPoint.Position + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
+                this.CurrentParameter = (paramIndex < nParameters) ? this.Parameters[paramIndex] : null;
             }
         }
 
         internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
         {
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: sender=" + sender.GetType());
+            //this.computeCurrentParameter(e.After.TextBuffer);
             this.computeCurrentParameter();
         }
 
@@ -144,6 +125,12 @@ namespace IntrinsicsDude.SignatureHelp
         public string PrettyPrintedContent {
             get { return (_printContent); }
             internal set { _printContent = value; }
+        }
+
+        public void cleanup()
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup");
+            this._subjectBuffer.Changed -= this._handler;
         }
     }
 }

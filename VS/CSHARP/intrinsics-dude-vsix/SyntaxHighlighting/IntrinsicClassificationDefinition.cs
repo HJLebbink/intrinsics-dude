@@ -24,20 +24,27 @@ using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.SyntaxHighlighting {
-
-    internal static class IntrinsicClassificationDefinition {
+namespace IntrinsicsDude.SyntaxHighlighting
+{
+    internal static class IntrinsicClassificationDefinition
+    {
+        internal static class ClassificationTypeNames
+        {
+            public const string Intrinsic = "intrinsic-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+            public const string Register = "register-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+            public const string Misc = "misc-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
+        }
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name(IntrinsicsClassificationTypeNames.IntrinsicTypeName)]
+        [Name(ClassificationTypeNames.Intrinsic)]
         internal static ClassificationTypeDefinition intrinsic = null;
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name(IntrinsicsClassificationTypeNames.RegisterTypeName)]
+        [Name(ClassificationTypeNames.Register)]
         internal static ClassificationTypeDefinition register = null;
 
         [Export(typeof(ClassificationTypeDefinition))]
-        [Name(IntrinsicsClassificationTypeNames.MiscTypeName)]
+        [Name(ClassificationTypeNames.Misc)]
         internal static ClassificationTypeDefinition misc = null;
     }
 }

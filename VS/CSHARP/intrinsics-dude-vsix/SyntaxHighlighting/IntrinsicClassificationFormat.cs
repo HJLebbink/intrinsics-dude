@@ -24,18 +24,12 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
 using IntrinsicsDude.Tools;
+using IntrinsicsDude.SyntaxHighlighting;
 
 namespace IntrinsicsDude
 {
-    public static class IntrinsicsClassificationTypeNames
-    {
-        public const string IntrinsicTypeName = "intrinsic-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
-        public const string RegisterTypeName = "register-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
-        public const string MiscTypeName = "misc-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
-    }
-
     [Export(typeof(EditorFormatDefinition))] // export as EditorFormatDefinition otherwise the syntax coloring does not work
-    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.IntrinsicTypeName)]
+    [ClassificationType(ClassificationTypeNames = IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic)]
     [Name("intrinsic-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
     [Order(After = Priority.High)] //set the priority to be after the default classifiers
@@ -50,7 +44,7 @@ namespace IntrinsicsDude
     }
 
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.RegisterTypeName)]
+    [ClassificationType(ClassificationTypeNames = IntrinsicClassificationDefinition.ClassificationTypeNames.Register)]
     [Name("register-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
     [Order(After = Priority.High)] //set the priority to be after the default classifiers
@@ -65,7 +59,7 @@ namespace IntrinsicsDude
     }
 
     [Export(typeof(EditorFormatDefinition))]
-    [ClassificationType(ClassificationTypeNames = IntrinsicsClassificationTypeNames.MiscTypeName)]
+    [ClassificationType(ClassificationTypeNames = IntrinsicClassificationDefinition.ClassificationTypeNames.Misc)]
     [Name("misc-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
     [Order(After = Priority.High)] //set the priority to be after the default classifiers

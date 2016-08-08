@@ -95,12 +95,12 @@ namespace IntrinsicsDude.QuickInfo
                                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
-                                    TextBlock description = this.makeIntrinsicDescription(intrinsic);
-                                    if (description != null)
+                                    IntrinsicDataElement dataElement = this._asmDudeTools.intrinsicStore.get(intrinsic);
+                                    if (dataElement != null)
                                     {
                                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
                                         //quickInfoContent.Clear(); // throw the existing quickinfo away
-                                        quickInfoContent.Add(description);
+                                        quickInfoContent.Add(dataElement.descriptionTextBlock);
                                     }
                                 }
                             }
@@ -147,52 +147,6 @@ namespace IntrinsicsDude.QuickInfo
             description.Inlines.Add(makeRunBold(reg.ToString()));
             return description;
         }
-
-        private TextBlock makeIntrinsicDescription(Intrinsic intrinsic)
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: makeIntrinsicDescription: intrinsic=" + intrinsic);
-
-            IntrinsicDataElement dataElement = this._asmDudeTools.intrinsicStore.get(intrinsic);
-            if (dataElement == null) return null;
-
-            TextBlock description = new TextBlock();
-            #region Add intrinsic signature
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(IntrinsicTools.ToString(dataElement.returnType));
-            sb.Append(" ");
-            sb.Append(dataElement.intrinsic);
-            sb.Append("(");
-            foreach (Tuple<ParamType, string> param in dataElement.parameters)
-            {
-                sb.Append(IntrinsicTools.ToString(param.Item1));
-                sb.Append(" ");
-                sb.Append(param.Item2);
-                sb.Append(", ");
-            }
-            if (dataElement.parameters.Count > 0)
-            {
-                sb.Length -= 2; // remove the last comma
-            }
-            sb.Append(")  ");
-            string cpuID = "[" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
-            sb.AppendLine(cpuID);
-
-            description.Inlines.Add(makeRunBold(sb.ToString()));
-            #endregion
-
-            description.Inlines.Add(new Run(AsmTools.AsmSourceTools.linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
-            description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
-            description.Inlines.Add(new Run(dataElement.operation));
-
-            description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
-            //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
-
-            return description;
-        }
-
 
         private static Run makeRunBold(string str)
         {

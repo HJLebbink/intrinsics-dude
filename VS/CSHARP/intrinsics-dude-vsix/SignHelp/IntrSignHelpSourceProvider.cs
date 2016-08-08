@@ -20,36 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.SignatureHelp
+namespace IntrinsicsDude.SignHelp
 {
-    [Export(typeof(IVsTextViewCreationListener))]
-    [Name("Intrinsic Signature Help controller")]
-    [TextViewRole(PredefinedTextViewRoles.Editable)]
+    [Export(typeof(ISignatureHelpSourceProvider))]
+    [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
+    [Order(Before = "default")]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    internal sealed class IntrinsicsSignatureHelpCommandProvider : IVsTextViewCreationListener
+    internal class IntrSignHelpSourceProvider : ISignatureHelpSourceProvider
     {
-        [Import]
-        private IVsEditorAdaptersFactoryService _adapterService = null;
-
-        [Import]
-        private ISignatureHelpBroker _signatureHelpBroker = null;
-
-        public void VsTextViewCreated(IVsTextView textViewAdapter)
+        public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
-            if (textView != null)
-            {
-                textView.Properties.GetOrCreateSingletonProperty(
-                     () => new IntrinsicsSignatureHelpCommandFilter(textViewAdapter, textView, _signatureHelpBroker)
-                );
-            }
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSourceProvider: TryCreateSignatureHelpSource");
+            return new IntrSignHelpSource(textBuffer);
         }
     }
 }

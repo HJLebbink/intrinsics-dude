@@ -124,8 +124,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsmDoc\AsmDocClassifier.cs" />
-    <Compile Include="AsmDoc\AsmDocMouseHandler.cs" />
+    <Compile Include="IntrinsicDoc\IntrinsicDocClassifier.cs" />
+    <Compile Include="IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
     <Compile Include="CodeCompletion\CodeCompletionCommandFilter.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
@@ -148,12 +148,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SignatureHelp\IntrinsicParameter.cs" />
-    <Compile Include="SignatureHelp\IntrinsicSignature.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandFilter.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpCommandProvider.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSource.cs" />
-    <Compile Include="SignatureHelp\IntrinsicsSignatureHelpSourceProvider.cs" />
+    <Compile Include="SignHelp\IntrParam.cs" />
+    <Compile Include="SignHelp\IntrSign.cs" />
+    <Compile Include="SignHelp\IntrSignHelpCommandHandler.cs" />
+    <Compile Include="SignHelp\IntrSignHelpCommandProvider.cs" />
+    <Compile Include="SignHelp\IntrSignHelpSource.cs" />
+    <Compile Include="SignHelp\IntrSignHelpSourceProvider.cs" />
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
@@ -163,7 +163,7 @@
     <Compile Include="SyntaxHighlighting\IntrinsicTokenTag.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicTokenTaggerProvider.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicTokenTypes.cs" />
-    <Compile Include="SyntaxHighlighting\ClassificationFormat.cs" />
+    <Compile Include="SyntaxHighlighting\IntrinsicClassificationFormat.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicTokenTagger.cs" />
     <Compile Include="Tools\ApplicationInformation.cs" />
     <Compile Include="Tools\IntrinsicErrorEnum.cs" />

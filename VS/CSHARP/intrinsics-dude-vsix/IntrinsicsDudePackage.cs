@@ -54,7 +54,8 @@ namespace IntrinsicsDude {
         internal const string IntrinsicsDudeContentType = "C/C++";
         internal const double slowWarningThresholdSec = 0.4; // threshold to warn that actions are considered slow
         internal const double slowShutdownThresholdSec = 4.0; // threshold to switch of components
-        internal const int maxNumberOfCharsInToolTips = 150;
+        internal const int maxNumberOfCharsInToolTips = 130;
+        internal const int maxNumberOfCharsInCompletions = 100;
         internal const int msSleepBeforeAsyncExecution = 1000;
 
         #endregion Global Constants
