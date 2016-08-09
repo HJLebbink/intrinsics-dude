@@ -32,6 +32,7 @@ namespace IntrinsicsDude.SignHelp
     [Export(typeof(IVsTextViewCreationListener))]
     [Name("Intrinsic Signature Help controller")]
     [TextViewRole(PredefinedTextViewRoles.Editable)]
+    [Order(After = "default")]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal sealed class IntrSignHelpCommandProvider : IVsTextViewCreationListener
     {

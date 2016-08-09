@@ -13,15 +13,16 @@ void main() {
 		const __m128d a = _mm_set1_epi16(10);
 		const __m128d b = _mm_set1_epi16(20);
 
-		__m128d bla = _mm_hadd_pd()
-		__m256 bla2 = _mm256_abs_epi16(a);
-		__m256 bla3 = _mm256_abs_epi64()
-		__m256 bla4 = _mm256_abs_epi16(x, );
 
+		__m256i a1 _mm256_bslli_epi128(a, 7);
+		__m128d a2 = _mm_hadd_pd(a,b)
+		__m256 a3 = _mm256_abs_epi16(a);
+		__m256 a5 = _mm256_abs_epi16(x);
 
-			_mm512_addn_round_ps(x, , 5);
+		__m256 a4 = _mm256_abs_epi64(a);
+		__m512 bla5 = _mm512_addn_round_ps(a, a, 4);
+		__m512 bla6 = _mm512_andnot_si512(_mm512_abs_pd(a), b);
 	}
-
 
 	return 0;
 }

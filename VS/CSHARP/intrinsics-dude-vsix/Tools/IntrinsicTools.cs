@@ -544,19 +544,26 @@ namespace IntrinsicsDude.Tools
             return new Tuple<Intrinsic, int>(Intrinsic.NONE, pos);
         }
 
-        private static string sourceCodeLine(string str)
+        public static string sourceCodeLine(string str)
         {
-            string str2 = str.TrimEnd();
             int startPos = -1;
-            for (int i = str2.Length - 1; i >= 0; --i)
+            for (int i = str.Length - 1; i >= 0; --i)
             {
-                if (str2[i].Equals(';'))
+                if (str[i].Equals(';'))
                 {
                     startPos = i + 1;
                     break;
                 }
             }
-            return ((startPos > 0) && (startPos < str2.Length)) ? str2.Substring(startPos).TrimStart() : str2;
+            if ((startPos > 0) && (startPos < str.Length))
+            {
+                return str.Substring(startPos);
+            }
+            else
+            {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: sourceCodeLine: no semicolon found: startPos=" + startPos + "; str.Length=" + str.Length + "; str=\"" + str + "\".");
+                return str;
+            }
         }
 
         /// <summary>
@@ -572,8 +579,7 @@ namespace IntrinsicsDude.Tools
             {
                 str2 = str2.Substring(0, str2.Length - 2);
                 str2Length = str2.Length;
-            }
-            else if (str2.EndsWith("("))
+            } else if (str2.EndsWith("("))
             {
                 str2 = str2.Substring(0, str2Length - 1);
                 str2Length = str2.Length;
@@ -624,11 +630,7 @@ namespace IntrinsicsDude.Tools
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: caret line =\"" + session.TextView.Caret.ContainingTextViewLine.Extent.GetText() + "\".");
 
-            //TODO do not use fixed scan buffer size but search for char ';'
-            int bufferStartIndex = Math.Max(0, triggerPoint - IntrinsicTools.SCAN_BUFFER_SIZE);
-            int length = (triggerPoint - bufferStartIndex) + 1;
-            string codeStr = sourceCodeLine(snapshot.GetText(bufferStartIndex, length));
-
+            string codeStr = getContent(snapshot, triggerPoint);
             Intrinsic intrinsic = IntrinsicTools.getCurrentIntrinsic(codeStr);
             int paramIndex = 0;
 
@@ -638,13 +640,13 @@ namespace IntrinsicsDude.Tools
                 intrinsic = tup.Item1;
                 paramIndex = tup.Item2;
             }
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: codeStr=\"" + codeStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex=" + paramIndex);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B codeStr=\"" + codeStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex=" + paramIndex);
             return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
         }
 
         private static Tuple<Intrinsic, int> getCurrentIntrinsicAndParamIndex(string str)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: str=" + str);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A str=" + str);
 
             int paramIndex = 0;
             int endPositionIntrinsic = -1;
@@ -662,6 +664,7 @@ namespace IntrinsicsDude.Tools
                         if (nClosingParenthesis == 0)
                         {
                             endPositionIntrinsic = i;
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A endPositionIntrinsic=" + endPositionIntrinsic);
                         }
                         else
                         {
@@ -702,11 +705,15 @@ namespace IntrinsicsDude.Tools
                         if (Char.IsLetterOrDigit(c) || c.Equals('_'))
                         {
                             // this is a character of the intrinsic
+                            if (i == 0)
+                            {
+                                beginPositionIntrinsic = 0;
+                            }
                         }
                         else
                         { // found the beginning of the intrinsic
                             beginPositionIntrinsic = i + 1;
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: found begin position " + beginPositionIntrinsic);
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A found begin position " + beginPositionIntrinsic);
                             break;
                         }
                     }
@@ -729,10 +736,18 @@ namespace IntrinsicsDude.Tools
                 }
                 string intrinsicStr = new string(subBuffer);
                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(intrinsicStr);
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
                 return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
             }
             #endregion
+        }
+
+        public static string getContent(ITextSnapshot snapshot, int triggerPoint)
+        {
+            //TODO do not use fixed scan buffer size but search for char ';'
+            int bufferStartIndex = Math.Max(0, triggerPoint - IntrinsicTools.SCAN_BUFFER_SIZE);
+            int length = (triggerPoint - bufferStartIndex) + 1;
+            return sourceCodeLine(snapshot.GetText(bufferStartIndex, length));
         }
 
         public static Intrinsic parseIntrinsic(string str)

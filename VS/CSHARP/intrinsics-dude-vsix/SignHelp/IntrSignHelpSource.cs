@@ -32,16 +32,19 @@ namespace IntrinsicsDude.SignHelp
 {
     internal sealed class IntrSignHelpSource : ISignatureHelpSource
     {
-        private readonly ITextBuffer _buffer;
+        private readonly ITextBuffer m_textBuffer;
         private readonly IntrinsicStore _store;
-        private readonly IDictionary<ITextBuffer, EventHandler<TextContentChangedEventArgs>> _eventHandlers;
         private readonly IList<IntrSign> _signatures;
+
+        private readonly IDictionary<ITextBuffer, EventHandler<TextContentChangedEventArgs>> _eventHandlers;
+        //private readonly IDictionary<ITextBuffer, EventHandler> _eventHandlers2;
 
         public IntrSignHelpSource(ITextBuffer buffer)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
-            this._buffer = buffer;
+            this.m_textBuffer = buffer;
             this._store = IntrinsicsDudeTools.Instance.intrinsicStore;
+
             this._eventHandlers = new Dictionary<ITextBuffer, EventHandler<TextContentChangedEventArgs>>();
             this._signatures = new List<IntrSign>();
         }
@@ -55,8 +58,8 @@ namespace IntrinsicsDude.SignHelp
             {
                 DateTime time1 = DateTime.Now;
 
-                ITextSnapshot snapshot = this._buffer.CurrentSnapshot;
-                int triggerPoint = session.GetTriggerPoint(this._buffer).GetPosition(snapshot) - 1;
+                ITextSnapshot snapshot = this.m_textBuffer.CurrentSnapshot;
+                int triggerPoint = session.GetTriggerPoint(this.m_textBuffer).GetPosition(snapshot) - 1;
 
                 Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
                 Intrinsic intrinsic = tup.Item1;
@@ -70,9 +73,9 @@ namespace IntrinsicsDude.SignHelp
                     if (true)
                     // if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID)) //TODO
                     {
-                        //session.Dismissed += Session_Dismissed;
                         ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(triggerPoint, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
-                        signatures.Add(this.createSignature(this._buffer, dataElement, applicableToSpan));
+                        signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, applicableToSpan));
+                        //session.Dismissed += Session_Dismissed;
                     }
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
@@ -86,16 +89,23 @@ namespace IntrinsicsDude.SignHelp
         public ISignature GetBestMatch(ISignatureHelpSession session)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch");
-            if (session.Signatures.Count > 0)
+            int nSignatures = session.Signatures.Count;
+            if (nSignatures > 0)
             {
                 ITextSnapshot snapshot = session.Signatures[0].ApplicableToSpan.TextBuffer.CurrentSnapshot;
                 SnapshotPoint? triggerPoint = session.GetTriggerPoint(snapshot);
                 if (triggerPoint.HasValue)
                 {
-                    Intrinsic intrinsic = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Value).Item1;
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: session.Signatures.Count=" + session.Signatures.Count + "; intrinsic=" + intrinsic);
+                    Intrinsic intrinsic = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Value - 1).Item1;
                     if (intrinsic != Intrinsic.NONE)
                     {
+                        if (nSignatures > 1)
+                        {
+                            for (int i = 0; i < nSignatures; ++i)
+                            {
+                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: signature " + i + ": Content=\"" + session.Signatures[i].Content + "\".");
+                            }
+                        }
                         return session.Signatures[0];
                     }
                     else
@@ -107,7 +117,7 @@ namespace IntrinsicsDude.SignHelp
             return null;
         }
 
-        private IntrSign createSignature(ITextBuffer textBuffer, IntrinsicDataElement dataElement, ITrackingSpan span)
+        private IntrSign CreateSignature(ITextBuffer textBuffer, IntrinsicDataElement dataElement, ITrackingSpan span)
         {
             int nParameters = dataElement.parameters.Count;
             Span[] locus = new Span[nParameters];
@@ -136,11 +146,16 @@ namespace IntrinsicsDude.SignHelp
                 textBuffer.Changed -= this._eventHandlers[textBuffer];
                 this._eventHandlers.Remove(textBuffer);
                 IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: createSignature: removing old event handler");
-
             }
-            EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged);
-            textBuffer.Changed += handler;
+
+            EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged1);
+            //textBuffer.Changed += handler;
             this._eventHandlers.Add(textBuffer, handler); // store the handler such that it can be removed once the session is dismissed
+
+            //EventHandler handler2 = new EventHandler(sig.OnSubjectBufferChanged2);
+            //textBuffer.PostChanged += handler2;
+            //this._eventHandlers2.Add(textBuffer, handler2); // store the handler such that it can be removed once the session is dismissed
+
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)
@@ -153,19 +168,25 @@ namespace IntrinsicsDude.SignHelp
 
             sig.Parameters = new ReadOnlyCollection<IParameter>(paramList);
             sig.ApplicableToSpan = span;
-            sig.computeCurrentParameter();
+            sig.ComputeCurrentParameter();
             return sig;
         }
 
-
         private void cleanup()
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: cleanup");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: cleanup");
             foreach (KeyValuePair<ITextBuffer, EventHandler<TextContentChangedEventArgs>> pair in this._eventHandlers)
             {
                 pair.Key.Changed -= pair.Value;
             }
             this._eventHandlers.Clear();
+
+            //foreach (KeyValuePair<ITextBuffer, EventHandler> pair in this._eventHandlers2)
+            //{
+            //    pair.Key.PostChanged -= pair.Value;
+            //}
+            //this._eventHandlers2.Clear();
+
             foreach (IntrSign signature in this._signatures)
             {
                 signature.cleanup();

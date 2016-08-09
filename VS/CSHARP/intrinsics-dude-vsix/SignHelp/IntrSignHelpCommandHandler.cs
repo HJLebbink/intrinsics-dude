@@ -40,24 +40,16 @@ namespace IntrinsicsDude.SignHelp
         private ISignatureHelpSession _session;
         private IOleCommandTarget _nextCommandHandler;
 
-        //private bool _sessionStartScheduled;
         private Object _startNewSessionLock = new Object();
-        //private int _previousTriggerPoint;
 
 
         internal IntrSignHelpCommandHandler(IVsTextView textViewAdapter, ITextView textView, ISignatureHelpBroker broker)
         {
             this._textView = textView;
             this._broker = broker;
-            //this._sessionStartScheduled = false;
 
             //add this to the filter chain
             textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
-
-
-
-            //this._previousTriggerPoint = -1;
-            //this._textView.TextBuffer.Changed += this.TextBuffer_Changed;
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -67,40 +59,43 @@ namespace IntrinsicsDude.SignHelp
             {
                 if ((pguidCmdGroup == VSConstants.VSStd2K) && (nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR))
                 {
-                    lock (_startNewSessionLock)
+                    //lock (_startNewSessionLock)
                     {
                         char typedChar = GetTypeChar(pvaIn);
                         if (typedChar.Equals('(') || typedChar.Equals(','))
                         {
                             if (this._session != null)
                             {
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing an old session");
+                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: A dismissing an old session");
                                 this._session.Dismiss();
                                 this._session = null;
                             }
                             this.startNewSession();
-                            //_sessionStartScheduled = true; // start a new session one the _textView is updated
                         }
                         else if (typedChar.Equals(')') || typedChar.Equals(';'))
                         {
                             IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: triggerPoint=" + _textView.Caret.Position.BufferPosition.Position);
                             if (this._session != null)
                             {
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing an old session");
+                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: B dismissing an old session");
                                 this._session.Dismiss();
                                 this._session = null;
                             }
-                            //_sessionStartScheduled = false; // make sure that no new session will be started
-                        }
+                       }
                     }
                 }
                 else
                 {
                     bool enterPressed = (nCmdID == (uint)VSConstants.VSStd2KCmdID.RETURN);
-                    if (enterPressed && (this._session != null))
+                    if (enterPressed)
                     {
-                        this._session.Dismiss();
-                        this._session = null;
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: enter pressed");
+                        if (this._session != null)
+                        {
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: C dismissing an old session");
+                            this._session.Dismiss();
+                            this._session = null;
+                        }
                     }
                 }
             }
@@ -118,21 +113,17 @@ namespace IntrinsicsDude.SignHelp
 
         private void startNewSession()
         {
-            lock (_startNewSessionLock)
+           // lock (_startNewSessionLock)
             {
                 int triggerPoint = _textView.Caret.Position.BufferPosition.Position - 1;
-                //if (_previousTriggerPoint != triggerPoint)
-                //{
-                   // _previousTriggerPoint = triggerPoint;
-                    Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(this._textView.TextSnapshot, triggerPoint);
-                    Intrinsic intrinsic = tup.Item1;
+                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(this._textView.TextSnapshot, triggerPoint);
+                Intrinsic intrinsic = tup.Item1;
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: startNewSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2);
 
-                    if (intrinsic != Intrinsic.NONE)
-                    {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: startNewSession: triggerPoint="+ triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2);
-                        this._session = _broker.TriggerSignatureHelp(_textView);
-                    }
-                //}
+                if (intrinsic != Intrinsic.NONE)
+                {
+                    this._session = _broker.TriggerSignatureHelp(_textView);
+                }
             }
         }
 
@@ -141,8 +132,8 @@ namespace IntrinsicsDude.SignHelp
             //if (_sessionStartScheduled)
            // {
                 this.startNewSession();
-                //_sessionStartScheduled = false;
-           // }
+              //  _sessionStartScheduled = false;
+            //}
         }
 
         private static char GetTypeChar(IntPtr pvaIn)
