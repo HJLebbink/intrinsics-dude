@@ -78,12 +78,11 @@ namespace IntrinsicsDude.SignHelp
                     return;
                 }
 
-                if (true)
-                // if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID)) //TODO
+                if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
                 {
                     if (signatures.Count > 0)
                     {
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
                         signatures.Clear();
                     }
                     signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, tup.Item3));
@@ -109,7 +108,7 @@ namespace IntrinsicsDude.SignHelp
                 {
                     Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Value);
                     Intrinsic intrinsic = tup.Item1;
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(snapshot) + "\".");
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: triggerPoint=" + triggerPoint.Value + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(snapshot) + "\".");
 
                     if (intrinsic != Intrinsic.NONE)
                     {
@@ -206,8 +205,13 @@ namespace IntrinsicsDude.SignHelp
 
         private void Session_Dismissed(object sender, EventArgs e)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Session_Dismissed");
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Session_Dismissed:" +debugInfo((ISignatureHelpSession)sender));
             cleanup();
+        }
+
+        private string debugInfo(ISignatureHelpSession session)
+        {
+            return "triggerPoint = " + session.GetTriggerPoint(session.TextView.TextBuffer).GetPosition(session.TextView.TextSnapshot) + "; char= " + session.GetTriggerPoint(session.TextView.TextBuffer).GetCharacter(session.TextView.TextSnapshot);
         }
 
         private bool _isDisposed;

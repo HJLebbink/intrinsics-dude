@@ -95,17 +95,25 @@ namespace IntrinsicsDude.SignHelp
             else
             {
                 string spanContent = this.ApplicableToSpan.GetText(this._subjectBuffer.CurrentSnapshot);
-                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(spanContent);
-                int paramIndex = tup.Item2;
 
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: span content=\"" + spanContent + "\"; relativeStartPos=" + tup.Item3+"; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
-                this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
+                if (spanContent.Equals("()"))
+                {
+                    this.CurrentParameter = this.Parameters[0];
+                }
+                else
+                {
+                    Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(spanContent);
+                    int paramIndex = tup.Item2;
+
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: span content=\"" + spanContent + "\"; startPos=" + tup.Item3 + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
+                    this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
+                }
             }
         }
 
         internal void OnSubjectBufferChanged1(object sender, TextContentChangedEventArgs e)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: nexText=" + e.Changes[0].NewText);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: nexText=" + e.Changes[0].NewText);
             if (e.Changes.Count > 0)
             {
                 int triggerPoint = e.Changes[0].NewPosition;

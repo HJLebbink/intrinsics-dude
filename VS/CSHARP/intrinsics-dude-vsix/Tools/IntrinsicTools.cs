@@ -573,57 +573,71 @@ namespace IntrinsicsDude.Tools
         {
             string codeStr = IntrinsicTools.getContent(snapshot, triggerPoint);
 
-            Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
+            Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
             Intrinsic intrinsic = tup.Item1;
             int paramIndex = tup.Item2;
-            int startPos = triggerPoint + tup.Item3;
+            int startPos = (triggerPoint - codeStr.Length + tup.Item3)+1;
 
-            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, (triggerPoint - startPos)+1), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, tup.Item4+2), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
             return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
         }
 
-        public static Tuple<Intrinsic, int, int> getCurrentIntrinsicAndParamIndex_str(string str)
+        /// <summary>
+        /// return Intrinsic, paramIndex, startPos, length
+        /// </summary>
+        public static Tuple<Intrinsic, int, int, int> getCurrentIntrinsicAndParamIndex_str(string str)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A str=" + str);
 
             int paramIndex = 0;
             int endPositionIntrinsic = -1;
+            bool sillyExeception = false;
+
             #region Find the end position of the intrinsic
-            int nClosingParenthesis = 0;
-            for (int i = str.Length - 1; i >= 0; --i)
+
+            if (str.EndsWith("()"))
             {
-                char c = str[i];
-                switch (c)
+                sillyExeception = true;
+                endPositionIntrinsic = str.Length - 2;
+            }
+            else
+            {
+                int nClosingParenthesis = 0;
+                for (int i = str.Length - 1; i >= 0; --i)
                 {
-                    case ')':
-                        nClosingParenthesis++;
-                        break;
-                    case '(':
-                        if (nClosingParenthesis == 0)
-                        {
-                            endPositionIntrinsic = i;
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A endPositionIntrinsic=" + endPositionIntrinsic);
-                        }
-                        else
-                        {
-                            nClosingParenthesis--;
-                        }
-                        break;
-                    case ',':
-                        if (nClosingParenthesis == 0)
-                        {
-                            paramIndex++;
-                        }
-                        break;
-                    case ';':
-                        return new Tuple<Intrinsic, int, int>(Intrinsic.NONE, -1, -1);
-                    default:
-                        break;
-                }
-                if (endPositionIntrinsic != -1)
-                {
-                    break; // break out of the loop;
+                    char c = str[i];
+                    switch (c)
+                    {
+                        case ')':
+                            nClosingParenthesis++;
+                            break;
+                        case '(':
+                            if (nClosingParenthesis == 0)
+                            {
+                                endPositionIntrinsic = i;
+                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A endPositionIntrinsic=" + endPositionIntrinsic);
+                            }
+                            else
+                            {
+                                nClosingParenthesis--;
+                            }
+                            break;
+                        case ',':
+                            if (nClosingParenthesis == 0)
+                            {
+                                paramIndex++;
+                            }
+                            break;
+                        case ';':
+                            return new Tuple<Intrinsic, int, int, int>(Intrinsic.NONE, -1, -1, -1);
+                        default:
+                            break;
+                    }
+                    if (endPositionIntrinsic != -1)
+                    {
+                        break; // break out of the loop;
+                    }
                 }
             }
             #endregion
@@ -633,7 +647,7 @@ namespace IntrinsicsDude.Tools
             {
                 if (endPositionIntrinsic == -1)
                 {
-                    return new Tuple<Intrinsic, int, int>(Intrinsic.NONE, -1, -1);
+                    return new Tuple<Intrinsic, int, int, int>(Intrinsic.NONE, -1, -1, -1);
                 }
                 else
                 {
@@ -663,7 +677,7 @@ namespace IntrinsicsDude.Tools
             #region Parse the intrinsic string
             if (beginPositionIntrinsic == -1)
             {
-                return new Tuple<Intrinsic, int, int>(Intrinsic.NONE, -1, -1);
+                return new Tuple<Intrinsic, int, int, int>(Intrinsic.NONE, -1, -1, -1);
             }
             else
             {
@@ -677,8 +691,7 @@ namespace IntrinsicsDude.Tools
                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(intrinsicStr);
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
 
-                int relativeStartPos = (beginPositionIntrinsic - str.Length) + 1;
-                return new Tuple<Intrinsic, int, int>(intrinsic, paramIndex, relativeStartPos);
+                return new Tuple<Intrinsic, int, int, int>(intrinsic, paramIndex, beginPositionIntrinsic, (sillyExeception) ? length2 - 1 : length2);
             }
             #endregion
         }
