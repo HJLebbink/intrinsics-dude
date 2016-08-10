@@ -59,12 +59,13 @@ namespace IntrinsicsDude.SignHelp
                 DateTime time1 = DateTime.Now;
 
                 ITextSnapshot snapshot = this.m_textBuffer.CurrentSnapshot;
-                int triggerPoint = session.GetTriggerPoint(this.m_textBuffer).GetPosition(snapshot) - 1;
+                int triggerPoint = session.GetTriggerPoint(this.m_textBuffer).GetPosition(snapshot);
 
-                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: triggerPoint="+ triggerPoint + "; Intrinsic=" + tup.Item1 + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(snapshot) + "\".");
+
                 Intrinsic intrinsic = tup.Item1;
                 int paramIndex = tup.Item2;
-                int startPos = tup.Item3;
 
                 if (intrinsic == Intrinsic.NONE) {
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no intrinsic found at triggerPoint=" + triggerPoint);
@@ -77,8 +78,6 @@ namespace IntrinsicsDude.SignHelp
                     return;
                 }
 
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: triggerPoint=" + triggerPoint + "; intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
-
                 if (true)
                 // if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID)) //TODO
                 {
@@ -87,8 +86,7 @@ namespace IntrinsicsDude.SignHelp
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
                         signatures.Clear();
                     }
-                    ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, triggerPoint-startPos), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
-                    signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, applicableToSpan));
+                    signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, tup.Item3));
                     session.Dismissed += Session_Dismissed;
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
@@ -109,7 +107,10 @@ namespace IntrinsicsDude.SignHelp
                 SnapshotPoint? triggerPoint = session.GetTriggerPoint(snapshot);
                 if (triggerPoint.HasValue)
                 {
-                    Intrinsic intrinsic = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Value - 1).Item1;
+                    Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint.Value);
+                    Intrinsic intrinsic = tup.Item1;
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(snapshot) + "\".");
+
                     if (intrinsic != Intrinsic.NONE)
                     {
                         if (nSignatures > 1)

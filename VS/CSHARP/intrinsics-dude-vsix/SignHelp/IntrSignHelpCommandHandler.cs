@@ -41,7 +41,7 @@ namespace IntrinsicsDude.SignHelp
         private IOleCommandTarget _nextCommandHandler;
 
         private Object _startNewSessionLock = new Object();
-
+        private bool _sheduleStartSession;
 
         internal IntrSignHelpCommandHandler(IVsTextView textViewAdapter, ITextView textView, ISignatureHelpBroker broker)
         {
@@ -50,6 +50,19 @@ namespace IntrinsicsDude.SignHelp
 
             //add this to the filter chain
             textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
+            this._textView.TextBuffer.Changed += TextBuffer_Changed;
+            this._sheduleStartSession = false;
+        }
+
+        private void TextBuffer_Changed(object sender, TextContentChangedEventArgs e)
+        {
+            if (e.Changes.Count > 0)
+            {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: TextBuffer_Changed");
+                //if (_sheduleStartSession)
+                    this.StartSession(e.After, e.Changes[0].NewPosition);
+                this._sheduleStartSession = true;
+            }
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -59,12 +72,13 @@ namespace IntrinsicsDude.SignHelp
             {
                 if ((pguidCmdGroup == VSConstants.VSStd2K) && (nCmdID == (uint)VSConstants.VSStd2KCmdID.TYPECHAR))
                 {
-                    //lock (_startNewSessionLock)
+                    lock (_startNewSessionLock)
                     {
                         char typedChar = GetTypeChar(pvaIn);
                         if (typedChar.Equals('(') || typedChar.Equals(','))
                         {
-                            this.StartSession();
+                            this._sheduleStartSession = true;
+                            //this.StartSession();
                         }
                         else if (typedChar.Equals(')') || typedChar.Equals(';'))
                         {
@@ -76,7 +90,6 @@ namespace IntrinsicsDude.SignHelp
                                 this._session = null;
                             }
                         }
-
                     }
                 }
                 else
@@ -130,22 +143,21 @@ namespace IntrinsicsDude.SignHelp
             session.Dismiss();
         }
 
-        private void StartSession()
+        private void StartSession(ITextSnapshot snapshot, int triggerPoint)
         {
-           // lock (_startNewSessionLock)
+            lock (_startNewSessionLock)
             {
-                int triggerPoint = _textView.Caret.Position.BufferPosition.Position - 1;
-                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(this._textView.TextSnapshot, triggerPoint);
+                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
                 Intrinsic intrinsic = tup.Item1;
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._textView.TextSnapshot) + "\".");
 
                 if (intrinsic != Intrinsic.NONE)
                 {
                     if (this._broker.IsSignatureHelpActive(this._textView))
                     {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession. Recycling an existing session: " + ((_session.Signatures.Count > 0) ? _session.Signatures[0].Content : "no signatures"));
+                        if ((this._session != null) && (!_session.IsDismissed))
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession. Recycling an existing session: " + ((_session.Signatures.Count > 0) ? _session.Signatures[0].Content : "no signatures"));
                         this._session = this._broker.GetSessions(this._textView)[0];
-                        this._session.Recalculate();
                     }
                     else
                     {

@@ -569,20 +569,21 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// return Intrinsic, paramIndex, startPos of Intrinsic:
         /// </summary>
-        public static Tuple<Intrinsic, int, int> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint)
+        public static Tuple<Intrinsic, int, ITrackingSpan> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint)
         {
             string codeStr = IntrinsicTools.getContent(snapshot, triggerPoint);
 
-            Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_private(codeStr);
+            Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
             Intrinsic intrinsic = tup.Item1;
             int paramIndex = tup.Item2;
-            int relativeStartPos = tup.Item3;
+            int startPos = triggerPoint + tup.Item3;
 
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: triggerPoint=" + triggerPoint + "; relativeStartPos=" + relativeStartPos + "; codeStr=\"" + codeStr.TrimStart() + "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
-            return new Tuple<Intrinsic, int, int>(intrinsic, paramIndex, triggerPoint + relativeStartPos);
+            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, (triggerPoint - startPos)+1), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
+            return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
         }
 
-        private static Tuple<Intrinsic, int, int> getCurrentIntrinsicAndParamIndex_private(string str)
+        public static Tuple<Intrinsic, int, int> getCurrentIntrinsicAndParamIndex_str(string str)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A str=" + str);
 
@@ -676,7 +677,7 @@ namespace IntrinsicsDude.Tools
                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(intrinsicStr);
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
 
-                int relativeStartPos = beginPositionIntrinsic - str.Length;
+                int relativeStartPos = (beginPositionIntrinsic - str.Length) + 1;
                 return new Tuple<Intrinsic, int, int>(intrinsic, paramIndex, relativeStartPos);
             }
             #endregion

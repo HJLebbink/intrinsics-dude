@@ -94,13 +94,11 @@ namespace IntrinsicsDude.SignHelp
             }
             else
             {
-                ITextSnapshot snapshot = this._subjectBuffer.CurrentSnapshot;
-                int triggerPoint = this.ApplicableToSpan.GetEndPoint(snapshot);
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint = "+ triggerPoint+"; span text=\"" + this.ApplicableToSpan.GetText(snapshot)+"\".");
-
-                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                string spanContent = this.ApplicableToSpan.GetText(this._subjectBuffer.CurrentSnapshot);
+                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(spanContent);
                 int paramIndex = tup.Item2;
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint=" + triggerPoint + "; relativeStartPos="+tup.Item3+"; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
+
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: span content=\"" + spanContent + "\"; relativeStartPos=" + tup.Item3+"; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
                 this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
             }
         }
@@ -108,7 +106,14 @@ namespace IntrinsicsDude.SignHelp
         internal void OnSubjectBufferChanged1(object sender, TextContentChangedEventArgs e)
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: nexText=" + e.Changes[0].NewText);
-            this.ComputeCurrentParameter();
+            if (e.Changes.Count > 0)
+            {
+                int triggerPoint = e.Changes[0].NewPosition;
+                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(e.After, triggerPoint);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: triggerPoint="+ triggerPoint + "; Intrinsic=" + tup.Item1 + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._subjectBuffer.CurrentSnapshot) + "\".");
+                this.ApplicableToSpan = tup.Item3;
+                this.ComputeCurrentParameter();
+            }
         }
 
         public ITrackingSpan ApplicableToSpan {
