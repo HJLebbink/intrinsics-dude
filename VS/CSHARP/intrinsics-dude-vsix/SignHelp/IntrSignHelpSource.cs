@@ -38,7 +38,6 @@ namespace IntrinsicsDude.SignHelp
         private readonly IList<IntrSign> _signatures;
 
         private readonly IDictionary<ITextBuffer, EventHandler<TextContentChangedEventArgs>> _eventHandlers;
-        //private readonly IDictionary<ITextBuffer, EventHandler> _eventHandlers2;
 
         public IntrSignHelpSource(ITextBuffer buffer)
         {
@@ -62,9 +61,10 @@ namespace IntrinsicsDude.SignHelp
                 ITextSnapshot snapshot = this.m_textBuffer.CurrentSnapshot;
                 int triggerPoint = session.GetTriggerPoint(this.m_textBuffer).GetPosition(snapshot) - 1;
 
-                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
                 Intrinsic intrinsic = tup.Item1;
                 int paramIndex = tup.Item2;
+                int startPos = tup.Item3;
 
                 if (intrinsic == Intrinsic.NONE) {
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no intrinsic found at triggerPoint=" + triggerPoint);
@@ -84,10 +84,10 @@ namespace IntrinsicsDude.SignHelp
                 {
                     if (signatures.Count > 0)
                     {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
                         signatures.Clear();
                     }
-                    ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(triggerPoint, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+                    ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, triggerPoint-startPos), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
                     signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, applicableToSpan));
                     session.Dismissed += Session_Dismissed;
                 }
@@ -170,10 +170,6 @@ namespace IntrinsicsDude.SignHelp
             EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged1);
             textBuffer.Changed += handler;
             this._eventHandlers.Add(textBuffer, handler); // store the handler such that it can be removed once the session is dismissed
-
-            //EventHandler handler2 = new EventHandler(sig.OnSubjectBufferChanged2);
-            //textBuffer.PostChanged += handler2;
-            //this._eventHandlers2.Add(textBuffer, handler2); // store the handler such that it can be removed once the session is dismissed
             #endregion
 
             List<IParameter> paramList = new List<IParameter>();
@@ -199,12 +195,6 @@ namespace IntrinsicsDude.SignHelp
                 pair.Key.Changed -= pair.Value;
             }
             this._eventHandlers.Clear();
-
-            //foreach (KeyValuePair<ITextBuffer, EventHandler> pair in this._eventHandlers2)
-            //{
-            //    pair.Key.PostChanged -= pair.Value;
-            //}
-            //this._eventHandlers2.Clear();
 
             foreach (IntrSign signature in this._signatures)
             {

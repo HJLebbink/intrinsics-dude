@@ -31,9 +31,7 @@ namespace IntrinsicsDude.SignHelp
     internal class IntrSign : ISignature
     {
         private readonly ITextBuffer _subjectBuffer;
-        private const bool useHandler1 = true;
         private readonly EventHandler<TextContentChangedEventArgs> _handler1;
-        private readonly EventHandler _handler2;
         private IParameter _currentParameter;
         private string _content;
         private string _documentation;
@@ -52,15 +50,7 @@ namespace IntrinsicsDude.SignHelp
             this._parameters = parameters;
 
             this._handler1 = new EventHandler<TextContentChangedEventArgs>(this.OnSubjectBufferChanged1);
-            this._handler2 = new EventHandler(this.OnSubjectBufferChanged2);
-
-            if (useHandler1)
-            {
-                this._subjectBuffer.Changed += this._handler1;//needed otherwise the next parameters is not updated once a comma is typed
-            } else
-            {
-                this._subjectBuffer.PostChanged += this._handler2;
-            }
+            this._subjectBuffer.Changed += this._handler1; //needed otherwise the next parameters is not updated once a comma is typed
         }
 
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
@@ -105,19 +95,14 @@ namespace IntrinsicsDude.SignHelp
             else
             {
                 ITextSnapshot snapshot = this._subjectBuffer.CurrentSnapshot;
-                int triggerPoint = this.ApplicableToSpan.GetStartPoint(snapshot) + 0;
+                int triggerPoint = this.ApplicableToSpan.GetEndPoint(snapshot);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint = "+ triggerPoint+"; span text=\"" + this.ApplicableToSpan.GetText(snapshot)+"\".");
 
-                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
                 int paramIndex = tup.Item2;
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint=" + triggerPoint + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
-                this.CurrentParameter = (paramIndex < nParameters) ? this.Parameters[paramIndex] : null;
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: triggerPoint=" + triggerPoint + "; relativeStartPos="+tup.Item3+"; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
+                this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
             }
-        }
-
-        internal void OnSubjectBufferChanged2(object sender, EventArgs e)
-        {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged2");
-            this.ComputeCurrentParameter();
         }
 
         internal void OnSubjectBufferChanged1(object sender, TextContentChangedEventArgs e)
@@ -154,14 +139,7 @@ namespace IntrinsicsDude.SignHelp
         public void cleanup()
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup");
-            if (useHandler1)
-            {
-                this._subjectBuffer.Changed -= this._handler1;
-            }
-            else
-            {
-                this._subjectBuffer.PostChanged -= this._handler2;
-            }
+            this._subjectBuffer.Changed -= this._handler1;
         }
     }
 }

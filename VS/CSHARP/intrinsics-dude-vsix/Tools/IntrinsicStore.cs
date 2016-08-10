@@ -116,7 +116,7 @@ namespace IntrinsicsDude.Tools
                                         case "DESC_VAR": break;
 
                                         case "DESCRIPTION": dataElement.description = removeHtml(element2.InnerText); break;
-                                        case "OPERATION": dataElement.operation = element2.InnerHtml; break;
+                                        case "OPERATION": dataElement.operation = removeHtml(element2.InnerText); break;
                                         case "CPUID": cpuidList.Add(element2.InnerText); break;
                                         case "PERFORMANCE": dataElement.performance = element2.InnerText; break;
                                         case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
@@ -179,7 +179,7 @@ namespace IntrinsicsDude.Tools
 
         private static string removeHtml(string str)
         {
-            return str;
+            return str.Replace("&lt;", "<").Replace("&gt;", ">");
         }
 
         #endregion

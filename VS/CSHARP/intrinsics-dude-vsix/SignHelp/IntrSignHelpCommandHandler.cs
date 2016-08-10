@@ -68,14 +68,15 @@ namespace IntrinsicsDude.SignHelp
                         }
                         else if (typedChar.Equals(')') || typedChar.Equals(';'))
                         {
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: triggerPoint=" + _textView.Caret.Position.BufferPosition.Position);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: triggerPoint=" + _textView.Caret.Position.BufferPosition.Position);
                             if (this._session != null)
                             {
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: B dismissing an old session");
-                                this._session.Dismiss();
+                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: B dismissing an existing session");
+                                this.DismissSession(this._session);
                                 this._session = null;
                             }
                         }
+
                     }
                 }
                 else
@@ -86,8 +87,8 @@ namespace IntrinsicsDude.SignHelp
                         IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: enter pressed");
                         if (this._session != null)
                         {
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: C dismissing an old session");
-                            this._session.Dismiss();
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: C dismissing an existing session");
+                            this.DismissSession(this._session);
                             this._session = null;
                         }
                     }
@@ -97,7 +98,6 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:Exec; e={1}", this.ToString(), e.ToString()));
             }
-
             return this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 
@@ -106,20 +106,44 @@ namespace IntrinsicsDude.SignHelp
             return _nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
+        #region Private Stuff
+
+        private void DismissSession(ISignatureHelpSession session)
+        {
+            if (session == null) return;
+
+            if (session.IsDismissed)
+            {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: DismissSession: session is already dismissed");
+                return;
+            }
+
+            string signatureStr = "no signatures";
+            if (session.Signatures != null)
+            {
+                if (session.Signatures.Count > 0)
+                {
+                    signatureStr = _session.Signatures[0].Content;
+                }
+            }
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: DismissSession: dismissing session: " + signatureStr);
+            session.Dismiss();
+        }
+
         private void StartSession()
         {
            // lock (_startNewSessionLock)
             {
                 int triggerPoint = _textView.Caret.Position.BufferPosition.Position - 1;
-                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(this._textView.TextSnapshot, triggerPoint);
+                Tuple<Intrinsic, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(this._textView.TextSnapshot, triggerPoint);
                 Intrinsic intrinsic = tup.Item1;
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: startNewSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2);
 
                 if (intrinsic != Intrinsic.NONE)
                 {
                     if (this._broker.IsSignatureHelpActive(this._textView))
                     {
-                        IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession. Recycling an existing signature help session", this.ToString()));
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession. Recycling an existing session: " + ((_session.Signatures.Count > 0) ? _session.Signatures[0].Content : "no signatures"));
                         this._session = this._broker.GetSessions(this._textView)[0];
                         this._session.Recalculate();
                     }
@@ -127,9 +151,8 @@ namespace IntrinsicsDude.SignHelp
                     {
                         foreach (ISignatureHelpSession session in this._broker.GetSessions(this._textView))
                         {
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: startNewSession: dismissing active session: " + session.SelectedSignature.Content);
-                            session.Recalculate();
-                            session.Dismiss();
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: dismissing active session");
+                            this.DismissSession(session);
                         }
                         this._session = this._broker.TriggerSignatureHelp(this._textView);
                     }
@@ -137,18 +160,11 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
-        private void TextBuffer_Changed(object sender, EventArgs e)
-        {
-            //if (_sessionStartScheduled)
-           // {
-                this.StartSession();
-              //  _sessionStartScheduled = false;
-            //}
-        }
-
         private static char GetTypeChar(IntPtr pvaIn)
         {
             return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
         }
+
+        #endregion
     }
 }
