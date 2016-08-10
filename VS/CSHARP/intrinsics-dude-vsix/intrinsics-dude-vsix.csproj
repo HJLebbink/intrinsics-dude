@@ -126,7 +126,7 @@
   <ItemGroup>
     <Compile Include="IntrinsicDoc\IntrinsicDocClassifier.cs" />
     <Compile Include="IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
-    <Compile Include="CodeCompletion\CodeCompletionCommandFilter.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionCommandHandler.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
     <Compile Include="CodeCompletion\VsTextViewCreationListener.cs" />

@@ -83,16 +83,14 @@ namespace IntrinsicsDude
                 #region
                 ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(new SnapshotSpan(start, triggerPoint), SpanTrackingMode.EdgeInclusive);
                 string partialKeyword = applicableTo.GetText(snapshot);
-                bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
 
-                SortedSet<Completion> completions = null;
-                if (partialKeyword.StartsWith("_mm", StringComparison.OrdinalIgnoreCase))
+                if (partialKeyword.StartsWith("_m", StringComparison.OrdinalIgnoreCase))
                 {
-                    completions = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), IntrinsicsDudeToolsStatic.isSvmlSwitchedOn());
+                    bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
+                    SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), IntrinsicsDudeToolsStatic.isSvmlSwitchedOn());
+                    completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
                 }
-                //IntrinsicsDudeToolsStatic.Output("INFO: AsmCompletionSource:AugmentCompletionSession; nCompletions=" + completions.Count);
                 #endregion
-                completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
 
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Code Completion");
             }
@@ -113,7 +111,7 @@ namespace IntrinsicsDude
 
         #region Private Methods
 
-        private SortedSet<Completion> getAllowedMnemonics(CpuID selectedArchitectures, bool svml)
+        private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures, bool svml)
         {
             IntrinsicStore store = this._intrinsicsDudeTools.intrinsicStore;
             SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
@@ -138,8 +136,8 @@ namespace IntrinsicsDude
                         if (selected)
                         {
                             string cpuID = " [" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
-                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString() + cpuID +" - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
-                            string insertionText = dataElement.intrinsic.ToString().ToLower();
+                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID +" - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+                            string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
                             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
                             set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, null, ""));
                         }

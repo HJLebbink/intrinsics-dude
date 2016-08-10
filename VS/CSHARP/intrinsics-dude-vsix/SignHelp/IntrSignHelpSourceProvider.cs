@@ -31,7 +31,7 @@ namespace IntrinsicsDude.SignHelp
 {
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
-    [Order(Before = "default")]
+    [Order(After = "default")] // let the existing signature help trigger first, such that we can remove the signatures it adds
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal class IntrSignHelpSourceProvider : ISignatureHelpSourceProvider
     {

@@ -30,11 +30,11 @@ using Microsoft.VisualStudio.Text.Editor;
 
 namespace IntrinsicsDude
 {
-    internal sealed class CodeCompletionCommandFilter : IOleCommandTarget
+    internal sealed class CodeCompletionCommandHandler : IOleCommandTarget
     {
         private ICompletionSession _currentSession;
 
-        public CodeCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
+        public CodeCompletionCommandHandler(IWpfTextView textView, ICompletionBroker broker)
         {
             this._currentSession = null;
             this._textView = textView;
@@ -45,11 +45,6 @@ namespace IntrinsicsDude
         public IWpfTextView _textView { get; private set; }
         public ICompletionBroker _broker { get; private set; }
         public IOleCommandTarget _nextCommandHandler { get; set; }
-
-        private char GetTypeChar(IntPtr pvaIn)
-        {
-            return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
-        }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
@@ -147,6 +142,25 @@ namespace IntrinsicsDude
             return hresult;
         }
 
+        public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
+        {
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:QueryStatus", this.ToString()));
+            if (pguidCmdGroup == VSConstants.VSStd2K)
+            {
+                switch ((VSConstants.VSStd2KCmdID)prgCmds[0].cmdID)
+                {
+                    case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
+                    case VSConstants.VSStd2KCmdID.COMPLETEWORD:
+                        //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO: {0}:QueryStatus", this.ToString()));
+                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
+                        return VSConstants.S_OK;
+                }
+            }
+            return this._nextCommandHandler.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
+        }
+
+        #region Private Stuff
+
         private bool StartSession()
         {
             if (this._currentSession != null)
@@ -223,21 +237,10 @@ namespace IntrinsicsDude
             this._currentSession.Filter();
         }
 
-        public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
+        private char GetTypeChar(IntPtr pvaIn)
         {
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:QueryStatus", this.ToString()));
-            if (pguidCmdGroup == VSConstants.VSStd2K)
-            {
-                switch ((VSConstants.VSStd2KCmdID)prgCmds[0].cmdID)
-                {
-                    case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
-                    case VSConstants.VSStd2KCmdID.COMPLETEWORD:
-                        //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO: {0}:QueryStatus", this.ToString()));
-                        prgCmds[0].cmdf = (uint)OLECMDF.OLECMDF_ENABLED | (uint)OLECMDF.OLECMDF_SUPPORTED;
-                        return VSConstants.S_OK;
-                }
-            }
-            return _nextCommandHandler.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
+            return (char)(ushort)Marshal.GetObjectForNativeVariant(pvaIn);
         }
+        #endregion
     }
 }

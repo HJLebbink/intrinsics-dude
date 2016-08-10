@@ -628,25 +628,29 @@ namespace IntrinsicsDude.Tools
 
         public static Tuple<Intrinsic, int> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: caret line =\"" + session.TextView.Caret.ContainingTextViewLine.Extent.GetText() + "\".");
-
             string codeStr = getContent(snapshot, triggerPoint);
             Intrinsic intrinsic = IntrinsicTools.getCurrentIntrinsic(codeStr);
-            int paramIndex = 0;
 
-            if (intrinsic == Intrinsic.NONE)
+            if (intrinsic != Intrinsic.NONE)
             {
-                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(codeStr);
-                intrinsic = tup.Item1;
-                paramIndex = tup.Item2;
+                int paramIndex = 0;
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A: triggerPoint="+ triggerPoint + "; codeStr=\"" + codeStr.TrimStart() + "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
+                return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
             }
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B codeStr=\"" + codeStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex=" + paramIndex);
-            return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
+            else
+            {
+                Tuple<Intrinsic, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_private(codeStr);
+                intrinsic = tup.Item1;
+                int paramIndex = tup.Item2;
+
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: triggerPoint=" + triggerPoint + "; codeStr=\"" + codeStr.TrimStart() + "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
+                return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
+            }
         }
 
-        private static Tuple<Intrinsic, int> getCurrentIntrinsicAndParamIndex(string str)
+        private static Tuple<Intrinsic, int> getCurrentIntrinsicAndParamIndex_private(string str)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A str=" + str);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A str=" + str);
 
             int paramIndex = 0;
             int endPositionIntrinsic = -1;
@@ -664,7 +668,7 @@ namespace IntrinsicsDude.Tools
                         if (nClosingParenthesis == 0)
                         {
                             endPositionIntrinsic = i;
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A endPositionIntrinsic=" + endPositionIntrinsic);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A endPositionIntrinsic=" + endPositionIntrinsic);
                         }
                         else
                         {
@@ -701,7 +705,7 @@ namespace IntrinsicsDude.Tools
                     for (int i = endPositionIntrinsic - 1; i >= 0; --i)
                     {
                         char c = str[i];
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: buffer[" + i + "]=" + c);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: buffer[" + i + "]=" + c);
                         if (Char.IsLetterOrDigit(c) || c.Equals('_'))
                         {
                             // this is a character of the intrinsic
@@ -713,7 +717,7 @@ namespace IntrinsicsDude.Tools
                         else
                         { // found the beginning of the intrinsic
                             beginPositionIntrinsic = i + 1;
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A found begin position " + beginPositionIntrinsic);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A found begin position " + beginPositionIntrinsic);
                             break;
                         }
                     }
@@ -736,7 +740,7 @@ namespace IntrinsicsDude.Tools
                 }
                 string intrinsicStr = new string(subBuffer);
                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(intrinsicStr);
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: A found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
+                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex_private: A found str \"" + intrinsicStr + "\"; returning intrinsic=" + intrinsic+ "; paramIndex="+ paramIndex);
                 return new Tuple<Intrinsic, int>(intrinsic, paramIndex);
             }
             #endregion

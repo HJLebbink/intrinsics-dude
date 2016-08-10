@@ -56,7 +56,7 @@ namespace IntrinsicsDude.SignHelp
 
             if (useHandler1)
             {
-                //this._subjectBuffer.Changed += this._handler1;
+                this._subjectBuffer.Changed += this._handler1;//needed otherwise the next parameters is not updated once a comma is typed
             } else
             {
                 this._subjectBuffer.PostChanged += this._handler2;

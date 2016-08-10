@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using System.Text;
 using System.Collections.ObjectModel;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.SignHelp
 {
@@ -41,7 +42,7 @@ namespace IntrinsicsDude.SignHelp
 
         public IntrSignHelpSource(ITextBuffer buffer)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
             this.m_textBuffer = buffer;
             this._store = IntrinsicsDudeTools.Instance.intrinsicStore;
 
@@ -65,18 +66,30 @@ namespace IntrinsicsDude.SignHelp
                 Intrinsic intrinsic = tup.Item1;
                 int paramIndex = tup.Item2;
 
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: triggerPoint="+ triggerPoint + "; intrinsic=" + intrinsic+ "; paramIndex=" + paramIndex);
+                if (intrinsic == Intrinsic.NONE) {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no intrinsic found at triggerPoint=" + triggerPoint);
+                    return;
+                }
 
                 IntrinsicDataElement dataElement = this._store.get(intrinsic);
-                if (dataElement != null)
+                if (dataElement == null) {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no dataElement for intrinsic " + intrinsic);
+                    return;
+                }
+
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: triggerPoint=" + triggerPoint + "; intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
+
+                if (true)
+                // if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID)) //TODO
                 {
-                    if (true)
-                    // if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID)) //TODO
+                    if (signatures.Count > 0)
                     {
-                        ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(triggerPoint, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
-                        signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, applicableToSpan));
-                        //session.Dismissed += Session_Dismissed;
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
+                        signatures.Clear();
                     }
+                    ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(triggerPoint, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+                    signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, applicableToSpan));
+                    session.Dismissed += Session_Dismissed;
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
             }
@@ -103,7 +116,7 @@ namespace IntrinsicsDude.SignHelp
                         {
                             for (int i = 0; i < nSignatures; ++i)
                             {
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: signature " + i + ": Content=\"" + session.Signatures[i].Content + "\".");
+                                IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: GetBestMatch: multiple signature " + i + ": Content=\"" + session.Signatures[i].Content + "\".");
                             }
                         }
                         return session.Signatures[0];
@@ -122,24 +135,30 @@ namespace IntrinsicsDude.SignHelp
             int nParameters = dataElement.parameters.Count;
             Span[] locus = new Span[nParameters];
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append(dataElement.intrinsic.ToString());
-            sb.Append("(");
+            #region Create Signature Text
+            StringBuilder signatureText = new StringBuilder();
+            signatureText.Append(IntrinsicTools.ToString(dataElement.returnType));
+            signatureText.Append(" ");
+            signatureText.Append(dataElement.intrinsic.ToString().ToLower());
+            signatureText.Append("(");
 
             for (int i = 0; i < nParameters; ++i)
             {
-                int locusStart = sb.Length;
-                sb.Append(IntrinsicTools.ToString(dataElement.parameters[i].Item1));
-                sb.Append(" ");
-                sb.Append(dataElement.parameters[i].Item2);
-                locus[i] = new Span(locusStart, sb.Length - locusStart);
-                if (i < nParameters - 1) sb.Append(", ");
+                int locusStart = signatureText.Length;
+                signatureText.Append(IntrinsicTools.ToString(dataElement.parameters[i].Item1).ToLower());
+                signatureText.Append(" ");
+                signatureText.Append(dataElement.parameters[i].Item2);
+                locus[i] = new Span(locusStart, signatureText.Length - locusStart);
+                if (i < nParameters - 1) signatureText.Append(", ");
             }
-            sb.Append(")  [");
-            sb.Append(IntrinsicTools.ToString(dataElement.cpuID));
-            sb.Append("]");
+            signatureText.Append(")  [");
+            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID));
+            signatureText.Append("]");
+            #endregion Create Signature Text
 
-            IntrSign sig = new IntrSign(textBuffer, sb.ToString(), dataElement.description, null);
+            IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), dataElement.description, null);
+
+            #region Update Event Handling
             this._signatures.Add(sig);
 
             if (this._eventHandlers.ContainsKey(textBuffer)) {
@@ -149,21 +168,21 @@ namespace IntrinsicsDude.SignHelp
             }
 
             EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged1);
-            //textBuffer.Changed += handler;
+            textBuffer.Changed += handler;
             this._eventHandlers.Add(textBuffer, handler); // store the handler such that it can be removed once the session is dismissed
 
             //EventHandler handler2 = new EventHandler(sig.OnSubjectBufferChanged2);
             //textBuffer.PostChanged += handler2;
             //this._eventHandlers2.Add(textBuffer, handler2); // store the handler such that it can be removed once the session is dismissed
-
+            #endregion
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)
             {
-                //string documentation = AsmSignatureElement.makeDoc(dataElement.operands[i]);
-                string documentation = "TODO";
+                string operandType = IntrinsicTools.ToString(dataElement.parameters[i].Item1);
                 string operandName = dataElement.parameters[i].Item2;
-                paramList.Add(new IntrParam(documentation, locus[i], operandName, sig));
+                string documentation = operandType;
+                paramList.Add(new IntrParam(documentation, locus[i], operandType + " " + operandName, sig));
             }
 
             sig.Parameters = new ReadOnlyCollection<IParameter>(paramList);

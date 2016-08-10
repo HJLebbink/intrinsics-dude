@@ -64,13 +64,7 @@ namespace IntrinsicsDude.SignHelp
                         char typedChar = GetTypeChar(pvaIn);
                         if (typedChar.Equals('(') || typedChar.Equals(','))
                         {
-                            if (this._session != null)
-                            {
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: A dismissing an old session");
-                                this._session.Dismiss();
-                                this._session = null;
-                            }
-                            this.startNewSession();
+                            this.StartSession();
                         }
                         else if (typedChar.Equals(')') || typedChar.Equals(';'))
                         {
@@ -81,7 +75,7 @@ namespace IntrinsicsDude.SignHelp
                                 this._session.Dismiss();
                                 this._session = null;
                             }
-                       }
+                        }
                     }
                 }
                 else
@@ -103,7 +97,8 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:Exec; e={1}", this.ToString(), e.ToString()));
             }
-            return _nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
+            return this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
@@ -111,7 +106,7 @@ namespace IntrinsicsDude.SignHelp
             return _nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
-        private void startNewSession()
+        private void StartSession()
         {
            // lock (_startNewSessionLock)
             {
@@ -122,7 +117,22 @@ namespace IntrinsicsDude.SignHelp
 
                 if (intrinsic != Intrinsic.NONE)
                 {
-                    this._session = _broker.TriggerSignatureHelp(_textView);
+                    if (this._broker.IsSignatureHelpActive(this._textView))
+                    {
+                        IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession. Recycling an existing signature help session", this.ToString()));
+                        this._session = this._broker.GetSessions(this._textView)[0];
+                        this._session.Recalculate();
+                    }
+                    else
+                    {
+                        foreach (ISignatureHelpSession session in this._broker.GetSessions(this._textView))
+                        {
+                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: startNewSession: dismissing active session: " + session.SelectedSignature.Content);
+                            session.Recalculate();
+                            session.Dismiss();
+                        }
+                        this._session = this._broker.TriggerSignatureHelp(this._textView);
+                    }
                 }
             }
         }
@@ -131,7 +141,7 @@ namespace IntrinsicsDude.SignHelp
         {
             //if (_sessionStartScheduled)
            // {
-                this.startNewSession();
+                this.StartSession();
               //  _sessionStartScheduled = false;
             //}
         }

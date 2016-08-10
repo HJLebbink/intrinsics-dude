@@ -63,7 +63,7 @@ namespace IntrinsicsDude.Tools
 
                 sb.Append(IntrinsicTools.ToString(this.returnType));
                 sb.Append(" ");
-                sb.Append(this.intrinsic);
+                sb.Append(this.intrinsic.ToString().ToLower());
                 sb.Append("(");
                 foreach (Tuple<ParamType, string> param in this.parameters)
                 {
@@ -106,7 +106,7 @@ namespace IntrinsicsDude.Tools
 
                 sb.Append(IntrinsicTools.ToString(this.returnType));
                 sb.Append(" ");
-                sb.Append(this.intrinsic);
+                sb.Append(this.intrinsic.ToString().ToLower());
                 sb.Append("(");
                 foreach (Tuple<ParamType, string> param in this.parameters)
                 {
