@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
-	<Metadata>
-		<Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="0.0.0.1" Language="en-US" Publisher="Henk-Jan Lebbink" />
-		<DisplayName>Intrinsics Dude</DisplayName>
-		<Description xml:space="preserve">Syntax Highlighting and Signature Help for Compiler Intrinsics in Visual Studio 2015</Description>
-		<MoreInfo>https://github.com/HJLebbink/asm-dude</MoreInfo>
-		<License>LICENSE.txt</License>
-		<GettingStartedGuide>https://github.com/HJLebbink/asm-dude</GettingStartedGuide>
-		<Icon>Resources\images\asm.png</Icon>
-		<PreviewImage>Resources\images\AsmDude.bmp</PreviewImage>
-		<Tags>Syntax Highlighting, Signature Help, Compiler Intrinsics, Visual Studio 2015</Tags>
-	</Metadata>
-	<Installation>
-		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
-	</Installation>
-	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-		<Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
-	</Dependencies>
-	<Assets>
-		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-		<Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-	</Assets>
+  <Metadata>
+    <Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="0.0.0.2" Language="en-US" Publisher="Henk-Jan Lebbink" />
+    <DisplayName>Intrinsics Dude</DisplayName>
+    <Description xml:space="preserve">Improved Code Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio 2015</Description>
+    <MoreInfo>https://github.com/HJLebbink/intrinsics-dude</MoreInfo>
+    <License>LICENSE.txt</License>
+    <GettingStartedGuide>https://github.com/HJLebbink/intrinsics-dude</GettingStartedGuide>
+    <Icon>Resources\images\asm.png</Icon>
+    <PreviewImage>Resources\images\AsmDude.bmp</PreviewImage>
+    <Tags>Code Completion, Quickinfo Tooltips, Signature Help, Compiler Intrinsics, Visual Studio 2015</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+  </Assets>
 </PackageManifest>

@@ -70,11 +70,11 @@ namespace IntrinsicsDude.Tools
 
 
         /// <summary>
-        /// Singleton pattern: use AsmDudeTools.Instance for the instance of this class
+        /// Singleton pattern: use IntrinsicsDudeTools.Instance for the instance of this class
         /// </summary>
         private IntrinsicsDudeTools()
         {
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: AsmDudeTools constructor"));
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: IntrinsicsDudeTools constructor"));
 
             #region Initialize ErrorListProvider
             IServiceProvider serviceProvider = new ServiceProvider(Package.GetGlobalService(typeof(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)) as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
@@ -89,15 +89,14 @@ namespace IntrinsicsDude.Tools
             {
                 #region load intrinsic store
                 string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-                // string filename_intrinsics = path + "Intel-Intrinsics-Guide.html";
-                string filename_intrinsics = @"H:\Dropbox\sc\GitHub\intrinsics-dude\VS\CSHARP\intrinsics-dude-vsix\Resources\Intel-Intrinsics-Guide.html";
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: filename " + filename_intrinsics);
+                string filename_intrinsics = path + "Intel-Intrinsics-Guide.html";
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeTools: constructor: filename " + filename_intrinsics);
                 this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
                 #endregion
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: AsmDudeTools constructor: exception " + e);
+                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicsDudeTools constructor: exception " + e);
             }
         }
 

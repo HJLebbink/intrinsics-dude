@@ -77,7 +77,7 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
-        internal void ComputeCurrentParameter()
+        internal void ComputeCurrentParameter(ITextSnapshot snapshot, int triggerPoint)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter");
 
@@ -94,20 +94,14 @@ namespace IntrinsicsDude.SignHelp
             }
             else
             {
-                string spanContent = this.ApplicableToSpan.GetText(this._subjectBuffer.CurrentSnapshot);
+                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: triggerPoint=" + triggerPoint + "; Intrinsic=" + tup.Item1 + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._subjectBuffer.CurrentSnapshot) + "\".");
 
-                if (spanContent.Equals("()"))
-                {
-                    this.CurrentParameter = this.Parameters[0];
-                }
-                else
-                {
-                    Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(spanContent);
-                    int paramIndex = tup.Item2;
+                this.ApplicableToSpan = tup.Item3;
+                int paramIndex = tup.Item2;
 
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: span content=\"" + spanContent + "\"; startPos=" + tup.Item3 + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
-                    this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
-                }
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: startPos=" + tup.Item3 + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
+                this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
             }
         }
 
@@ -117,10 +111,7 @@ namespace IntrinsicsDude.SignHelp
             if (e.Changes.Count > 0)
             {
                 int triggerPoint = e.Changes[0].NewPosition;
-                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(e.After, triggerPoint);
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: triggerPoint="+ triggerPoint + "; Intrinsic=" + tup.Item1 + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._subjectBuffer.CurrentSnapshot) + "\".");
-                this.ApplicableToSpan = tup.Item3;
-                this.ComputeCurrentParameter();
+                this.ComputeCurrentParameter(e.After, triggerPoint);
             }
         }
 

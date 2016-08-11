@@ -578,7 +578,7 @@ namespace IntrinsicsDude.Tools
             int paramIndex = tup.Item2;
             int startPos = (triggerPoint - codeStr.Length + tup.Item3)+1;
 
-            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, tup.Item4+2), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
             return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
         }

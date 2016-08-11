@@ -183,7 +183,7 @@ namespace IntrinsicsDude.SignHelp
 
             sig.Parameters = new ReadOnlyCollection<IParameter>(paramList);
             sig.ApplicableToSpan = span;
-            sig.ComputeCurrentParameter();
+            sig.ComputeCurrentParameter(textBuffer.CurrentSnapshot, span.GetStartPoint(textBuffer.CurrentSnapshot));
             return sig;
         }
 

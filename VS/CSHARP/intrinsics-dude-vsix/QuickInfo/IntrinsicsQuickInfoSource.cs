@@ -45,7 +45,7 @@ namespace IntrinsicsDude.QuickInfo
     {
         private readonly ITextBuffer _sourceBuffer;
         private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
-        private readonly IntrinsicsDudeTools _asmDudeTools;
+        private readonly IntrinsicsDudeTools _intrinsicDudeTools;
 
         public object CSharpEditorResources { get; private set; }
 
@@ -55,7 +55,7 @@ namespace IntrinsicsDude.QuickInfo
         {
             this._sourceBuffer = buffer;
             this._aggregator = aggregator;
-            this._asmDudeTools = IntrinsicsDudeTools.Instance;
+            this._intrinsicDudeTools = IntrinsicsDudeTools.Instance;
         }
 
         /// <summary>
@@ -95,11 +95,15 @@ namespace IntrinsicsDude.QuickInfo
                                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
-                                    IntrinsicDataElement dataElement = this._asmDudeTools.intrinsicStore.get(intrinsic);
+                                    IntrinsicDataElement dataElement = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
                                     if (dataElement != null)
                                     {
-                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
-                                        //quickInfoContent.Clear(); // throw the existing quickinfo away
+                                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
+                                        if (quickInfoContent.Count > 0)
+                                        {
+                                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
+                                            quickInfoContent.Clear(); // throw the existing quickinfo away
+                                        }
                                         quickInfoContent.Add(dataElement.descriptionTextBlock);
                                     }
                                 }
