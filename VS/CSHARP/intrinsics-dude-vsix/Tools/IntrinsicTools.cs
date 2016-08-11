@@ -61,23 +61,24 @@ namespace IntrinsicsDude.Tools
             AVX512DQ    = 1 << 6,
             AVX512ER    = 1 << 7,
             AVX512F     = 1 << 8,
-            AVX512VL    = 1 << 9,
-            BMI1        = 1 << 10,
-            BMI2        = 1 << 11,
-            CLFLUSHOPT  = 1 << 12,
-            FMA         = 1 << 13,
-            FP16C       = 1 << 14,
-            FXSR        = 1 << 15,
-            KNCNI       = 1 << 16,
-            MMX         = 1 << 17,
-            MPX         = 1 << 18,
-            PCLMULQDQ   = 1 << 19,
-            SSE         = 1 << 20,
-            SSE2        = 1 << 21,
-            SSE3        = 1 << 22,
-            SSE4_1      = 1 << 23,
-            SSE4_2      = 1 << 24,
-            SSSE3       = 1 << 25
+            AVX512PF    = 1 << 9,
+            AVX512VL    = 1 << 10,
+            BMI1        = 1 << 11,
+            BMI2        = 1 << 12,
+            CLFLUSHOPT  = 1 << 13,
+            FMA         = 1 << 14,
+            FP16C       = 1 << 15,
+            FXSR        = 1 << 16,
+            KNCNI       = 1 << 17,
+            MMX         = 1 << 18,
+            MPX         = 1 << 19,
+            PCLMULQDQ   = 1 << 20,
+            SSE         = 1 << 21,
+            SSE2        = 1 << 22,
+            SSE3        = 1 << 23,
+            SSE4_1      = 1 << 24,
+            SSE4_2      = 1 << 25,
+            SSSE3       = 1 << 26
         }
 
         public enum ReturnType
@@ -105,10 +106,12 @@ namespace IntrinsicsDude.Tools
             DOUBLE,
             FLOAT,
             INT,
+            SHORT,
             UNSIGNED__INT32,
             UNSIGNED__INT64,
             UNSIGNED_CHAR,
             UNSIGNED_INT,
+            UNSIGNED_LONG,
             UNSIGNED_SHORT,
             VOID,
             VOID_PTR
@@ -117,6 +120,8 @@ namespace IntrinsicsDude.Tools
         public enum ParamType
         {
             NONE,
+            __INT8,
+            __INT16,
             __INT32,
             __INT32_PTR,
             __INT64,
@@ -124,16 +129,28 @@ namespace IntrinsicsDude.Tools
             __INT64_PTR,
             __M128,
             __M128_CONST_PTR,
+            __M128_PTR,
             __M128D,
             __M128D_CONST_PTR,
+            __M128D_PTR,
             __M128I,
+            __M128I_CONST_PTR,
+            __M128I_PTR,
             __M256,
+            __M256_PTR,
             __M256D,
+            __M256D_PTR,
             __M256I,
+            __M256I_CONST_PTR,
+            __M256I_PTR,
             __M512,
+            __M512_PTR,
             __M512D,
+            __M512D_PTR,
             __M512I,
             __M64,
+            __M64_CONST_PTR,
+            __M64_PTR,
             __MMASK16,
             __MMASK16_PTR,
             __MMASK32,
@@ -152,17 +169,28 @@ namespace IntrinsicsDude.Tools
             _MM_UPCONV_EPI64_ENUM,
             _MM_UPCONV_PD_ENUM,
             _MM_UPCONV_PS_ENUM,
+            _MM_PERM_ENUM,
+            _MM_SWIZZLE_ENUM,
             CONST_MM_CMPINT_ENUM,
             CONST_INT,
+            CONST_UNSIGNED_INT,
             CONST_VOID_PTR,
             CONST_VOID_PTR_PTR,
+            CHAR,
+            CHAR_CONST_PTR,
+            CHAR_PTR,
             DOUBLE,
             DOUBLE_CONST_PTR,
+            DOUBLE_PTR,
             FLOAT,
             FLOAT_CONST_PTR,
+            FLOAT_PTR,
             INT,
             INT_CONST_PTR,
+            INT_PTR,
+            LONG_LONG,
             SIZE_T,
+            SHORT,
             UNSIGNED__INT32,
             UNSIGNED__INT32_PTR,
             UNSIGNED__INT64,
@@ -170,7 +198,10 @@ namespace IntrinsicsDude.Tools
             UNSIGNED_CHAR,
             UNSIGNED_INT,
             UNSIGNED_INT_PTR,
+            UNSIGNED_LONG,
+            UNSIGNED_LONG_PTR,
             UNSIGNED_SHORT,
+            UNSIGNED_SHORT_PTR,
             VOID,
             VOID_PTR,
             VOID_CONST_PTR
@@ -178,6 +209,7 @@ namespace IntrinsicsDude.Tools
 
         public static IntrinsicRegisterType parseIntrinsicRegisterType(string str)
         {
+            if (!str.StartsWith("__")) return IntrinsicRegisterType.NONE;
             switch (str.ToUpper())
             {
                 case "__M128": return IntrinsicRegisterType.__M128;
@@ -195,7 +227,7 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK64": return IntrinsicRegisterType.__MMASK64;
                 case "__MMASK8": return IntrinsicRegisterType.__MMASK8;
                 default:
-                    Console.WriteLine("parseIntrinsicRegisterType: unknown return type \"" + str + "\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown return type \"" + str + "\".");
                     return IntrinsicRegisterType.NONE;
             }
         }
@@ -226,42 +258,60 @@ namespace IntrinsicsDude.Tools
                 case "DOUBLE": return ReturnType.DOUBLE;
                 case "FLOAT": return ReturnType.FLOAT;
                 case "INT": return ReturnType.INT;
+                case "SHORT": return ReturnType.SHORT;
                 case "UNSIGNED __INT32": return ReturnType.UNSIGNED__INT32;
                 case "UNSIGNED __INT64": return ReturnType.UNSIGNED__INT64;
                 case "UNSIGNED CHAR": return ReturnType.UNSIGNED_CHAR;
                 case "UNSIGNED INT": return ReturnType.UNSIGNED_INT;
+                case "UNSIGNED LONG": return ReturnType.UNSIGNED_LONG;
                 case "UNSIGNED SHORT": return ReturnType.UNSIGNED_SHORT;
                 case "VOID": return ReturnType.VOID;
+                case "VOID*":
                 case "VOID *": return ReturnType.VOID_PTR;
                 default:
-                    Console.WriteLine("parseReturnType: unknown return type \"" + str+"\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown return type \"" + str+"\".");
                     return ReturnType.NONE;
             }
         }
         
         public static ParamType parseParamType(string str)
         {
-            switch (str.ToUpper())
-            {
+            string str2 = str.ToUpper().Replace(" *", "*");
+
+            switch (str2) {
+                case "__INT8": return ParamType.__INT8;
+                case "__INT16": return ParamType.__INT16;
                 case "__INT32": return ParamType.__INT32;
                 case "__INT32*": return ParamType.__INT32_PTR;
                 case "__INT64": return ParamType.__INT64;
                 case "__INT64 CONST*": return ParamType.__INT64_CONST_PTR;
                 case "__INT64*": return ParamType.__INT64_PTR;
                 case "__M128": return ParamType.__M128;
-                case "__M128 CONST *": return ParamType.__M128_CONST_PTR;
+                case "__M128 CONST*": return ParamType.__M128_CONST_PTR;
+                case "__M128*": return ParamType.__M128_PTR;
                 case "__M128D": return ParamType.__M128D;
-                case "__M128D CONST *": return ParamType.__M128D_CONST_PTR;
+                case "__M128D CONST*": return ParamType.__M128D_CONST_PTR;
+                case "__M128D*": return ParamType.__M128D_PTR;
                 case "__M128I": return ParamType.__M128I;
+                case "__M128I CONST*": return ParamType.__M128I_CONST_PTR;
+                case "__M128I*": return ParamType.__M128I_PTR;
                 case "__M256": return ParamType.__M256;
+                case "__M256*": return ParamType.__M256_PTR;
                 case "__M256D": return ParamType.__M256D;
+                case "__M256D*": return ParamType.__M256D_PTR;
                 case "__M256I": return ParamType.__M256I;
+                case "__M256I CONST*": return ParamType.__M256I_CONST_PTR;
+                case "__M256I*": return ParamType.__M256I_PTR;
                 case "__M512": return ParamType.__M512;
+                case "__M512*": return ParamType.__M512_PTR;
                 case "__M512D": return ParamType.__M512D;
+                case "__M512D*": return ParamType.__M512D_PTR;
                 case "__M512I": return ParamType.__M512I;
                 case "__M64": return ParamType.__M64;
+                case "__M64*": return ParamType.__M64_PTR;
+                case "__M64 CONST*": return ParamType.__M64_CONST_PTR;
                 case "__MMASK16": return ParamType.__MMASK16;
-                case "__MMASK16 *": return ParamType.__MMASK16_PTR;
+                case "__MMASK16*": return ParamType.__MMASK16_PTR;
                 case "__MMASK32": return ParamType.__MMASK32;
                 case "__MMASK64": return ParamType.__MMASK64;
                 case "__MMASK8": return ParamType.__MMASK8;
@@ -278,34 +328,47 @@ namespace IntrinsicsDude.Tools
                 case "_MM_UPCONV_EPI64_ENUM": return ParamType._MM_UPCONV_EPI64_ENUM;
                 case "_MM_UPCONV_PD_ENUM": return ParamType._MM_UPCONV_PD_ENUM;
                 case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
+                case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
+                case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
                 case "CONST _MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM;
                 case "CONST INT": return ParamType.CONST_INT;
-                case "CONST VOID *": return ParamType.CONST_VOID_PTR;
-                case "CONST VOID **": return ParamType.CONST_VOID_PTR_PTR;
+                case "CONST UNSIGNED INT": return ParamType.CONST_UNSIGNED_INT;
+                case "CONST VOID*": return ParamType.CONST_VOID_PTR;
+                case "CONST VOID**": return ParamType.CONST_VOID_PTR_PTR;
+                case "CHAR": return ParamType.CHAR;
+                case "CHAR CONST*": return ParamType.CHAR_CONST_PTR;
+                case "CHAR*": return ParamType.CHAR_PTR;
                 case "DOUBLE": return ParamType.DOUBLE;
-                case "DOUBLE CONST *": return ParamType.DOUBLE_CONST_PTR;
+                case "CONST DOUBLE*":
                 case "DOUBLE CONST*": return ParamType.DOUBLE_CONST_PTR;
+                case "DOUBLE*": return ParamType.DOUBLE_PTR;
                 case "FLOAT": return ParamType.FLOAT;
-                case "FLOAT CONST *": return ParamType.FLOAT_CONST_PTR;
+                case "CONST FLOAT*":
                 case "FLOAT CONST*": return ParamType.FLOAT_CONST_PTR;
+                case "FLOAT*": return ParamType.FLOAT_PTR;
+                case "UNSIGNED":
                 case "INT": return ParamType.INT;
                 case "INT CONST*": return ParamType.INT_CONST_PTR;
+                case "INT*": return ParamType.INT_PTR;
+                case "LONG LONG": return ParamType.LONG_LONG;
                 case "SIZE_T": return ParamType.SIZE_T;
+                case "SHORT": return ParamType.SHORT;
                 case "UNSIGNED __INT32": return ParamType.UNSIGNED__INT32;
                 case "UNSIGNED __INT32*": return ParamType.UNSIGNED__INT32_PTR;
                 case "UNSIGNED __INT64": return ParamType.UNSIGNED__INT64;
-                case "UNSIGNED __INT64 *": return ParamType.UNSIGNED__INT64_PTR;
+                case "UNSIGNED __INT64*": return ParamType.UNSIGNED__INT64_PTR;
                 case "UNSIGNED CHAR": return ParamType.UNSIGNED_CHAR;
                 case "UNSIGNED INT": return ParamType.UNSIGNED_INT;
-                case "UNSIGNED INT *": return ParamType.UNSIGNED_INT_PTR;
+                case "UNSIGNED INT*": return ParamType.UNSIGNED_INT_PTR;
+                case "UNSIGNED LONG": return ParamType.UNSIGNED_LONG;
+                case "UNSIGNED LONG*": return ParamType.UNSIGNED_LONG_PTR;
                 case "UNSIGNED SHORT": return ParamType.UNSIGNED_SHORT;
+                case "UNSIGNED SHORT*": return ParamType.UNSIGNED_SHORT_PTR;
                 case "VOID": return ParamType.VOID;
-                case "VOID *": return ParamType.VOID_PTR;
-                case "VOID CONST *": return ParamType.VOID_CONST_PTR;
-                case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 case "VOID*": return ParamType.VOID_PTR;
+                case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    Console.WriteLine("parseParamType: unknown param type \"" + str + "\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown param type \"" + str + "\".");
                     return ParamType.NONE;
             }
         }
@@ -323,6 +386,7 @@ namespace IntrinsicsDude.Tools
                 case "AVX512DQ": return CpuID.AVX512DQ;
                 case "AVX512ER": return CpuID.AVX512ER;
                 case "AVX512F": return CpuID.AVX512F;
+                case "AVX512PF": return CpuID.AVX512PF;
                 case "AVX512VL": return CpuID.AVX512VL;
                 case "BMI1": return CpuID.BMI1;
                 case "BMI2": return CpuID.BMI2;
@@ -340,7 +404,9 @@ namespace IntrinsicsDude.Tools
                 case "SSE4.1": return CpuID.SSE4_1;
                 case "SSE4.2": return CpuID.SSE4_2;
                 case "SSSE3": return CpuID.SSSE3;
-                default: return CpuID.NONE;
+                default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown cpuid \"" + str + "\".");
+                    return CpuID.NONE;
             }
         }
 
@@ -421,6 +487,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.VOID_PTR: return "void *";
                 case ParamType.VOID_CONST_PTR: return "void const *";
                 default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ParamType \"" + type + "\".");
                     return "UNKNOWN";
                     break;
             }
@@ -460,6 +527,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.VOID: return "void";
                 case ReturnType.VOID_PTR: return "void *";
                 default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ReturnType \"" + type + "\".");
                     return "UNKNOWN";
                     break;
             }
@@ -498,6 +566,7 @@ namespace IntrinsicsDude.Tools
                 case CpuID.SSE4_2: return "";
                 case CpuID.SSSE3: return "";
                 default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
                     return "";
             }
         }
@@ -706,6 +775,9 @@ namespace IntrinsicsDude.Tools
 
         public static Intrinsic parseIntrinsic(string str)
         {
+            if (str.Length < 4) return Intrinsic.NONE;
+            if (!str[0].Equals('_')) return Intrinsic.NONE;
+
             switch (str.ToUpper())
             {
                 case "__RDTSCP": return Intrinsic.__RDTSCP;

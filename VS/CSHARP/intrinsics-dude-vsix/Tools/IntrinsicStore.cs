@@ -24,6 +24,8 @@ using AsmTools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Xml.Linq;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.Tools
@@ -36,7 +38,9 @@ namespace IntrinsicsDude.Tools
         public IntrinsicStore(string filename)
         {
             this._data = new Dictionary<Intrinsic, IntrinsicDataElement>();
-            this.load(filename);
+            this.loadHtml(filename);
+            this.saveXml(filename + ".xml");
+            //this.loadXml(filename + ".xml");
         }
 
         public IntrinsicDataElement get(Intrinsic intrinsic)
@@ -62,13 +66,15 @@ namespace IntrinsicsDude.Tools
 
         #region Private Methods
 
-        private void load(string filename)
+        private void loadHtml(string filename)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: filename " + filename);
             try
             {
                 HtmlDocument doc = new HtmlDocument();
                 doc.Load(filename);
+
+                //SortedSet<string> allIntrinsicNames = new SortedSet<string>();
 
                 foreach (HtmlNode item in doc.GetElementbyId("intrinsics_list").ChildNodes)
                 {
@@ -78,7 +84,6 @@ namespace IntrinsicsDude.Tools
                     dataElement.intrinsic = Intrinsic.NONE;
 
                     bool printit = false;// dataElement.id == 8;
-
 
                     IList<string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
@@ -96,6 +101,7 @@ namespace IntrinsicsDude.Tools
                                 string instruction = element.InnerText.ToUpper();
                                 if (instruction.Equals("..."))
                                 {
+                                    instruction = "NONE";
                                     dataElement.isSVML = true;
                                 }
                                 dataElement.instruction = AsmSourceTools.parseMnemonic(instruction);
@@ -109,16 +115,19 @@ namespace IntrinsicsDude.Tools
                                     if (printit) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
                                     switch (element2Class)
                                     {
-                                        case "NAME": dataElement.intrinsic = IntrinsicTools.parseIntrinsic(element2.InnerText); break;
+                                        case "NAME":
+                                            string intrinsicStr = element2.InnerText;
+                                            //allIntrinsicNames.Add(intrinsicStr);
+                                            dataElement.intrinsic = IntrinsicTools.parseIntrinsic(intrinsicStr); break;
                                         case "RETTYPE": dataElement.returnType = IntrinsicTools.parseReturnType(element2.InnerText); break;
                                         case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
                                         case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                         case "DESC_VAR": break;
 
                                         case "DESCRIPTION": dataElement.description = removeHtml(element2.InnerText); break;
-                                        case "OPERATION": dataElement.operation = removeHtml(element2.InnerText); break;
+                                        case "OPERATION": dataElement.operation = removeHtml(element2.InnerHtml); break;
                                         case "CPUID": cpuidList.Add(element2.InnerText); break;
-                                        case "PERFORMANCE": dataElement.performance = element2.InnerText; break;
+                                        case "PERFORMANCE": dataElement.performance = element2.InnerHtml; break;
                                         case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
 
                                         case "SIG":
@@ -164,12 +173,23 @@ namespace IntrinsicsDude.Tools
                         #endregion
                     }
                     #endregion
-                    if (!this._data.ContainsKey(dataElement.intrinsic))
+
+                    if (this._data.ContainsKey(dataElement.intrinsic))
+                    {
+                        IntrinsicsDudeToolsStatic.Output("WARNING IntrinsicStore: load: Intrinsic " + dataElement.intrinsic + " already present");
+                    }
+                    else
                     {
                         this._data.Add(dataElement.intrinsic, dataElement);
                     }
-                    //Console.WriteLine("id " + dataElement.id + ":" + dataElement.returnType + " " + intrinsic_name + "(" + string.Join(",", paramName.ToArray()) + "); cpuid=" + string.Join(",", cpuidList.ToArray()) + "; instruction=" + instruction);
                 }
+                /*
+                foreach (string str in allIntrinsicNames)
+                {
+                    //IntrinsicsDudeToolsStatic.Output("    "+str.ToUpper() + ",");
+                    IntrinsicsDudeToolsStatic.Output("case \""+str.ToUpper()+"\": return Intrinsic."+str.ToUpper() +";");
+                }
+                */
             }
             catch (Exception e)
             {
@@ -177,9 +197,72 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        /// <summary>
+        /// Create a tab separated text file
+        /// </summary>
+        /// <param name="filename"></param>
+        private void saveXml(string filename)
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: saveXml: filename " + filename);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<?xml version = \"1.0\" encoding = \"utf-8\" ?>");
+            sb.AppendLine("<intrinsicsdudedata>");
+            
+            foreach (Intrinsic intrinsic in new SortedSet<Intrinsic>(this._data.Keys))
+            {
+                IntrinsicDataElement dataElement = this._data[intrinsic];
+                sb.AppendLine("<intrinsic>");
+                sb.AppendLine("<name>" + dataElement.intrinsic+"</name>");
+                sb.AppendLine("<id>" + dataElement.id + "</id>");
+                sb.AppendLine("<cpuid>" + dataElement.cpuID + "</cpuid>");
+                sb.AppendLine("<svml>" + dataElement.isSVML + "</svml>");
+                sb.AppendLine("<rettype>" + dataElement.returnType + "</rettype>");
+
+                sb.Append("<paramtype>");
+                foreach (Tuple<ParamType, string> parameter in dataElement.parameters)
+                {
+                    sb.Append(parameter.Item1);
+                    sb.Append(' ');
+                    sb.Append(parameter.Item2);
+                    sb.Append(',');
+                }
+                if (dataElement.parameters.Count > 0) sb.Length--; // remove the trailing comma
+                sb.AppendLine("</paramtype>");
+
+                sb.AppendLine("<instruction>" + dataElement.instruction + "</instruction>");
+                sb.AppendLine("<description>" + addHtml(dataElement.description) + "</description>");
+                sb.AppendLine("<operation>" + addHtml(dataElement.operation) + "</operation>");
+                sb.AppendLine("<performance>" + addHtml(dataElement.performance) + "</performance>");
+                sb.AppendLine("</intrinsic>");
+            }
+            sb.AppendLine("</intrinsicsdudedata>");
+            System.IO.File.WriteAllText(filename, sb.ToString());
+        }
+
+        private void loadXml(string filename)
+        {
+            XElement booksFromFile = XElement.Load(filename);
+
+            foreach (XNode node in booksFromFile.Nodes())
+            {
+                foreach (XElement element in node.ElementsAfterSelf())
+                {
+                    element.Name.ToString();
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: intrinsic " + element.Name.ToString());
+
+                }
+            }
+        }
+
         private static string removeHtml(string str)
         {
-            return str.Replace("&lt;", "<").Replace("&gt;", ">");
+            if (str == null) return null;
+            return str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("&amp;", "&");
+        }
+        private static string addHtml(string str)
+        {
+            if (str == null) return null;
+            return str.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
         }
 
         #endregion

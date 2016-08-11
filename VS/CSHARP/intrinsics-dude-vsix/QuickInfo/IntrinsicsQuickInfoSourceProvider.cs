@@ -37,7 +37,7 @@ namespace IntrinsicsDude.QuickInfo
     [Export(typeof(IQuickInfoSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     [Name("Intrinsics QuickInfo Source Provider")]
-    [Order(After = "default")] 
+    [Order(After = "default")] // order after the default quickinfo provider such the default tooltips can be removed
     internal sealed class IntrinsicsQuickInfoSourceProvider : IQuickInfoSourceProvider
     {
         [Import]

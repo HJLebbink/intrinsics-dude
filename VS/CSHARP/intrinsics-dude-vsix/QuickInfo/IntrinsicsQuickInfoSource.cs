@@ -98,10 +98,10 @@ namespace IntrinsicsDude.QuickInfo
                                     IntrinsicDataElement dataElement = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
                                     if (dataElement != null)
                                     {
-                                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
+                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
                                         if (quickInfoContent.Count > 0)
                                         {
-                                            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
+                                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
                                         quickInfoContent.Add(dataElement.descriptionTextBlock);
