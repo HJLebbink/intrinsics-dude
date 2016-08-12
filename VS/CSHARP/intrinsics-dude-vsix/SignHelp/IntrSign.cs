@@ -67,6 +67,52 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
+        public ITrackingSpan ApplicableToSpan {
+            get { return (this._applicableToSpan); }
+            internal set { this._applicableToSpan = value; }
+        }
+
+        public void SetCurrentParameter(int paramIndex, bool raiseEvent)
+        {
+            IParameter newValue = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
+            if (raiseEvent)
+            {
+                this.CurrentParameter = newValue;
+            }
+            else
+            {
+                this._currentParameter = newValue;
+            }
+        }
+
+        public string Content {
+            get { return (_content); }
+            internal set { _content = value; }
+        }
+
+        public string Documentation {
+            get { return (_documentation); }
+            internal set { _documentation = value; }
+        }
+
+        public ReadOnlyCollection<IParameter> Parameters {
+            get { return (_parameters); }
+            internal set { _parameters = value; }
+        }
+
+        public string PrettyPrintedContent {
+            get { return (_printContent); }
+            internal set { _printContent = value; }
+        }
+        
+        public void cleanup()
+        {
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup");
+            this._subjectBuffer.Changed -= this._handler1;
+        }
+
+        #region Private Methods
+
         private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
@@ -95,13 +141,11 @@ namespace IntrinsicsDude.SignHelp
             else
             {
                 Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: triggerPoint=" + triggerPoint + "; Intrinsic=" + tup.Item1 + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._subjectBuffer.CurrentSnapshot) + "\".");
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter: triggerPoint=" + triggerPoint + "; char='" + snapshot.GetText(new Span(triggerPoint, 1)) + "'; Intrinsic=" + tup.Item1 + "(" + tup.Item2 + "); startPos=" + tup.Item3.GetStartPoint(snapshot).Position);
 
-                this.ApplicableToSpan = tup.Item3;
                 int paramIndex = tup.Item2;
-
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter: startPos=" + tup.Item3 + "; intrinsic=" + tup.Item1 + "; paramIndex=" + paramIndex);
-                this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < nParameters)) ? this.Parameters[paramIndex] : null;
+                this.ApplicableToSpan = tup.Item3;
+                this.SetCurrentParameter(paramIndex, true);
             }
         }
 
@@ -110,40 +154,11 @@ namespace IntrinsicsDude.SignHelp
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: nexText=" + e.Changes[0].NewText);
             if (e.Changes.Count > 0)
             {
-                int triggerPoint = e.Changes[0].NewPosition;
+                int triggerPoint = e.Changes[0].OldPosition;
                 this.ComputeCurrentParameter(e.After, triggerPoint);
             }
         }
 
-        public ITrackingSpan ApplicableToSpan {
-            get { return (this._applicableToSpan); }
-            internal set { this._applicableToSpan = value; }
-        }
-
-        public string Content {
-            get { return (_content); }
-            internal set { _content = value; }
-        }
-
-        public string Documentation {
-            get { return (_documentation); }
-            internal set { _documentation = value; }
-        }
-
-        public ReadOnlyCollection<IParameter> Parameters {
-            get { return (_parameters); }
-            internal set { _parameters = value; }
-        }
-
-        public string PrettyPrintedContent {
-            get { return (_printContent); }
-            internal set { _printContent = value; }
-        }
-
-        public void cleanup()
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup");
-            this._subjectBuffer.Changed -= this._handler1;
-        }
+        #endregion
     }
 }

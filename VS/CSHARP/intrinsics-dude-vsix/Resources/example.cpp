@@ -13,7 +13,7 @@ void main() {
 
 		// SIGNATURE HELP: OK;
 
-		__m128d a2 = _mm_hadd_pd(a, b);
+		__m128d a2 = _mm_hadd_pd(a
 		__m256 a3 = _mm256_abs_epi16(a);
 
 		// SIGNATURE HELP: NOK;

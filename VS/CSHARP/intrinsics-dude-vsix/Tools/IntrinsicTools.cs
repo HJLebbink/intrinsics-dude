@@ -519,6 +519,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.INT: return "int";
                 case ParamType.INT_CONST_PTR: return "int const *";
                 case ParamType.SIZE_T: return "size_t";
+                case ParamType.SHORT: return "short";
                 case ParamType.UNSIGNED__INT32: return "unsigned __int32";
                 case ParamType.UNSIGNED__INT32_PTR: return "unsigned __int32 *";
                 case ParamType.UNSIGNED__INT64: return "unsigned __int64";
@@ -530,6 +531,35 @@ namespace IntrinsicsDude.Tools
                 case ParamType.VOID: return "void";
                 case ParamType.VOID_PTR: return "void *";
                 case ParamType.VOID_CONST_PTR: return "void const *";
+
+                case ParamType.__INT8: return "__int8";
+                case ParamType.__INT16: return "__int16";
+                case ParamType.__M128_PTR: return "__m128 *";
+                case ParamType.__M128D_PTR: return "__m128d *";
+                case ParamType.__M128I_CONST_PTR: return "__m128i const *";
+                case ParamType.__M128I_PTR: return "__m128i *";
+                case ParamType.__M256_PTR: return "__m256 *";
+                case ParamType.__M256D_PTR: return "__m256d *";
+                case ParamType.__M256I_CONST_PTR: return "__m256i const *";
+                case ParamType.__M256I_PTR: return "__m1256i *";
+                case ParamType.__M512_PTR: return "__m512 *";
+                case ParamType.__M512D_PTR: return "__m512d *";
+                case ParamType.__M64_CONST_PTR: return "__m64 const *";
+                case ParamType.__M64_PTR: return "__m64 *";
+                case ParamType._MM_PERM_ENUM: return "_MM_PERM_ENUM";
+                case ParamType._MM_SWIZZLE_ENUM: return "_MM_SWIZZLE_ENUM";
+                case ParamType.CONST_UNSIGNED_INT: return "const unsigned int";
+                case ParamType.CHAR: return "char";
+                case ParamType.CHAR_CONST_PTR: return "char const *";
+                case ParamType.CHAR_PTR: return "char *";
+                case ParamType.DOUBLE_PTR: return "double *";
+                case ParamType.FLOAT_PTR: return "float *";
+                case ParamType.INT_PTR: return "int *";
+                case ParamType.LONG_LONG: return "long long";
+                case ParamType.UNSIGNED_LONG: return "unsigned long";
+                case ParamType.UNSIGNED_LONG_PTR: return "unsigned long *";
+                case ParamType.UNSIGNED_SHORT_PTR: return "unsigned short *";
+
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ParamType \"" + type + "\".");
                     return "UNKNOWN";
@@ -679,6 +709,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+
         /// <summary>
         /// return Intrinsic, paramIndex, startPos of Intrinsic:
         /// </summary>
@@ -689,10 +720,27 @@ namespace IntrinsicsDude.Tools
             Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
             Intrinsic intrinsic = tup.Item1;
             int paramIndex = tup.Item2;
+            int startPos = (triggerPoint - codeStr.Length + tup.Item3) + 1;
+
+            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "(" + paramIndex+")");
+            return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
+        }
+
+        /// <summary>
+        /// return Intrinsic, paramIndex, startPos of Intrinsic:
+        /// </summary>
+        public static Tuple<Intrinsic, int, ITrackingSpan> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint, char typedChar)
+        {
+            string codeStr = IntrinsicTools.getContent(snapshot, triggerPoint) + typedChar;
+
+            Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
+            Intrinsic intrinsic = tup.Item1;
+            int paramIndex = tup.Item2;
             int startPos = (triggerPoint - codeStr.Length + tup.Item3)+1;
 
             ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "; paramIndex=" + paramIndex);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "(" + paramIndex+")");
             return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
         }
 

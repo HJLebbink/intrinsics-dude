@@ -35,14 +35,12 @@ namespace IntrinsicsDude.Tools
         private readonly IDictionary<Intrinsic, IList<IntrinsicDataElement>> _data;
         private static readonly IList<IntrinsicDataElement> empty = new List<IntrinsicDataElement>(0);
 
-
-
         /// <summary>Constructor</summary>
         public IntrinsicStore(string filename)
         {
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
             this.loadHtml(filename);
-            this.saveXml(filename + ".xml");
+            //this.saveXml(filename + ".xml");
             //this.loadXml(filename + ".xml");
         }
 
@@ -179,7 +177,7 @@ namespace IntrinsicsDude.Tools
                     if (this._data.TryGetValue(dataElement.intrinsic, out dataElements))
                     {
                         dataElements.Add(dataElement);
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
                     }
                     else
                     {
@@ -203,10 +201,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        /// <summary>
-        /// Create a tab separated text file
-        /// </summary>
-        /// <param name="filename"></param>
+        /// <summary>Create a tab separated text file</summary>
         private void saveXml(string filename)
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: saveXml: filename " + filename);
@@ -266,6 +261,7 @@ namespace IntrinsicsDude.Tools
             if (str == null) return null;
             return str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("&amp;", "&");
         }
+
         private static string addHtml(string str)
         {
             if (str == null) return null;

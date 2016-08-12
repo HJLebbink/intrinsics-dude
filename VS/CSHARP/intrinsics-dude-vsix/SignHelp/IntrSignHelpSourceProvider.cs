@@ -20,10 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
@@ -31,13 +29,12 @@ namespace IntrinsicsDude.SignHelp
 {
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
-    [Order(After = "default")] // let the existing signature help trigger first, such that we can remove the signatures it adds
+    [Order(After = "default")] // let the default signature help trigger first, such that we can remove the signatures it adds
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal class IntrSignHelpSourceProvider : ISignatureHelpSourceProvider
     {
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSourceProvider: TryCreateSignatureHelpSource");
             return new IntrSignHelpSource(textBuffer);
         }
     }

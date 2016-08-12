@@ -50,7 +50,7 @@ namespace IntrinsicsDude.SignHelp
 
             //add this to the filter chain
             textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
-            this._textView.TextBuffer.Changed += TextBuffer_Changed;
+            //this._textView.TextBuffer.Changed += TextBuffer_Changed;
             this._sheduleStartSession = false;
         }
 
@@ -66,7 +66,9 @@ namespace IntrinsicsDude.SignHelp
                         char typedChar = GetTypeChar(pvaIn);
                         if (typedChar.Equals('(') || typedChar.Equals(','))
                         {
-                            this._sheduleStartSession = true; // a Changed event from TextBuffer will execute the this.StartSession
+                            SnapshotPoint triggerPoint = this._textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
+                            this.StartSession(this._textView.TextSnapshot, triggerPoint.Position, typedChar);
+                            //this._sheduleStartSession = true; // a Changed event from TextBuffer will execute the this.StartSession
                         }
                         else if (typedChar.Equals(')') || typedChar.Equals(';'))
                         {
@@ -110,13 +112,14 @@ namespace IntrinsicsDude.SignHelp
 
         #region Private Stuff
 
+        
         private void TextBuffer_Changed(object sender, TextContentChangedEventArgs e)
         {
             if (e.Changes.Count > 0)
             {
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: TextBuffer_Changed");
-                if (_sheduleStartSession) {
-                    this.StartSession(e.After, e.Changes[0].NewPosition);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: TextBuffer_Changed");
+                if (this._sheduleStartSession) {
+                   // this.StartSession(e.After, e.Changes[0].NewPosition);
                     this._sheduleStartSession = false;
                 }
             }
@@ -138,7 +141,7 @@ namespace IntrinsicsDude.SignHelp
                 {
                     if (session.Signatures.Count > 0)
                     {
-                        signatureStr = _session.Signatures[0].Content;
+                        signatureStr = session.Signatures[0].Content;
                     }
                 }
                 IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: DismissSession: dismissing session: signatureStr=\"" + signatureStr+ "\". " + debugInfo(session));
@@ -150,13 +153,13 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
-        private void StartSession(ITextSnapshot snapshot, int triggerPoint)
+        private void StartSession(ITextSnapshot snapshot, int triggerPoint, char typedChar)
         {
-            lock (_startNewSessionLock)
+            //lock (_startNewSessionLock)
             {
-                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
+                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint, typedChar);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: triggerPoint=" + triggerPoint + "; char='" + snapshot.GetText(new Span(triggerPoint, 1)) + "'; Intrinsic =" + tup.Item1 + "(" + tup.Item2 + "); startPos=" + tup.Item3.GetStartPoint(snapshot).Position);
                 Intrinsic intrinsic = tup.Item1;
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: StartSession: triggerPoint=" + triggerPoint + "; Intrinsic=" + intrinsic + "; paramIndex=" + tup.Item2 + "; span=\"" + tup.Item3.GetText(this._textView.TextSnapshot) + "\".");
 
                 if (intrinsic != Intrinsic.NONE)
                 {
@@ -184,7 +187,7 @@ namespace IntrinsicsDude.SignHelp
 
         private string debugInfo(ISignatureHelpSession session)
         {
-            return "triggerPoint = " + session.GetTriggerPoint(session.TextView.TextBuffer).GetPosition(session.TextView.TextSnapshot) + "; char= " + session.GetTriggerPoint(session.TextView.TextBuffer).GetCharacter(session.TextView.TextSnapshot);
+            return "triggerPoint=" + session.GetTriggerPoint(session.TextView.TextBuffer).GetPosition(session.TextView.TextSnapshot) + "; char='" + session.GetTriggerPoint(session.TextView.TextBuffer).GetCharacter(session.TextView.TextSnapshot)+"'.";
         }
 
         private static char GetTypeChar(IntPtr pvaIn)
