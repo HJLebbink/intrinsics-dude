@@ -113,15 +113,18 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public string getUrl(string keyword)
         {
-            // no need to pre-process this information.
             try
             {
                 Intrinsic mnemonic = IntrinsicTools.parseIntrinsic(keyword);
                 if (mnemonic != Intrinsic.NONE)
                 {
-                    string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + this._intrinsicStore.get(mnemonic).id;
-                    //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
-                    return url;
+                    IList<IntrinsicDataElement> dataElements = this._intrinsicStore.get(mnemonic);
+                    if (dataElements.Count > 0)
+                    {
+                        string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + dataElements[0].id;
+                        IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
+                        return url;
+                    }
                 }
                 return "";
             }

@@ -49,36 +49,57 @@ namespace IntrinsicsDude.Tools
         }
 
         [Flags]
-        public enum CpuID
+        public enum CpuID : long
         {
-            NONE        = 0,
-            ADX         = 1 << 0,
-            AES         = 1 << 1,
-            AVX         = 1 << 2,
-            AVX2        = 1 << 3,
-            AVX512BW    = 1 << 4,
-            AVX512CD    = 1 << 5,
-            AVX512DQ    = 1 << 6,
-            AVX512ER    = 1 << 7,
-            AVX512F     = 1 << 8,
-            AVX512PF    = 1 << 9,
-            AVX512VL    = 1 << 10,
-            BMI1        = 1 << 11,
-            BMI2        = 1 << 12,
-            CLFLUSHOPT  = 1 << 13,
-            FMA         = 1 << 14,
-            FP16C       = 1 << 15,
-            FXSR        = 1 << 16,
-            KNCNI       = 1 << 17,
-            MMX         = 1 << 18,
-            MPX         = 1 << 19,
-            PCLMULQDQ   = 1 << 20,
-            SSE         = 1 << 21,
-            SSE2        = 1 << 22,
-            SSE3        = 1 << 23,
-            SSE4_1      = 1 << 24,
-            SSE4_2      = 1 << 25,
-            SSSE3       = 1 << 26
+            NONE        = 0L,
+            ADX         = 1L << 0,
+            AES         = 1L << 1,
+            AVX         = 1L << 2,
+            AVX2        = 1L << 3,
+            AVX512BW    = 1L << 4,
+            AVX512CD    = 1L << 5,
+            AVX512DQ    = 1L << 6,
+            AVX512ER    = 1L << 7,
+            AVX512F     = 1L << 8,
+            AVX512PF    = 1L << 9, //ToDO
+            AVX512VL    = 1L << 10,
+            BMI1        = 1L << 11,
+            BMI2        = 1L << 12,
+            CLFLUSHOPT  = 1L << 13,
+            FMA         = 1L << 14,
+            FP16C       = 1L << 15,
+            FXSR        = 1L << 16,
+            KNCNI       = 1L << 17,
+            MMX         = 1L << 18,
+            MPX         = 1L << 19,
+            PCLMULQDQ   = 1L << 20,
+            SSE         = 1L << 21,
+            SSE2        = 1L << 22,
+            SSE3        = 1L << 23,
+            SSE4_1      = 1L << 24,
+            SSE4_2      = 1L << 25,
+            SSSE3       = 1L << 26,
+
+            LZCNT       = 1L << 27,
+            AVX512IFMA52 = 1L << 28,
+            INVPCID     = 1L << 29,
+            MONITOR     = 1L << 30,
+            AVX512VBMI  = 1L << 31,
+            POPCNT      = 1L << 32,
+            RDRAND      = 1L << 33,
+            RDSEED      = 1L << 34,
+            TSC         = 1L << 35,
+            RDTSCP      = 1L << 36,
+            FSGSBASE    = 1L << 37,
+            SHA         = 1L << 38,
+            RTM         = 1L << 39,
+            XSAVE       = 1L << 40,
+            XSAVEC      = 1L << 41,
+            XSS         = 1L << 42,
+            XSAVEOPT    = 1L << 43,
+            PREFETCHWT1 = 1L << 44,
+
+            SVML        = 1L << 45
         }
 
         public enum ReturnType
@@ -265,6 +286,7 @@ namespace IntrinsicsDude.Tools
                 case "UNSIGNED INT": return ReturnType.UNSIGNED_INT;
                 case "UNSIGNED LONG": return ReturnType.UNSIGNED_LONG;
                 case "UNSIGNED SHORT": return ReturnType.UNSIGNED_SHORT;
+                case "":
                 case "VOID": return ReturnType.VOID;
                 case "VOID*":
                 case "VOID *": return ReturnType.VOID_PTR;
@@ -404,6 +426,28 @@ namespace IntrinsicsDude.Tools
                 case "SSE4.1": return CpuID.SSE4_1;
                 case "SSE4.2": return CpuID.SSE4_2;
                 case "SSSE3": return CpuID.SSSE3;
+
+                case "LZCNT": return CpuID.LZCNT;
+                case "AVX512IFMA52": return CpuID.AVX512IFMA52;
+                case "INVPCID": return CpuID.INVPCID;
+                case "MONITOR": return CpuID.MONITOR;
+                case "AVX512VBMI": return CpuID.AVX512VBMI;
+                case "POPCNT": return CpuID.POPCNT;
+                case "RDRAND": return CpuID.RDRAND;
+                case "RDSEED": return CpuID.RDSEED;
+                case "TSC": return CpuID.TSC;
+                case "RDTSCP": return CpuID.RDTSCP;
+                case "FSGSBASE": return CpuID.FSGSBASE;
+                case "SHA": return CpuID.SHA;
+                case "RTM": return CpuID.RTM;
+                case "XSAVE": return CpuID.XSAVE;
+                case "XSAVEC": return CpuID.XSAVEC;
+                case "XSS": return CpuID.XSS;
+                case "XSAVEOPT": return CpuID.XSAVEOPT;
+                case "PREFETCHWT1": return CpuID.PREFETCHWT1;
+
+                case "SVML": return CpuID.SVML;
+
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown cpuid \"" + str + "\".");
                     return CpuID.NONE;

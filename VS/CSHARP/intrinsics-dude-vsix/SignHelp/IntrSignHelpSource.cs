@@ -72,21 +72,25 @@ namespace IntrinsicsDude.SignHelp
                     return;
                 }
 
-                IntrinsicDataElement dataElement = this._store.get(intrinsic);
-                if (dataElement == null) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no dataElement for intrinsic " + intrinsic);
+                IList<IntrinsicDataElement> dataElements = this._store.get(intrinsic);
+                if (dataElements.Count == 0) {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no dataElements for intrinsic " + intrinsic);
                     return;
                 }
 
-                if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
+                if (signatures.Count > 0)
                 {
-                    if (signatures.Count > 0)
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
+                    signatures.Clear();
+                }
+
+                foreach (IntrinsicDataElement dataElement in dataElements)
+                {
+                    if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
                     {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
-                        signatures.Clear();
+                        signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, tup.Item3));
+                        session.Dismissed += Session_Dismissed;
                     }
-                    signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, tup.Item3));
-                    session.Dismissed += Session_Dismissed;
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
             }

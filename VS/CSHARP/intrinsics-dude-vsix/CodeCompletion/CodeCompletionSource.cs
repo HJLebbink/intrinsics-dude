@@ -27,7 +27,6 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
-using System.Windows.Controls;
 
 namespace IntrinsicsDude
 {
@@ -84,10 +83,10 @@ namespace IntrinsicsDude
                 ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(new SnapshotSpan(start, triggerPoint), SpanTrackingMode.EdgeInclusive);
                 string partialKeyword = applicableTo.GetText(snapshot);
 
-                if (partialKeyword.StartsWith("_m", StringComparison.OrdinalIgnoreCase))
+                if (partialKeyword[0].Equals('_'))
                 {
                     bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
-                    SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), IntrinsicsDudeToolsStatic.isSvmlSwitchedOn());
+                    SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
                     completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
                 }
                 #endregion
@@ -111,37 +110,30 @@ namespace IntrinsicsDude
 
         #region Private Methods
 
-        private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures, bool svml)
+        private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures)
         {
             IntrinsicStore store = this._intrinsicsDudeTools.intrinsicStore;
             SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
+
             foreach (Intrinsic mnemonic in Enum.GetValues(typeof(Intrinsic)))
             {
-                if (mnemonic != Intrinsic.NONE)
+                IList<IntrinsicDataElement> dataElements = store.get(mnemonic);
+                CpuID cpuID = CpuID.NONE;
+                foreach (IntrinsicDataElement dataElement in dataElements)
                 {
-                    IntrinsicDataElement dataElement = store.get(mnemonic);
-                    if (dataElement != null)
+                    if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
                     {
-                        bool selected = true;
-                        if (!svml && dataElement.isSVML)
-                        {
-                            selected = false;
-                        }
-                        if (selected)
-                        {
-                            if ((selectedArchitectures & dataElement.cpuID) == CpuID.NONE) {
-                                selected = false;
-                            }
-                        }
-                        if (selected)
-                        {
-                            string cpuID = " [" + IntrinsicTools.ToString(dataElement.cpuID) + ((dataElement.isSVML ? ", SVML]" : "]"));
-                            string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID +" - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
-                            string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
-                            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
-                            set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, null, ""));
-                        }
+                        cpuID |= dataElement.cpuID;
                     }
+                }
+                if (cpuID != CpuID.NONE)
+                {
+                    IntrinsicDataElement dataElement = dataElements[0];
+                    string cpuIDStr = " [" + IntrinsicTools.ToString(cpuID) + "]";
+                    string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuIDStr + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+                    string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
+                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
+                    set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, null, ""));
                 }
             }
             return set;

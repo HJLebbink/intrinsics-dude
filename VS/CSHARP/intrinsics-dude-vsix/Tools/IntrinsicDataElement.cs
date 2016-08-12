@@ -41,7 +41,6 @@ namespace IntrinsicsDude.Tools
         public int id;
         public Mnemonic instruction;
         public string instructionNote;
-        public bool isSVML;
 
         public string description;
         public string performance;
@@ -76,9 +75,9 @@ namespace IntrinsicsDude.Tools
                 {
                     sb.Length -= 2; // remove the last comma
                 }
-                sb.Append(")  ");
-                string cpuID = "[" + IntrinsicTools.ToString(this.cpuID) + ((this.isSVML ? ", SVML]" : "]"));
-                sb.AppendLine(cpuID);
+                sb.Append(")  [");
+                sb.Append(IntrinsicTools.ToString(this.cpuID));
+                sb.AppendLine("]");
 
                 description.Inlines.Add(makeRunBold(sb.ToString()));
                 #endregion
@@ -119,9 +118,9 @@ namespace IntrinsicsDude.Tools
                 {
                     sb.Length -= 2; // remove the last comma
                 }
-                sb.Append(")  ");
-                string cpuID = "[" + IntrinsicTools.ToString(this.cpuID) + ((this.isSVML ? ", SVML]" : "]"));
-                sb.AppendLine(cpuID);
+                sb.Append(")  [");
+                sb.Append(IntrinsicTools.ToString(this.cpuID));
+                sb.AppendLine("]");
                 #endregion
 
                 sb.Append(AsmTools.AsmSourceTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));

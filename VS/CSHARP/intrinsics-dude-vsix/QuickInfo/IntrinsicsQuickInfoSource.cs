@@ -95,8 +95,8 @@ namespace IntrinsicsDude.QuickInfo
                                 Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
-                                    IntrinsicDataElement dataElement = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
-                                    if (dataElement != null)
+                                    IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
+                                    if (dataElements.Count > 0)
                                     {
                                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
                                         if (quickInfoContent.Count > 0)
@@ -104,7 +104,7 @@ namespace IntrinsicsDude.QuickInfo
                                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
-                                        quickInfoContent.Add(dataElement.descriptionTextBlock);
+                                        quickInfoContent.Add(dataElements[0].descriptionTextBlock); //only show the description of the first intrinsic data element
                                     }
                                 }
                             }
