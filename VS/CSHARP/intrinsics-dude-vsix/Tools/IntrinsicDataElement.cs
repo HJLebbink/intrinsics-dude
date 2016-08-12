@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using AsmTools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,7 +38,7 @@ namespace IntrinsicsDude.Tools
         public readonly IList<Tuple<ParamType, string>> parameters;
         public CpuID cpuID;
         public int id;
-        public Mnemonic instruction;
+        public String instruction;
         public string instructionNote;
 
         public string description;
@@ -82,7 +81,7 @@ namespace IntrinsicsDude.Tools
                 description.Inlines.Add(makeRunBold(sb.ToString()));
                 #endregion
 
-                description.Inlines.Add(new Run(AsmTools.AsmSourceTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+                description.Inlines.Add(new Run(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
                     description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
@@ -123,7 +122,7 @@ namespace IntrinsicsDude.Tools
                 sb.AppendLine("]");
                 #endregion
 
-                sb.Append(AsmTools.AsmSourceTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));
+                sb.Append(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
                     sb.Append("\n\nOperation:\n");

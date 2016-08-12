@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 using IntrinsicsDude.Tools;
-using AsmTools;
 using System.Windows.Controls;
 
 namespace IntrinsicsDude.OptionsPage {

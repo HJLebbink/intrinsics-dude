@@ -80,16 +80,6 @@ namespace IntrinsicsDude
                             this.Complete(true);
                             handledChar = false;
                         }
-                        else if (AsmTools.AsmSourceTools.isSeparatorChar(typedChar))
-                        {
-                            this.Complete(false);
-                            handledChar = false;
-                        }
-                        else if (AsmTools.AsmSourceTools.isRemarkChar(typedChar))
-                        {
-                            this.Complete(true);
-                            handledChar = false;
-                        }
                         break;
                 }
             }

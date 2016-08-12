@@ -23,6 +23,8 @@
 using Microsoft.VisualStudio.Text;
 using System;
 using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntrinsicsDude.Tools
 {
@@ -645,6 +647,75 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+
+        #region Text Wrap
+        /// <summary>
+        /// Forces the string to word wrap so that each line doesn't exceed the maxLineLength.
+        /// </summary>
+        /// <param name="str">The string to wrap.</param>
+        /// <param name="maxLength">The maximum number of characters per line.</param>
+        /// <returns></returns>
+        public static string linewrap(this string str, int maxLength)
+        {
+            return linewrap(str, maxLength, "");
+        }
+
+        /// <summary>
+        /// Forces the string to word wrap so that each line doesn't exceed the maxLineLength.
+        /// </summary>
+        /// <param name="str">The string to wrap.</param>
+        /// <param name="maxLength">The maximum number of characters per line.</param>
+        /// <param name="prefix">Adds this string to the beginning of each line.</param>
+        /// <returns></returns>
+        private static string linewrap(string str, int maxLength, string prefix)
+        {
+            if (string.IsNullOrEmpty(str)) return "";
+            if (maxLength <= 0) return prefix + str;
+
+            IList<string> lines = new List<string>();
+
+            // breaking the string into lines makes it easier to process.
+            foreach (string line in str.Split("\n".ToCharArray()))
+            {
+                var remainingLine = line.Trim();
+                do
+                {
+                    var newLine = getLine(remainingLine, maxLength - prefix.Length);
+                    lines.Add(newLine);
+                    remainingLine = remainingLine.Substring(newLine.Length).Trim();
+                    // Keep iterating as int as we've got words remaining 
+                    // in the line.
+                } while (remainingLine.Length > 0);
+            }
+
+            return string.Join(Environment.NewLine + prefix, lines.ToArray());
+        }
+        private static string getLine(string str, int maxLength)
+        {
+            // The string is less than the max length so just return it.
+            if (str.Length <= maxLength) return str;
+
+            // Search backwords in the string for a whitespace char
+            // starting with the char one after the maximum length
+            // (if the next char is a whitespace, the last word fits).
+            for (int i = maxLength; i >= 0; i--)
+            {
+                if (isTextSeparatorChar(str[i]))
+                    return str.Substring(0, i).TrimEnd();
+            }
+
+            // No whitespace chars, just break the word at the maxlength.
+            return str.Substring(0, maxLength);
+        }
+
+        private static bool isTextSeparatorChar(char c)
+        {
+            return char.IsWhiteSpace(c) || c.Equals('.') || c.Equals(',') || c.Equals(';') || c.Equals('?') || c.Equals('!') || c.Equals(')') || c.Equals(']') || c.Equals('-');
+        }
+
+        #endregion Text Wrap
+
+
         /// <summary>
         /// Return the first mnemonic before the provided position in the provided line
         /// </summary>
@@ -709,30 +780,12 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-
         /// <summary>
         /// return Intrinsic, paramIndex, startPos of Intrinsic:
         /// </summary>
         public static Tuple<Intrinsic, int, ITrackingSpan> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint)
         {
             string codeStr = IntrinsicTools.getContent(snapshot, triggerPoint);
-
-            Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
-            Intrinsic intrinsic = tup.Item1;
-            int paramIndex = tup.Item2;
-            int startPos = (triggerPoint - codeStr.Length + tup.Item3) + 1;
-
-            ITrackingSpan applicableToSpan = snapshot.CreateTrackingSpan(new Span(startPos, 0), SpanTrackingMode.EdgeInclusive, TrackingFidelityMode.Forward);
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: getCurrentIntrinsicAndParamIndex: B: codeStr=\"" + codeStr.TrimStart() + "\"; span=\""+ applicableToSpan.GetText(snapshot)+ "\"; returning intrinsic=" + intrinsic + "(" + paramIndex+")");
-            return new Tuple<Intrinsic, int, ITrackingSpan>(intrinsic, paramIndex, applicableToSpan);
-        }
-
-        /// <summary>
-        /// return Intrinsic, paramIndex, startPos of Intrinsic:
-        /// </summary>
-        public static Tuple<Intrinsic, int, ITrackingSpan> getCurrentIntrinsicAndParamIndex(ITextSnapshot snapshot, int triggerPoint, char typedChar)
-        {
-            string codeStr = IntrinsicTools.getContent(snapshot, triggerPoint) + typedChar;
 
             Tuple<Intrinsic, int, int, int> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex_str(codeStr);
             Intrinsic intrinsic = tup.Item1;

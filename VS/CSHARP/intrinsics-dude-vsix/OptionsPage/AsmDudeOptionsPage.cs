@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 using IntrinsicsDude.Tools;
-using AsmTools;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -155,7 +154,7 @@ namespace IntrinsicsDude.OptionsPage
                 }
             }
             if (sb.Length > 2) sb.Length -= 2; // get rid of last comma.
-            return AsmSourceTools.linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
+            return IntrinsicTools.linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
         }
 
         /// <summary>

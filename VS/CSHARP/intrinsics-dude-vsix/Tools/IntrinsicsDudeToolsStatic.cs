@@ -22,7 +22,6 @@
 
 using IntrinsicsDude.ErrorSquiggles;
 using IntrinsicsDude.SyntaxHighlighting;
-using AsmTools;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -272,9 +271,9 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static string getKeywordStr(SnapshotPoint? bufferPosition)
+        public static string getKeywordStrOLD(SnapshotPoint? bufferPosition)
         {
-
+            /*
             if (bufferPosition != null)
             {
                 string line = bufferPosition.Value.GetContainingLine().GetText();
@@ -291,12 +290,13 @@ namespace IntrinsicsDude.Tools
                 //IntrinsicsDudeToolsStatic.Output("INFO: getKeyword: \"" + result + "\".");
                 return result;
             }
+            */
             return null;
         }
 
-        public static TextExtent? getKeyword(SnapshotPoint? bufferPosition)
+        public static TextExtent? getKeywordOLD(SnapshotPoint? bufferPosition)
         {
-
+            /*
             if (bufferPosition != null)
             {
                 string line = bufferPosition.Value.GetContainingLine().GetText();
@@ -314,6 +314,7 @@ namespace IntrinsicsDude.Tools
                 //IntrinsicsDudeToolsStatic.Output("INFO: getKeyword: \"" + span.GetText() + "\".");
                 return new TextExtent(span, true);
             }
+            */
             return null;
         }
 
@@ -327,8 +328,10 @@ namespace IntrinsicsDude.Tools
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public static string getPreviousKeyword(SnapshotPoint begin, SnapshotPoint end)
+        public static string getPreviousKeywordOLD(SnapshotPoint begin, SnapshotPoint end)
         {
+            return null;
+            /*
             // return getPreviousKeyword(begin.GetContainingLine.)
             if (end == 0) return "";
 
@@ -336,6 +339,7 @@ namespace IntrinsicsDude.Tools
             int beginPos = begin.Position - beginLine;
             int endPos = end.Position - beginLine;
             return AsmSourceTools.getPreviousKeyword(beginPos, endPos, begin.GetContainingLine().GetText());
+            */
         }
 
         public static bool isAllUpper(string input)

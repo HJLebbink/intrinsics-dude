@@ -378,10 +378,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj">
-      <Project>{9f5c800f-83f8-4866-ae3c-97602b39c536}</Project>
-      <Name>asm-tools-lib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\intrinsics-lib\intrinsics-main.csproj">
       <Project>{3D21486D-183F-4177-8890-B9DFA39B582B}</Project>
       <Name>intrinsics-main</Name>

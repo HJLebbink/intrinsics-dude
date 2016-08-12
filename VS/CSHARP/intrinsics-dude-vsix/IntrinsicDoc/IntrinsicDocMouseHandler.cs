@@ -267,7 +267,8 @@ namespace IntrinsicsDude.AsmDoc
 
                         ITextViewLine line = this._view.TextViewLines.GetTextViewLineContainingYCoordinate(currentMousePosition.Y);
                         SnapshotPoint? bufferPosition = line.GetBufferPositionFromXCoordinate(currentMousePosition.X);
-                        string keyword = IntrinsicsDudeToolsStatic.getKeywordStr(bufferPosition);
+//TODO
+                        string keyword = null; IntrinsicsDudeToolsStatic.getKeywordStrOLD(bufferPosition);
                         if (keyword != null)
                         {
                             this.DispatchGoToDoc(keyword);

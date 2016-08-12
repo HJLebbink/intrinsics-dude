@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System;
@@ -31,7 +30,6 @@ namespace IntrinsicsDude.SignHelp
     internal class IntrSign : ISignature
     {
         private readonly ITextBuffer _subjectBuffer;
-        private readonly EventHandler<TextContentChangedEventArgs> _handler1;
         private IParameter _currentParameter;
         private string _content;
         private string _documentation;
@@ -43,28 +41,17 @@ namespace IntrinsicsDude.SignHelp
         internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
-
             this._subjectBuffer = subjectBuffer;
             this._content = content;
             this._documentation = doc;
             this._parameters = parameters;
-
-            this._handler1 = new EventHandler<TextContentChangedEventArgs>(this.OnSubjectBufferChanged1);
-            this._subjectBuffer.Changed += this._handler1; //needed otherwise the next parameters is not updated once a comma is typed
         }
 
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
 
         public IParameter CurrentParameter {
             get { return this._currentParameter; }
-            internal set {
-                if (this._currentParameter != value)
-                {
-                    IParameter prevCurrentParameter = this._currentParameter;
-                    this._currentParameter = value;
-                    this.RaiseCurrentParameterChanged(prevCurrentParameter, this._currentParameter);
-                }
-            }
+            internal set { this._currentParameter = value; }
         }
 
         public ITrackingSpan ApplicableToSpan {
@@ -72,17 +59,9 @@ namespace IntrinsicsDude.SignHelp
             internal set { this._applicableToSpan = value; }
         }
 
-        public void SetCurrentParameter(int paramIndex, bool raiseEvent)
+        public void SetCurrentParameter(int paramIndex)
         {
-            IParameter newValue = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
-            if (raiseEvent)
-            {
-                this.CurrentParameter = newValue;
-            }
-            else
-            {
-                this._currentParameter = newValue;
-            }
+            this._currentParameter = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
         }
 
         public string Content {
@@ -105,60 +84,5 @@ namespace IntrinsicsDude.SignHelp
             internal set { _printContent = value; }
         }
         
-        public void cleanup()
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup");
-            this._subjectBuffer.Changed -= this._handler1;
-        }
-
-        #region Private Methods
-
-        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
-            EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
-            if (tempHandler != null)
-            {
-                tempHandler(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
-            }
-        }
-
-        internal void ComputeCurrentParameter(ITextSnapshot snapshot, int triggerPoint)
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: computeCurrentParameter");
-
-            if (this.Parameters == null)
-            {
-                IntrinsicsDudeToolsStatic.Output("WARNING: IntrSign: ComputeCurrentParameter: parameters is null");
-                return;
-            }
-
-            int nParameters = this.Parameters.Count;
-            if (nParameters == 0)
-            {
-                this.CurrentParameter = null;
-            }
-            else
-            {
-                Tuple<Intrinsic, int, ITrackingSpan> tup = IntrinsicTools.getCurrentIntrinsicAndParamIndex(snapshot, triggerPoint);
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter: triggerPoint=" + triggerPoint + "; char='" + snapshot.GetText(new Span(triggerPoint, 1)) + "'; Intrinsic=" + tup.Item1 + "(" + tup.Item2 + "); startPos=" + tup.Item3.GetStartPoint(snapshot).Position);
-
-                int paramIndex = tup.Item2;
-                this.ApplicableToSpan = tup.Item3;
-                this.SetCurrentParameter(paramIndex, true);
-            }
-        }
-
-        internal void OnSubjectBufferChanged1(object sender, TextContentChangedEventArgs e)
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged1: nexText=" + e.Changes[0].NewText);
-            if (e.Changes.Count > 0)
-            {
-                int triggerPoint = e.Changes[0].OldPosition;
-                this.ComputeCurrentParameter(e.After, triggerPoint);
-            }
-        }
-
-        #endregion
-    }
+     }
 }

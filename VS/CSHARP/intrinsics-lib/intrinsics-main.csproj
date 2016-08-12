@@ -63,12 +63,6 @@
   <ItemGroup>
     <Content Include="Resources\Intel-Intrinsics-Guide.html" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\asm-dude\VS\CSHARP\asm-tools-lib\asm-tools-lib.csproj">
-      <Project>{9F5C800F-83F8-4866-AE3C-97602B39C536}</Project>
-      <Name>asm-tools-lib</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

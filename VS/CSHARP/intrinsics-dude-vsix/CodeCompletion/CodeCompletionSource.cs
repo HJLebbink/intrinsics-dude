@@ -72,7 +72,7 @@ namespace IntrinsicsDude
                 //2] find the start of the current keyword
                 #region
                 SnapshotPoint start = triggerPoint;
-                while ((start > line.Start) && !AsmTools.AsmSourceTools.isSeparatorChar((start - 1).GetChar()))
+                while ((start > line.Start) && !isSeparatorChar((start - 1).GetChar()))
                 {
                     start -= 1;
                 }
@@ -97,6 +97,11 @@ namespace IntrinsicsDude
             {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:AugmentCompletionSession; e={1}", this.ToString(), e.ToString()));
             }
+        }
+
+        private static bool isSeparatorChar(char c)
+        {
+            return char.IsWhiteSpace(c) || c.Equals(',') || c.Equals('[') || c.Equals(']') || c.Equals('(') || c.Equals(')') || c.Equals('+') || c.Equals('-') || c.Equals('*') || c.Equals('{') || c.Equals('}') || c.Equals(':');
         }
 
         public void Dispose()

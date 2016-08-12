@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using AsmTools;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -105,11 +104,11 @@ namespace IntrinsicsDude.Tools
                                 string instruction = element.InnerText.ToUpper();
                                 if (instruction.Equals("..."))
                                 {
-                                    dataElement.instruction = Mnemonic.UNKNOWN;
+                                    dataElement.instruction = "NONE";
                                     dataElement.cpuID |= CpuID.SVML;
                                 } else
                                 {
-                                    dataElement.instruction = AsmSourceTools.parseMnemonic(instruction);
+                                    dataElement.instruction = instruction;
                                 }
                                 break;
                             #endregion
