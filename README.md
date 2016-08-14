@@ -25,7 +25,7 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 
 ### Feature Requests: (desire something - let me know)
 * No syntax highlighting for intrinsic keywords that are not enabled.
-* 
+* Restrict code completion suggestions based on the return type when used as a parameter in an intrinsic.
 
 ### Updates
 * 25 Juli 2016: Start of project
