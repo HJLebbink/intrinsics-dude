@@ -83,11 +83,14 @@ namespace IntrinsicsDude
                 ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(new SnapshotSpan(start, triggerPoint), SpanTrackingMode.EdgeInclusive);
                 string partialKeyword = applicableTo.GetText(snapshot);
 
-                if (partialKeyword[0].Equals('_'))
+                if (partialKeyword.Length > 0)
                 {
-                    bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
-                    SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
-                    completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
+                    if (partialKeyword[0].Equals('_'))
+                    {
+                        bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
+                        SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
+                        completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
+                    }
                 }
                 #endregion
 

@@ -22,6 +22,7 @@
 
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
@@ -33,9 +34,12 @@ namespace IntrinsicsDude.SignHelp
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal class IntrSignHelpSourceProvider : ISignatureHelpSourceProvider
     {
+        [Import]
+        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            return new IntrSignHelpSource(textBuffer);
+            return new IntrSignHelpSource(textBuffer, NavigatorService.GetTextStructureNavigator(textBuffer));
         }
     }
 }

@@ -61,7 +61,7 @@ namespace IntrinsicsDude.Tools
                 #region load intrinsic store
                 string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
                 string filename_intrinsics = path + "Intel-Intrinsics-Guide.html";
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeTools: constructor: filename " + filename_intrinsics);
+                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeTools: constructor: filename " + filename_intrinsics);
                 this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
                 #endregion
             }

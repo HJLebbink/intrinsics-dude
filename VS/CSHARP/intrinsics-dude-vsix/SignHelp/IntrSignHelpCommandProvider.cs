@@ -23,6 +23,7 @@
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
@@ -30,9 +31,8 @@ using System.ComponentModel.Composition;
 namespace IntrinsicsDude.SignHelp
 {
     [Export(typeof(IVsTextViewCreationListener))]
-    [Name("Intrinsic Signature Help controller")]
+    [Name("Intrinsic Signature Help controller")] // make sure this name is unique!
     [TextViewRole(PredefinedTextViewRoles.Editable)]
-   // [Order(After = "default")]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal sealed class IntrSignHelpCommandProvider : IVsTextViewCreationListener
     {
@@ -40,15 +40,20 @@ namespace IntrinsicsDude.SignHelp
         private IVsEditorAdaptersFactoryService _adapterService = null;
 
         [Import]
+        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+
+        [Import]
         private ISignatureHelpBroker _signatureHelpBroker = null;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
+            if (!Settings.Default.SignatureHelp_On) return;
+
             ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
             if (textView != null)
             {
                 textView.Properties.GetOrCreateSingletonProperty(
-                     () => new IntrSignHelpCommandHandler(textViewAdapter, textView, _signatureHelpBroker)
+                     () => new IntrSignHelpCommandHandler(textViewAdapter, textView, NavigatorService.GetTextStructureNavigator(textView.TextBuffer), _signatureHelpBroker)
                 );
             }
         }
