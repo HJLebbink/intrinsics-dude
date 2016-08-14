@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using System;
@@ -29,60 +30,131 @@ namespace IntrinsicsDude.SignHelp
 {
     internal class IntrSign : ISignature
     {
-        private readonly ITextBuffer _subjectBuffer;
-        private IParameter _currentParameter;
-        private string _content;
-        private string _documentation;
-        private ITrackingSpan _applicableToSpan;
-        private ReadOnlyCollection<IParameter> _parameters;
-        private string _printContent;
+        private readonly ITextBuffer m_subjectBuffer;
+        private IParameter m_currentParameter;
+        private string m_content;
+        private string m_documentation;
+        private ITrackingSpan m_applicableToSpan;
+        private ReadOnlyCollection<IParameter> m_parameters;
+        private string m_printContent;
 
 
         internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
-            this._subjectBuffer = subjectBuffer;
-            this._content = content;
-            this._documentation = doc;
-            this._parameters = parameters;
+            this.m_subjectBuffer = subjectBuffer;
+            this.m_content = content;
+            this.m_documentation = doc;
+            this.m_parameters = parameters;
+            this.m_subjectBuffer.Changed += new EventHandler<TextContentChangedEventArgs>(OnSubjectBufferChanged);
         }
 
+        #region Public Stuff
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
 
         public IParameter CurrentParameter {
-            get { return this._currentParameter; }
-            internal set { this._currentParameter = value; }
+            get { return m_currentParameter; }
+            internal set {
+                if (m_currentParameter != value)
+                {
+                    IParameter prevCurrentParameter = m_currentParameter;
+                    m_currentParameter = value;
+                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: CurrentParameter: going to RaiseCurrentParameterChanged.");
+                    this.RaiseCurrentParameterChanged(prevCurrentParameter, m_currentParameter);
+                }
+            }
         }
 
         public ITrackingSpan ApplicableToSpan {
-            get { return (this._applicableToSpan); }
-            internal set { this._applicableToSpan = value; }
+            get { return (this.m_applicableToSpan); }
+            internal set { this.m_applicableToSpan = value; }
         }
 
         public void SetCurrentParameter(int paramIndex)
         {
-            this._currentParameter = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: SetCurrentParameter: paramIndex="+ paramIndex+ "; this.Parameters.Count="+this.Parameters.Count);
+            this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
         }
 
         public string Content {
-            get { return (_content); }
-            internal set { _content = value; }
+            get { return (m_content); }
+            internal set { m_content = value; }
         }
 
         public string Documentation {
-            get { return (_documentation); }
-            internal set { _documentation = value; }
+            get { return (m_documentation); }
+            internal set { m_documentation = value; }
         }
 
         public ReadOnlyCollection<IParameter> Parameters {
-            get { return (_parameters); }
-            internal set { _parameters = value; }
+            get { return (m_parameters); }
+            internal set { m_parameters = value; }
         }
 
         public string PrettyPrintedContent {
-            get { return (_printContent); }
-            internal set { _printContent = value; }
+            get { return (m_printContent); }
+            internal set { m_printContent = value; }
         }
+
+        #endregion
         
-     }
+        #region Private Stuff
+
+        internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
+        {
+            string newText = e.Changes[0].NewText;
+            if (newText.Contains(",") || newText.Contains("(")) {
+                this.ComputeCurrentParameter();
+            }
+        }
+        internal void ComputeCurrentParameter()
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");
+
+            if (Parameters.Count == 0)
+            {
+                this.CurrentParameter = null;
+                return;
+            }
+
+            //the number of commas in the string is the index of the current parameter
+            string sigText = ApplicableToSpan.GetText(m_subjectBuffer.CurrentSnapshot);
+
+            int currentIndex = 0;
+            int commaCount = 0;
+            while (currentIndex < sigText.Length)
+            {
+                int commaIndex = sigText.IndexOf(',', currentIndex);
+                if (commaIndex == -1)
+                {
+                    break;
+                }
+                commaCount++;
+                currentIndex = commaIndex + 1;
+            }
+
+            if (commaCount < Parameters.Count)
+            {
+                this.CurrentParameter = Parameters[commaCount];
+            }
+            else
+            {
+                //too many commas, so use the last parameter as the current one.
+                this.CurrentParameter = Parameters[Parameters.Count - 1];
+            }
+        }
+
+        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
+
+            EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
+            if (tempHandler != null)
+            {
+                tempHandler(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
+            }
+        }
+        #endregion
+
+    }
 }
