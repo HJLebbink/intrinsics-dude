@@ -781,28 +781,6 @@ namespace IntrinsicsDude.Tools
             return new Tuple<Intrinsic, int>(Intrinsic.NONE, pos);
         }
 
-        public static string sourceCodeLine(string str)
-        {
-            int startPos = -1;
-            for (int i = str.Length - 1; i >= 0; --i)
-            {
-                if (str[i].Equals(';'))
-                {
-                    startPos = i + 1;
-                    break;
-                }
-            }
-            if ((startPos > 0) && (startPos < str.Length))
-            {
-                return str.Substring(startPos);
-            }
-            else
-            {
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTools: sourceCodeLine: no semicolon found: startPos=" + startPos + "; str.Length=" + str.Length + "; str=\"" + str + "\".");
-                return str;
-            }
-        }
-
         public static Tuple<Intrinsic, int> getIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
         {
             int nClosingParenthesis = 0;
@@ -816,6 +794,7 @@ namespace IntrinsicsDude.Tools
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=" + word);
 
                 if (word.Equals(";")) break;
+                if (word.Equals("=")) break;
                 if (word.Equals(")"))
                 {
                     nClosingParenthesis++;
@@ -846,14 +825,6 @@ namespace IntrinsicsDude.Tools
                 currentPos = extent.Span.Start - 1;
             }
             return new Tuple<Intrinsic, int>(Intrinsic.NONE, 0);
-        }
-
-        public static string getContent(ITextSnapshot snapshot, int triggerPoint)
-        {
-            //TODO do not use fixed scan buffer size but search for char ';'
-            int bufferStartIndex = Math.Max(0, triggerPoint - IntrinsicTools.SCAN_BUFFER_SIZE);
-            int length = (triggerPoint - bufferStartIndex) + 1;
-            return sourceCodeLine(snapshot.GetText(bufferStartIndex, length));
         }
 
         public static Intrinsic parseIntrinsic(string str)

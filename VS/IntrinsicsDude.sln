@@ -3,14 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OokLanguage", "..\..\VSSDK-Extensibility-Samples\Ook_Language_Integration\C#\OokLanguage.csproj", "{F091221E-FD10-41A7-AAC4-C9359178BDB1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSHARP\intrinsics-dude-vsix\intrinsics-dude-vsix.csproj", "{6BB67359-A10C-4688-9383-E989E971F0EA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3D21486D-183F-4177-8890-B9DFA39B582B} = {3D21486D-183F-4177-8890-B9DFA39B582B}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-main", "CSHARP\intrinsics-lib\intrinsics-main.csproj", "{3D21486D-183F-4177-8890-B9DFA39B582B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-tests-intrinsics-lib", "CSHARP\unit-tests-intrinsics-lib\unit-tests-intrinsics-lib.csproj", "{8C2F2ADB-0160-41C8-AB20-E3443E65A465}"
 EndProject
@@ -24,18 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x64.Build.0 = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Debug|x86.Build.0 = Debug|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x64.ActiveCfg = Release|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x64.Build.0 = Release|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x86.ActiveCfg = Release|Any CPU
-		{F091221E-FD10-41A7-AAC4-C9359178BDB1}.Release|x86.Build.0 = Release|Any CPU
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -48,18 +29,6 @@ Global
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x64.Build.0 = Release|Any CPU
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x86.ActiveCfg = Release|Any CPU
 		{6BB67359-A10C-4688-9383-E989E971F0EA}.Release|x86.Build.0 = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|x64.Build.0 = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Debug|x86.Build.0 = Debug|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|x64.ActiveCfg = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|x64.Build.0 = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|x86.ActiveCfg = Release|Any CPU
-		{3D21486D-183F-4177-8890-B9DFA39B582B}.Release|x86.Build.0 = Release|Any CPU
 		{8C2F2ADB-0160-41C8-AB20-E3443E65A465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C2F2ADB-0160-41C8-AB20-E3443E65A465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C2F2ADB-0160-41C8-AB20-E3443E65A465}.Debug|x64.ActiveCfg = Debug|Any CPU
