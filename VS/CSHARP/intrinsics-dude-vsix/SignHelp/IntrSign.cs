@@ -103,10 +103,13 @@ namespace IntrinsicsDude.SignHelp
         internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
         {
             string newText = e.Changes[0].NewText;
-            if (newText.Contains(",") || newText.Contains("(")) {
+            if (newText.Contains(",") || newText.Contains("("))
+            {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
                 this.ComputeCurrentParameter();
             }
         }
+
         internal void ComputeCurrentParameter()
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");

@@ -27,6 +27,8 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
+using System.Windows.Media;
+using System.IO;
 
 namespace IntrinsicsDude
 {
@@ -42,13 +44,15 @@ namespace IntrinsicsDude
     {
         private readonly ITextBuffer _buffer;
         private readonly IntrinsicsDudeTools _intrinsicsDudeTools;
+
+        private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor
         private bool _disposed = false;
 
         public CodeCompletionSource(ITextBuffer buffer)
         {
             this._buffer = buffer;
             this._intrinsicsDudeTools = IntrinsicsDudeTools.Instance;
-            //this.loadIcons();
+            this.loadIcons();
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -68,6 +72,8 @@ namespace IntrinsicsDude
                     return;
                 }
                 ITextSnapshotLine line = triggerPoint.GetContainingLine();
+
+                //TODO replace the following code with: string text = m_navigator.GetExtentOfWord(point).Span.GetText();
 
                 //2] find the start of the current keyword
                 #region
@@ -141,11 +147,27 @@ namespace IntrinsicsDude
                     string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuIDStr + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                     string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
                     //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
-                    set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, null, ""));
+                    set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
                 }
             }
             return set;
         }
+
+        private void loadIcons()
+        {
+            Uri uri = null;
+            string installPath = IntrinsicsDudeToolsStatic.getInstallPath();
+            try
+            {
+                uri = new Uri(installPath + "Resources/images/icon-IF.png");
+                this.icon_IF = IntrinsicsDudeToolsStatic.bitmapFromUri(uri);
+            }
+            catch (FileNotFoundException)
+            {
+                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
+            }
+        }
+
         #endregion
     }
 }
