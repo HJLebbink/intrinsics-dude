@@ -166,6 +166,25 @@ namespace IntrinsicsDude.OptionsPage {
             get { return (useArch_AVX512CD_UI.IsChecked.HasValue) ? useArch_AVX512CD_UI.IsChecked.Value : false; }
             set { useArch_AVX512CD_UI.IsChecked = value; }
         }
+        public bool useArch_AVX512PF
+        {
+            get { return (useArch_AVX512PF_UI.IsChecked.HasValue) ? useArch_AVX512PF_UI.IsChecked.Value : false; }
+            set { useArch_AVX512PF_UI.IsChecked = value; }
+        }
+        public bool useArch_AVX512IFMA52
+        {
+            get { return (useArch_AVX512IFMA52_UI.IsChecked.HasValue) ? useArch_AVX512IFMA52_UI.IsChecked.Value : false; }
+            set { useArch_AVX512IFMA52_UI.IsChecked = value; }
+        }
+        public bool useArch_AVX512VBMI
+        {
+            get { return (useArch_AVX512VBMI_UI.IsChecked.HasValue) ? useArch_AVX512VBMI_UI.IsChecked.Value : false; }
+            set { useArch_AVX512VBMI_UI.IsChecked = value; }
+        }
+
+
+
+
         public bool useArch_BMI1 {
             get { return (useArch_BMI1_UI.IsChecked.HasValue) ? useArch_BMI1_UI.IsChecked.Value : false; }
             set { useArch_BMI1_UI.IsChecked = value; }
@@ -209,6 +228,88 @@ namespace IntrinsicsDude.OptionsPage {
         public bool useArch_KNCNI {
             get { return (useArch_KNCNI_UI.IsChecked.HasValue) ? useArch_KNCNI_UI.IsChecked.Value : false; }
             set { useArch_KNCNI_UI.IsChecked = value; }
+        }
+
+
+        public bool useArch_LZCNT
+        {
+            get { return (useArch_LZCNT_UI.IsChecked.HasValue) ? useArch_LZCNT_UI.IsChecked.Value : false; }
+            set { useArch_LZCNT_UI.IsChecked = value; }
+        }
+        public bool useArch_INVPCID
+        {
+            get { return (useArch_INVPCID_UI.IsChecked.HasValue) ? useArch_INVPCID_UI.IsChecked.Value : false; }
+            set { useArch_INVPCID_UI.IsChecked = value; }
+        }
+        public bool useArch_MONITOR
+        {
+            get { return (useArch_MONITOR_UI.IsChecked.HasValue) ? useArch_MONITOR_UI.IsChecked.Value : false; }
+            set { useArch_MONITOR_UI.IsChecked = value; }
+        }
+        public bool useArch_POPCNT
+        {
+            get { return (useArch_POPCNT_UI.IsChecked.HasValue) ? useArch_POPCNT_UI.IsChecked.Value : false; }
+            set { useArch_POPCNT_UI.IsChecked = value; }
+        }
+        public bool useArch_RDRAND
+        {
+            get { return (useArch_RDRAND_UI.IsChecked.HasValue) ? useArch_RDRAND_UI.IsChecked.Value : false; }
+            set { useArch_RDRAND_UI.IsChecked = value; }
+        }
+        public bool useArch_RDSEED
+        {
+            get { return (useArch_RDSEED_UI.IsChecked.HasValue) ? useArch_RDSEED_UI.IsChecked.Value : false; }
+            set { useArch_RDSEED_UI.IsChecked = value; }
+        }
+        public bool useArch_TSC
+        {
+            get { return (useArch_TSC_UI.IsChecked.HasValue) ? useArch_TSC_UI.IsChecked.Value : false; }
+            set { useArch_TSC_UI.IsChecked = value; }
+        }
+        public bool useArch_RDTSCP
+        {
+            get { return (useArch_RDTSCP_UI.IsChecked.HasValue) ? useArch_RDTSCP_UI.IsChecked.Value : false; }
+            set { useArch_RDTSCP_UI.IsChecked = value; }
+        }
+        public bool useArch_FSGSBASE
+        {
+            get { return (useArch_FSGSBASE_UI.IsChecked.HasValue) ? useArch_FSGSBASE_UI.IsChecked.Value : false; }
+            set { useArch_FSGSBASE_UI.IsChecked = value; }
+        }
+        public bool useArch_SHA
+        {
+            get { return (useArch_SHA_UI.IsChecked.HasValue) ? useArch_SHA_UI.IsChecked.Value : false; }
+            set { useArch_SHA_UI.IsChecked = value; }
+        }
+        public bool useArch_RTM
+        {
+            get { return (useArch_RTM_UI.IsChecked.HasValue) ? useArch_RTM_UI.IsChecked.Value : false; }
+            set { useArch_RTM_UI.IsChecked = value; }
+        }
+        public bool useArch_XSAVE
+        {
+            get { return (useArch_XSAVE_UI.IsChecked.HasValue) ? useArch_XSAVE_UI.IsChecked.Value : false; }
+            set { useArch_XSAVE_UI.IsChecked = value; }
+        }
+        public bool useArch_XSAVEC
+        {
+            get { return (useArch_XSAVEC_UI.IsChecked.HasValue) ? useArch_XSAVEC_UI.IsChecked.Value : false; }
+            set { useArch_XSAVEC_UI.IsChecked = value; }
+        }
+        public bool useArch_XSS
+        {
+            get { return (useArch_XSS_UI.IsChecked.HasValue) ? useArch_XSS_UI.IsChecked.Value : false; }
+            set { useArch_XSS_UI.IsChecked = value; }
+        }
+        public bool useArch_XSAVEOPT
+        {
+            get { return (useArch_XSAVEOPT_UI.IsChecked.HasValue) ? useArch_XSAVEOPT_UI.IsChecked.Value : false; }
+            set { useArch_XSAVEOPT_UI.IsChecked = value; }
+        }
+        public bool useArch_PREFETCHWT1
+        {
+            get { return (useArch_PREFETCHWT1_UI.IsChecked.HasValue) ? useArch_PREFETCHWT1_UI.IsChecked.Value : false; }
+            set { useArch_PREFETCHWT1_UI.IsChecked = value; }
         }
         #endregion
     }

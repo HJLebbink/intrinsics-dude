@@ -44,7 +44,7 @@ namespace IntrinsicsDude {
 
     [ComVisible(false)]
 
-    [ProvideOptionPage(typeof(AsmDudeOptionsPage), "Intrinsics Dude", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(IntrinsicsDudeOptionsPage), "Intrinsics Dude", "General", 0, 0, true)]
     //[ProvideProfile(typeof(AsmDudeOptionsPage), "IntrinsicsDude", "General", 100, 104, isToolsOptionPage: false, DescriptionResourceID = 100)]
 
     public sealed class IntrinsicsDudePackage : Package {

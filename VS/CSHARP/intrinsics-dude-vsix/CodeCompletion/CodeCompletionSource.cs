@@ -45,7 +45,7 @@ namespace IntrinsicsDude
         private readonly ITextBuffer _buffer;
         private readonly IntrinsicsDudeTools _intrinsicsDudeTools;
 
-        private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor
+        private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         private bool _disposed = false;
 
         public CodeCompletionSource(ITextBuffer buffer)

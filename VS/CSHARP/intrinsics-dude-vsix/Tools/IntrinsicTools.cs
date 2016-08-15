@@ -64,8 +64,11 @@ namespace IntrinsicsDude.Tools
             AVX512DQ    = 1L << 6,
             AVX512ER    = 1L << 7,
             AVX512F     = 1L << 8,
-            AVX512PF    = 1L << 9, //ToDO
+            AVX512PF    = 1L << 9,
             AVX512VL    = 1L << 10,
+            AVX512IFMA52 = 1L << 28,
+            AVX512VBMI = 1L << 31,
+
             BMI1        = 1L << 11,
             BMI2        = 1L << 12,
             CLFLUSHOPT  = 1L << 13,
@@ -84,10 +87,8 @@ namespace IntrinsicsDude.Tools
             SSSE3       = 1L << 26,
 
             LZCNT       = 1L << 27,
-            AVX512IFMA52 = 1L << 28,
             INVPCID     = 1L << 29,
             MONITOR     = 1L << 30,
-            AVX512VBMI  = 1L << 31,
             POPCNT      = 1L << 32,
             RDRAND      = 1L << 33,
             RDSEED      = 1L << 34,
@@ -619,13 +620,16 @@ namespace IntrinsicsDude.Tools
                 case CpuID.AES: return "Advanced Encryption Standard Extension";
                 case CpuID.AVX: return "";
                 case CpuID.AVX2: return "";
-                case CpuID.AVX512F: return "Instruction set AVX512 Foundation (Knights Landing, Intel Xeon)";
-                case CpuID.AVX512CD: return "Instruction set AVX512 Conflict Detection (Knights Landing, Intel Xeon)";
-                case CpuID.AVX512ER: return "Instruction set AVX512 Exponential and Reciprocal (Knights Landing)";
-                //case CpuID.AVX512PF: return "Instruction set AVX512 Prefetch (Knights Landing)";
-                case CpuID.AVX512BW: return "Instruction set AVX512 Byte and Word (Intel Xeon)";
-                case CpuID.AVX512DQ: return "Instruction set AVX512 Doubleword and QuadWord (Intel Xeon)";
-                case CpuID.AVX512VL: return "Instruction set AVX512 Vector Length Extensions (Intel Xeon)";
+                case CpuID.AVX512F: return "Instruction set AVX512 Foundation (Xeon Phi Knights Landing, Xeon Skylake)";
+                case CpuID.AVX512CD: return "Instruction set AVX512 Conflict Detection (Xeon Phi Knights Landing, Xeon Skylake)";
+                case CpuID.AVX512ER: return "Instruction set AVX512 Exponential and Reciprocal (Xeon Phi Knights Landing)";
+                case CpuID.AVX512PF: return "Instruction set AVX512 Prefetch (Xeon Phi Knights Landing)";
+                case CpuID.AVX512BW: return "Instruction set AVX512 Byte and Word (Xeon Skylake)";
+                case CpuID.AVX512DQ: return "Instruction set AVX512 Doubleword and QuadWord (Xeon Skylake)";
+                case CpuID.AVX512VL: return "Instruction set AVX512 Vector Length Extensions (Xeon Skylake)";
+                case CpuID.AVX512IFMA52: return "Instruction set AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)";
+                case CpuID.AVX512VBMI: return "Instruction set AVX512 Vector Bit-Manipulation (Xeon Cannonlake)";
+
                 case CpuID.BMI1: return "Bit Manipulation Instruction Set 1";
                 case CpuID.BMI2: return "Bit Manipulation Instruction Set 2";
                 case CpuID.CLFLUSHOPT: return "";
@@ -642,6 +646,24 @@ namespace IntrinsicsDude.Tools
                 case CpuID.SSE4_1: return "";
                 case CpuID.SSE4_2: return "";
                 case CpuID.SSSE3: return "";
+
+                case CpuID.LZCNT: return "";
+                case CpuID.INVPCID: return "";
+                case CpuID.MONITOR: return "";
+                case CpuID.POPCNT: return "";
+                case CpuID.RDRAND: return "";
+                case CpuID.RDSEED: return "";
+                case CpuID.TSC: return "";
+                case CpuID.RDTSCP: return "";
+                case CpuID.FSGSBASE: return "";
+                case CpuID.SHA: return "";
+                case CpuID.RTM: return "";
+                case CpuID.XSAVE: return "";
+                case CpuID.XSAVEC: return "";
+                case CpuID.XSS: return "";
+                case CpuID.XSAVEOPT: return "";
+                case CpuID.PREFETCHWT1: return "";
+
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
                     return "";

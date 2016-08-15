@@ -408,8 +408,11 @@ namespace IntrinsicsDude.Tools
                 case CpuID.AVX512ER: return Settings.Default.ARCH_AVX512ER;
                 case CpuID.AVX512VL: return Settings.Default.ARCH_AVX512VL;
                 case CpuID.AVX512DQ: return Settings.Default.ARCH_AVX512DQ;
-                case CpuID.AVX512PF: return true;
+                case CpuID.AVX512PF: return Settings.Default.ARCH_AVX512PF;
                 case CpuID.AVX512BW: return Settings.Default.ARCH_AVX512BW;
+                case CpuID.AVX512IFMA52: return Settings.Default.ARCH_AVX512IFMA52;
+                case CpuID.AVX512VBMI: return Settings.Default.ARCH_AVX512VBMI;
+
                 case CpuID.BMI1: return Settings.Default.ARCH_BMI1;
                 case CpuID.BMI2: return Settings.Default.ARCH_BMI2;
                 case CpuID.CLFLUSHOPT: return Settings.Default.ARCH_CLFLUSHOPT;
@@ -427,29 +430,27 @@ namespace IntrinsicsDude.Tools
                 case CpuID.SSE4_2: return Settings.Default.ARCH_SSE42;
                 case CpuID.SSSE3: return Settings.Default.ARCH_SSSE3;
 
-                case CpuID.LZCNT: return true;
-                case CpuID.AVX512IFMA52: return true;
-                case CpuID.INVPCID: return true;
-                case CpuID.MONITOR: return true;
-                case CpuID.AVX512VBMI: return true;
-                case CpuID.POPCNT: return true;
-                case CpuID.RDRAND: return true;
-                case CpuID.RDSEED: return true;
-                case CpuID.TSC: return true;
-                case CpuID.RDTSCP: return true;
-                case CpuID.FSGSBASE: return true;
-                case CpuID.SHA: return true;
-                case CpuID.RTM: return true;
-                case CpuID.XSAVE: return true;
-                case CpuID.XSAVEC: return true;
-                case CpuID.XSS: return true;
-                case CpuID.XSAVEOPT: return true;
-                case CpuID.PREFETCHWT1: return true;
+                case CpuID.LZCNT: return Settings.Default.ARCH_LZCNT;
+                case CpuID.INVPCID: return Settings.Default.ARCH_INVPCID;
+                case CpuID.MONITOR: return Settings.Default.ARCH_MONITOR;
+                case CpuID.POPCNT: return Settings.Default.ARCH_POPCNT;
+                case CpuID.RDRAND: return Settings.Default.ARCH_RDRAND;
+                case CpuID.RDSEED: return Settings.Default.ARCH_RDSEED;
+                case CpuID.TSC: return Settings.Default.ARCH_TSC;
+                case CpuID.RDTSCP: return Settings.Default.ARCH_RDTSCP;
+                case CpuID.FSGSBASE: return Settings.Default.ARCH_FSGSBASE;
+                case CpuID.SHA: return Settings.Default.ARCH_SHA;
+                case CpuID.RTM: return Settings.Default.ARCH_RTM;
+                case CpuID.XSAVE: return Settings.Default.ARCH_XSAVE;
+                case CpuID.XSAVEC: return Settings.Default.ARCH_XSAVEC;
+                case CpuID.XSS: return Settings.Default.ARCH_XSS;
+                case CpuID.XSAVEOPT: return Settings.Default.ARCH_XSAVEOPT;
+                case CpuID.PREFETCHWT1: return Settings.Default.ARCH_PREFETCHWT1;
 
                 case CpuID.SVML: return Settings.Default.USE_SVML;
 
                 default:
-                    Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "WARNING:IntrinsicsDudeToolsStatic:isArchSwitchedOn; unsupported arch {0}", arch));
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
                     return false;
             }
         }

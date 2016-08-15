@@ -140,10 +140,10 @@
     <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
     <Compile Include="CodeCompletion\VsTextViewCreationListener.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
-    <Compile Include="OptionsPage\AsmDudeOptionPageUI.xaml.cs">
-      <DependentUpon>AsmDudeOptionPageUI.xaml</DependentUpon>
+    <Compile Include="OptionsPage\IntrinsicsDudeOptionPageUI.xaml.cs">
+      <DependentUpon>IntrinsicsDudeOptionPageUI.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptionsPage\AsmDudeOptionsPage.cs">
+    <Compile Include="OptionsPage\IntrinsicsDudeOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -385,7 +385,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="OptionsPage\AsmDudeOptionPageUI.xaml">
+    <Page Include="OptionsPage\IntrinsicsDudeOptionPageUI.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
