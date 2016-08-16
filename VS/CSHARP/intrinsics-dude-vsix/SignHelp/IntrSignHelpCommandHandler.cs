@@ -77,6 +77,7 @@ namespace IntrinsicsDude.SignHelp
                                     this._session.Dismiss();
                                 }
                                 this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
+                                this._session.Dismissed += (sender, args) => _session = null;
                                 this._session.Start();
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer)+")");
                             }
@@ -95,6 +96,7 @@ namespace IntrinsicsDude.SignHelp
                                     this._session.Dismiss();
                                 }
                                 this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
+                                this._session.Dismissed += (sender, args) => _session = null;
                                 this._session.Start();
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                             }

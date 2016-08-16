@@ -45,7 +45,9 @@ namespace IntrinsicsDude
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
- 
+        private readonly SortedSet<Completion> _cachedCompletions;
+        private CpuID _cachedCompletionsCpuID;
+
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         private bool _disposed = false;
 
@@ -53,6 +55,8 @@ namespace IntrinsicsDude
         {
             this._buffer = buffer;
             this._navigator = nav;
+            this._cachedCompletions = new SortedSet<Completion>(new CompletionComparer());
+            this._cachedCompletionsCpuID = CpuID.NONE;
             this.loadIcons();
         }
 
@@ -76,7 +80,7 @@ namespace IntrinsicsDude
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
                 ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
                 string partialKeyword = extent.Span.GetText();
-                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
                 
                 if (partialKeyword.Length > 0)
                 {
@@ -108,31 +112,39 @@ namespace IntrinsicsDude
 
         private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures)
         {
-            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
-            SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
-
-            foreach (Intrinsic mnemonic in Enum.GetValues(typeof(Intrinsic)))
+            CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
+            if (this._cachedCompletionsCpuID != currentCpuID)
             {
-                IList<IntrinsicDataElement> dataElements = store.get(mnemonic);
-                CpuID cpuID = CpuID.NONE;
-                foreach (IntrinsicDataElement dataElement in dataElements)
+                this._cachedCompletionsCpuID = currentCpuID;
+                this._cachedCompletions.Clear();
+
+                IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
+
+                foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
                 {
-                    if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
+                    if (intrinsic == Intrinsic.NONE) continue;
+
+                    IList<IntrinsicDataElement> dataElements = store.get(intrinsic);
+                    CpuID cpuID = CpuID.NONE;
+                    foreach (IntrinsicDataElement dataElement in dataElements)
                     {
-                        cpuID |= dataElement.cpuID;
+                        if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
+                        {
+                            cpuID |= dataElement.cpuID;
+                        }
+                    }
+                    if (cpuID != CpuID.NONE)
+                    {
+                        IntrinsicDataElement dataElement = dataElements[0];
+                        string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + "[" + IntrinsicTools.ToString(cpuID) + "] - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+                        string insertionText = dataElement.intrinsic.ToString().ToLower();
+                        //string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
+                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
+                        this._cachedCompletions.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
                     }
                 }
-                if (cpuID != CpuID.NONE)
-                {
-                    IntrinsicDataElement dataElement = dataElements[0];
-                    string cpuIDStr = " [" + IntrinsicTools.ToString(cpuID) + "]";
-                    string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuIDStr + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
-                    string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
-                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
-                    set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
-                }
             }
-            return set;
+            return this._cachedCompletions;
         }
 
         private void loadIcons()
