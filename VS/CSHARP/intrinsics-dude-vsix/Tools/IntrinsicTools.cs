@@ -252,7 +252,7 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK64": return IntrinsicRegisterType.__MMASK64;
                 case "__MMASK8": return IntrinsicRegisterType.__MMASK8;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown return type \"" + str + "\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
                     return IntrinsicRegisterType.NONE;
             }
         }
@@ -295,7 +295,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*":
                 case "VOID *": return ReturnType.VOID_PTR;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown return type \"" + str+"\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
                     return ReturnType.NONE;
             }
         }
@@ -394,7 +394,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown param type \"" + str + "\".");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\".");
                     return ParamType.NONE;
             }
         }
@@ -597,6 +597,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.DOUBLE: return "double";
                 case ReturnType.FLOAT: return "float";
                 case ReturnType.INT: return "int";
+                case ReturnType.SHORT: return "short";
                 case ReturnType.UNSIGNED__INT32: return "unsigned __int32";
                 case ReturnType.UNSIGNED__INT64: return "unsigned __int64";
                 case ReturnType.UNSIGNED_CHAR: return "unsigned char";
@@ -606,7 +607,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.VOID_PTR: return "void *";
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ReturnType \"" + type + "\".");
-                    return "UNKNOWN";
+                    return type.ToString();
                     break;
             }
         }
