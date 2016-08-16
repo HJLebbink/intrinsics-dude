@@ -68,7 +68,7 @@ namespace IntrinsicsDude.SignHelp
                             SnapshotPoint point = m_textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
                             string word = m_navigator.GetExtentOfWord(point).Span.GetText();
                             Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(word);
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after '(', word=\"" + word + "\"; intrinsic=" + intrinsic);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after '(', word=\"" + word + "\"; intrinsic=" + intrinsic);
                             if (intrinsic != Intrinsic.NONE)
                             {
                                 var allSessions = this.m_broker.GetSessions(m_textView);
@@ -85,12 +85,12 @@ namespace IntrinsicsDude.SignHelp
                                 }
                                 if ((this.m_session != null) && (!this.m_session.IsDismissed))
                                 {
-                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
+                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                     this.m_session.Dismiss();
                                 }
                                 this.m_session = this.m_broker.CreateSignatureHelpSession(this.m_textView, this.m_textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
                                 this.m_session.Start();
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer)+")");
+                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer)+")");
                             }
                         }
                         if (typedChar.Equals(','))
@@ -98,22 +98,22 @@ namespace IntrinsicsDude.SignHelp
                             SnapshotPoint point = this.m_textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
                             Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this.m_navigator);
                             Intrinsic intrinsic = tup.Item1;
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after ',', intrinsic=" + intrinsic);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after ',', intrinsic=" + intrinsic);
                             if (intrinsic != Intrinsic.NONE)
                             {
                                 if ((this.m_session != null) && (!this.m_session.IsDismissed))
                                 {
-                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
+                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                     this.m_session.Dismiss();
                                 }
                                 this.m_session = this.m_broker.CreateSignatureHelpSession(this.m_textView, this.m_textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
                                 this.m_session.Start();
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
+                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                             }
                         }
                         else if ((typedChar.Equals(')') && (m_session != null)))
                         {
-                            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: going to close the session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: going to close the session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                             this.m_session.Dismiss();
                             this.m_session = null;
                         }
@@ -133,78 +133,6 @@ namespace IntrinsicsDude.SignHelp
         }
 
         #region Private Stuff
-        /*
-        private void TextBuffer_PostChanged(object sender, EventArgs e)
-        {
-            if (_scheduleStart)
-            {
-                lock (_startNewSessionLock)
-                {
-                    if (true)
-                    {
-                        int pos = this._textView.Caret.Position.BufferPosition.Position-1;
-                        string typedChar = this._textView.TextBuffer.CurrentSnapshot.GetText(pos, 1);
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: TextBuffer_PostChanged: pos = " + pos + "; typedChar='" + typedChar + "'.");
-                    }
-                    this.StartSession(this._textView.TextSnapshot, this._textView.Caret.Position.BufferPosition.Position);
-                    this._scheduleStart = false;
-                }
-            }
-        }
-
-        private void TextBuffer_Changed(object sender, TextContentChangedEventArgs e)
-        {
-            if (_scheduleStart)
-            {
-                lock (_startNewSessionLock)
-                {
-                    this._scheduleStart = false;
-                    if (true)
-                    {
-                        int oldPos = e.Changes[0].OldPosition;
-                        int newPos = e.Changes[0].NewPosition;
-                        string oldChar = e.Before.TextBuffer.CurrentSnapshot.GetText(oldPos, 1);
-                        string newChar = e.After.TextBuffer.CurrentSnapshot.GetText(newPos, 1);
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: TextBuffer_Changed: oldPos = " + oldPos + "; oldChar='" + oldChar + "'; newPos=" + newPos + "; newChar='" + newChar + "'.");
-                    }
-                    this.StartSession(e.After.TextBuffer.CurrentSnapshot, e.Changes[0].NewPosition);
-                    //this.StartSession(this._textView.TextSnapshot, this._textView.Caret.Position.BufferPosition.Position);
-                }
-            }
-        }
-        */
-        private void DismissSession(ISignatureHelpSession session)
-        {
-            if (session == null) return;
-            try
-            {
-                if (session.IsDismissed)
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: DismissSession: session is already dismissed. "+debugInfo(session));
-                    return;
-                }
-
-                string signatureStr = "no signatures";
-                if (session.Signatures != null)
-                {
-                    if (session.Signatures.Count > 0)
-                    {
-                        signatureStr = session.Signatures[0].Content;
-                    }
-                }
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: DismissSession: dismissing session: signatureStr=\"" + signatureStr+ "\". " + debugInfo(session));
-                session.Dismiss();
-            }
-            catch (Exception e)
-            {
-                IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:Exec; e={1}", this.ToString(), e.ToString()));
-            }
-        }
-
-        private string debugInfo(ISignatureHelpSession session)
-        {
-            return "triggerPoint=" + session.GetTriggerPoint(session.TextView.TextBuffer).GetPosition(session.TextView.TextSnapshot) + "; char='" + session.GetTriggerPoint(session.TextView.TextBuffer).GetCharacter(session.TextView.TextSnapshot)+"'.";
-        }
 
         private static char GetTypeChar(IntPtr pvaIn)
         {

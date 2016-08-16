@@ -37,7 +37,6 @@ namespace IntrinsicsDude.SignHelp
         private ITrackingSpan m_applicableToSpan;
         private ReadOnlyCollection<IParameter> m_parameters;
         private string m_printContent;
-        private EventHandler<TextContentChangedEventArgs> m_eventHandler;
 
 
         internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
@@ -47,9 +46,6 @@ namespace IntrinsicsDude.SignHelp
             this.m_content = content;
             this.m_documentation = doc;
             this.m_parameters = parameters;
-            this.m_eventHandler = new EventHandler<TextContentChangedEventArgs>(OnSubjectBufferChanged);
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor: adding event handler");
-            this.m_subjectBuffer.Changed += this.m_eventHandler;
         }
 
         #region Public Stuff
@@ -102,62 +98,6 @@ namespace IntrinsicsDude.SignHelp
         #endregion
         
         #region Private Stuff
-
-        internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
-        {
-            /*
-            string newText = e.Changes[0].NewText;
-            if (newText.Contains(","))
-            {
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
-                this.ComputeCurrentParameter();
-            }
-            */
-        }
-
-        public void cleanup()
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup: removing event handler");
-            this.m_subjectBuffer.Changed -= this.m_eventHandler;
-            this.m_eventHandler = null;
-         }
-
-        internal void ComputeCurrentParameter()
-        {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter: ApplicableToSpan=" + ApplicableToSpan.GetText(m_subjectBuffer.CurrentSnapshot));
-
-            if (Parameters.Count == 0)
-            {
-                this.CurrentParameter = null;
-                return;
-            }
-
-            //the number of commas in the string is the index of the current parameter
-            string sigText = ApplicableToSpan.GetText(m_subjectBuffer.CurrentSnapshot);
-
-            int currentIndex = 0;
-            int commaCount = 0;
-            while (currentIndex < sigText.Length)
-            {
-                int commaIndex = sigText.IndexOf(',', currentIndex);
-                if (commaIndex == -1)
-                {
-                    break;
-                }
-                commaCount++;
-                currentIndex = commaIndex + 1;
-            }
-
-            if (commaCount < Parameters.Count)
-            {
-                this.CurrentParameter = Parameters[commaCount];
-            }
-            else
-            {
-                //too many commas, so use the last parameter as the current one.
-                this.CurrentParameter = null;
-            }
-        }
 
         void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {

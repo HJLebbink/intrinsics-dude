@@ -35,7 +35,6 @@ namespace IntrinsicsDude.SignHelp
     {
         private readonly ITextBuffer m_textBuffer;
         private readonly ITextStructureNavigator m_navigator;
-        private readonly IList<Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>> m_handlers;
 
 
         public IntrSignHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
@@ -43,7 +42,6 @@ namespace IntrinsicsDude.SignHelp
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
             this.m_textBuffer = buffer;
             this.m_navigator = nav;
-            this.m_handlers = new List<Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>>();
         }
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
@@ -93,8 +91,6 @@ namespace IntrinsicsDude.SignHelp
                     return;
                 }
 
-                session.Dismissed += Session_Dismissed;
-
                 ITrackingSpan applicableToSpan = m_textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
@@ -110,19 +106,6 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpSource: AugmentSignatureHelpSession; e="+ e.ToString());
             }
-        }
-
-        private void Session_Dismissed(object sender, EventArgs e)
-        {
-            ISignatureHelpSession session = (ISignatureHelpSession)sender;
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Session_Dismissed: session(" + session.GetTriggerPoint(m_textBuffer) + ")");
-            foreach (ISignature sig in session.Signatures)
-            {
-                IntrSign sig2 = (IntrSign)sig;
-                sig2.cleanup();
-            }
-            this.cleanup();
-            session.Dismissed -= Session_Dismissed;
         }
 
         public ISignature GetBestMatch(ISignatureHelpSession session)
@@ -180,11 +163,6 @@ namespace IntrinsicsDude.SignHelp
 
             IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), dataElement.description, null);
 
-            EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged);
-            this.m_handlers.Add(new Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>(textBuffer, handler));
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: CreateSignature: adding event handler");
-            textBuffer.Changed += handler;
-
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)
             {
@@ -200,16 +178,6 @@ namespace IntrinsicsDude.SignHelp
             return sig;
         }
         
-        private void cleanup()
-        {
-            foreach (Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>> tup in this.m_handlers)
-            {
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: cleanup: removing event handler");
-                tup.Item1.Changed -= tup.Item2;
-            }
-            this.m_handlers.Clear();
-        }
-
         #endregion
         
         private bool _isDisposed;
