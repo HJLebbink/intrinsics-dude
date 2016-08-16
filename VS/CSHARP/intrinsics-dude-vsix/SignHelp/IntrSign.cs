@@ -105,26 +105,26 @@ namespace IntrinsicsDude.SignHelp
 
         internal void OnSubjectBufferChanged(object sender, TextContentChangedEventArgs e)
         {
+            /*
             string newText = e.Changes[0].NewText;
-            if (newText.Contains(",") || newText.Contains("("))
+            if (newText.Contains(","))
             {
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
                 this.ComputeCurrentParameter();
             }
+            */
         }
 
         public void cleanup()
         {
-            /*
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup: removing event handler");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup: removing event handler");
             this.m_subjectBuffer.Changed -= this.m_eventHandler;
             this.m_eventHandler = null;
-            */
-        }
+         }
 
         internal void ComputeCurrentParameter()
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter: ApplicableToSpan=" + ApplicableToSpan.GetText(m_subjectBuffer.CurrentSnapshot));
 
             if (Parameters.Count == 0)
             {
@@ -155,7 +155,7 @@ namespace IntrinsicsDude.SignHelp
             else
             {
                 //too many commas, so use the last parameter as the current one.
-                this.CurrentParameter = Parameters[Parameters.Count - 1];
+                this.CurrentParameter = null;
             }
         }
 
