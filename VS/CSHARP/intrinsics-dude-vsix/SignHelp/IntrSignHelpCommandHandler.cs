@@ -35,21 +35,21 @@ namespace IntrinsicsDude.SignHelp
 {
     internal sealed class IntrSignHelpCommandHandler : IOleCommandTarget
     {
-        private readonly ITextView m_textView;
-        private readonly ISignatureHelpBroker m_broker;
-        private readonly ITextStructureNavigator m_navigator;
+        private readonly ITextView _textView;
+        private readonly ISignatureHelpBroker _broker;
+        private readonly ITextStructureNavigator _navigator;
 
-        private ISignatureHelpSession m_session;
-        private IOleCommandTarget m_nextCommandHandler;
+        private ISignatureHelpSession _session;
+        private IOleCommandTarget _nextCommandHandler;
 
         internal IntrSignHelpCommandHandler(IVsTextView textViewAdapter, ITextView textView, ITextStructureNavigator nav, ISignatureHelpBroker broker)
         {
-            this.m_textView = textView;
-            this.m_broker = broker;
-            this.m_navigator = nav;
+            this._textView = textView;
+            this._broker = broker;
+            this._navigator = nav;
 
             //add this to the filter chain
-            textViewAdapter.AddCommandFilter(this, out this.m_nextCommandHandler);
+            textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -65,57 +65,45 @@ namespace IntrinsicsDude.SignHelp
 
                         if (typedChar.Equals('('))
                         {
-                            SnapshotPoint point = m_textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
-                            string word = m_navigator.GetExtentOfWord(point).Span.GetText();
+                            SnapshotPoint point = _textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
+                            string word = _navigator.GetExtentOfWord(point).Span.GetText();
                             Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(word);
                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after '(', word=\"" + word + "\"; intrinsic=" + intrinsic);
                             if (intrinsic != Intrinsic.NONE)
                             {
-                                var allSessions = this.m_broker.GetSessions(m_textView);
-                                if (allSessions.Count == 0)
-                                {
-                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: no current sessions");
-                                }
-                                else
-                                {
-                                    foreach (var session in allSessions)
-                                    {
-                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: current session(" + session.GetTriggerPoint(m_textView.TextBuffer) + ")");
-                                    }
-                                }
-                                if ((this.m_session != null) && (!this.m_session.IsDismissed))
+                                if ((this._session != null) && (!this._session.IsDismissed))
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
-                                    this.m_session.Dismiss();
+                                    this._session.Dismiss();
                                 }
-                                this.m_session = this.m_broker.CreateSignatureHelpSession(this.m_textView, this.m_textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
-                                this.m_session.Start();
+                                this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
+                                this._session.Start();
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer)+")");
                             }
                         }
                         if (typedChar.Equals(','))
                         {
-                            SnapshotPoint point = this.m_textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
-                            Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this.m_navigator);
+                            SnapshotPoint point = this._textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
+                            Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this._navigator);
                             Intrinsic intrinsic = tup.Item1;
                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after ',', intrinsic=" + intrinsic);
                             if (intrinsic != Intrinsic.NONE)
                             {
-                                if ((this.m_session != null) && (!this.m_session.IsDismissed))
+                                if ((this._session != null) && (!this._session.IsDismissed))
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
-                                    this.m_session.Dismiss();
+                                    this._session.Dismiss();
                                 }
-                                this.m_session = this.m_broker.CreateSignatureHelpSession(this.m_textView, this.m_textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
-                                this.m_session.Start();
+                                this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
+                                this._session.Start();
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                             }
                         }
-                        else if ((typedChar.Equals(')') && (m_session != null)))
+                        else if ((typedChar.Equals(')') && (_session != null)))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: going to close the session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
-                            this.m_session.Dismiss();
-                            this.m_session = null;
+                            this._session.Dismiss();
+                            this._session = null;
                         }
                     }
                 }
@@ -124,12 +112,12 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:Exec; e={1}", this.ToString(), e.ToString()));
             }
-            return this.m_nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+            return this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
-            return m_nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+            return _nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
         #region Private Stuff

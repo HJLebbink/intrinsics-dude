@@ -33,15 +33,15 @@ namespace IntrinsicsDude.SignHelp
 {
     internal sealed class IntrSignHelpSource : ISignatureHelpSource
     {
-        private readonly ITextBuffer m_textBuffer;
-        private readonly ITextStructureNavigator m_navigator;
+        private readonly ITextBuffer _textBuffer;
+        private readonly ITextStructureNavigator _navigator;
 
 
         public IntrSignHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
-            this.m_textBuffer = buffer;
-            this.m_navigator = nav;
+            this._textBuffer = buffer;
+            this._navigator = nav;
         }
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
@@ -58,11 +58,11 @@ namespace IntrinsicsDude.SignHelp
 
                 DateTime time1 = DateTime.Now;
 
-                ITextSnapshot snapshot = this.m_textBuffer.CurrentSnapshot;
-                int triggerPosition = session.GetTriggerPoint(m_textBuffer).GetPosition(snapshot);
+                ITextSnapshot snapshot = this._textBuffer.CurrentSnapshot;
+                int triggerPosition = session.GetTriggerPoint(_textBuffer).GetPosition(snapshot);
 
                 SnapshotPoint point = new SnapshotPoint(snapshot, triggerPosition - 1);
-                string text = m_navigator.GetExtentOfWord(point).Span.GetText();
+                string text = _navigator.GetExtentOfWord(point).Span.GetText();
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); text=\"" + text+"\".");
 
                 // this method is called either: 
@@ -74,30 +74,30 @@ namespace IntrinsicsDude.SignHelp
 
                 if (intrinsic == Intrinsic.NONE)
                 {
-                    Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, m_navigator);
+                    Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, _navigator);
                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
                     intrinsic = tup.Item1;
                     paramIndex = tup.Item2 + 1; // add one because the current typed char was an comma.
                 }
 
                 if (intrinsic == Intrinsic.NONE) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
                     return;
                 }
 
                 IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.intrinsicStore.get(intrinsic);
                 if (dataElements.Count == 0) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
                     return;
                 }
 
-                ITrackingSpan applicableToSpan = m_textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
+                ITrackingSpan applicableToSpan = _textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
                     if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
                     {
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); adding signature " + dataElement.intrinsic);
-                        signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, paramIndex, applicableToSpan));
+                        signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
                     }
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
