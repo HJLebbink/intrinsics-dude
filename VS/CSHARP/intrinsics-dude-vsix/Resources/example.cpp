@@ -9,19 +9,19 @@ void main() {
 		printf("test");
 
 		// SIGNATURE HELP: OK;
-
+		// existing intrinsic functions:
 		const __m128d a2 = _mm_hadd_pd(a, b);
 		const __m256 a3 = _mm256_abs_epi16(a);
 		const __m128d a = _mm_set1_epi16(a);
-
-		// SIGNATURE HELP: NOK;
-
+		
+		// new intrinsic functions:
 		const __m256i a1 _mm256_bslli_epi128(a, 10);
 		const __m256 a4 = _mm256_abs_epi64(a);
-		const __m256i = _MM_INSERT_EPI16(a, b, e);
-		const __m512 bla5 = _mm512_addn_round_ps(a, b, _MM_FROUND_TO_NEG_INF);
-
 		const __m512 bla6 = _mm512_andnot_si512(_mm512_abs_pd(a), b);
+
+		// SIGNATURE HELP: NOK: replacing the comma does not select the correct parameter
+		const __m256i = _MM_INSERT_EPI16(a, b, 10);
+		const __m512 bla5 = _mm512_addn_round_ps(a, b, _MM_FROUND_TO_NEG_INF);
 	}
 
 	return 0;

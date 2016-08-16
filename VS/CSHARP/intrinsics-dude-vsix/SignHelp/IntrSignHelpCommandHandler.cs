@@ -71,8 +71,21 @@ namespace IntrinsicsDude.SignHelp
                             IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: A after '(', word=\"" + word + "\"; intrinsic=" + intrinsic);
                             if (intrinsic != Intrinsic.NONE)
                             {
-                                if (this.m_session != null)
+                                var allSessions = this.m_broker.GetSessions(m_textView);
+                                if (allSessions.Count == 0)
                                 {
+                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: no current sessions");
+                                }
+                                else
+                                {
+                                    foreach (var session in allSessions)
+                                    {
+                                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: current session(" + session.GetTriggerPoint(m_textView.TextBuffer) + ")");
+                                    }
+                                }
+                                if ((this.m_session != null) && (!this.m_session.IsDismissed))
+                                {
+                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: A dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                     this.m_session.Dismiss();
                                 }
                                 //this.m_broker.DismissAllSessions(m_textView);

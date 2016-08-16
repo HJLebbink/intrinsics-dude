@@ -48,7 +48,7 @@ namespace IntrinsicsDude.SignHelp
             this.m_documentation = doc;
             this.m_parameters = parameters;
             this.m_eventHandler = new EventHandler<TextContentChangedEventArgs>(OnSubjectBufferChanged);
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor: adding event handler");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor: adding event handler");
             this.m_subjectBuffer.Changed += this.m_eventHandler;
         }
 
@@ -108,7 +108,7 @@ namespace IntrinsicsDude.SignHelp
             string newText = e.Changes[0].NewText;
             if (newText.Contains(",") || newText.Contains("("))
             {
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
+                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: OnSubjectBufferChanged: newText=\""+newText+"\".");
                 this.ComputeCurrentParameter();
             }
         }
@@ -124,7 +124,7 @@ namespace IntrinsicsDude.SignHelp
 
         internal void ComputeCurrentParameter()
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");
 
             if (Parameters.Count == 0)
             {
@@ -161,7 +161,7 @@ namespace IntrinsicsDude.SignHelp
 
         void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
 
             EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
             if (tempHandler != null)
