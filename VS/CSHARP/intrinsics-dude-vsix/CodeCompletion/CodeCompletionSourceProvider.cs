@@ -22,6 +22,7 @@
 
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
@@ -34,11 +35,14 @@ namespace IntrinsicsDude
     [Name("Intrinsic Completion Source Provider")]
     public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
     {
+        [Import]
+        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
             Func<CodeCompletionSource> sc = delegate ()
             {
-                return new CodeCompletionSource(buffer);
+                return new CodeCompletionSource(buffer, NavigatorService.GetTextStructureNavigator(buffer));
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

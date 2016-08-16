@@ -29,6 +29,7 @@ using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 using System.Windows.Media;
 using System.IO;
+using Microsoft.VisualStudio.Text.Operations;
 
 namespace IntrinsicsDude
 {
@@ -43,15 +44,15 @@ namespace IntrinsicsDude
     public sealed class CodeCompletionSource : ICompletionSource
     {
         private readonly ITextBuffer _buffer;
-        private readonly IntrinsicsDudeTools _intrinsicsDudeTools;
-
+        private readonly ITextStructureNavigator _navigator;
+ 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         private bool _disposed = false;
 
-        public CodeCompletionSource(ITextBuffer buffer)
+        public CodeCompletionSource(ITextBuffer buffer, ITextStructureNavigator nav)
         {
             this._buffer = buffer;
-            this._intrinsicsDudeTools = IntrinsicsDudeTools.Instance;
+            this._navigator = nav;
             this.loadIcons();
         }
 
@@ -71,24 +72,12 @@ namespace IntrinsicsDude
                 {
                     return;
                 }
-                ITextSnapshotLine line = triggerPoint.GetContainingLine();
 
-                //TODO replace the following code with: string text = m_navigator.GetExtentOfWord(point).Span.GetText();
-
-                //2] find the start of the current keyword
-                #region
-                SnapshotPoint start = triggerPoint;
-                while ((start > line.Start) && !isSeparatorChar((start - 1).GetChar()))
-                {
-                    start -= 1;
-                }
-                #endregion
-
-                //3] get the word that is currently being typed
-                #region
-                ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(new SnapshotSpan(start, triggerPoint), SpanTrackingMode.EdgeInclusive);
-                string partialKeyword = applicableTo.GetText(snapshot);
-
+                TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
+                ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                string partialKeyword = extent.Span.GetText();
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+                
                 if (partialKeyword.Length > 0)
                 {
                     if (partialKeyword[0].Equals('_'))
@@ -98,19 +87,12 @@ namespace IntrinsicsDude
                         completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
                     }
                 }
-                #endregion
-
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Code Completion");
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:AugmentCompletionSession; e={1}", this.ToString(), e.ToString()));
+                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionSource:AugmentCompletionSession; e=" + e.ToString());
             }
-        }
-
-        private static bool isSeparatorChar(char c)
-        {
-            return char.IsWhiteSpace(c) || c.Equals(',') || c.Equals('[') || c.Equals(']') || c.Equals('(') || c.Equals(')') || c.Equals('+') || c.Equals('-') || c.Equals('*') || c.Equals('{') || c.Equals('}') || c.Equals(':');
         }
 
         public void Dispose()
@@ -126,7 +108,7 @@ namespace IntrinsicsDude
 
         private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures)
         {
-            IntrinsicStore store = this._intrinsicsDudeTools.intrinsicStore;
+            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
             SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
 
             foreach (Intrinsic mnemonic in Enum.GetValues(typeof(Intrinsic)))
