@@ -16,11 +16,12 @@ void main() {
 
 		// SIGNATURE HELP: NOK;
 
-		__m256i a1 _mm256_bslli_epi128(a, b);
-		__m256 a4 = _mm256_abs_epi64(a);
-		__m512 bla5 = _mm512_addn_round_ps(a, b, _MM_FROUND_TO_NEG_INF);
+		const __m256i a1 _mm256_bslli_epi128(a, 10);
+		const __m256 a4 = _mm256_abs_epi64(a);
+		const __m256i = _MM_INSERT_EPI16(a, b, e);
+		const __m512 bla5 = _mm512_addn_round_ps(a, b, _MM_FROUND_TO_NEG_INF);
 
-		__m512 bla6 = _mm512_andnot_si512(_mm512_abs_pd(a), b);
+		const __m512 bla6 = _mm512_andnot_si512(_mm512_abs_pd(a), b);
 	}
 
 	return 0;

@@ -35,12 +35,15 @@ namespace IntrinsicsDude.SignHelp
     {
         private readonly ITextBuffer m_textBuffer;
         private readonly ITextStructureNavigator m_navigator;
+        private readonly IList<Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>> m_handlers;
+
 
         public IntrSignHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
             this.m_textBuffer = buffer;
             this.m_navigator = nav;
+            this.m_handlers = new List<Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>>();
         }
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
@@ -55,41 +58,59 @@ namespace IntrinsicsDude.SignHelp
 
                 SnapshotPoint point = new SnapshotPoint(snapshot, triggerPosition - 1);
                 string text = m_navigator.GetExtentOfWord(point).Span.GetText();
-                IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: text=" + text);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); text=\"" + text+"\".");
+                //this.printDebug(point, m_navigator);
 
-                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(text);
+                Intrinsic intrinsic = Intrinsic.NONE;
                 int paramIndex = 0;
+
+                /*
+                if (Char.IsControl(text[0])) // silly incomprehensible situation 
+                {
+                    intrinsic = IntrinsicTools.parseIntrinsic(m_navigator.GetExtentOfWord(new SnapshotPoint(snapshot, triggerPosition - 2)).Span.GetText());
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: found intrinsic " + intrinsic);
+                }
+                */
+
+                intrinsic = IntrinsicTools.parseIntrinsic(text);
+
                 if (intrinsic == Intrinsic.NONE)
                 {
                     Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, m_navigator);
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: triggerPosition=" + triggerPosition + "; Intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); triggerPosition=" + triggerPosition + "; Intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
                     intrinsic = tup.Item1;
                     paramIndex = tup.Item2;
                 }
 
                 if (intrinsic == Intrinsic.NONE) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
                     return;
                 }
 
                 IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.intrinsicStore.get(intrinsic);
                 if (dataElements.Count == 0) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: no dataElements for intrinsic " + intrinsic);
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
                     return;
                 }
 
                 if (signatures.Count > 0)
                 {
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: removing existing signatures " + signatures[0].Content);
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session("+session.GetTriggerPoint(m_textBuffer) +"): removing existing signatures " + signatures[0].Content);
                     signatures.Clear();
+                } else
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "): no other signatures");
+
                 }
+
+                session.Dismissed += Session_Dismissed;
 
                 ITrackingSpan applicableToSpan = m_textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
                     if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
                     {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession : adding signature "+dataElement.intrinsic);
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession : session(" + session.GetTriggerPoint(m_textBuffer) + "); adding signature " + dataElement.intrinsic);
                         signatures.Add(this.CreateSignature(this.m_textBuffer, dataElement, paramIndex, applicableToSpan));
                     }
                 }
@@ -99,6 +120,39 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpSource: AugmentSignatureHelpSession; e="+ e.ToString());
             }
+        }
+
+        private void printDebug(SnapshotPoint point, ITextStructureNavigator nav)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            SnapshotPoint currentPos = point;
+            for (int i = 0; i < 1000; i++)
+            {
+                TextExtent extent = nav.GetExtentOfWord(currentPos);
+                string word = extent.Span.GetText();
+                if (word.Equals(";")) break;
+                sb.Append("."+word.Trim());
+                if (extent.Span.Start <= 0) break;
+                currentPos = extent.Span.Start - 1;
+            }
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: printDebug: "+sb.ToString());
+        }
+
+        private void Session_Dismissed(object sender, EventArgs e)
+        {
+            ISignatureHelpSession session = (ISignatureHelpSession)sender;
+
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Session_Dismissed: session(" + session.GetTriggerPoint(m_textBuffer) + ")");
+            /*
+            foreach (ISignature sig in session.Signatures)
+            {
+                IntrSign sig2 = (IntrSign)sig;
+                sig2.cleanup();
+            }
+            this.cleanup();
+            */
+            session.Dismissed -= Session_Dismissed;
         }
 
         public ISignature GetBestMatch(ISignatureHelpSession session)
@@ -156,7 +210,11 @@ namespace IntrinsicsDude.SignHelp
             #endregion Create Signature Text
 
             IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), dataElement.description, null);
-            textBuffer.Changed += new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged);
+
+            EventHandler<TextContentChangedEventArgs> handler = new EventHandler<TextContentChangedEventArgs>(sig.OnSubjectBufferChanged);
+            this.m_handlers.Add(new Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>>(textBuffer, handler));
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: CreateSignature: adding event handler");
+            textBuffer.Changed += handler;
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)
@@ -177,9 +235,19 @@ namespace IntrinsicsDude.SignHelp
         {
             return "triggerPoint=" + session.GetTriggerPoint(session.TextView.TextBuffer).GetPosition(session.TextView.TextSnapshot) + "; char='" + session.GetTriggerPoint(session.TextView.TextBuffer).GetCharacter(session.TextView.TextSnapshot)+"'.";
         }
+        
+        private void cleanup()
+        {
+            foreach (Tuple<ITextBuffer, EventHandler<TextContentChangedEventArgs>> tup in this.m_handlers)
+            {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: cleanup: removing event handler");
+                tup.Item1.Changed -= tup.Item2;
+            }
+            this.m_handlers.Clear();
+        }
 
         #endregion
-
+        
         private bool _isDisposed;
 
         public void Dispose()

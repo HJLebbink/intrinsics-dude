@@ -37,6 +37,7 @@ namespace IntrinsicsDude.SignHelp
         private ITrackingSpan m_applicableToSpan;
         private ReadOnlyCollection<IParameter> m_parameters;
         private string m_printContent;
+        private EventHandler<TextContentChangedEventArgs> m_eventHandler;
 
 
         internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
@@ -46,7 +47,9 @@ namespace IntrinsicsDude.SignHelp
             this.m_content = content;
             this.m_documentation = doc;
             this.m_parameters = parameters;
-            this.m_subjectBuffer.Changed += new EventHandler<TextContentChangedEventArgs>(OnSubjectBufferChanged);
+            this.m_eventHandler = new EventHandler<TextContentChangedEventArgs>(OnSubjectBufferChanged);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor: adding event handler");
+            this.m_subjectBuffer.Changed += this.m_eventHandler;
         }
 
         #region Public Stuff
@@ -110,6 +113,15 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
+        public void cleanup()
+        {
+            /*
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: cleanup: removing event handler");
+            this.m_subjectBuffer.Changed -= this.m_eventHandler;
+            this.m_eventHandler = null;
+            */
+        }
+
         internal void ComputeCurrentParameter()
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: ComputeCurrentParameter");
@@ -147,7 +159,7 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
-        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
+        void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
 
