@@ -23,6 +23,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Xml.Linq;
 using static IntrinsicsDude.Tools.IntrinsicTools;
@@ -38,9 +39,8 @@ namespace IntrinsicsDude.Tools
         public IntrinsicStore(string filename)
         {
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
-            this.loadHtml(filename);
-            //this.saveXml(filename + ".xml");
-            //this.loadXml(filename + ".xml");
+            //this.generateData();
+            this.loadXml(filename);
         }
 
         public IList<IntrinsicDataElement> get(Intrinsic intrinsic)
@@ -70,15 +70,30 @@ namespace IntrinsicsDude.Tools
 
         #region Private Methods
 
+        /// <summary>
+        /// used once to generate the data from the Intel intrinsics guide
+        /// </summary>
+        private void generateData()
+        {
+            string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
+            string filename = path + "Intel-Intrinsics-Guide.html";
+            this.loadHtml(filename);
+            this.saveXml(filename + ".xml");
+            this.loadXml(filename + ".xml");
+            this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
+        }
+
         private void loadHtml(string filename)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: load: filename " + filename);
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: filename " + filename);
             try
             {
+                DateTime time1 = DateTime.Now;
                 HtmlDocument doc = new HtmlDocument();
                 doc.Load(filename);
 
                 //SortedSet<string> allIntrinsicNames = new SortedSet<string>();
+                this._data.Clear();
 
                 foreach (HtmlNode item in doc.GetElementbyId("intrinsics_list").ChildNodes)
                 {
@@ -87,8 +102,6 @@ namespace IntrinsicsDude.Tools
                     dataElement.id = item.GetAttributeValue("id", -1);
                     dataElement.intrinsic = Intrinsic.NONE;
 
-                    bool printit = false;// dataElement.id == 8;
-
                     IList<string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
 
@@ -96,7 +109,7 @@ namespace IntrinsicsDude.Tools
                     foreach (HtmlNode element in item.ChildNodes)
                     {
                         string elementClass = element.GetAttributeValue("class", "NONE").ToUpper();
-                        if (printit) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: element.class=" + elementClass);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: element.class=" + elementClass);
                         switch (elementClass)
                         {
                             case "INSTRUCTION":
@@ -119,7 +132,7 @@ namespace IntrinsicsDude.Tools
                                 foreach (HtmlNode element2 in element.Descendants())
                                 {
                                     string element2Class = element2.GetAttributeValue("class", "NONE").ToUpper();
-                                    if (printit) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
+                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
                                     switch (element2Class)
                                     {
                                         case "NAME":
@@ -163,6 +176,10 @@ namespace IntrinsicsDude.Tools
                                 break;
                         }
 
+                        if (dataElement.cpuID == CpuID.NONE)
+                        {
+                            dataElement.cpuID = CpuID.DEFAULT;
+                        }
                         for (int i = 0; i < paramName.Count; ++i)
                         {
                             dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.parseParamType(paramType[i]), paramName[i]));
@@ -193,14 +210,14 @@ namespace IntrinsicsDude.Tools
                     IntrinsicsDudeToolsStatic.Output("case \""+str.ToUpper()+"\": return Intrinsic."+str.ToUpper() +";");
                 }
                 */
+                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Load HTML");
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: load: exception " + e.ToString());
+                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadHtml: exception " + e.ToString());
             }
         }
 
-        /// <summary>Create a tab separated text file</summary>
         private void saveXml(string filename)
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: saveXml: filename " + filename);
@@ -213,12 +230,12 @@ namespace IntrinsicsDude.Tools
                 foreach (IntrinsicDataElement dataElement in this._data[intrinsic])
                 {
                     sb.AppendLine("<intrinsic>");
-                    sb.AppendLine("<name>" + dataElement.intrinsic + "</name>");
                     sb.AppendLine("<id>" + dataElement.id + "</id>");
-                    sb.AppendLine("<cpuid>" + dataElement.cpuID + "</cpuid>");
-                    sb.AppendLine("<rettype>" + dataElement.returnType + "</rettype>");
+                    sb.AppendLine("<name>" + dataElement.intrinsic + "</name>");
+                    sb.AppendLine("<cpuid>" + IntrinsicTools.ToString(dataElement.cpuID) + "</cpuid>");
+                    sb.AppendLine("<ret>" + IntrinsicTools.ToString(dataElement.returnType) + "</ret>");
 
-                    sb.Append("<paramtype>");
+                    sb.Append("<sign>");
                     foreach (Tuple<ParamType, string> parameter in dataElement.parameters)
                     {
                         sb.Append(parameter.Item1);
@@ -227,12 +244,12 @@ namespace IntrinsicsDude.Tools
                         sb.Append(',');
                     }
                     if (dataElement.parameters.Count > 0) sb.Length--; // remove the trailing comma
-                    sb.AppendLine("</paramtype>");
+                    sb.AppendLine("</sign>");
 
-                    sb.AppendLine("<instruction>" + dataElement.instruction + "</instruction>");
-                    sb.AppendLine("<description>" + addHtml(dataElement.description) + "</description>");
-                    sb.AppendLine("<operation>" + addHtml(dataElement.operation) + "</operation>");
-                    sb.AppendLine("<performance>" + addHtml(dataElement.performance) + "</performance>");
+                    sb.AppendLine("<instr>" + dataElement.instruction + "</instr>");
+                    sb.AppendLine("<desc>" + addHtml(dataElement.description) + "</desc>");
+                    sb.AppendLine("<oper>" + addHtml(dataElement.operation) + "</oper>");
+                    //sb.AppendLine("<performance>" + addHtml(dataElement.performance) + "</performance>");
                     sb.AppendLine("</intrinsic>");
                 }
             }
@@ -242,16 +259,86 @@ namespace IntrinsicsDude.Tools
 
         private void loadXml(string filename)
         {
-            XElement booksFromFile = XElement.Load(filename);
-
-            foreach (XNode node in booksFromFile.Nodes())
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: filename " + filename);
+            try
             {
-                foreach (XElement element in node.ElementsAfterSelf())
-                {
-                    element.Name.ToString();
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: intrinsic " + element.Name.ToString());
+                DateTime time1 = DateTime.Now;
+                XElement booksFromFile = XElement.Load(filename);
 
+                this._data.Clear();
+
+                foreach (XElement intrinsicNode in booksFromFile.Nodes())
+                {
+                    IntrinsicDataElement dataElement = new IntrinsicDataElement();
+                    foreach (XElement element in intrinsicNode.Nodes())
+                    {
+                        string value = element.Value;
+                        switch (element.Name.ToString())
+                        {
+                            case "name":
+                                dataElement.intrinsic = IntrinsicTools.parseIntrinsic(value);
+                                break;
+                            case "id":
+                                if (!Int32.TryParse(value, out dataElement.id)) dataElement.id = -1;
+                                break;
+                            case "cpuid":
+                                dataElement.cpuID = IntrinsicTools.parseCpuID_multiple(value);
+                                break;
+                            case "ret":
+                                dataElement.returnType = IntrinsicTools.parseReturnType(value);
+                                break;
+                            case "sign":
+                                if (value.Length > 0)
+                                {
+                                    foreach (string s1 in value.Split(','))
+                                    {
+                                        string[] a2 = s1.Split(' ');
+                                        if (a2.Length == 2)
+                                        {
+                                            dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.parseParamType_InternalName(a2[0]), a2[1]));
+                                        }
+                                        else
+                                        {
+                                            IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: weird signature " + value);
+                                        }
+                                    }
+                                }
+                                break;
+                            case "instr":
+                                dataElement.instruction = value;
+                                break;
+                            case "desc":
+                                dataElement.description = value;
+                                break;
+                            case "oper":
+                                dataElement.operation = value;
+                                break;
+                            default:
+                                IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());
+                                break;
+                        }
+                    }
+
+                    #region store the dataElement
+                    IList<IntrinsicDataElement> dataElements = null;
+                    if (this._data.TryGetValue(dataElement.intrinsic, out dataElements))
+                    {
+                        dataElements.Add(dataElement);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
+                    }
+                    else
+                    {
+                        dataElements = new List<IntrinsicDataElement>(0);
+                        dataElements.Add(dataElement);
+                        this._data.Add(dataElement.intrinsic, dataElements);
+                    }
+                    #endregion
                 }
+                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Load XML");
+            }
+            catch (Exception e)
+            {
+                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadXml: exception " + e.ToString());
             }
         }
 

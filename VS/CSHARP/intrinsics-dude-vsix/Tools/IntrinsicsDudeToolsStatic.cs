@@ -398,7 +398,7 @@ namespace IntrinsicsDude.Tools
         {
             switch (arch)
             {
-                case CpuID.NONE: return true;
+                case CpuID.NONE: return false;
                 case CpuID.ADX: return Settings.Default.ARCH_ADX;
                 case CpuID.AES: return Settings.Default.ARCH_AES;
                 case CpuID.AVX: return Settings.Default.ARCH_AVX;
@@ -448,6 +448,8 @@ namespace IntrinsicsDude.Tools
                 case CpuID.PREFETCHWT1: return Settings.Default.ARCH_PREFETCHWT1;
 
                 case CpuID.SVML: return Settings.Default.USE_SVML;
+                case CpuID.DEFAULT: return true;
+                case CpuID.UNKNOWN: return false;
 
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);

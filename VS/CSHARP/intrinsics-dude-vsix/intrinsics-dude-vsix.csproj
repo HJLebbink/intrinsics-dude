@@ -107,18 +107,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\Intel-Intrinsics-Guide.html">
-      <IncludeInVSIX>true</IncludeInVSIX>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Intel-Intrinsics-Guide.html.xml">
+    <Content Include="Resources\Intel-Intrinsics-Guide.html" />
+    <Content Include="Resources\Intrinsics-Data.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\mandel_avx.c">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
+    <Content Include="Resources\mandel_avx.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

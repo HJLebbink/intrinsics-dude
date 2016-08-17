@@ -48,27 +48,22 @@ namespace IntrinsicsDude.Tools
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: IntrinsicsDudeTools constructor"));
 
             #region Initialize ErrorListProvider
-            IServiceProvider serviceProvider = new ServiceProvider(Package.GetGlobalService(typeof(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)) as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
-            this._errorListProvider = new ErrorListProvider(serviceProvider);
-            this._errorListProvider.ProviderName = "Intrinsics Errors";
-            this._errorListProvider.ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode);
+            if (false)
+            {
+                IServiceProvider serviceProvider = new ServiceProvider(Package.GetGlobalService(typeof(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)) as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
+                this._errorListProvider = new ErrorListProvider(serviceProvider);
+                this._errorListProvider.ProviderName = "Intrinsics Errors";
+                this._errorListProvider.ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode);
+            }
             #endregion
 
             this._smartThreadPool = new SmartThreadPool();
 
-            try
-            {
-                #region load intrinsic store
-                string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-                string filename_intrinsics = path + "Intel-Intrinsics-Guide.html";
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeTools: constructor: filename " + filename_intrinsics);
-                this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
-                #endregion
-            }
-            catch (Exception e)
-            {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicsDudeTools constructor: exception " + e);
-            }
+            #region load intrinsic store
+            string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
+            string filename_intrinsics = path + "Intrinsics-Data.xml";
+            this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
+            #endregion
         }
 
         #region Public Methods

@@ -30,7 +30,6 @@ using Microsoft.VisualStudio.Text.Operations;
 namespace IntrinsicsDude.Tools
 {
     public static partial class IntrinsicTools {
-        public const int SCAN_BUFFER_SIZE = 500;
 
         public enum IntrinsicRegisterType
         {
@@ -54,6 +53,9 @@ namespace IntrinsicsDude.Tools
         [Flags]
         public enum CpuID : long
         {
+            /// <summary>
+            /// NONE is used to denote no CPUID id is present
+            /// </summary>
             NONE        = 0L,
             ADX         = 1L << 0,
             AES         = 1L << 1,
@@ -103,7 +105,19 @@ namespace IntrinsicsDude.Tools
             XSAVEOPT    = 1L << 43,
             PREFETCHWT1 = 1L << 44,
 
-            SVML        = 1L << 45
+            SVML        = 1L << 45,
+
+            /// <summary>
+            /// DEFAULT is used for the absence of a CPUID, very cpu is assumed to support these intrinsics.
+            /// </summary>
+            DEFAULT     = 1L << 46,
+
+            // bits 45-62 are reserved for future use
+
+            /// <summary>
+            /// UNKNOWN is used for an unknown or unrecognized CPUID.
+            /// </summary>
+            UNKNOWN = 1L << 63
         }
 
         public enum ReturnType
@@ -300,6 +314,107 @@ namespace IntrinsicsDude.Tools
             }
         }
         
+        /// <summary>
+        /// parse internal paramType name to ParamTYpe
+        /// </summary>
+        public static ParamType parseParamType_InternalName(string str)
+        {
+            switch (str)
+            {
+                case "__INT8": return ParamType.__INT8;
+                case "__INT16": return ParamType.__INT16;
+                case "__INT32": return ParamType.__INT32;
+                case "__INT32_PTR": return ParamType.__INT32_PTR;
+                case "__INT64": return ParamType.__INT64;
+                case "__INT64_CONST_PTR": return ParamType.__INT64_CONST_PTR;
+                case "__INT64_PTR": return ParamType.__INT64_PTR;
+                case "__M128": return ParamType.__M128;
+                case "__M128_CONST_PTR": return ParamType.__M128_CONST_PTR;
+                case "__M128_PTR": return ParamType.__M128_PTR;
+                case "__M128D": return ParamType.__M128D;
+                case "__M128D_CONST_PTR": return ParamType.__M128D_CONST_PTR;
+                case "__M128D_PTR": return ParamType.__M128D_PTR;
+                case "__M128I": return ParamType.__M128I;
+                case "__M128I_CONST_PTR": return ParamType.__M128I_CONST_PTR;
+                case "__M128I_PTR": return ParamType.__M128I_PTR;
+                case "__M256": return ParamType.__M256;
+                case "__M256_PTR": return ParamType.__M256_PTR;
+                case "__M256D": return ParamType.__M256D;
+                case "__M256D_PTR": return ParamType.__M256D_PTR;
+                case "__M256I": return ParamType.__M256I;
+                case "__M256I_CONST_PTR": return ParamType.__M256I_CONST_PTR;
+                case "__M256I_PTR": return ParamType.__M256I_PTR;
+                case "__M512": return ParamType.__M512;
+                case "__M512_PTR": return ParamType.__M512_PTR;
+                case "__M512D": return ParamType.__M512D;
+                case "__M512D_PTR": return ParamType.__M512D_PTR;
+                case "__M512I": return ParamType.__M512I;
+                case "__M64": return ParamType.__M64;
+                case "__M64_CONST_PTR": return ParamType.__M64_CONST_PTR;
+                case "__M64_PTR": return ParamType.__M64_PTR;
+                case "__MMASK16": return ParamType.__MMASK16;
+                case "__MMASK16_PTR": return ParamType.__MMASK16_PTR;
+                case "__MMASK32": return ParamType.__MMASK32;
+                case "__MMASK64": return ParamType.__MMASK64;
+                case "__MMASK8": return ParamType.__MMASK8;
+                case "_MM_BROADCAST32_ENUM": return ParamType._MM_BROADCAST32_ENUM;
+                case "_MM_BROADCAST64_ENUM": return ParamType._MM_BROADCAST64_ENUM;
+                case "_MM_DOWNCONV_EPI32_ENUM": return ParamType._MM_DOWNCONV_EPI32_ENUM;
+                case "_MM_DOWNCONV_EPI64_ENUM": return ParamType._MM_DOWNCONV_EPI64_ENUM;
+                case "_MM_DOWNCONV_PD_ENUM": return ParamType._MM_DOWNCONV_PD_ENUM;
+                case "_MM_DOWNCONV_PS_ENUM": return ParamType._MM_DOWNCONV_PS_ENUM;
+                case "_MM_EXP_ADJ_ENUM": return ParamType._MM_EXP_ADJ_ENUM;
+                case "_MM_MANTISSA_NORM_ENUM": return ParamType._MM_MANTISSA_NORM_ENUM;
+                case "_MM_MANTISSA_SIGN_ENUM": return ParamType._MM_MANTISSA_SIGN_ENUM;
+                case "_MM_UPCONV_EPI32_ENUM": return ParamType._MM_UPCONV_EPI32_ENUM;
+                case "_MM_UPCONV_EPI64_ENUM": return ParamType._MM_UPCONV_EPI64_ENUM;
+                case "_MM_UPCONV_PD_ENUM": return ParamType._MM_UPCONV_PD_ENUM;
+                case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
+                case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
+                case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
+                case "CONST_MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM;
+                case "CONST_INT": return ParamType.CONST_INT;
+                case "CONST_UNSIGNED_INT": return ParamType.CONST_UNSIGNED_INT;
+                case "CONST_VOID_PTR": return ParamType.CONST_VOID_PTR;
+                case "CONST_VOID_PTR_PTR": return ParamType.CONST_VOID_PTR_PTR;
+                case "CHAR": return ParamType.CHAR;
+                case "CHAR_CONST_PTR": return ParamType.CHAR_CONST_PTR;
+                case "CHAR_PTR": return ParamType.CHAR_PTR;
+                case "DOUBLE": return ParamType.DOUBLE;
+                case "DOUBLE_CONST_PTR": return ParamType.DOUBLE_CONST_PTR;
+                case "DOUBLE_PTR": return ParamType.DOUBLE_PTR;
+                case "FLOAT": return ParamType.FLOAT;
+                case "FLOAT_CONST_PTR": return ParamType.FLOAT_CONST_PTR;
+                case "FLOAT_PTR": return ParamType.FLOAT_PTR;
+                case "INT": return ParamType.INT;
+                case "INT_CONST_PTR": return ParamType.INT_CONST_PTR;
+                case "INT_PTR": return ParamType.INT_PTR;
+                case "LONG_LONG": return ParamType.LONG_LONG;
+                case "SIZE_T": return ParamType.SIZE_T;
+                case "SHORT": return ParamType.SHORT;
+                case "UNSIGNED__INT32": return ParamType.UNSIGNED__INT32;
+                case "UNSIGNED__INT32_PTR": return ParamType.UNSIGNED__INT32_PTR;
+                case "UNSIGNED__INT64": return ParamType.UNSIGNED__INT64;
+                case "UNSIGNED__INT64_PTR": return ParamType.UNSIGNED__INT64_PTR;
+                case "UNSIGNED_CHAR": return ParamType.UNSIGNED_CHAR;
+                case "UNSIGNED_INT": return ParamType.UNSIGNED_INT;
+                case "UNSIGNED_INT_PTR": return ParamType.UNSIGNED_INT_PTR;
+                case "UNSIGNED_LONG": return ParamType.UNSIGNED_LONG;
+                case "UNSIGNED_LONG_PTR": return ParamType.UNSIGNED_LONG_PTR;
+                case "UNSIGNED_SHORT": return ParamType.UNSIGNED_SHORT;
+                case "UNSIGNED_SHORT_PTR": return ParamType.UNSIGNED_SHORT_PTR;
+                case "VOID": return ParamType.VOID;
+                case "VOID_PTR": return ParamType.VOID_PTR;
+                case "VOID_CONST_PTR": return ParamType.VOID_CONST_PTR;
+                default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType_InternalName: unknown ParamType \"" + str + "\".");
+                    return ParamType.NONE;
+            }
+        }
+
+        /// <summary>
+        /// parse human readable text to ParamType
+        /// </summary>
         public static ParamType parseParamType(string str)
         {
             string str2 = str.ToUpper().Replace(" *", "*");
@@ -403,6 +518,10 @@ namespace IntrinsicsDude.Tools
         {
             switch (str.ToUpper())
             {
+                case "":
+                case "DEFAULT":  return CpuID.DEFAULT;
+                case "NONE": return CpuID.NONE;
+
                 case "ADX": return CpuID.ADX;
                 case "AES": return CpuID.AES;
                 case "AVX": return CpuID.AVX;
@@ -427,7 +546,9 @@ namespace IntrinsicsDude.Tools
                 case "SSE": return CpuID.SSE;
                 case "SSE2": return CpuID.SSE2;
                 case "SSE3": return CpuID.SSE3;
+                case "SSE4_1":
                 case "SSE4.1": return CpuID.SSE4_1;
+                case "SSE4_2":
                 case "SSE4.2": return CpuID.SSE4_2;
                 case "SSSE3": return CpuID.SSSE3;
 
@@ -453,17 +574,28 @@ namespace IntrinsicsDude.Tools
                 case "SVML": return CpuID.SVML;
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown cpuid \"" + str + "\".");
-                    return CpuID.NONE;
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
+                    return CpuID.UNKNOWN;
             }
+        }
+
+        public static CpuID parseCpuID_multiple(string str)
+        {
+            CpuID cpuID = CpuID.NONE;
+            foreach (string cpuID_str in str.Split(','))
+            {
+                cpuID |= parseCpuID(cpuID_str.Trim());
+            }
+            return cpuID;
         }
 
         public static string ToString(CpuID cpuIDs)
         {
             StringBuilder sb = new StringBuilder();
+            //TODO it is inefficient to test every bit, would be faster to do a bitscanforward
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
-                if ((value != CpuID.NONE) && cpuIDs.HasFlag(value))
+                if ((value != CpuID.NONE) && (value != CpuID.DEFAULT) && (cpuIDs.HasFlag(value)))
                 {
                     sb.Append(value.ToString());
                     sb.Append(", ");
@@ -603,6 +735,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.UNSIGNED_CHAR: return "unsigned char";
                 case ReturnType.UNSIGNED_INT: return "unsigned int";
                 case ReturnType.UNSIGNED_SHORT: return "unsigned short";
+                case ReturnType.UNSIGNED_LONG: return "unsigned long";
                 case ReturnType.VOID: return "void";
                 case ReturnType.VOID_PTR: return "void *";
                 default:
@@ -671,7 +804,6 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-
         #region Text Wrap
         /// <summary>
         /// Forces the string to word wrap so that each line doesn't exceed the maxLineLength.
@@ -738,49 +870,6 @@ namespace IntrinsicsDude.Tools
         }
 
         #endregion Text Wrap
-
-
-        /// <summary>
-        /// Return the first mnemonic before the provided position in the provided line
-        /// </summary>
-        public static Tuple<Intrinsic, int> getPreviousKeywordPos(int pos, string line)
-        {
-            //Debug.WriteLine(string.Format("INFO: getKeyword; pos={0}; line=\"{1}\"", pos, new string(line)));
-            if ((pos < 0) || (pos >= line.Length))
-            {
-                return new Tuple<Intrinsic, int>(Intrinsic.NONE, pos);
-            }
-            string line2 = line.ToUpper();
-
-            // find the beginning of the keyword
-            for (int i1 = pos - 1; i1 >= 2; --i1)
-            {
-                char c0 = line2[i1 - 0];
-                if (c0.Equals('_'))
-                {
-                    char c1 = line2[i1 - 1];
-                    char c2 = line2[i1 - 2];
-
-                    if (c1.Equals('M') && c2.Equals('M'))
-                    {
-                        for (int i2 = i1 + 2; i2 < line.Length; ++i2)
-                        {
-                            char c3 = line2[i2];
-                            if (Char.IsWhiteSpace(c3) || c3.Equals('('))
-                            {
-                                int endPos = i2 - 1;
-                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(line2.Substring(i1, endPos));
-                                if (intrinsic != Intrinsic.NONE)
-                                {
-                                    return new Tuple<Intrinsic, int>(intrinsic, i1);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return new Tuple<Intrinsic, int>(Intrinsic.NONE, pos);
-        }
 
         public static Tuple<Intrinsic, int> getIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
         {
