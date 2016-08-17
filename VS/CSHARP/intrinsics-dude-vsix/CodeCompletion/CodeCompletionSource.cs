@@ -69,7 +69,6 @@ namespace IntrinsicsDude
 
             try
             {
-                DateTime time1 = DateTime.Now;
                 ITextSnapshot snapshot = this._buffer.CurrentSnapshot;
                 SnapshotPoint triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
                 if (triggerPoint == null)
@@ -91,7 +90,6 @@ namespace IntrinsicsDude
                         completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
                     }
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Code Completion");
             }
             catch (Exception e)
             {
@@ -112,6 +110,7 @@ namespace IntrinsicsDude
 
         private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures)
         {
+            DateTime time1 = DateTime.Now;
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
             if (this._cachedCompletionsCpuID != currentCpuID)
             {
@@ -144,6 +143,7 @@ namespace IntrinsicsDude
                     }
                 }
             }
+            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Code Completion");
             return this._cachedCompletions;
         }
 
