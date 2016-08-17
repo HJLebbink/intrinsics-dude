@@ -246,7 +246,7 @@ namespace IntrinsicsDude.Tools
             VOID_CONST_PTR
         }
 
-        public static IntrinsicRegisterType parseIntrinsicRegisterType(string str)
+        public static IntrinsicRegisterType parseIntrinsicRegisterType(string str, bool warn = true)
         {
             if (!str.StartsWith("__")) return IntrinsicRegisterType.NONE;
             switch (str.ToUpper())
@@ -266,12 +266,12 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK64": return IntrinsicRegisterType.__MMASK64;
                 case "__MMASK8": return IntrinsicRegisterType.__MMASK8;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
                     return IntrinsicRegisterType.NONE;
             }
         }
 
-        public static ReturnType parseReturnType(string str)
+        public static ReturnType parseReturnType(string str, bool warn = true)
         {
             switch (str.ToUpper())
             {
@@ -309,7 +309,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*":
                 case "VOID *": return ReturnType.VOID_PTR;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
                     return ReturnType.NONE;
             }
         }
@@ -317,7 +317,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// parse internal paramType name to ParamTYpe
         /// </summary>
-        public static ParamType parseParamType_InternalName(string str)
+        public static ParamType parseParamType_InternalName(string str, bool warn = true)
         {
             switch (str)
             {
@@ -407,7 +407,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID_PTR": return ParamType.VOID_PTR;
                 case "VOID_CONST_PTR": return ParamType.VOID_CONST_PTR;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType_InternalName: unknown ParamType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType_InternalName: unknown ParamType \"" + str + "\".");
                     return ParamType.NONE;
             }
         }
@@ -415,7 +415,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// parse human readable text to ParamType
         /// </summary>
-        public static ParamType parseParamType(string str)
+        public static ParamType parseParamType(string str, bool warn = true)
         {
             string str2 = str.ToUpper().Replace(" *", "*");
 
@@ -509,12 +509,12 @@ namespace IntrinsicsDude.Tools
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\".");
                     return ParamType.NONE;
             }
         }
 
-        public static CpuID parseCpuID(string str)
+        public static CpuID parseCpuID(string str, bool warn = true)
         {
             switch (str.ToUpper())
             {
@@ -574,17 +574,17 @@ namespace IntrinsicsDude.Tools
                 case "SVML": return CpuID.SVML;
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
                     return CpuID.UNKNOWN;
             }
         }
 
-        public static CpuID parseCpuID_multiple(string str)
+        public static CpuID parseCpuID_multiple(string str, bool warn = true)
         {
             CpuID cpuID = CpuID.NONE;
             foreach (string cpuID_str in str.Split(','))
             {
-                cpuID |= parseCpuID(cpuID_str.Trim());
+                cpuID |= parseCpuID(cpuID_str.Trim(), warn);
             }
             return cpuID;
         }

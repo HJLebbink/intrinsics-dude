@@ -45,7 +45,7 @@ namespace IntrinsicsDude
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
-        private readonly SortedSet<Completion> _cachedCompletions;
+        private readonly IDictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<string>>> _cachedCompletions;
         private CpuID _cachedCompletionsCpuID;
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
@@ -56,7 +56,7 @@ namespace IntrinsicsDude
             this._buffer = buffer;
             this._navigator = nav;
 
-            this._cachedCompletions = new SortedSet<Completion>(new CompletionComparer());
+            this._cachedCompletions = new Dictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<string>>>();
             this._cachedCompletionsCpuID = CpuID.NONE;
             this.loadIcons();
         }
@@ -80,30 +80,37 @@ namespace IntrinsicsDude
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
                 string partialKeyword = extent.Span.GetText();
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
-                
+
                 if (partialKeyword.Length > 0)
                 {
                     if (partialKeyword[0].Equals('_'))
                     {
-                        bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
-                        SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
-
+                        ReturnType restrictedTo = this.findCompletionRestriction(extent);
+                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
+                        SortedSet<Completion> set_intr = tup.Item1;
                         if (completionSets.Count > 0)
                         {
-                            CompletionSet oldSet = completionSets[0];
-                            foreach (Completion c in oldSet.Completions)
+                            ISet<string> notAllowed = tup.Item2;
+                            CompletionSet set_old = completionSets[0];
+                            SortedSet<Completion> set_all = new SortedSet<Completion>(set_intr, new CompletionComparer());
+
+                            foreach (Completion c in set_old.Completions)
                             {
-                                completions.Add(c);
+                                if (!notAllowed.Contains(c.InsertionText))
+                                {
+                                    set_all.Add(c);
+                                }
                             }
-                            CompletionSet newSet = new CompletionSet(oldSet.Moniker, oldSet.DisplayName, oldSet.ApplicableTo, completions, oldSet.CompletionBuilders);
 
                             completionSets.Clear();
-                            completionSets.Add(newSet);
+                            completionSets.Add(new CompletionSet(set_old.Moniker, set_old.DisplayName, set_old.ApplicableTo, set_all, set_old.CompletionBuilders));
+                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, set_old.CompletionBuilders));
+                            completionSets.Add(new CompletionSet("Original", "Original", set_old.ApplicableTo, set_old.Completions, set_old.CompletionBuilders));
                         }
                         else
                         {
                             ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
-                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
+                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, set_intr, Enumerable.Empty<Completion>()));
                         }
                     }
                 }
@@ -125,7 +132,73 @@ namespace IntrinsicsDude
 
         #region Private Methods
 
-        private SortedSet<Completion> getAllowedMnemonics(bool useCapitals, CpuID selectedArchitectures)
+        private ReturnType findCompletionRestriction(TextExtent currentKeywordExtent)
+        {
+            ReturnType returnType = this.findLeftHandType(currentKeywordExtent);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
+            if (returnType == ReturnType.NONE)
+            {
+                returnType = findEmbeddedType(currentKeywordExtent);
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
+            }
+            return returnType;
+        }
+
+        private ReturnType findEmbeddedType(TextExtent currentKeywordExtent)
+        {
+            SnapshotPoint point = currentKeywordExtent.Span.Start;
+            Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this._navigator);
+            if (tup.Item1 == Intrinsic.NONE)
+            {
+                return ReturnType.NONE;
+            }
+
+            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
+            IntrinsicDataElement dataElement = store.get(tup.Item1)[0];
+            ParamType paramType = dataElement.parameters[tup.Item2].Item1;
+            ReturnType returnType = IntrinsicTools.parseReturnType(IntrinsicTools.ToString(paramType), false);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findEmbeddedType: B: returnType=" + returnType);
+            return returnType;
+        }
+
+        private ReturnType findLeftHandType(TextExtent currentKeywordExtent)
+        {
+            TextExtent word = this._navigator.GetExtentOfWord(currentKeywordExtent.Span.Start - 1);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: A: word=\"" + word.Span.GetText() + "\".");
+
+            if (word.Span.GetText().Equals(" "))
+            {
+                word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: B: word=\"" + word.Span.GetText() + "\".");
+            }
+            if (word.Span.GetText().Equals("="))
+            {
+                word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: C: word=\"" + word.Span.GetText() + "\".");
+            }
+            else
+            {
+                return ReturnType.NONE;
+            }
+            if (word.Span.GetText().Equals(" "))
+            {
+                word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: D: word=\"" + word.Span.GetText() + "\".");
+            }
+            word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
+
+            word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
+            ReturnType returnType = IntrinsicTools.parseReturnType(word.Span.GetText(), false);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
+            return returnType;
+        }
+
+        /// <summary>
+        /// Returns the sorted set of selected completions and the list of intrinsics that are not allowed
+        /// </summary>
+        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType)
         {
             DateTime time1 = DateTime.Now;
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
@@ -133,37 +206,48 @@ namespace IntrinsicsDude
             {
                 this._cachedCompletionsCpuID = currentCpuID;
                 this._cachedCompletions.Clear();
+            }
 
+            if (!this._cachedCompletions.ContainsKey(returnType))
+            {
                 IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
+                SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
+                ISet<string> disallowed = new HashSet<string>();
 
                 foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
                 {
                     if (intrinsic == Intrinsic.NONE) continue;
-
                     IList<IntrinsicDataElement> dataElements = store.get(intrinsic);
+
                     CpuID cpuID = CpuID.NONE;
                     foreach (IntrinsicDataElement dataElement in dataElements)
                     {
-                        if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
+                        if (dataElement.returnType == returnType)
                         {
-                            cpuID |= dataElement.cpuID;
+                            if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
+                            {
+                                cpuID |= dataElement.cpuID;
+                            }
                         }
                     }
-                    if (cpuID != CpuID.NONE)
+                    if (cpuID == CpuID.NONE)
+                    {
+                        disallowed.Add(intrinsic.ToString().ToLower());
+                    }
+                    else
                     {
                         IntrinsicDataElement dataElement = dataElements[0];
                         string cpuID_str = (cpuID == CpuID.NONE) ? "" : " [" + IntrinsicTools.ToString(cpuID) + "]";
-
                         string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
-                        //string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
-                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);
-                        this._cachedCompletions.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
+                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);
+                        set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
                     }
                 }
+                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(set, disallowed));
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Code Completion");
-            return this._cachedCompletions;
+            return this._cachedCompletions[returnType];
         }
 
         private void loadIcons()
