@@ -917,11 +917,18 @@ namespace IntrinsicsDude.Tools
             return new Tuple<Intrinsic, int>(Intrinsic.NONE, 0);
         }
 
-        public static Intrinsic parseIntrinsic(string str)
+        public static Intrinsic parseIntrinsic(string str, bool warn = true)
         {
-            if (str.Length < 4) return Intrinsic.NONE;
-            if (!str[0].Equals('_')) return Intrinsic.NONE;
-
+            if (str.Length < 4)
+            {
+                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                return Intrinsic.NONE;
+            }
+            if (!str[0].Equals('_'))
+            {
+                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                return Intrinsic.NONE;
+            }
             switch (str.ToUpper())
             {
                 case "__RDTSCP": return Intrinsic.__RDTSCP;
@@ -6598,7 +6605,9 @@ namespace IntrinsicsDude.Tools
                 case "_XSETBV": return Intrinsic._XSETBV;
                 case "_XTEST": return Intrinsic._XTEST;
 
-                default: return Intrinsic.NONE;
+                default:
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                    return Intrinsic.NONE;
             }
         }
     }

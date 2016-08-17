@@ -50,92 +50,97 @@ namespace IntrinsicsDude
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec");
-
-            bool handledChar = false;
-            int hresult = VSConstants.S_OK;
-            char typedChar = char.MinValue;
-
-            #region 1. Pre-process
-            if (pguidCmdGroup == VSConstants.VSStd2K)
+            try
             {
-                switch ((VSConstants.VSStd2KCmdID)nCmdID)
-                {
-                    case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
-                    case VSConstants.VSStd2KCmdID.COMPLETEWORD:
-                        handledChar = this.StartSession();
-                        break;
-                    case VSConstants.VSStd2KCmdID.RETURN:
-                        handledChar = this.Complete(true);
-                        break;
-                    case VSConstants.VSStd2KCmdID.TAB:
-                        this.Complete(true);
-                        //handledChar = false;
-                        break;
-                    case VSConstants.VSStd2KCmdID.CANCEL:
-                        handledChar = this.Cancel();
-                        break;
-                    case VSConstants.VSStd2KCmdID.TYPECHAR:
-                        typedChar = GetTypeChar(pvaIn);
-                        if (char.IsWhiteSpace(typedChar))
-                        {
-                            this.Complete(true);
-                            //handledChar = false;
-                        }
-                        break;
-                }
-            }
-            #endregion
+                bool handledChar = false;
+                int hresult = VSConstants.S_OK;
+                char typedChar = char.MinValue;
 
-            #region 2. Handle the typed char
-            if (!handledChar)
-            {
-                hresult = this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-
-                if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
-                {
-                    //if (!typedChar.Equals(char.MinValue)) {
-                    if ((this._session == null) || this._session.IsDismissed)
-                    { // If there is no active session, bring up completion
-                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar="+typedChar +"; going to start a new session");
-                        this.StartSession();
-                    }
-                    else
-                    {
-                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar=" + typedChar + "; already a session active");
-                    }
-                    this.Filter();
-                    hresult = VSConstants.S_OK;
-                }
-                else if (nCmdID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE   //redo the filter if there is a deletion
-                      || nCmdID == (uint)VSConstants.VSStd2KCmdID.DELETE)
-                {
-                    if ((this._session != null) && !this._session.IsDismissed)
-                    {
-                        this.Filter();
-                    }
-                    hresult = VSConstants.S_OK;
-                }
-            }
-            #endregion
-
-            #region Post-process
-            if (ErrorHandler.Succeeded(hresult))
-            {
+                #region 1. Pre-process
                 if (pguidCmdGroup == VSConstants.VSStd2K)
                 {
                     switch ((VSConstants.VSStd2KCmdID)nCmdID)
                     {
+                        case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
+                        case VSConstants.VSStd2KCmdID.COMPLETEWORD:
+                            handledChar = this.StartSession();
+                            break;
+                        case VSConstants.VSStd2KCmdID.RETURN:
+                            handledChar = this.Complete(true);
+                            break;
+                        case VSConstants.VSStd2KCmdID.TAB:
+                            this.Complete(true);
+                            //handledChar = false;
+                            break;
+                        case VSConstants.VSStd2KCmdID.CANCEL:
+                            handledChar = this.Cancel();
+                            break;
                         case VSConstants.VSStd2KCmdID.TYPECHAR:
-                        case VSConstants.VSStd2KCmdID.BACKSPACE:
-                        case VSConstants.VSStd2KCmdID.DELETE:
-                            this.Filter();
+                            typedChar = GetTypeChar(pvaIn);
+                            if (char.IsWhiteSpace(typedChar))
+                            {
+                                this.Complete(true);
+                                //handledChar = false;
+                            }
                             break;
                     }
                 }
-            }
-            #endregion
+                #endregion
 
-            return hresult;
+                #region 2. Handle the typed char
+                if (!handledChar)
+                {
+                    hresult = this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+
+                    if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
+                    {
+                        //if (!typedChar.Equals(char.MinValue)) {
+                        if ((this._session == null) || this._session.IsDismissed)
+                        { // If there is no active session, bring up completion
+                          //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar="+typedChar +"; going to start a new session");
+                            this.StartSession();
+                        }
+                        else
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar=" + typedChar + "; already a session active");
+                        }
+                        this.Filter();
+                        hresult = VSConstants.S_OK;
+                    }
+                    else if (nCmdID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE   //redo the filter if there is a deletion
+                          || nCmdID == (uint)VSConstants.VSStd2KCmdID.DELETE)
+                    {
+                        if ((this._session != null) && !this._session.IsDismissed)
+                        {
+                            this.Filter();
+                        }
+                        hresult = VSConstants.S_OK;
+                    }
+                }
+                #endregion
+
+                #region Post-process
+                if (ErrorHandler.Succeeded(hresult))
+                {
+                    if (pguidCmdGroup == VSConstants.VSStd2K)
+                    {
+                        switch ((VSConstants.VSStd2KCmdID)nCmdID)
+                        {
+                            case VSConstants.VSStd2KCmdID.TYPECHAR:
+                            case VSConstants.VSStd2KCmdID.BACKSPACE:
+                            case VSConstants.VSStd2KCmdID.DELETE:
+                                this.Filter();
+                                break;
+                        }
+                    }
+                }
+                #endregion
+
+                return hresult;
+            } catch (Exception e) {
+                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; e=" + e.ToString());
+                return this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+            }
         }
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)

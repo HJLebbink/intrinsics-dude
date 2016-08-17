@@ -127,8 +127,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IntrinsicDoc\IntrinsicDocClassifier.cs" />
-    <Compile Include="IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
+    <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocClassifier.cs" />
+    <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
     <Compile Include="CodeCompletion\CodeCompletionCommandHandler.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />

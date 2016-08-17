@@ -76,7 +76,6 @@ namespace IntrinsicsDude.OptionsPage {
             set { colorRegister_UI.SelectedColor = IntrinsicsDudeToolsStatic.convertColor(value); }
         }
 
-        /*
         public System.Drawing.Color colorMisc {
             get {
                 if (colorMisc_UI.SelectedColor.HasValue) {
@@ -87,7 +86,6 @@ namespace IntrinsicsDude.OptionsPage {
             }
             set { colorMisc_UI.SelectedColor = IntrinsicsDudeToolsStatic.convertColor(value); }
         }
-        */
         #endregion Syntax Highlighting
 
         #region Keyword Highlighting

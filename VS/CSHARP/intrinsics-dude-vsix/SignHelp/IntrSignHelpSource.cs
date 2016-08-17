@@ -46,6 +46,8 @@ namespace IntrinsicsDude.SignHelp
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
         {
+            if (!Settings.Default.SignatureHelp_On) return;
+
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession");
             try
             {
@@ -114,8 +116,8 @@ namespace IntrinsicsDude.SignHelp
             int nSignatures = session.Signatures.Count;
             if (nSignatures > 0)
             {
-                ITrackingSpan applicableToSpan = session.Signatures[0].ApplicableToSpan;
-                string text = applicableToSpan.GetText(applicableToSpan.TextBuffer.CurrentSnapshot);
+                //ITrackingSpan applicableToSpan = session.Signatures[0].ApplicableToSpan;
+                //string text = applicableToSpan.GetText(applicableToSpan.TextBuffer.CurrentSnapshot);
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
                 return session.Signatures[0];
             }

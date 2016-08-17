@@ -33,7 +33,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Text;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.QuickInfo
@@ -115,7 +114,7 @@ namespace IntrinsicsDude.QuickInfo
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword);
+                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword, true);
                                 if (reg != IntrinsicRegisterType.NONE)
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);

@@ -71,7 +71,7 @@ namespace IntrinsicsDude.OptionsPage
             this._asmDudeOptionsPageUI.useSyntaxHighlighting = Settings.Default.SyntaxHighlighting_On;
             this._asmDudeOptionsPageUI.colorMnemonic = Settings.Default.SyntaxHighlighting_Opcode;
             this._asmDudeOptionsPageUI.colorRegister = Settings.Default.SyntaxHighlighting_Register;
-            //this._asmDudeOptionsPageUI.colorMisc = Settings.Default.SyntaxHighlighting_Misc;
+            this._asmDudeOptionsPageUI.colorMisc = Settings.Default.SyntaxHighlighting_Misc;
             #endregion
 
             #region Code Completion
@@ -250,13 +250,11 @@ namespace IntrinsicsDude.OptionsPage
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: colorRegister=" + this._asmDudeOptionsPageUI.colorRegister);
                 changed = true;
             }
-            /*
             if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._asmDudeOptionsPageUI.colorMisc.ToArgb())
             {
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: colorMisc=" + this._asmDudeOptionsPageUI.colorMisc);
                 changed = true;
             }
-            */
             #endregion
 
             #region Code Completion
@@ -580,14 +578,12 @@ namespace IntrinsicsDude.OptionsPage
                 changed = true;
                 restartNeeded = true;
             }
-            /*
             if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._asmDudeOptionsPageUI.colorMisc.ToArgb())
             {
                 Settings.Default.SyntaxHighlighting_Misc = this._asmDudeOptionsPageUI.colorMisc;
                 changed = true;
                 restartNeeded = true;
             }
-            */
             #endregion
 
             #region Code Completion

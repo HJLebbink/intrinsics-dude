@@ -21,17 +21,15 @@
 								<Label Content="Register Type:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorRegister_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for registers" Margin="140,0,0,0"/>
 							</Grid>
-							<!--
-							<Grid>
+							<Grid Visibility="Hidden" Height="0">
 								<Label Content="Misc:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorMisc_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for misc" Margin="140,0,0,0"/>
 							</Grid>
-							-->
 							<TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" Width="auto" Margin="5,4,0,4" ><Run Text="To edit other properties of these keywords such as font families, go to Tools&gt;Options&gt;Environment&gt;Fonts and Colors&gt;Text Editor."/></TextBlock>
 						</StackPanel>
 					</Grid>
 				</GroupBox>
-				<GroupBox Header="Documentation" BorderBrush="DarkGray">
+				<GroupBox Header="Documentation" BorderBrush="DarkGray" Visibility="Hidden" Height="0">
 					<Grid>
 						<StackPanel>
 							<CheckBox x:Name="useAsmDoc_UI" ToolTip="Assembly Documentation Enabled" Content="Enable Documentation" Margin="0,4,0,4" />

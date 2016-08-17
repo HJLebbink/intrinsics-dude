@@ -47,8 +47,6 @@ namespace IntrinsicsDude.SignHelp
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            if (!Settings.Default.SignatureHelp_On) return;
-
             ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
             if (textView != null)
             {

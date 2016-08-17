@@ -95,10 +95,10 @@ namespace IntrinsicsDude
                         {
                             string keyword = line.Substring(startPos, length);
                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found keyword \"" + keyword+"\".");
-                            Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
+                            Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword, false);
                             if (intrinsic == Intrinsic.NONE)
                             {
-                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword);
+                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword, false);
                                 if (reg == IntrinsicRegisterType.NONE)
                                 {
                                     // do nothing

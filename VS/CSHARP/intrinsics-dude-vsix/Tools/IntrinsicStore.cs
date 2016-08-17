@@ -334,7 +334,7 @@ namespace IntrinsicsDude.Tools
                     }
                     #endregion
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Load XML");
+                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "XML-Data-Loader");
             }
             catch (Exception e)
             {

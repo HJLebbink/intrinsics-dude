@@ -26,10 +26,10 @@ using System.Linq;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
-using static IntrinsicsDude.Tools.IntrinsicTools;
 using System.Windows.Media;
 using System.IO;
 using Microsoft.VisualStudio.Text.Operations;
+using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude
 {
@@ -85,8 +85,9 @@ namespace IntrinsicsDude
                 {
                     if (partialKeyword[0].Equals('_'))
                     {
+                        ImageSource imageSource = this.icon_IF;// (completionSets.Count > 0) ? completionSets[0].Completions[0].IconSource : this.icon_IF;
                         ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
+                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo, imageSource);
                         SortedSet<Completion> set_intr = tup.Item1;
                         if (completionSets.Count > 0)
                         {
@@ -198,7 +199,7 @@ namespace IntrinsicsDude
         /// <summary>
         /// Returns the sorted set of selected completions and the list of intrinsics that are not allowed
         /// </summary>
-        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType)
+        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType, ImageSource image)
         {
             DateTime time1 = DateTime.Now;
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
@@ -241,7 +242,7 @@ namespace IntrinsicsDude
                         string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
                         //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);
-                        set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, ""));
+                        set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, image, "4"));
                     }
                 }
                 this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(set, disallowed));
