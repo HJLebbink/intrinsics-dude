@@ -31,7 +31,7 @@ namespace IntrinsicsDude
 {
     [Export(typeof(ICompletionSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Order(Before = "default")]
+    [Order(After = "default")] // let the default code completion trigger first, such that we can add our completions to the existing ones.
     [Name("Intrinsic Completion Source Provider")]
     public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
     {

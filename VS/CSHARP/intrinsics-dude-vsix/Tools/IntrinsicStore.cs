@@ -311,7 +311,7 @@ namespace IntrinsicsDude.Tools
                                 dataElement.description = value;
                                 break;
                             case "oper":
-                                dataElement.operation = value;
+                                dataElement.operation = removeHtml(value);
                                 break;
                             default:
                                 IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());

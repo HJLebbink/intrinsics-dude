@@ -27,7 +27,6 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
-using System.Diagnostics;
 
 namespace IntrinsicsDude.CodeCompletion
 {
@@ -44,12 +43,15 @@ namespace IntrinsicsDude.CodeCompletion
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            IWpfTextView view = _adaptersFactory.GetWpfTextView(textViewAdapter);
-            Debug.Assert(view != null);
-            CodeCompletionCommandHandler filter = new CodeCompletionCommandHandler(view, _completionBroker);
-            IOleCommandTarget next;
-            textViewAdapter.AddCommandFilter(filter, out next);
-            filter._nextCommandHandler = next;
+            IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
+            if (view != null)
+            {
+                CodeCompletionCommandHandler filter = new CodeCompletionCommandHandler(view, this._completionBroker);
+
+                IOleCommandTarget next;
+                textViewAdapter.AddCommandFilter(filter, out next);
+                filter._nextCommandHandler = next;
+            }
         }
     }
 }

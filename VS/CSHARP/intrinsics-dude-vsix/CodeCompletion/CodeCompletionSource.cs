@@ -55,6 +55,7 @@ namespace IntrinsicsDude
         {
             this._buffer = buffer;
             this._navigator = nav;
+
             this._cachedCompletions = new SortedSet<Completion>(new CompletionComparer());
             this._cachedCompletionsCpuID = CpuID.NONE;
             this.loadIcons();
@@ -62,7 +63,7 @@ namespace IntrinsicsDude
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
         {
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentCompletionSession", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession");
 
             if (_disposed) return;
             if (!Settings.Default.CodeCompletion_On) return;
@@ -77,7 +78,6 @@ namespace IntrinsicsDude
                 }
 
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
-                ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
                 string partialKeyword = extent.Span.GetText();
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
                 
@@ -87,7 +87,24 @@ namespace IntrinsicsDude
                     {
                         bool useCapitals = IntrinsicsDudeToolsStatic.isAllUpper(partialKeyword);
                         SortedSet<Completion> completions = this.getAllowedMnemonics(useCapitals, IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
-                        completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
+
+                        if (completionSets.Count > 0)
+                        {
+                            CompletionSet oldSet = completionSets[0];
+                            foreach (Completion c in oldSet.Completions)
+                            {
+                                completions.Add(c);
+                            }
+                            CompletionSet newSet = new CompletionSet(oldSet.Moniker, oldSet.DisplayName, oldSet.ApplicableTo, completions, oldSet.CompletionBuilders);
+
+                            completionSets.Clear();
+                            completionSets.Add(newSet);
+                        }
+                        else
+                        {
+                            ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, completions, Enumerable.Empty<Completion>()));
+                        }
                     }
                 }
             }
@@ -135,7 +152,9 @@ namespace IntrinsicsDude
                     if (cpuID != CpuID.NONE)
                     {
                         IntrinsicDataElement dataElement = dataElements[0];
-                        string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + "[" + IntrinsicTools.ToString(cpuID) + "] - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+                        string cpuID_str = (cpuID == CpuID.NONE) ? "" : " [" + IntrinsicTools.ToString(cpuID) + "]";
+
+                        string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
                         //string insertionText = (useCapitals) ? dataElement.intrinsic.ToString() : dataElement.intrinsic.ToString().ToLower();
                         //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource:getAllowedMnemonics; adding =" + insertionText);

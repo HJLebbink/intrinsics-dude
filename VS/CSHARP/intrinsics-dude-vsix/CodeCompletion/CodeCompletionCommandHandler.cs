@@ -27,19 +27,20 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using IntrinsicsDude.Tools;
 
 namespace IntrinsicsDude
 {
     internal sealed class CodeCompletionCommandHandler : IOleCommandTarget
     {
-        private ICompletionSession _currentSession;
+        private ICompletionSession _session;
 
         public CodeCompletionCommandHandler(IWpfTextView textView, ICompletionBroker broker)
         {
-            this._currentSession = null;
+            this._session = null;
             this._textView = textView;
             this._broker = broker;
-            //Debug.WriteLine(string.Format("INFO: {0}:constructor", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: constructor");
         }
 
         public IWpfTextView _textView { get; private set; }
@@ -48,7 +49,7 @@ namespace IntrinsicsDude
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:ExecMethod2", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec");
 
             bool handledChar = false;
             int hresult = VSConstants.S_OK;
@@ -68,7 +69,7 @@ namespace IntrinsicsDude
                         break;
                     case VSConstants.VSStd2KCmdID.TAB:
                         this.Complete(true);
-                        handledChar = false;
+                        //handledChar = false;
                         break;
                     case VSConstants.VSStd2KCmdID.CANCEL:
                         handledChar = this.Cancel();
@@ -78,7 +79,7 @@ namespace IntrinsicsDude
                         if (char.IsWhiteSpace(typedChar))
                         {
                             this.Complete(true);
-                            handledChar = false;
+                            //handledChar = false;
                         }
                         break;
                 }
@@ -93,9 +94,14 @@ namespace IntrinsicsDude
                 if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
                 {
                     //if (!typedChar.Equals(char.MinValue)) {
-                    if ((this._currentSession == null) || this._currentSession.IsDismissed)
+                    if ((this._session == null) || this._session.IsDismissed)
                     { // If there is no active session, bring up completion
+                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar="+typedChar +"; going to start a new session");
                         this.StartSession();
+                    }
+                    else
+                    {
+                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar=" + typedChar + "; already a session active");
                     }
                     this.Filter();
                     hresult = VSConstants.S_OK;
@@ -103,7 +109,7 @@ namespace IntrinsicsDude
                 else if (nCmdID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE   //redo the filter if there is a deletion
                       || nCmdID == (uint)VSConstants.VSStd2KCmdID.DELETE)
                 {
-                    if ((this._currentSession != null) && !this._currentSession.IsDismissed)
+                    if ((this._session != null) && !this._session.IsDismissed)
                     {
                         this.Filter();
                     }
@@ -153,8 +159,9 @@ namespace IntrinsicsDude
 
         private bool StartSession()
         {
-            if (this._currentSession != null)
+            if (this._session != null)
             {
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. already an active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
                 return false;
             }
             SnapshotPoint caret = this._textView.Caret.Position.BufferPosition;
@@ -162,18 +169,19 @@ namespace IntrinsicsDude
 
             if (this._broker.IsCompletionActive(this._textView))
             {
-                //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession. Recycling an existing auto-complete session", this.ToString()));
-                this._currentSession = this._broker.GetSessions(this._textView)[0];
+                this._session = this._broker.GetSessions(this._textView)[0];
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Recycling an existing auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
             }
             else
             {
-                //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession. Creating a new auto-complete session", this.ToString()));
-                this._currentSession = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), true);
+                this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), true);
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
             }
-            this._currentSession.Dismissed += (sender, args) => _currentSession = null;
-            if (!this._currentSession.IsStarted)
+            this._session.Dismissed += (sender, args) => _session = null;
+            if (!this._session.IsStarted)
             {
-                this._currentSession.Start();
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession: starting session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+                this._session.Start();
             }
 
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession", this.ToString()));
@@ -187,29 +195,29 @@ namespace IntrinsicsDude
         /// <returns></returns>
         private bool Complete(bool force)
         {
-            if (this._currentSession == null)
+            if (this._session == null)
             {
                 return false;
             }
-            if (!_currentSession.SelectedCompletionSet.SelectionStatus.IsSelected && !force)
+            if (!_session.SelectedCompletionSet.SelectionStatus.IsSelected && !force)
             {
-                this._currentSession.Dismiss();
+                this._session.Dismiss();
                 return false;
             }
             else
             {
-                this._currentSession.Commit();
+                this._session.Commit();
                 return true;
             }
         }
 
         private bool Cancel()
         {
-            if (this._currentSession == null)
+            if (this._session == null)
             {
                 return false;
             }
-            this._currentSession.Dismiss();
+            this._session.Dismiss();
             return true;
         }
 
@@ -218,13 +226,13 @@ namespace IntrinsicsDude
         /// </summary>
         private void Filter()
         {
-            if (this._currentSession == null)
+            if (this._session == null)
             {
                 return;
             }
             // this._currentSession.SelectedCompletionSet.SelectBestMatch();
             //this._currentSession.SelectedCompletionSet.Recalculate();
-            this._currentSession.Filter();
+            this._session.Filter();
         }
 
         private char GetTypeChar(IntPtr pvaIn)
