@@ -21,10 +21,12 @@
 								<Label Content="Register Type:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorRegister_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for registers" Margin="140,0,0,0"/>
 							</Grid>
+							<!--
 							<Grid>
 								<Label Content="Misc:" HorizontalAlignment="Left"/>
 								<xctk:ColorPicker x:Name="colorMisc_UI" DisplayColorAndName="True" ToolTip="Syntax highlighting color for misc" Margin="140,0,0,0"/>
 							</Grid>
+							-->
 							<TextBlock TextWrapping="WrapWithOverflow" HorizontalAlignment="Left" Width="auto" Margin="5,4,0,4" ><Run Text="To edit other properties of these keywords such as font families, go to Tools&gt;Options&gt;Environment&gt;Fonts and Colors&gt;Text Editor."/></TextBlock>
 						</StackPanel>
 					</Grid>
@@ -79,28 +81,28 @@
                                         <CheckBox x:Name="useArch_AVX512VL_UI" Content="AVX512VL - AVX512 Vector Length Extensions (Xeon Skylake)" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_AVX512IFMA52_UI" Content="AVX512IFMA52 - AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_AVX512VBMI_UI" Content="AVX512VBMI - AVX512 Vector Bit-Manipulation (Xeon Cannonlake)" Margin="0,2,0,2"/>
-
-                                        <CheckBox x:Name="useArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_FP16C_UI" Content="FP16C - Half Precision FP Conversion" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_PCLMULQDQ_UI" Content="PCLMULQDQ - Carry-Less Multiplication Quadword" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_CLFLUSHOPT_UI" Content="CLFLUSHOPT" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_FXSR_UI" Content="FXSR" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_KNCNI_UI" Content="KNCNI" Margin="0,2,0,2"/>
                                     </StackPanel>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Header="Intel Extensions" BorderBrush="DarkGray">
+                            <GroupBox Header="Extensions" BorderBrush="DarkGray">
                                 <Grid >
                                     <StackPanel>
-                                        <CheckBox x:Name="useArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,4,0,2"/>
+										<CheckBox x:Name="useArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,4,0,2"/>
                                         <CheckBox x:Name="useArch_AES_UI" Content="AES - Advanced Encryption Standard" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_BMI1_UI" Content="BMI1 - Bit Manipulation Instructions Sets 1" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_BMI2_UI" Content="BMI2 - Bit Manipulation Instructions Sets 2" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_MPX_UI" Content="MPX - Memory Protection Extensions" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_RTM_UI" Content="RTM - Transactional Synchronization Extensions" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_SHA_UI" Content="SHA - Secure Hash Algorithm Extension" Margin="0,2,0,2"/>
-                                        
-                                        <CheckBox x:Name="useArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
+										
+										<CheckBox x:Name="useArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
+										<CheckBox x:Name="useArch_FP16C_UI" Content="FP16C - Half Precision FP Conversion" Margin="0,2,0,2"/>
+										<CheckBox x:Name="useArch_PCLMULQDQ_UI" Content="PCLMULQDQ - Carry-Less Multiplication Quadword" Margin="0,2,0,2"/>
+										<CheckBox x:Name="useArch_CLFLUSHOPT_UI" Content="CLFLUSHOPT" Margin="0,2,0,2"/>
+										<CheckBox x:Name="useArch_FXSR_UI" Content="FXSR" Margin="0,2,0,2"/>
+
+										<CheckBox x:Name="useArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_INVPCID_UI" Content="INVPCID - Invalidates TLBs" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_MONITOR_UI" Content="MONITOR" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_POPCNT_UI" Content="POPCNT" Margin="0,2,0,2"/>
