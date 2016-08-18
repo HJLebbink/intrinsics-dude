@@ -85,9 +85,8 @@ namespace IntrinsicsDude
                 {
                     if (partialKeyword[0].Equals('_'))
                     {
-                        ImageSource imageSource = this.icon_IF;// (completionSets.Count > 0) ? completionSets[0].Completions[0].IconSource : this.icon_IF;
                         ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo, imageSource);
+                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
                         SortedSet<Completion> set_intr = tup.Item1;
                         if (completionSets.Count > 0)
                         {
@@ -142,7 +141,33 @@ namespace IntrinsicsDude
                 returnType = findEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
-            return returnType;
+            ReturnType returnType2 = returnType;
+            switch (returnType)
+            {
+                case ReturnType.NONE:
+                case ReturnType.__INT16:
+                case ReturnType.__INT32:
+                case ReturnType.__INT64:
+                case ReturnType.__INT8:
+                case ReturnType.CONST_VOID_PTR:
+                //case ReturnType.DOUBLE:
+                //case ReturnType.FLOAT:
+                case ReturnType.INT:
+                case ReturnType.SHORT:
+                case ReturnType.UNSIGNED__INT32:
+                case ReturnType.UNSIGNED__INT64:
+                case ReturnType.UNSIGNED_CHAR:
+                case ReturnType.UNSIGNED_INT:
+                case ReturnType.UNSIGNED_LONG:
+                case ReturnType.UNSIGNED_SHORT:
+
+                case ReturnType.VOID:
+                case ReturnType.VOID_PTR:
+                    returnType2 = ReturnType.NONE;
+                    break;
+            }
+            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction; returnType=" + returnType+ "; returnType2="+ returnType2);
+            return returnType2;
         }
 
         private ReturnType findEmbeddedType(TextExtent currentKeywordExtent)
@@ -196,12 +221,42 @@ namespace IntrinsicsDude
             return returnType;
         }
 
+        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures)
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; selectedArchitectures=" + selectedArchitectures);
+
+            SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
+            ISet<string> disallowed = new HashSet<string>();
+            foreach (ReturnType returnType in Enum.GetValues(typeof(ReturnType)))
+            {
+                if (returnType != ReturnType.NONE)
+                {
+                    Tuple<SortedSet<Completion>, ISet<string>> tup = getAllowedMnemonics(selectedArchitectures, returnType);
+                    foreach (Completion c in tup.Item1)
+                    {
+                        completions.Add(c);
+                    }
+                    foreach (string s in tup.Item2)
+                    {
+                        disallowed.Add(s);
+                    }
+                }
+            }
+            return new Tuple<SortedSet<Completion>, ISet<string>>(completions, disallowed);
+        }
+
         /// <summary>
         /// Returns the sorted set of selected completions and the list of intrinsics that are not allowed
         /// </summary>
-        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType, ImageSource image)
+        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType)
         {
             DateTime time1 = DateTime.Now;
+
+            if (returnType == ReturnType.NONE)
+            {
+                return getAllowedMnemonics(selectedArchitectures);
+            }
+
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
             if (this._cachedCompletionsCpuID != currentCpuID)
             {
@@ -212,7 +267,7 @@ namespace IntrinsicsDude
             if (!this._cachedCompletions.ContainsKey(returnType))
             {
                 IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
-                SortedSet<Completion> set = new SortedSet<Completion>(new CompletionComparer());
+                SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
                 ISet<string> disallowed = new HashSet<string>();
 
                 foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
@@ -242,10 +297,10 @@ namespace IntrinsicsDude
                         string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
                         //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);
-                        set.Add(new Completion(displayText, insertionText, dataElement.descriptionString, image, "4"));
+                        completions.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, "4"));
                     }
                 }
-                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(set, disallowed));
+                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(completions, disallowed));
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Code Completion");
             return this._cachedCompletions[returnType];
