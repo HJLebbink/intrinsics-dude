@@ -55,33 +55,27 @@ namespace IntrinsicsDude.Tools
 
         public TextBlock descriptionTextBlock {
             get {
-                TextBlock description = new TextBlock();
-                #region Add intrinsic signature
-
                 StringBuilder sb = new StringBuilder();
-
                 sb.Append(IntrinsicTools.ToString(this.returnType));
-                sb.Append(" ");
+                sb.Append(". .");
                 sb.Append(this.intrinsic.ToString().ToLower());
-                sb.Append("(");
+                sb.Append(".(.");
                 foreach (Tuple<ParamType, string> param in this.parameters)
                 {
                     sb.Append(IntrinsicTools.ToString(param.Item1));
-                    sb.Append(" ");
+                    sb.Append(". .");
                     sb.Append(param.Item2);
-                    sb.Append(", ");
+                    sb.Append("., .");
                 }
                 if (this.parameters.Count > 0)
                 {
-                    sb.Length -= 2; // remove the last comma
+                    sb.Length -= 4; // remove the last comma
                 }
-                sb.Append(")  [");
-                sb.Append(IntrinsicTools.ToString(this.cpuID));
-                sb.AppendLine("]");
+                sb.Append(".)");
+                
+                TextBlock description = this.addSyntaxHighlighting(sb.ToString());
 
-                description.Inlines.Add(makeRunBold(sb.ToString()));
-                #endregion
-
+                description.Inlines.Add(makeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
                 description.Inlines.Add(new Run(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
@@ -133,6 +127,54 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        #region Private Methods
+
+        private TextBlock addSyntaxHighlighting(string str)
+        {
+            TextBlock textBlock = new TextBlock();
+
+            string[] a2 = str.Split('.');
+            for (int i2 = 0; i2<a2.Length; ++i2)
+            {
+                string str2 = a2[i2];
+                if (IntrinsicTools.parseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
+                {
+                    textBlock.Inlines.Add(makeRun2(str2, Settings.Default.SyntaxHighlighting_Register));
+                }
+                else if (IntrinsicTools.parseIntrinsic(str2, false) != Intrinsic.NONE)
+                {
+                    textBlock.Inlines.Add(makeRun2(str2, Settings.Default.SyntaxHighlighting_Intrinsic));
+                }
+                else
+                {
+                    string[] a3 = str2.Split(' ');
+                    for (int i3 = 0; i3 < a3.Length; ++i3)
+                    {
+                        string str3 = a3[i3];
+                        switch (str3)
+                        {
+                            case "":
+                                break;
+                            case "const":
+                            case "int":
+                            case "double":
+                            case "float":
+                                textBlock.Inlines.Add(makeRun2(str3, System.Drawing.Color.Blue));
+                                break;
+                            default:
+                                textBlock.Inlines.Add(makeRunBold(str3));
+                                break;
+                        }
+                        if (i3 < a3.Length - 1)
+                        {
+                            textBlock.Inlines.Add(new Run(" "));
+                        }
+                    }
+                }
+            }
+            return textBlock;
+        }
+
         private static Run makeRunBold(string str)
         {
             Run r1 = new Run(str);
@@ -147,5 +189,6 @@ namespace IntrinsicsDude.Tools
             r1.Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.convertColor(color));
             return r1;
         }
+        #endregion
     }
 }

@@ -98,8 +98,8 @@ namespace IntrinsicsDude
                             Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword, false);
                             if (intrinsic == Intrinsic.NONE)
                             {
-                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword, false);
-                                if (reg == IntrinsicRegisterType.NONE)
+                                SimdRegisterType reg = IntrinsicTools.parseSimdRegisterType(keyword, false);
+                                if (reg == SimdRegisterType.NONE)
                                 {
                                     // do nothing
                                 } else

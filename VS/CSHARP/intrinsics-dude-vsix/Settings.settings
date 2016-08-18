@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IntrinsicsDude" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SyntaxHighlighting_Opcode" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Blue</Value>
+    <Setting Name="SyntaxHighlighting_Intrinsic" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkViolet</Value>
     </Setting>
     <Setting Name="SyntaxHighlighting_Register" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">DarkRed</Value>
+      <Value Profile="(Default)">Teal</Value>
     </Setting>
     <Setting Name="SyntaxHighlighting_Misc" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">DarkOrange</Value>

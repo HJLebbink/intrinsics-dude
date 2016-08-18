@@ -69,7 +69,7 @@ namespace IntrinsicsDude.OptionsPage
 
             #region Syntax Highlighting
             this._asmDudeOptionsPageUI.useSyntaxHighlighting = Settings.Default.SyntaxHighlighting_On;
-            this._asmDudeOptionsPageUI.colorMnemonic = Settings.Default.SyntaxHighlighting_Opcode;
+            this._asmDudeOptionsPageUI.colorMnemonic = Settings.Default.SyntaxHighlighting_Intrinsic;
             this._asmDudeOptionsPageUI.colorRegister = Settings.Default.SyntaxHighlighting_Register;
             this._asmDudeOptionsPageUI.colorMisc = Settings.Default.SyntaxHighlighting_Misc;
             #endregion
@@ -240,9 +240,9 @@ namespace IntrinsicsDude.OptionsPage
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: useSyntaxHighlighting=" + this._asmDudeOptionsPageUI.useSyntaxHighlighting);
                 changed = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Opcode.ToArgb() != this._asmDudeOptionsPageUI.colorMnemonic.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._asmDudeOptionsPageUI.colorMnemonic.ToArgb())
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: stored=" + Settings.Default.SyntaxHighlighting_Opcode + "; new colorMnemonic=" + this._asmDudeOptionsPageUI.colorMnemonic);
+                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPage: OnDeactivate: change detected: stored=" + Settings.Default.SyntaxHighlighting_Intrinsic + "; new colorMnemonic=" + this._asmDudeOptionsPageUI.colorMnemonic);
                 changed = true;
             }
             if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._asmDudeOptionsPageUI.colorRegister.ToArgb())
@@ -566,9 +566,9 @@ namespace IntrinsicsDude.OptionsPage
                 changed = true;
                 restartNeeded = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Opcode.ToArgb() != this._asmDudeOptionsPageUI.colorMnemonic.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._asmDudeOptionsPageUI.colorMnemonic.ToArgb())
             {
-                Settings.Default.SyntaxHighlighting_Opcode = this._asmDudeOptionsPageUI.colorMnemonic;
+                Settings.Default.SyntaxHighlighting_Intrinsic = this._asmDudeOptionsPageUI.colorMnemonic;
                 changed = true;
                 restartNeeded = true;
             }

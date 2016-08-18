@@ -81,7 +81,7 @@ namespace IntrinsicsDude.Tools
         {
             try
             {
-                Intrinsic mnemonic = IntrinsicTools.parseIntrinsic(keyword);
+                Intrinsic mnemonic = IntrinsicTools.parseIntrinsic(keyword, false);
                 if (mnemonic != Intrinsic.NONE)
                 {
                     IList<IntrinsicDataElement> dataElements = this._intrinsicStore.get(mnemonic);

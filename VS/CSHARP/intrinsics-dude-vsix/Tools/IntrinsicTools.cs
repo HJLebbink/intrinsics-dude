@@ -31,7 +31,7 @@ namespace IntrinsicsDude.Tools
 {
     public static partial class IntrinsicTools {
 
-        public enum IntrinsicRegisterType
+        public enum SimdRegisterType
         {
             NONE,
             __M128,
@@ -246,28 +246,28 @@ namespace IntrinsicsDude.Tools
             VOID_CONST_PTR
         }
 
-        public static IntrinsicRegisterType parseIntrinsicRegisterType(string str, bool warn = true)
+        public static SimdRegisterType parseSimdRegisterType(string str, bool warn = true)
         {
-            if (!str.StartsWith("__")) return IntrinsicRegisterType.NONE;
+            if (!str.StartsWith("__")) return SimdRegisterType.NONE;
             switch (str.ToUpper())
             {
-                case "__M128": return IntrinsicRegisterType.__M128;
-                case "__M128D": return IntrinsicRegisterType.__M128D;
-                case "__M128I": return IntrinsicRegisterType.__M128I;
-                case "__M256": return IntrinsicRegisterType.__M256;
-                case "__M256D": return IntrinsicRegisterType.__M256D;
-                case "__M256I": return IntrinsicRegisterType.__M256I;
-                case "__M512": return IntrinsicRegisterType.__M512;
-                case "__M512D": return IntrinsicRegisterType.__M512D;
-                case "__M512I": return IntrinsicRegisterType.__M512I;
-                case "__M64": return IntrinsicRegisterType.__M64;
-                case "__MMASK16": return IntrinsicRegisterType.__MMASK16;
-                case "__MMASK32": return IntrinsicRegisterType.__MMASK32;
-                case "__MMASK64": return IntrinsicRegisterType.__MMASK64;
-                case "__MMASK8": return IntrinsicRegisterType.__MMASK8;
+                case "__M128": return SimdRegisterType.__M128;
+                case "__M128D": return SimdRegisterType.__M128D;
+                case "__M128I": return SimdRegisterType.__M128I;
+                case "__M256": return SimdRegisterType.__M256;
+                case "__M256D": return SimdRegisterType.__M256D;
+                case "__M256I": return SimdRegisterType.__M256I;
+                case "__M512": return SimdRegisterType.__M512;
+                case "__M512D": return SimdRegisterType.__M512D;
+                case "__M512I": return SimdRegisterType.__M512I;
+                case "__M64": return SimdRegisterType.__M64;
+                case "__MMASK16": return SimdRegisterType.__MMASK16;
+                case "__MMASK32": return SimdRegisterType.__MMASK32;
+                case "__MMASK64": return SimdRegisterType.__MMASK64;
+                case "__MMASK8": return SimdRegisterType.__MMASK8;
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
-                    return IntrinsicRegisterType.NONE;
+                    return SimdRegisterType.NONE;
             }
         }
 
@@ -589,6 +589,69 @@ namespace IntrinsicsDude.Tools
             return cpuID;
         }
 
+        public static bool isSimdRegister(ReturnType type)
+        {
+            switch (type)
+            {
+                case ReturnType.__M128:
+                case ReturnType.__M128D:
+                case ReturnType.__M128I:
+                case ReturnType.__M256:
+                case ReturnType.__M256D:
+                case ReturnType.__M256I:
+                case ReturnType.__M512:
+                case ReturnType.__M512D:
+                case ReturnType.__M512I:
+                case ReturnType.__M64:
+                case ReturnType.__MMASK16:
+                case ReturnType.__MMASK32:
+                case ReturnType.__MMASK64:
+                case ReturnType.__MMASK8:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static bool isSimdRegister(ParamType type)
+        {
+            switch (type)
+            {
+                case ParamType.__M128:
+                case ParamType.__M128_CONST_PTR:
+                case ParamType.__M128_PTR:
+                case ParamType.__M128D:
+                case ParamType.__M128D_CONST_PTR:
+                case ParamType.__M128D_PTR:
+                case ParamType.__M128I:
+                case ParamType.__M128I_CONST_PTR:
+                case ParamType.__M128I_PTR:
+                case ParamType.__M256:
+                case ParamType.__M256_PTR:
+                case ParamType.__M256D:
+                case ParamType.__M256D_PTR:
+                case ParamType.__M256I:
+                case ParamType.__M256I_CONST_PTR:
+                case ParamType.__M256I_PTR:
+                case ParamType.__M512:
+                case ParamType.__M512_PTR:
+                case ParamType.__M512D:
+                case ParamType.__M512D_PTR:
+                case ParamType.__M512I:
+                case ParamType.__M64:
+                case ParamType.__M64_CONST_PTR:
+                case ParamType.__M64_PTR:
+                case ParamType.__MMASK16:
+                case ParamType.__MMASK16_PTR:
+                case ParamType.__MMASK32:
+                case ParamType.__MMASK64:
+                case ParamType.__MMASK8:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static string ToString(CpuID cpuIDs)
         {
             StringBuilder sb = new StringBuilder();
@@ -896,7 +959,7 @@ namespace IntrinsicsDude.Tools
                         if (extent.Span.Start > 0)
                         {
                             string word2 = nav.GetExtentOfWord(extent.Span.Start - 1).Span.GetText();
-                            return new Tuple<Intrinsic, int>(IntrinsicTools.parseIntrinsic(word2), nParameters);
+                            return new Tuple<Intrinsic, int>(IntrinsicTools.parseIntrinsic(word2, false), nParameters);
                         }
                     }
                     else

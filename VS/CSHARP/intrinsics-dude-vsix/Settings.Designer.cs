@@ -25,19 +25,19 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Blue")]
-        public global::System.Drawing.Color SyntaxHighlighting_Opcode {
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkViolet")]
+        public global::System.Drawing.Color SyntaxHighlighting_Intrinsic {
             get {
-                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Opcode"]));
+                return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Intrinsic"]));
             }
             set {
-                this["SyntaxHighlighting_Opcode"] = value;
+                this["SyntaxHighlighting_Intrinsic"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DarkRed")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Teal")]
         public global::System.Drawing.Color SyntaxHighlighting_Register {
             get {
                 return ((global::System.Drawing.Color)(this["SyntaxHighlighting_Register"]));

@@ -91,7 +91,7 @@ namespace IntrinsicsDude.QuickInfo
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
-                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword);
+                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword, false);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
                                     IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
@@ -114,8 +114,8 @@ namespace IntrinsicsDude.QuickInfo
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                                IntrinsicRegisterType reg = IntrinsicTools.parseIntrinsicRegisterType(keyword, true);
-                                if (reg != IntrinsicRegisterType.NONE)
+                                SimdRegisterType reg = IntrinsicTools.parseSimdRegisterType(keyword, true);
+                                if (reg != SimdRegisterType.NONE)
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
                                     TextBlock description = this.makeRegisterDescription(reg);
@@ -144,7 +144,7 @@ namespace IntrinsicsDude.QuickInfo
 
         #region Private Methods
 
-        private TextBlock makeRegisterDescription(IntrinsicRegisterType reg)
+        private TextBlock makeRegisterDescription(SimdRegisterType reg)
         {
             TextBlock description = new TextBlock();
             description.Inlines.Add(makeRunBold(reg.ToString()));
