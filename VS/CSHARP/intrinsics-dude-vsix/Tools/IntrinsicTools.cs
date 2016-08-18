@@ -776,7 +776,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.__INT8: return "__int8";
                 case ReturnType.__M128: return "__m128";
                 case ReturnType.__M128D: return "__m128d";
-                case ReturnType.__M128I: return "__m128d";
+                case ReturnType.__M128I: return "__m128i";
                 case ReturnType.__M256: return "__m256";
                 case ReturnType.__M256D: return "__m256d";
                 case ReturnType.__M256I: return "__m256i";
