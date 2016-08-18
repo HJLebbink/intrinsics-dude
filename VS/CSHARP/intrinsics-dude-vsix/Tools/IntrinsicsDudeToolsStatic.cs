@@ -41,8 +41,6 @@ namespace IntrinsicsDude.Tools
 {
     public static class IntrinsicsDudeToolsStatic
     {
-        #region Singleton Factories
-
         public static ITagAggregator<IntrinsicTokenTag> getAggregator(
             ITextBuffer buffer,
             IBufferTagAggregatorFactoryService aggregatorFactory)
@@ -63,8 +61,6 @@ namespace IntrinsicsDude.Tools
                 IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
             }
         }
-
-        #endregion Singleton Factories
 
         /// <summary>
         /// get the full filename (with path) for the provided buffer
@@ -91,19 +87,6 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static void openDisassembler()
-        {
-            try
-            {
-                DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
-                dte.ExecuteCommand("Debug.Disassembly");
-            }
-            catch (Exception e)
-            {
-                IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:openDisassembler {0}", e.Message));
-            }
-        }
-
         public static int getFontSize()
         {
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
@@ -121,73 +104,6 @@ namespace IntrinsicsDude.Tools
             string font = (string)prop.Value;
             //IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:getFontType {0}", font));
             return new FontFamily(font);
-        }
-
-        public static void errorTaskNavigateHandler(object sender, EventArgs arguments)
-        {
-            Microsoft.VisualStudio.Shell.Task task = sender as Microsoft.VisualStudio.Shell.Task;
-
-            if (task == null)
-            {
-                throw new ArgumentException("sender parm cannot be null");
-            }
-            if (String.IsNullOrEmpty(task.Document))
-            {
-                Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: task.Document is empty");
-                return;
-            }
-
-            IVsUIShellOpenDocument openDoc = Package.GetGlobalService(typeof(IVsUIShellOpenDocument)) as IVsUIShellOpenDocument;
-            if (openDoc == null)
-            {
-                Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: openDoc is null");
-                return;
-            }
-
-            IVsWindowFrame frame;
-            Microsoft.VisualStudio.OLE.Interop.IServiceProvider serviceProvider;
-            IVsUIHierarchy hierarchy;
-            uint itemId;
-            Guid logicalView = VSConstants.LOGVIEWID_Code;
-
-            int hr = openDoc.OpenDocumentViaProject(task.Document, ref logicalView, out serviceProvider, out hierarchy, out itemId, out frame);
-            if (ErrorHandler.Failed(hr) || (frame == null))
-            {
-                Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: OpenDocumentViaProject failed");
-                return;
-            }
-
-            object docData;
-            frame.GetProperty((int)__VSFPROPID.VSFPROPID_DocData, out docData);
-
-            VsTextBuffer buffer = docData as VsTextBuffer;
-            if (buffer == null)
-            {
-                IVsTextBufferProvider bufferProvider = docData as IVsTextBufferProvider;
-                if (bufferProvider != null)
-                {
-                    IVsTextLines lines;
-                    ErrorHandler.ThrowOnFailure(bufferProvider.GetTextBuffer(out lines));
-                    buffer = lines as VsTextBuffer;
-
-                    if (buffer == null)
-                    {
-                        Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: buffer is null");
-                        return;
-                    }
-                }
-            }
-            IVsTextManager mgr = Package.GetGlobalService(typeof(SVsTextManager)) as IVsTextManager;
-            if (mgr == null)
-            {
-                Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: IVsTextManager is null");
-                return;
-            }
-
-            //Output("INFO: IntrinsicsDudeToolsStatic:errorTaskNavigateHandler: navigating to row="+task.Line);
-            int iStartIndex = task.Column & 0xFFFF;
-            int iEndIndex = (task.Column >> 16) & 0xFFFF;
-            mgr.NavigateToLineAndColumn(buffer, ref logicalView, task.Line, iStartIndex, task.Line, iEndIndex);
         }
 
         /// <summary>
@@ -262,84 +178,14 @@ namespace IntrinsicsDude.Tools
             }
             else
             {
-                Guid paneGuid = Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.GeneralPane_guid;
+                //Guid paneGuid = Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.GeneralPane_guid;
+                Guid paneGuid = new Guid("A9F2F5E5-C21D-4BB3-B4A7-FEE69DC0E03A");
                 IVsOutputWindowPane pane;
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
                 outputWindow.GetPane(paneGuid, out pane);
                 pane.OutputString(msg2);
                 pane.Activate();
             }
-        }
-
-        public static string getKeywordStrOLD(SnapshotPoint? bufferPosition)
-        {
-            /*
-            if (bufferPosition != null)
-            {
-                string line = bufferPosition.Value.GetContainingLine().GetText();
-                int startLine = bufferPosition.Value.GetContainingLine().Start;
-                int currentPos = bufferPosition.Value.Position;
-
-                Tuple<int, int> t = AsmTools.AsmSourceTools.getKeywordPos(currentPos - startLine, line);
-
-                int beginPos = t.Item1;
-                int endPos = t.Item2;
-                int length = endPos - beginPos;
-
-                string result = line.Substring(beginPos, length);
-                //IntrinsicsDudeToolsStatic.Output("INFO: getKeyword: \"" + result + "\".");
-                return result;
-            }
-            */
-            return null;
-        }
-
-        public static TextExtent? getKeywordOLD(SnapshotPoint? bufferPosition)
-        {
-            /*
-            if (bufferPosition != null)
-            {
-                string line = bufferPosition.Value.GetContainingLine().GetText();
-                int startLine = bufferPosition.Value.GetContainingLine().Start;
-                int currentPos = bufferPosition.Value.Position;
-
-                Tuple<int, int> t = AsmTools.AsmSourceTools.getKeywordPos(currentPos - startLine, line);
-                //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: getKeywordPos: beginPos={0}; endPos={1}.", t.Item1, t.Item2));
-
-                int beginPos = t.Item1 + startLine;
-                int endPos = t.Item2 + startLine;
-                int length = endPos - beginPos;
-
-                SnapshotSpan span = new SnapshotSpan(bufferPosition.Value.Snapshot, beginPos, length);
-                //IntrinsicsDudeToolsStatic.Output("INFO: getKeyword: \"" + span.GetText() + "\".");
-                return new TextExtent(span, true);
-            }
-            */
-            return null;
-        }
-
-        /// <summary>
-        /// Find the previous keyword (if any) that exists BEFORE the provided triggerPoint, and the provided start.
-        /// Eg. qqqq xxxxxx yyyyyyy zzzzzz
-        ///     ^             ^
-        ///     |begin        |end
-        /// the previous keyword is xxxxxx
-        /// </summary>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        public static string getPreviousKeywordOLD(SnapshotPoint begin, SnapshotPoint end)
-        {
-            return null;
-            /*
-            // return getPreviousKeyword(begin.GetContainingLine.)
-            if (end == 0) return "";
-
-            int beginLine = begin.GetContainingLine().Start;
-            int beginPos = begin.Position - beginLine;
-            int endPos = end.Position - beginLine;
-            return AsmSourceTools.getPreviousKeyword(beginPos, endPos, begin.GetContainingLine().GetText());
-            */
         }
 
         public static bool isAllUpper(string input)
@@ -353,32 +199,6 @@ namespace IntrinsicsDude.Tools
             }
             return true;
         }
-
-        public static void disableMessage(string msg, string filename, ErrorListProvider errorListProvider)
-        {
-            IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: " + msg));
-
-            for (int i = 0; i < errorListProvider.Tasks.Count; ++i)
-            {
-                Task t = errorListProvider.Tasks[i];
-                if (t.Text.Equals(msg))
-                {
-                    return;
-                }
-            }
-
-            ErrorTask errorTask = new ErrorTask();
-            errorTask.SubcategoryIndex = (int)IntrinsicErrorEnum.OTHER;
-            errorTask.Text = msg;
-            errorTask.ErrorCategory = TaskErrorCategory.Message;
-            errorTask.Document = filename;
-            errorTask.Navigate += IntrinsicsDudeToolsStatic.errorTaskNavigateHandler;
-
-            errorListProvider.Tasks.Add(errorTask);
-            errorListProvider.Show(); // do not use BringToFront since that will select the error window.
-            errorListProvider.Refresh();
-        }
-
 
         public static CpuID getCpuIDSwithedOn()
         {

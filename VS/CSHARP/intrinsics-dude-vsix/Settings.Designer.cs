@@ -85,7 +85,7 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://hjlebbink.github.io/x86doc/html/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("TODO")]
         public string AsmDoc_url {
             get {
                 return ((string)(this["AsmDoc_url"]));
@@ -109,7 +109,7 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_MMX {
             get {
                 return ((bool)(this["ARCH_MMX"]));

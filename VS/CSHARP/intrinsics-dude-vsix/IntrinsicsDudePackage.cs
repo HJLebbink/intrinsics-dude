@@ -56,7 +56,7 @@ namespace IntrinsicsDude
 
         public IntrinsicsDudePackage()
         {
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "=========================================\nINFO: IntrinsicsDudePackage2: Entering constructor"));
+            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "=========================================\nINFO: IntrinsicsDudePackage: Entering constructor"));
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudePackage2: Entering constructor");
         }
 

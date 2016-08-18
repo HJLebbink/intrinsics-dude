@@ -28,6 +28,17 @@ using System.ComponentModel.Composition;
 
 namespace IntrinsicsDude.SignHelp
 {
+    /*
+    [Export(typeof(SignatureHelpPresenterStyle))]
+    [Name("Intrinsic Signature Help Presenter Style")]
+    [Order(After = "default")]
+    [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
+    internal class IntrSignHelpPresenterStyle : SignatureHelpPresenterStyle
+    {
+        //TODO
+    }
+    */
+
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
     [Order(After = "default")] // let the default signature help trigger first, such that we can remove the signatures it adds

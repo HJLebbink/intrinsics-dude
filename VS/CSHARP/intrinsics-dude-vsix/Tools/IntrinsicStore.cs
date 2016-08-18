@@ -259,7 +259,7 @@ namespace IntrinsicsDude.Tools
 
         private void loadXml(string filename)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: filename " + filename);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: filename " + filename);
             try
             {
                 DateTime time1 = DateTime.Now;

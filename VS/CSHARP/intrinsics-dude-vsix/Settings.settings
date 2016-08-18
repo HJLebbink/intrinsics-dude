@@ -18,13 +18,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AsmDoc_url" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://hjlebbink.github.io/x86doc/html/</Value>
+      <Value Profile="(Default)">TODO</Value>
     </Setting>
     <Setting Name="AsmDoc_On" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ARCH_MMX" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ARCH_SSE" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
