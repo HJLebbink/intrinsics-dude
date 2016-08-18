@@ -155,7 +155,16 @@ namespace IntrinsicsDude.Tools
                         {
                             case "":
                                 break;
+                            case "__INT8":
+                            case "__INT16":
+                            case "__INT32":
+                            case "__INT64":
                             case "const":
+                            case "void":
+                            case "unsigned":
+                            case "char":
+                            case "byte":
+                            case "short":
                             case "int":
                             case "double":
                             case "float":
