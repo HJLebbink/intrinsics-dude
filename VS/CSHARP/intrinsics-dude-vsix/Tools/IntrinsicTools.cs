@@ -519,8 +519,8 @@ namespace IntrinsicsDude.Tools
             switch (str.ToUpper())
             {
                 case "":
-                case "DEFAULT":  return CpuID.DEFAULT;
                 case "NONE": return CpuID.NONE;
+                case "DEFAULT": return CpuID.DEFAULT;
 
                 case "ADX": return CpuID.ADX;
                 case "AES": return CpuID.AES;
@@ -652,19 +652,46 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static string ToString(CpuID cpuIDs)
+
+        /// <summary>
+        /// Write cpuIDs to string. If silence_DEFAULT is true, the CpuID.DEFAULT is not written.
+        /// </summary>
+        /// <param name="cpuIDs"></param>
+        /// <param name="silence_DEFAULT"></param>
+        /// <returns></returns>
+        public static string ToString(CpuID cpuIDs, bool silence_DEFAULT = false)
         {
             StringBuilder sb = new StringBuilder();
             //TODO it is inefficient to test every bit, would be faster to do a bitscanforward
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
-                if ((value != CpuID.NONE) && (value != CpuID.DEFAULT) && (cpuIDs.HasFlag(value)))
+                if (silence_DEFAULT && (value == CpuID.DEFAULT))
                 {
-                    sb.Append(value.ToString());
-                    sb.Append(", ");
+                    // do nothing
+                }
+                else
+                {
+                    if (cpuIDs.HasFlag(value))
+                    {
+                        switch (value)
+                        {
+                            case CpuID.NONE:
+                                break;
+                            case CpuID.SSE4_1:
+                                sb.Append("SSE4.1, ");
+                                break;
+                            case CpuID.SSE4_2:
+                                sb.Append("SSE4.2, ");
+                                break;
+                            default:
+                                sb.Append(value.ToString());
+                                sb.Append(", ");
+                                break;
+                        }
+                    }
                 }
             }
-            if (sb.Length > 0) sb.Length -= 2;
+            if (sb.Length > 0) sb.Length -= 2; // remove trailing comma
             return sb.ToString();
         }
 
@@ -680,7 +707,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M128: return "__m128";
                 case ParamType.__M128_CONST_PTR: return "__m128 const *";
                 case ParamType.__M128D: return "__m128d";
-                case ParamType.__M128D_CONST_PTR: return "__m128d";
+                case ParamType.__M128D_CONST_PTR: return "__m128d const *";
                 case ParamType.__M128I: return "__m128i";
                 case ParamType.__M256: return "__m256";
                 case ParamType.__M256D: return "__m256d";
@@ -707,14 +734,14 @@ namespace IntrinsicsDude.Tools
                 case ParamType._MM_UPCONV_EPI64_ENUM: return "_MM_UPCONV_EPI64_ENUM";
                 case ParamType._MM_UPCONV_PD_ENUM: return "_MM_UPCONV_PD_ENUM";
                 case ParamType._MM_UPCONV_PS_ENUM: return "_MM_UPCONV_PS_ENUM";
-                case ParamType.CONST_MM_CMPINT_ENUM: return "CONST_MM_CMPINT_ENUM";
+                case ParamType.CONST_MM_CMPINT_ENUM: return "const _MM_CMPINT_ENUM";
                 case ParamType.CONST_INT: return "const int";
                 case ParamType.CONST_VOID_PTR: return "const void *";
                 case ParamType.CONST_VOID_PTR_PTR: return "const void **";
                 case ParamType.DOUBLE: return "double";
                 case ParamType.DOUBLE_CONST_PTR: return "double const *";
                 case ParamType.FLOAT: return "float";
-                case ParamType.FLOAT_CONST_PTR: return "float";
+                case ParamType.FLOAT_CONST_PTR: return "float const *";
                 case ParamType.INT: return "int";
                 case ParamType.INT_CONST_PTR: return "int const *";
                 case ParamType.SIZE_T: return "size_t";
@@ -740,7 +767,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M256_PTR: return "__m256 *";
                 case ParamType.__M256D_PTR: return "__m256d *";
                 case ParamType.__M256I_CONST_PTR: return "__m256i const *";
-                case ParamType.__M256I_PTR: return "__m1256i *";
+                case ParamType.__M256I_PTR: return "__m256i *";
                 case ParamType.__M512_PTR: return "__m512 *";
                 case ParamType.__M512D_PTR: return "__m512d *";
                 case ParamType.__M64_CONST_PTR: return "__m64 const *";

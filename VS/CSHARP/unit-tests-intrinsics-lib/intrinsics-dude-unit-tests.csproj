@@ -6,8 +6,8 @@
     <ProjectGuid>{8C2F2ADB-0160-41C8-AB20-E3443E65A465}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>unit_tests_intrinsics_lib</RootNamespace>
-    <AssemblyName>unit-tests-intrinsics-lib</AssemblyName>
+    <RootNamespace>intrinsics_dude_unit_tests</RootNamespace>
+    <AssemblyName>intrinsics-dude-unit-tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,8 +50,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="UnitTest_IntrinsicStore.cs" />
+    <Compile Include="UnitTest_IntrinsicTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\intrinsics-dude-vsix\intrinsics-dude-vsix.csproj">
+      <Project>{6bb67359-a10c-4688-9383-e989e971f0ea}</Project>
+      <Name>intrinsics-dude-vsix</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

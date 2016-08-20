@@ -75,7 +75,7 @@ namespace IntrinsicsDude.Tools
                 
                 TextBlock description = this.addSyntaxHighlighting(sb.ToString());
 
-                description.Inlines.Add(makeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
+                description.Inlines.Add(makeRunBold("  ["+IntrinsicTools.ToString(this.cpuID, true)+ "]\n"));
                 description.Inlines.Add(new Run(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
@@ -113,7 +113,7 @@ namespace IntrinsicsDude.Tools
                     sb.Length -= 2; // remove the last comma
                 }
                 sb.Append(")  [");
-                sb.Append(IntrinsicTools.ToString(this.cpuID));
+                sb.Append(IntrinsicTools.ToString(this.cpuID, true));
                 sb.AppendLine("]");
                 #endregion
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-vsix", "CSHARP\intrinsics-dude-vsix\intrinsics-dude-vsix.csproj", "{6BB67359-A10C-4688-9383-E989E971F0EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-tests-intrinsics-lib", "CSHARP\unit-tests-intrinsics-lib\unit-tests-intrinsics-lib.csproj", "{8C2F2ADB-0160-41C8-AB20-E3443E65A465}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "intrinsics-dude-unit-tests", "CSHARP\unit-tests-intrinsics-lib\intrinsics-dude-unit-tests.csproj", "{8C2F2ADB-0160-41C8-AB20-E3443E65A465}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

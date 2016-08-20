@@ -293,7 +293,7 @@ namespace IntrinsicsDude
                     else
                     {
                         IntrinsicDataElement dataElement = dataElements[0];
-                        string cpuID_str = (cpuID == CpuID.NONE) ? "" : " [" + IntrinsicTools.ToString(cpuID) + "]";
+                        string cpuID_str = (cpuID == CpuID.DEFAULT) ? "" : " [" + IntrinsicTools.ToString(cpuID, true) + "]";
                         string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
                         //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);

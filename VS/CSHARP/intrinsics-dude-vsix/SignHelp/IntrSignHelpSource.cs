@@ -149,7 +149,7 @@ namespace IntrinsicsDude.SignHelp
                 if (i < nParameters - 1) signatureText.Append(", ");
             }
             signatureText.Append(")  [");
-            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID));
+            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID, true));
             signatureText.Append("]");
             #endregion Create Signature Text
 
