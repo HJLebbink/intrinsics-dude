@@ -69,19 +69,13 @@ namespace IntrinsicsDude
                             handledChar = this.Complete(true);
                             break;
                         case VSConstants.VSStd2KCmdID.TAB:
-                            this.Complete(true);
-                            //handledChar = false;
+                            handledChar = this.Complete(false);
                             break;
                         case VSConstants.VSStd2KCmdID.CANCEL:
                             handledChar = this.Cancel();
                             break;
                         case VSConstants.VSStd2KCmdID.TYPECHAR:
                             typedChar = GetTypeChar(pvaIn);
-                            if (char.IsWhiteSpace(typedChar))
-                            {
-                                this.Complete(true);
-                                //handledChar = false;
-                            }
                             break;
                     }
                 }
@@ -92,33 +86,24 @@ namespace IntrinsicsDude
                 {
                     hresult = this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 
-                    if (!typedChar.Equals(char.MinValue) && char.IsLetterOrDigit(typedChar))
+                    if (!typedChar.Equals(char.MinValue))
                     {
-                        //if (!typedChar.Equals(char.MinValue)) {
-                        if ((this._session == null) || this._session.IsDismissed)
-                        { // If there is no active session, bring up completion
-                          //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar="+typedChar +"; going to start a new session");
-                            this.StartSession();
-                        }
-                        else
+                        switch (typedChar)
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec: typedChar=" + typedChar + "; already a session active");
-                        }
-                        this.Filter();
-                        hresult = VSConstants.S_OK;
-                    }
-                    else if (nCmdID == (uint)VSConstants.VSStd2KCmdID.BACKSPACE   //redo the filter if there is a deletion
-                          || nCmdID == (uint)VSConstants.VSStd2KCmdID.DELETE)
-                    {
-                        if ((this._session != null) && !this._session.IsDismissed)
-                        {
-                            this.Filter();
+                            case ';':
+                                this.Cancel();
+                                break;
+                            default:
+                                this.Filter();
+                                break;
                         }
                         hresult = VSConstants.S_OK;
                     }
                 }
                 #endregion
 
+                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; hresult="+ hresult);
+                
                 #region Post-process
                 if (ErrorHandler.Succeeded(hresult))
                 {
@@ -129,6 +114,7 @@ namespace IntrinsicsDude
                             case VSConstants.VSStd2KCmdID.TYPECHAR:
                             case VSConstants.VSStd2KCmdID.BACKSPACE:
                             case VSConstants.VSStd2KCmdID.DELETE:
+                                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; Post-process");
                                 this.Filter();
                                 break;
                         }
@@ -137,6 +123,7 @@ namespace IntrinsicsDude
                 #endregion
 
                 return hresult;
+
             } catch (Exception e) {
                 IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; e=" + e.ToString());
                 return this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
@@ -167,20 +154,23 @@ namespace IntrinsicsDude
             if (this._session != null)
             {
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. already an active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
-                return false;
+                this._session.Dismiss();
             }
+            this._broker.DismissAllSessions(this._textView);
+
+
             SnapshotPoint caret = this._textView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
 
             if (this._broker.IsCompletionActive(this._textView))
             {
                 this._session = this._broker.GetSessions(this._textView)[0];
-                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Recycling an existing auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Recycling an existing auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
             }
             else
             {
-                this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), true);
-                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+                this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
             }
             this._session.Dismissed += (sender, args) => _session = null;
             if (!this._session.IsStarted)
@@ -207,6 +197,7 @@ namespace IntrinsicsDude
             if (!_session.SelectedCompletionSet.SelectionStatus.IsSelected && !force)
             {
                 this._session.Dismiss();
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Complete. exiting; no completion.");
                 return false;
             }
             else
@@ -235,9 +226,10 @@ namespace IntrinsicsDude
             {
                 return;
             }
-            // this._currentSession.SelectedCompletionSet.SelectBestMatch();
-            //this._currentSession.SelectedCompletionSet.Recalculate();
-            this._session.Filter();
+            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Filter.");
+            this._session.SelectedCompletionSet.Recalculate();
+            this._session.SelectedCompletionSet.SelectBestMatch();
+            //this._session.Filter();
         }
 
         private char GetTypeChar(IntPtr pvaIn)
