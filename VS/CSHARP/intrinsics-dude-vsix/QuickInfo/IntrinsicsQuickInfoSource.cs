@@ -103,7 +103,7 @@ namespace IntrinsicsDude.QuickInfo
                                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
-                                        quickInfoContent.Add(dataElements[0].descriptionTextBlock); //only show the description of the first intrinsic data element
+                                        quickInfoContent.Add(dataElements[0].documentationTextBlock); //only show the description of the first intrinsic data element
                                     }
                                 }
                             }

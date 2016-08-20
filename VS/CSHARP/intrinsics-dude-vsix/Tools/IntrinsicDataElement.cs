@@ -42,8 +42,8 @@ namespace IntrinsicsDude.Tools
         public string instructionNote;
 
         public string description;
-        public string performance;
         public string operation;
+        public string performance; // unused
 
 
         /// <summary>Constructor</summary>
@@ -53,7 +53,7 @@ namespace IntrinsicsDude.Tools
             cpuID = CpuID.NONE;
         }
 
-        public TextBlock descriptionTextBlock {
+        public TextBlock documentationTextBlock {
             get {
                 StringBuilder sb = new StringBuilder();
                 sb.Append(IntrinsicTools.ToString(this.returnType));
@@ -91,7 +91,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public string descriptionString {
+        public string documenationString {
             get {
                 #region Add intrinsic signature
 

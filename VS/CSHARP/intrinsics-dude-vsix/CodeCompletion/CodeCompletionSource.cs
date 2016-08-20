@@ -296,7 +296,7 @@ namespace IntrinsicsDude
                         string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
                         string insertionText = dataElement.intrinsic.ToString().ToLower();
                         //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);
-                        completions.Add(new Completion(displayText, insertionText, dataElement.descriptionString, this.icon_IF, "4"));
+                        completions.Add(new Completion(displayText, insertionText, dataElement.documenationString, this.icon_IF, "4"));
                     }
                 }
                 this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(completions, disallowed));
