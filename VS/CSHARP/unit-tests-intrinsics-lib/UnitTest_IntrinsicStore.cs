@@ -11,6 +11,7 @@ namespace intrinsics_dude_unit_tests
         public void TestReturnType()
         {
             string filename;
+            /*
             IntrinsicStore store = new IntrinsicStore(filename);
 
 
@@ -18,7 +19,8 @@ namespace intrinsics_dude_unit_tests
             this.saveXml(filename + ".xml");
             this.loadXml(filename + ".xml");
             this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
+            */
         }
 
     }
-\}
+}

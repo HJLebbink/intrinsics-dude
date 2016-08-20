@@ -894,6 +894,15 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        public static bool isCpuID_Enabled(CpuID cpuID_intrisic, CpuID selectedArchitectures)
+        {
+            if (cpuID_intrisic.HasFlag(CpuID.SVML) && !selectedArchitectures.HasFlag(CpuID.SVML))
+            {
+                return false;
+            }
+            return ((selectedArchitectures & cpuID_intrisic) != CpuID.NONE);
+        }
+
         #region Text Wrap
         /// <summary>
         /// Forces the string to word wrap so that each line doesn't exceed the maxLineLength.

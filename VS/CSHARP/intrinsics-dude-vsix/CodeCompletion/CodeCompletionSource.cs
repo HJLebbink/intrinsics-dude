@@ -86,7 +86,7 @@ namespace IntrinsicsDude
                     if (partialKeyword[0].Equals('_'))
                     {
                         ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getAllowedMnemonics(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
+                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getPossibleCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
                         SortedSet<Completion> set_intr = tup.Item1;
                         if (completionSets.Count > 0)
                         {
@@ -231,7 +231,7 @@ namespace IntrinsicsDude
             {
                 if (returnType != ReturnType.NONE)
                 {
-                    Tuple<SortedSet<Completion>, ISet<string>> tup = getAllowedMnemonics(selectedArchitectures, returnType);
+                    Tuple<SortedSet<Completion>, ISet<string>> tup = getPossibleCompletions(selectedArchitectures, returnType);
                     foreach (Completion c in tup.Item1)
                     {
                         completions.Add(c);
@@ -248,12 +248,12 @@ namespace IntrinsicsDude
         /// <summary>
         /// Returns the sorted set of selected completions and the list of intrinsics that are not allowed
         /// </summary>
-        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures, ReturnType returnType)
+        private Tuple<SortedSet<Completion>, ISet<string>> getPossibleCompletions(CpuID selectedArchitectures, ReturnType returnType)
         {
             DateTime time1 = DateTime.Now;
 
             if (returnType == ReturnType.NONE)
-            {
+            {   // if there is no restriction on the possible completions, return all completions for all return types
                 return getAllowedMnemonics(selectedArchitectures);
             }
 
@@ -280,8 +280,7 @@ namespace IntrinsicsDude
                     {
                         if (dataElement.returnType == returnType)
                         {
-                            if ((selectedArchitectures & dataElement.cpuID) != CpuID.NONE)
-                            {
+                            if (IntrinsicTools.isCpuID_Enabled(dataElement.cpuID, selectedArchitectures)) {
                                 cpuID |= dataElement.cpuID;
                             }
                         }
