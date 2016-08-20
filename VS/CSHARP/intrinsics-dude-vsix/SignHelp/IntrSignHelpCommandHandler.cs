@@ -103,7 +103,7 @@ namespace IntrinsicsDude.SignHelp
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                 }
                             }
-                            else if ((typedChar.Equals(')') && (_session != null)))
+                            else if ((typedChar.Equals(')') || typedChar.Equals(';') || typedChar.Equals('=')) && (_session != null))
                             {
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: going to close the session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                 this._session.Dismiss();
