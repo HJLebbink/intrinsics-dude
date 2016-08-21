@@ -64,45 +64,52 @@ namespace IntrinsicsDude.SignHelp
                 int triggerPosition = session.GetTriggerPoint(_textBuffer).GetPosition(snapshot);
 
                 SnapshotPoint point = new SnapshotPoint(snapshot, triggerPosition - 1);
-                string text = _navigator.GetExtentOfWord(point).Span.GetText();
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); text=\"" + text+"\".");
-
-                // this method is called either: 
-                // 1] when opening parenthesis "(" is typed after an intrinsic function, or
-                // 2] when an comma "," is typed as an parameter separator in an intrinsic function.
-
-                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(text, false);
-                int paramIndex = 0;
-
-                if (intrinsic == Intrinsic.NONE)
+                TextExtent extent = this._navigator.GetExtentOfWord(point);
+                if (extent.IsSignificant)
                 {
-                    Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, _navigator);
-                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
-                    intrinsic = tup.Item1;
-                    paramIndex = tup.Item2 + 1; // add one because the current typed char was an comma.
-                }
+                    string text = extent.Span.GetText();
 
-                if (intrinsic == Intrinsic.NONE) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
-                    return;
-                }
+                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); text=\"" + text+"\".");
 
-                IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.intrinsicStore.get(intrinsic);
-                if (dataElements.Count == 0) {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
-                    return;
-                }
+                    // this method is called either: 
+                    // 1] when opening parenthesis "(" is typed after an intrinsic function, or
+                    // 2] when an comma "," is typed as an parameter separator in an intrinsic function.
 
-                ITrackingSpan applicableToSpan = _textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
-                foreach (IntrinsicDataElement dataElement in dataElements)
-                {
-                    if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
+                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(text, false);
+                    int paramIndex = 0;
+
+                    if (intrinsic == Intrinsic.NONE)
                     {
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); adding signature " + dataElement.intrinsic);
-                        signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
+                        Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, _navigator);
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
+                        intrinsic = tup.Item1;
+                        paramIndex = tup.Item2 + 1; // add one because the current typed char was an comma.
                     }
+
+                    if (intrinsic == Intrinsic.NONE)
+                    {
+                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
+                        return;
+                    }
+
+                    IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.intrinsicStore.get(intrinsic);
+                    if (dataElements.Count == 0)
+                    {
+                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
+                        return;
+                    }
+
+                    ITrackingSpan applicableToSpan = _textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
+                    foreach (IntrinsicDataElement dataElement in dataElements)
+                    {
+                        if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); adding signature " + dataElement.intrinsic);
+                            signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
+                        }
+                    }
+                    IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
             }
             catch (Exception e)
             {

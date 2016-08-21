@@ -51,10 +51,10 @@ namespace IntrinsicsDude
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         private bool _disposed = false;
 
-        public CodeCompletionSource(ITextBuffer buffer, ITextStructureNavigator nav)
+        public CodeCompletionSource(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
-            this._navigator = nav;
+            this._navigator = navigator;
 
             this._cachedCompletions = new Dictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<string>>>();
             this._cachedCompletionsCpuID = CpuID.NONE;
@@ -78,39 +78,42 @@ namespace IntrinsicsDude
                 }
 
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
-                string partialKeyword = extent.Span.GetText();
-                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
-
-                if (partialKeyword.Length > 0)
+                if (extent.IsSignificant)
                 {
-                    if (partialKeyword[0].Equals('_'))
+                    string partialKeyword = extent.Span.GetText();
+                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+
+                    if (partialKeyword.Length > 0)
                     {
-                        ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                        Tuple<SortedSet<Completion>, ISet<string>> tup = this.getPossibleCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
-                        SortedSet<Completion> set_intr = tup.Item1;
-                        if (completionSets.Count > 0)
+                        if (partialKeyword[0].Equals('_'))
                         {
-                            ISet<string> notAllowed = tup.Item2;
-                            CompletionSet set_old = completionSets[0];
-                            SortedSet<Completion> set_all = new SortedSet<Completion>(set_intr, new CompletionComparer());
-
-                            foreach (Completion c in set_old.Completions)
+                            ReturnType restrictedTo = this.findCompletionRestriction(extent);
+                            Tuple<SortedSet<Completion>, ISet<string>> tup = this.getPossibleCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
+                            SortedSet<Completion> set_intr = tup.Item1;
+                            if (completionSets.Count > 0)
                             {
-                                if (!notAllowed.Contains(c.InsertionText))
-                                {
-                                    set_all.Add(c);
-                                }
-                            }
+                                ISet<string> notAllowed = tup.Item2;
+                                CompletionSet set_old = completionSets[0];
+                                SortedSet<Completion> set_all = new SortedSet<Completion>(set_intr, new CompletionComparer());
 
-                            completionSets.Clear();
-                            completionSets.Add(new CompletionSet(set_old.Moniker, set_old.DisplayName, set_old.ApplicableTo, set_all, set_old.CompletionBuilders));
-                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, set_old.CompletionBuilders));
-                            completionSets.Add(new CompletionSet("Original", "Original", set_old.ApplicableTo, set_old.Completions, set_old.CompletionBuilders));
-                        }
-                        else
-                        {
-                            ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
-                            completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, set_intr, Enumerable.Empty<Completion>()));
+                                foreach (Completion c in set_old.Completions)
+                                {
+                                    if (!notAllowed.Contains(c.InsertionText))
+                                    {
+                                        set_all.Add(c);
+                                    }
+                                }
+
+                                completionSets.Clear();
+                                completionSets.Add(new CompletionSet(set_old.Moniker, set_old.DisplayName, set_old.ApplicableTo, set_all, set_old.CompletionBuilders));
+                                completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, set_old.CompletionBuilders));
+                                completionSets.Add(new CompletionSet("Original", "Original", set_old.ApplicableTo, set_old.Completions, set_old.CompletionBuilders));
+                            }
+                            else
+                            {
+                                ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                                completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", applicableTo, set_intr, Enumerable.Empty<Completion>()));
+                            }
                         }
                     }
                 }
