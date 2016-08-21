@@ -134,6 +134,11 @@ namespace IntrinsicsDude
 
         private ReturnType findCompletionRestriction(TextExtent currentKeywordExtent)
         {
+            if (!Settings.Default.CodeCompletionRestrictions_On)
+            {
+                return ReturnType.NONE;
+            }
+
             ReturnType returnType = this.findLeftHandType(currentKeywordExtent);
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
             if (returnType == ReturnType.NONE)

@@ -97,6 +97,10 @@ namespace IntrinsicsDude.OptionsPage {
             get { return (useCodeCompletion_UI.IsChecked.HasValue) ? useCodeCompletion_UI.IsChecked.Value : false; }
             set { useCodeCompletion_UI.IsChecked = value; }
         }
+        public bool useCodeCompletionRestrictions {
+            get { return (useCodeCompletionRestrictions_UI.IsChecked.HasValue) ? useCodeCompletionRestrictions_UI.IsChecked.Value : false; }
+            set { useCodeCompletionRestrictions_UI.IsChecked = value; }
+        }
         public bool useSignatureHelp {
             get { return (useSignatureHelp_UI.IsChecked.HasValue) ? useSignatureHelp_UI.IsChecked.Value : false; }
             set { useSignatureHelp_UI.IsChecked = value; }

@@ -44,6 +44,7 @@
 					<Grid>
 						<StackPanel>
 							<CheckBox x:Name="useCodeCompletion_UI" Content="Enable Code Completion" ToolTip="Code Completion Enabled" Margin="0,4,0,2" />
+							<CheckBox x:Name="useCodeCompletionRestrictions_UI" Content="Enable Code Completion return type restrictions" ToolTip="Try to restrict code completions to those that have correct return types" Margin="0,4,0,2" />
 							<CheckBox x:Name="useSignatureHelp_UI" Content="Enable Signature Help" ToolTip="Signature Help Enabled" Margin="0,2,0,2" />
 						</StackPanel>
 					</Grid>

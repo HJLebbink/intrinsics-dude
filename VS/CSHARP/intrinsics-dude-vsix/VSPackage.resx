@@ -121,7 +121,7 @@
     <value>Intrinsics Dude</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>Improved Code Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio 2015</value>
+    <value>Improved Statement Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio 2015</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

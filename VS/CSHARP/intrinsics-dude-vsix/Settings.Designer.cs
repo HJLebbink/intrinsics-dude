@@ -670,5 +670,17 @@ namespace IntrinsicsDude {
                 this["ARCH_PREFETCHWT1"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CodeCompletionRestrictions_On {
+            get {
+                return ((bool)(this["CodeCompletionRestrictions_On"]));
+            }
+            set {
+                this["CodeCompletionRestrictions_On"] = value;
+            }
+        }
     }
 }
