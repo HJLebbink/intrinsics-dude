@@ -23,6 +23,9 @@ Signature Help (also known as Parameter Info) displays the signature of a method
 
 If you are reading this you are most likely a C/C++ programmer, if you are still interested in some dirty C# you can run the extension from source code. To do that, Visual Studio 2015 SDK needs to be installed. To run the extension, hit F5 or choose the Debug > Start Debugging menu command. A new instance of Visual Studio will launch under the experimental hive.
 
+### Known Issues
+* Incorrect syntax highlighting of SIMD registers and intrinsic functions in code comment blocks.
+
 ### Feature Requests: (desire something - let me know)
 * ~~Restrict code completion suggestions based on the return type when used as a parameter in an intrinsic.~~
 * No syntax highlighting for intrinsic keywords that are not enabled.
