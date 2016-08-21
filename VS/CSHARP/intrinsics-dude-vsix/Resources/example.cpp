@@ -13,7 +13,13 @@ void main() {
 	for (int i = 0; i < 100; ++i) {
 		printf("test");
 
-		const __m128 x1 = _m_packsswb(y1, y2);
+		/*
+		const __m128 x1 = _m_packsswb(y1, y2); // bug no syntax highlighting code remarks
+		const __m512d x = _mm512_atan_pd(x); // svml
+		*/
+
+
+		const __m512d x2 = _mm512_broadcastsd_pd()
 
 
 		// SIGNATURE HELP: OK;

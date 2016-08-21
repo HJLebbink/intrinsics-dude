@@ -32,14 +32,14 @@ namespace IntrinsicsDude
     [ClassificationType(ClassificationTypeNames = IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic)]
     [Name("intrinsic-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
-    [Order(After = Priority.High)] //set the priority to be after the default classifiers
+    //[Order(After = Priority.High)] //set the priority to be after the default classifiers
     internal sealed class IntrinsicP : ClassificationFormatDefinition
     {
         public IntrinsicP()
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
-            DisplayName = "IntrinsicsDude - Syntax Highlighting - Instruction"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Intrinsic);
+            this.DisplayName = "IntrinsicsDude - Syntax Highlighting - Instruction"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Intrinsic);
         }
     }
 
@@ -47,14 +47,14 @@ namespace IntrinsicsDude
     [ClassificationType(ClassificationTypeNames = IntrinsicClassificationDefinition.ClassificationTypeNames.Register)]
     [Name("register-737B803B-8D26-4222-9AD3-C901E69657A7")]
     [UserVisible(true)] // sets this editor format definition visible for the user (in Tools>Options>Environment>Fonts and Colors>Text Editor
-    [Order(After = Priority.High)] //set the priority to be after the default classifiers
+    //[Order(After = Priority.High)] //set the priority to be after the default classifiers
     internal sealed class RegisterP : ClassificationFormatDefinition
     {
         public RegisterP()
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
-            DisplayName = "IntrinsicsDude - Syntax Highlighting - Register Type"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Register);
+            this.DisplayName = "IntrinsicsDude - Syntax Highlighting - Register Type"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Register);
         }
     }
 
@@ -68,8 +68,8 @@ namespace IntrinsicsDude
         public MiscP()
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
-            DisplayName = "IntrinsicsDude - Syntax Highlighting - Misc"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Misc);
+            this.DisplayName = "IntrinsicsDude - Syntax Highlighting - Misc"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Misc);
         }
     }
 }

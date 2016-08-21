@@ -66,7 +66,7 @@ namespace IntrinsicsDude
             {  //there is no content in the buffer
                 yield break;
             }
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: nSpans=" + spans.Count);
+            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: nSpans=" + spans.Count);
 
             foreach (SnapshotSpan curSpan in spans)
             {
@@ -77,7 +77,7 @@ namespace IntrinsicsDude
                     if (extent.IsSignificant)
                     {
                         string keyword = extent.Span.GetText();
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
 
                         if (IntrinsicTools.parseIntrinsic(keyword, false) == Intrinsic.NONE)
                         {
