@@ -24,6 +24,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
+using Microsoft.VisualStudio.Text.Operations;
+
 using IntrinsicsDude.SyntaxHighlighting;
 using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
@@ -33,17 +35,17 @@ namespace IntrinsicsDude
     internal sealed class IntrinsicTokenTagger : ITagger<IntrinsicTokenTag>
     {
         private readonly ITextBuffer _buffer;
-        private readonly IntrinsicsDudeTools _asmDudeTools = null;
+        private readonly ITextStructureNavigator _navigator;
 
         private readonly IntrinsicTokenTag _mnemonic;
         private readonly IntrinsicTokenTag _register;
         private readonly IntrinsicTokenTag _misc;
         private readonly IntrinsicTokenTag _UNKNOWN;
 
-        internal IntrinsicTokenTagger(ITextBuffer buffer)
+        internal IntrinsicTokenTagger(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
-            this._asmDudeTools = IntrinsicsDudeTools.Instance;
+            this._navigator = navigator;
 
             this._mnemonic = new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic);
             this._register = new IntrinsicTokenTag(IntrinsicTokenType.RegType);
@@ -56,19 +58,6 @@ namespace IntrinsicsDude
             remove { }
         }
 
-        private static bool isSeparatorChar(char c)
-        {
-            if (char.IsLetterOrDigit(c))
-            {
-                return false;
-            }
-            if (char.IsWhiteSpace(c) || char.IsControl(c) || c.Equals('(') || c.Equals(')') || c.Equals('='))
-            {
-                return true;
-            }
-            return false;
-        }
-
         public IEnumerable<ITagSpan<IntrinsicTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             DateTime time1 = DateTime.Now;
@@ -77,50 +66,39 @@ namespace IntrinsicsDude
             {  //there is no content in the buffer
                 yield break;
             }
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: nSpans=" + spans.Count);
 
             foreach (SnapshotSpan curSpan in spans)
             {
-                ITextSnapshotLine containingLine = curSpan.Start.GetContainingLine();
-                int curLoc = containingLine.Start.Position;
-
-                string line = containingLine.GetText();
-
-                int startPos = 0;
-                for (int i = 0; i < line.Length; ++i)
+                SnapshotPoint point = curSpan.Start;
+                while (true)
                 {
-                    if (isSeparatorChar(line[i]))
+                    TextExtent extent = this._navigator.GetExtentOfWord(point);
+                    if (extent.IsSignificant)
                     {
-                        int length = i - startPos;
-                        if (length > 0)
+                        string keyword = extent.Span.GetText();
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
+
+                        if (IntrinsicTools.parseIntrinsic(keyword, false) == Intrinsic.NONE)
                         {
-                            string keyword = line.Substring(startPos, length);
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found keyword \"" + keyword+"\".");
-                            Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword, false);
-                            if (intrinsic == Intrinsic.NONE)
+                            if (IntrinsicTools.parseSimdRegisterType(keyword, false) != SimdRegisterType.NONE)
                             {
-                                SimdRegisterType reg = IntrinsicTools.parseSimdRegisterType(keyword, false);
-                                if (reg == SimdRegisterType.NONE)
-                                {
-                                    // do nothing
-                                } else
-                                {
-                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic type \"" + keyword + "\".");
-                                    SnapshotSpan span = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc + startPos, length));
-                                    yield return new TagSpan<IntrinsicTokenTag>(span, new IntrinsicTokenTag(IntrinsicTokenType.RegType));
-                                }
-                            }
-                            else
-                            {
-                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic instruction \"" + keyword + "\".");
-                                SnapshotSpan span = new SnapshotSpan(curSpan.Snapshot, new Span(curLoc + startPos, length));
-                                yield return new TagSpan<IntrinsicTokenTag>(span, new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic));
+                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic type \"" + keyword + "\".");
+                                yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.RegType));
                             }
                         }
-                        startPos = i+1;
+                        else
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic instruction \"" + keyword + "\".");
+                            yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic));
+                        }
                     }
-                    else
-                    {   // do not change the startPos
+                    if (extent.Span.End.Position >= curSpan.End.Position)
+                    {
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: leaving the loop. point=" + point + "; curSpan.End=" + curSpan.End);
+                        break;
                     }
+                    point = extent.Span.End + 1;
                 }
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "IntrinsicTokenTagger");

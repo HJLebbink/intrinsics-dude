@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Utilities;
 
 using IntrinsicsDude.SyntaxHighlighting;
 using System;
+using Microsoft.VisualStudio.Text.Operations;
 
 namespace IntrinsicsDude
 {
@@ -37,9 +38,12 @@ namespace IntrinsicsDude
     [Order(After = "default")]
     internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
 
+        [Import]
+        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag {
             Func <ITagger<T>> sc = delegate () {
-                return new IntrinsicTokenTagger(buffer) as ITagger<T>;
+                return new IntrinsicTokenTagger(buffer, NavigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
