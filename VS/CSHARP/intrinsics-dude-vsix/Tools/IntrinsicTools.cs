@@ -900,7 +900,7 @@ namespace IntrinsicsDude.Tools
             {
                 return false;
             }
-            return ((selectedArchitectures & cpuID_intrisic) != CpuID.NONE);
+            return ((selectedArchitectures & cpuID_intrisic) != CpuID.DEFAULT);
         }
 
         #region Text Wrap
