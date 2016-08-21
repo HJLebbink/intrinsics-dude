@@ -45,11 +45,11 @@ namespace IntrinsicsDude
         /// </summary>
         internal IntrinsicClassifier(
                 ITextBuffer buffer,
-                ITagAggregator<IntrinsicTokenTag> asmTagAggregator,
+                ITagAggregator<IntrinsicTokenTag> aggregator,
                 IClassificationTypeRegistryService typeService)
         {
             this._buffer = buffer;
-            this._aggregator = asmTagAggregator;
+            this._aggregator = aggregator;
 
             this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic));
             this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Register));
