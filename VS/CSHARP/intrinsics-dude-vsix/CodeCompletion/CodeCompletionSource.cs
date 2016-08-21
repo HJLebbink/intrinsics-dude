@@ -81,7 +81,7 @@ namespace IntrinsicsDude
                 if (extent.IsSignificant)
                 {
                     string partialKeyword = extent.Span.GetText();
-                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+                    IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
 
                     if (partialKeyword.Length > 0)
                     {
@@ -116,6 +116,11 @@ namespace IntrinsicsDude
                             }
                         }
                     }
+                }
+                if (session.IsStarted)
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: Recalculate.");
+                    session.Recalculate();
                 }
             }
             catch (Exception e)
@@ -174,7 +179,7 @@ namespace IntrinsicsDude
                     returnType2 = ReturnType.NONE;
                     break;
             }
-            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction; returnType=" + returnType+ "; returnType2="+ returnType2);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction; returnType=" + returnType+ "; returnType2="+ returnType2);
             return returnType2;
         }
 
@@ -229,9 +234,9 @@ namespace IntrinsicsDude
             return returnType;
         }
 
-        private Tuple<SortedSet<Completion>, ISet<string>> getAllowedMnemonics(CpuID selectedArchitectures)
+        private Tuple<SortedSet<Completion>, ISet<string>> getAllMnemonics(CpuID selectedArchitectures)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; selectedArchitectures=" + selectedArchitectures);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllMnemonics; selectedArchitectures=" + selectedArchitectures);
 
             SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
             ISet<string> disallowed = new HashSet<string>();
@@ -262,7 +267,7 @@ namespace IntrinsicsDude
 
             if (returnType == ReturnType.NONE)
             {   // if there is no restriction on the possible completions, return all completions for all return types
-                return getAllowedMnemonics(selectedArchitectures);
+                return getAllMnemonics(selectedArchitectures);
             }
 
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();

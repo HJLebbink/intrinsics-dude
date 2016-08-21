@@ -20,11 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
+using System.Windows.Media.TextFormatting;
 
 namespace IntrinsicsDude.SignHelp
 {
@@ -35,10 +37,22 @@ namespace IntrinsicsDude.SignHelp
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
     internal class IntrSignHelpPresenterStyle : SignatureHelpPresenterStyle
     {
-        //TODO
+        public IntrSignHelpPresenterStyle()
+        {
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: constructor");
+        }
+
+        public override TextRunProperties SignatureDocumentationTextRunProperties {
+            get {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: get");
+                return null;
+            }
+            protected set {
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: set");
+            }
+        }
     }
     */
-
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
     [Order(After = "default")] // let the default signature help trigger first, such that we can remove the signatures it adds

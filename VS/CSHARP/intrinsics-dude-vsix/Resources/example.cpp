@@ -19,6 +19,8 @@ void main() {
 		*/
 
 
+		//BUG: code completion does not work for non intrinsics
+
 		const __m512d x2 = _mm512_broadcastsd_pd()
 
 

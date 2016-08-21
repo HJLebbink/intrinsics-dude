@@ -67,9 +67,11 @@ namespace IntrinsicsDude
                             break;
                         case VSConstants.VSStd2KCmdID.RETURN:
                             handledChar = this.Complete(true);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec;  return pressed. handledChar=" + handledChar);
                             break;
                         case VSConstants.VSStd2KCmdID.TAB:
                             handledChar = this.Complete(false);
+                            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Exec;  tab pressed. handledChar=" + handledChar);
                             break;
                         case VSConstants.VSStd2KCmdID.CANCEL:
                             handledChar = this.Cancel();
@@ -102,7 +104,7 @@ namespace IntrinsicsDude
                 }
                 #endregion
 
-                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; hresult="+ hresult);
+                //IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; hresult="+ hresult);
                 
                 #region Post-process
                 if (ErrorHandler.Succeeded(hresult))
@@ -114,7 +116,7 @@ namespace IntrinsicsDude
                             case VSConstants.VSStd2KCmdID.TYPECHAR:
                             case VSConstants.VSStd2KCmdID.BACKSPACE:
                             case VSConstants.VSStd2KCmdID.DELETE:
-                                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; Post-process");
+                                //IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionCommandHandler: Exec; Post-process");
                                 this.Filter();
                                 break;
                         }
@@ -151,27 +153,20 @@ namespace IntrinsicsDude
 
         private bool StartSession()
         {
+            #region Clear all existing sessions
             if (this._session != null)
             {
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. already an active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
                 this._session.Dismiss();
             }
             this._broker.DismissAllSessions(this._textView);
-
+            #endregion
 
             SnapshotPoint caret = this._textView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
+            this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
 
-            if (this._broker.IsCompletionActive(this._textView))
-            {
-                this._session = this._broker.GetSessions(this._textView)[0];
-                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Recycling an existing auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
-            }
-            else
-            {
-                this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
-                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
-            }
             this._session.Dismissed += (sender, args) => _session = null;
             if (!this._session.IsStarted)
             {
@@ -190,14 +185,23 @@ namespace IntrinsicsDude
         /// <returns></returns>
         private bool Complete(bool force)
         {
+            if (this._broker.IsCompletionActive(_textView))
+            {   // if _session is zero, it is possible that _broker has a session that has been started by the default code completion code, reuse this session
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Complete. reusing existing session.");
+                this._session = this._broker.GetSessions(_textView)[0];
+            }
             if (this._session == null)
+            {
+                return false;
+            }
+            if (this._session.IsDismissed)
             {
                 return false;
             }
             if (!_session.SelectedCompletionSet.SelectionStatus.IsSelected && !force)
             {
                 this._session.Dismiss();
-                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Complete. exiting; no completion.");
+                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Complete. exiting; no completion.");
                 return false;
             }
             else
@@ -226,7 +230,11 @@ namespace IntrinsicsDude
             {
                 return;
             }
-            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Filter.");
+            if (this._session.IsDismissed)
+            {
+                return;
+            }
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: Filter.");
             this._session.SelectedCompletionSet.Recalculate();
             this._session.SelectedCompletionSet.SelectBestMatch();
             //this._session.Filter();

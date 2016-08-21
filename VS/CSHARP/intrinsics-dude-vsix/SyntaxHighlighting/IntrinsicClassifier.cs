@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Tagging;
@@ -53,6 +54,7 @@ namespace IntrinsicsDude
 
             this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic));
             this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Register));
+            //this._register = new ClassificationTag(typeService.GetClassificationType(PredefinedClassificationTypeNames.Keyword));
             this._misc = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Misc));
         }
 

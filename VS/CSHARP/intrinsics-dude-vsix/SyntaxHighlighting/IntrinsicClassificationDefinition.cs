@@ -35,16 +35,19 @@ namespace IntrinsicsDude.SyntaxHighlighting
             public const string Misc = "misc-CEEC315A-2FDE-428C-A4B0-1A5F4DDB6B12";
         }
 
-        [Export(typeof(ClassificationTypeDefinition))]
+        [Export]
         [Name(ClassificationTypeNames.Intrinsic)]
+        [BaseDefinition("formal language")]
         internal static ClassificationTypeDefinition intrinsic = null;
 
-        [Export(typeof(ClassificationTypeDefinition))]
+        [Export]
         [Name(ClassificationTypeNames.Register)]
+        [BaseDefinition("formal language")]
         internal static ClassificationTypeDefinition register = null;
 
-        [Export(typeof(ClassificationTypeDefinition))]
+        [Export]
         [Name(ClassificationTypeNames.Misc)]
+        [BaseDefinition("formal language")]
         internal static ClassificationTypeDefinition misc = null;
     }
 }
