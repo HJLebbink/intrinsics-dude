@@ -140,8 +140,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Guids.cs" />
-    <Compile Include="QuickInfo\IntrinsicsQuickInfoController.cs" />
-    <Compile Include="QuickInfo\IntrinsicsQuickInfoControllerProvider.cs" />
     <Compile Include="QuickInfo\IntrinsicsQuickInfoSource.cs" />
     <Compile Include="QuickInfo\IntrinsicsQuickInfoSourceProvider.cs" />
     <Compile Include="Settings.Designer.cs">
