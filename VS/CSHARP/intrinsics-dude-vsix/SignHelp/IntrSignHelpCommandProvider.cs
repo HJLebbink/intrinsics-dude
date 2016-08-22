@@ -40,7 +40,7 @@ namespace IntrinsicsDude.SignHelp
         private IVsEditorAdaptersFactoryService _adapterService = null;
 
         [Import]
-        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+        private ITextStructureNavigatorSelectorService _navigatorService = null;
 
         [Import]
         private ISignatureHelpBroker _signatureHelpBroker = null;
@@ -51,7 +51,7 @@ namespace IntrinsicsDude.SignHelp
             if (textView != null)
             {
                 textView.Properties.GetOrCreateSingletonProperty(
-                     () => new IntrSignHelpCommandHandler(textViewAdapter, textView, NavigatorService.GetTextStructureNavigator(textView.TextBuffer), _signatureHelpBroker)
+                     () => new IntrSignHelpCommandHandler(textViewAdapter, textView, _navigatorService.GetTextStructureNavigator(textView.TextBuffer), _signatureHelpBroker)
                 );
             }
         }
