@@ -81,7 +81,7 @@ namespace IntrinsicsDude
                 if (extent.IsSignificant)
                 {
                     string partialKeyword = extent.Span.GetText();
-                    IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
 
                     if (partialKeyword.Length > 0)
                     {
@@ -100,13 +100,13 @@ namespace IntrinsicsDude
                                 {
                                     if (!notAllowed.Contains(c.InsertionText))
                                     {
+                                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: InsertionText=" + c.InsertionText+ "; DisplayText=" + c.DisplayText+"; Description=" + c.Description);
                                         set_all.Add(c);
                                     }
                                 }
-
                                 completionSets.Clear();
                                 completionSets.Add(new CompletionSet(set_old.Moniker, set_old.DisplayName, set_old.ApplicableTo, set_all, set_old.CompletionBuilders));
-                                completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, set_old.CompletionBuilders));
+                                completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, Enumerable.Empty<Completion>()));
                                 completionSets.Add(new CompletionSet("Original", "Original", set_old.ApplicableTo, set_old.Completions, set_old.CompletionBuilders));
                             }
                             else
@@ -116,11 +116,6 @@ namespace IntrinsicsDude
                             }
                         }
                     }
-                }
-                if (session.IsStarted)
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: Recalculate.");
-                    session.Recalculate();
                 }
             }
             catch (Exception e)

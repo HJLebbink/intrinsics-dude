@@ -36,7 +36,7 @@ namespace IntrinsicsDude.OptionsPage
     [Guid(Guids.GuidOptionsPageAsmDude)]
     public class IntrinsicsDudeOptionsPage : UIElementDialogPage
     {
-        private const bool logInfo = true;
+        private const bool logInfo = false;
 
         private AsmDudeOptionsPageUI _intrinsicsDudeOptionsPageUI;
 
