@@ -102,7 +102,11 @@ namespace IntrinsicsDude.Tools
                     dataElement.id = item.GetAttributeValue("id", -1);
                     dataElement.intrinsic = Intrinsic.NONE;
 
-                    IList<string> paramName = new List<string>(2);
+                    if (item.GetAttributeValue("class", "").Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase)) {
+                        dataElement.cpuID |= CpuID.SVML;
+                    }
+
+                    IList <string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
 
                     #region payload
@@ -115,16 +119,9 @@ namespace IntrinsicsDude.Tools
                             case "INSTRUCTION":
                                 #region
                                 string instruction = element.InnerText.ToUpper();
-                                if (instruction.Equals("..."))
-                                {
-                                    dataElement.instruction = "NONE";
-                                    dataElement.cpuID |= CpuID.SVML;
-                                } else
-                                {
-                                    dataElement.instruction = instruction;
-                                }
+                                dataElement.instruction = (instruction.Equals("...")) ? "UNKNOWN" : instruction;
                                 break;
-                            #endregion
+                                #endregion
                             case "SIGNATURE":
                                 break;
                             case "DETAILS":
