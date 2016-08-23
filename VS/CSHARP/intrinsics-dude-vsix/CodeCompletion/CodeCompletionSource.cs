@@ -45,18 +45,24 @@ namespace IntrinsicsDude
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
-        private readonly IDictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<string>>> _cachedCompletions;
+        private readonly IDictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>> _cachedCompletions;
         private CpuID _cachedCompletionsCpuID;
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         private bool _disposed = false;
+
+        private bool _anotateWronglyTypedCompletions = true;
+        private bool _hideWronglyTypedCompletions_Existing = false;
+        private bool _hideDisabledCompletions_Existing = false;
+
+        private bool _hideWronglyTypedCompletions_New = false;
 
         public CodeCompletionSource(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
             this._navigator = navigator;
 
-            this._cachedCompletions = new Dictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<string>>>();
+            this._cachedCompletions = new Dictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>>();
             this._cachedCompletionsCpuID = CpuID.NONE;
             this.loadIcons();
         }
@@ -88,20 +94,55 @@ namespace IntrinsicsDude
                         if (partialKeyword[0].Equals('_'))
                         {
                             ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                            Tuple<SortedSet<Completion>, ISet<string>> tup = this.getPossibleCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
+                            Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> tup = this.getAllowedCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
                             SortedSet<Completion> set_intr = tup.Item1;
                             if (completionSets.Count > 0)
                             {
-                                ISet<string> notAllowed = tup.Item2;
+                                ISet<Intrinsic> alreadyPresent = tup.Item2;
+                                ISet<Intrinsic> disabled = tup.Item3;
+                                ISet<Intrinsic> disallowed = tup.Item4;
                                 CompletionSet set_old = completionSets[0];
                                 SortedSet<Completion> set_all = new SortedSet<Completion>(set_intr, new CompletionComparer());
+                                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: retrieved " + set_all.Count + " intrinsic completions");
 
                                 foreach (Completion c in set_old.Completions)
                                 {
-                                    if (!notAllowed.Contains(c.InsertionText))
+                                    string oldCompletionsText = c.InsertionText;
+                                    Intrinsic existingIntrinsic = IntrinsicTools.parseIntrinsic(oldCompletionsText, false);
+                                    if (existingIntrinsic == Intrinsic.NONE)
                                     {
-                                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: InsertionText=" + c.InsertionText+ "; DisplayText=" + c.DisplayText+"; Description=" + c.Description);
                                         set_all.Add(c);
+                                    }
+                                    else
+                                    {
+                                        if (alreadyPresent.Contains(existingIntrinsic))
+                                        {
+                                            // do nothing
+                                        }
+                                        else if (disabled.Contains(existingIntrinsic))
+                                        {
+                                            if (_hideDisabledCompletions_Existing)
+                                            {
+                                                //TODO: unquote following line
+                                                set_all.Add(new Completion("[disabled] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
+                                            }
+                                            else
+                                            {
+                                                set_all.Add(new Completion("[disabled] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
+                                            }
+                                        }
+                                        else if (disallowed.Contains(existingIntrinsic))
+                                        {
+                                            if (_hideWronglyTypedCompletions_Existing)
+                                            {
+                                                //TODO: unquote following line
+                                                set_all.Add(new Completion("[disallowed] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
+                                            }
+                                            else
+                                            {
+                                                set_all.Add(new Completion("[disallowed] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
+                                            }
+                                        }
                                     }
                                 }
                                 completionSets.Clear();
@@ -229,40 +270,53 @@ namespace IntrinsicsDude
             return returnType;
         }
 
-        private Tuple<SortedSet<Completion>, ISet<string>> getAllMnemonics(CpuID selectedArchitectures)
+        private Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> getAllCompletions(CpuID selectedArchitectures)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllMnemonics; selectedArchitectures=" + selectedArchitectures);
 
             SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
-            ISet<string> disallowed = new HashSet<string>();
+            ISet<Intrinsic> alreadyPresent = new HashSet<Intrinsic>();
+            ISet<Intrinsic> disallowed = new HashSet<Intrinsic>();
+            ISet<Intrinsic> disabled = new HashSet<Intrinsic>();
+
             foreach (ReturnType returnType in Enum.GetValues(typeof(ReturnType)))
             {
                 if (returnType != ReturnType.NONE)
                 {
-                    Tuple<SortedSet<Completion>, ISet<string>> tup = getPossibleCompletions(selectedArchitectures, returnType);
+                    Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> tup = this.getAllowedCompletions(selectedArchitectures, returnType);
                     foreach (Completion c in tup.Item1)
                     {
                         completions.Add(c);
                     }
-                    foreach (string s in tup.Item2)
+                    foreach (Intrinsic s in tup.Item2)
+                    {
+                        alreadyPresent.Add(s);
+                    }
+                    foreach (Intrinsic s in tup.Item3)
+                    {
+                        disabled.Add(s);
+                    }
+                    foreach (Intrinsic s in tup.Item4)
                     {
                         disallowed.Add(s);
                     }
                 }
             }
-            return new Tuple<SortedSet<Completion>, ISet<string>>(completions, disallowed);
+            return new Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>(completions, alreadyPresent, disabled, disallowed);
         }
 
         /// <summary>
-        /// Returns the sorted set of selected completions and the list of intrinsics that are not allowed
+        /// Returns 1] sorted set of allowed completions, 2] list of intrinsics that are disabled, 3] list of intrinsics that are disallowed
         /// </summary>
-        private Tuple<SortedSet<Completion>, ISet<string>> getPossibleCompletions(CpuID selectedArchitectures, ReturnType returnType)
+        private Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> getAllowedCompletions(CpuID selectedArchitectures, ReturnType returnType)
         {
+            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; selectedArchitectures=" + IntrinsicTools.ToString(selectedArchitectures) + "; returnType=" + returnType);
+
             DateTime time1 = DateTime.Now;
 
             if (returnType == ReturnType.NONE)
             {   // if there is no restriction on the possible completions, return all completions for all return types
-                return getAllMnemonics(selectedArchitectures);
+                return this.getAllCompletions(selectedArchitectures);
             }
 
             CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
@@ -272,11 +326,14 @@ namespace IntrinsicsDude
                 this._cachedCompletions.Clear();
             }
 
+
             if (!this._cachedCompletions.ContainsKey(returnType))
             {
                 IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
                 SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
-                ISet<string> disallowed = new HashSet<string>();
+                ISet<Intrinsic> present = new HashSet<Intrinsic>();
+                ISet<Intrinsic> disabledSet = new HashSet<Intrinsic>();
+                ISet<Intrinsic> disallowedSet = new HashSet<Intrinsic>();
 
                 foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
                 {
@@ -286,31 +343,59 @@ namespace IntrinsicsDude
                     CpuID cpuID = CpuID.NONE;
                     foreach (IntrinsicDataElement dataElement in dataElements)
                     {
-                        if (dataElement.returnType == returnType)
-                        {
-                            if (IntrinsicTools.isCpuID_Enabled(dataElement.cpuID, selectedArchitectures)) {
-                                cpuID |= dataElement.cpuID;
-                            }
+                        if (IntrinsicTools.isCpuID_Enabled(dataElement.cpuID, selectedArchitectures)) {
+                            cpuID |= dataElement.cpuID;
                         }
                     }
-                    if (cpuID == CpuID.NONE)
+
+                    // if (cpuID == CpuID.AVX512F) 
+                    //     IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; cpuID=" + cpuID);
+
+                    //if (intrinsic == Intrinsic._MM512_ANDNOT_EPI32) IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; intrinsic=" + intrinsic+"; cpuID=" + cpuID);
+
+
+                    bool disabled = (cpuID == CpuID.NONE);
+                    if (disabled)
                     {
-                        disallowed.Add(intrinsic.ToString().ToLower());
+                        disabledSet.Add(intrinsic);
                     }
                     else
                     {
-                        IntrinsicDataElement dataElement = dataElements[0];
-                        string cpuID_str = (cpuID == CpuID.DEFAULT) ? "" : " [" + IntrinsicTools.ToString(cpuID, true) + "]";
-                        string displayText = IntrinsicsDudeToolsStatic.cleanup(dataElement.intrinsic.ToString().ToLower() + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
-                        string insertionText = dataElement.intrinsic.ToString().ToLower();
-                        //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding =" + insertionText);
-                        completions.Add(new Completion(displayText, insertionText, dataElement.documenationString, this.icon_IF, "4"));
+                        IntrinsicDataElement dataElementFirst = dataElements[0];
+                        bool correctType = (dataElementFirst.returnType == returnType);
+
+                        if (_hideWronglyTypedCompletions_New)
+                        {
+                            if (correctType)
+                            {
+                                present.Add(intrinsic);
+                                completions.Add(this.createCompletion(intrinsic.ToString().ToLower(), cpuID, dataElementFirst, true));
+                            }
+                            else
+                            {
+                                disallowedSet.Add(intrinsic);
+                            }
+                        }
+                        else
+                        {
+                            present.Add(intrinsic);
+                            completions.Add(this.createCompletion(intrinsic.ToString().ToLower(), cpuID, dataElementFirst, correctType));
+                        }
                     }
                 }
-                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<string>>(completions, disallowed));
+                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>(completions, present, disabledSet, disallowedSet));
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Code Completion");
             return this._cachedCompletions[returnType];
+        }
+
+        private Completion createCompletion(string intrinsicStr, CpuID cpuID, IntrinsicDataElement dataElement, bool correctType)
+        {
+            string cpuID_str = (cpuID == CpuID.IA32) ? "" : " [" + IntrinsicTools.ToString(cpuID) + "]";
+            string prefix = (_anotateWronglyTypedCompletions) ? ((correctType) ? "" : "[wrong type] ") : ""; 
+            string displayText = IntrinsicsDudeToolsStatic.cleanup(prefix + intrinsicStr + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
+            return new Completion(displayText, intrinsicStr, dataElement.documenationString, this.icon_IF, "");
         }
 
         private void loadIcons()
