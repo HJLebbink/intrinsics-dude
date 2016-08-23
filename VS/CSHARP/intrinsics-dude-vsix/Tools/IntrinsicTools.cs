@@ -106,13 +106,9 @@ namespace IntrinsicsDude.Tools
             PREFETCHWT1 = 1L << 44,
 
             SVML        = 1L << 45,
+            IA32        = 1L << 46,
 
-            /// <summary>
-            /// DEFAULT is used for the absence of a CPUID, very cpu is assumed to support these intrinsics.
-            /// </summary>
-            DEFAULT     = 1L << 46,
-
-            // bits 45-62 are reserved for future use
+            // bits 47-62 are reserved for future use
 
             /// <summary>
             /// UNKNOWN is used for an unknown or unrecognized CPUID.
@@ -520,7 +516,7 @@ namespace IntrinsicsDude.Tools
             {
                 case "":
                 case "NONE": return CpuID.NONE;
-                case "DEFAULT": return CpuID.DEFAULT;
+                case "IA32": return CpuID.IA32;
 
                 case "ADX": return CpuID.ADX;
                 case "AES": return CpuID.AES;
@@ -652,42 +648,30 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-
         /// <summary>
         /// Write cpuIDs to string. If silence_DEFAULT is true, the CpuID.DEFAULT is not written.
         /// </summary>
-        /// <param name="cpuIDs"></param>
-        /// <param name="silence_DEFAULT"></param>
-        /// <returns></returns>
-        public static string ToString(CpuID cpuIDs, bool silence_DEFAULT = false)
+        public static string ToString(CpuID cpuIDs)
         {
             StringBuilder sb = new StringBuilder();
             //TODO it is inefficient to test every bit, would be faster to do a bitscanforward
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
-                if (silence_DEFAULT && (value == CpuID.DEFAULT))
+                if (value == CpuID.NONE) continue;
+                if (cpuIDs.HasFlag(value))
                 {
-                    // do nothing
-                }
-                else
-                {
-                    if (cpuIDs.HasFlag(value))
+                    switch (value)
                     {
-                        switch (value)
-                        {
-                            case CpuID.NONE:
-                                break;
-                            case CpuID.SSE4_1:
-                                sb.Append("SSE4.1, ");
-                                break;
-                            case CpuID.SSE4_2:
-                                sb.Append("SSE4.2, ");
-                                break;
-                            default:
-                                sb.Append(value.ToString());
-                                sb.Append(", ");
-                                break;
-                        }
+                        case CpuID.SSE4_1:
+                            sb.Append("SSE4.1, ");
+                            break;
+                        case CpuID.SSE4_2:
+                            sb.Append("SSE4.2, ");
+                            break;
+                        default:
+                            sb.Append(value.ToString());
+                            sb.Append(", ");
+                            break;
                     }
                 }
             }
@@ -900,7 +884,9 @@ namespace IntrinsicsDude.Tools
             {
                 return false;
             }
-            return ((selectedArchitectures & cpuID_intrisic) != CpuID.DEFAULT);
+            CpuID commonCpuID = (selectedArchitectures & cpuID_intrisic);
+            //IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: isCpuID_Enabled: cpuID_intrisic=" + IntrinsicTools.ToString(cpuID_intrisic) + "; selectedArchitectures="+IntrinsicTools.ToString(selectedArchitectures) +"; commonCpuID " + IntrinsicTools.ToString(commonCpuID));
+            return (commonCpuID != CpuID.NONE);
         }
 
         #region Text Wrap

@@ -173,14 +173,15 @@ namespace IntrinsicsDude.Tools
                                 break;
                         }
 
-                        if (dataElement.cpuID == CpuID.NONE)
-                        {
-                            dataElement.cpuID = CpuID.DEFAULT;
-                        }
                         for (int i = 0; i < paramName.Count; ++i)
                         {
                             dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.parseParamType(paramType[i]), paramName[i]));
                         }
+                    }
+                    if (dataElement.cpuID == CpuID.NONE)
+                    {
+                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
+                        dataElement.cpuID = CpuID.IA32;
                     }
                     #endregion
 

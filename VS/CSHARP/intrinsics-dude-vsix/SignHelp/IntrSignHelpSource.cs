@@ -102,11 +102,7 @@ namespace IntrinsicsDude.SignHelp
                     ITrackingSpan applicableToSpan = _textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
                     foreach (IntrinsicDataElement dataElement in dataElements)
                     {
-                        if (IntrinsicsDudeToolsStatic.getCpuIDSwithedOn().HasFlag(dataElement.cpuID))
-                        {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); adding signature " + dataElement.intrinsic);
-                            signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
-                        }
+                        signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
                     }
                     IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
                 }
@@ -156,7 +152,7 @@ namespace IntrinsicsDude.SignHelp
                 if (i < nParameters - 1) signatureText.Append(", ");
             }
             signatureText.Append(")  [");
-            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID, true));
+            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID));
             signatureText.Append("]");
             #endregion Create Signature Text
 
