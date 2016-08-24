@@ -74,12 +74,12 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CodeCompletion_On {
+        public bool StatementCompletion_On {
             get {
-                return ((bool)(this["CodeCompletion_On"]));
+                return ((bool)(this["StatementCompletion_On"]));
             }
             set {
-                this["CodeCompletion_On"] = value;
+                this["StatementCompletion_On"] = value;
             }
         }
         
@@ -674,12 +674,24 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CodeCompletionRestrictions_On {
+        public bool HideStatementCompletionIncompatibleReturnType_On {
             get {
-                return ((bool)(this["CodeCompletionRestrictions_On"]));
+                return ((bool)(this["HideStatementCompletionIncompatibleReturnType_On"]));
             }
             set {
-                this["CodeCompletionRestrictions_On"] = value;
+                this["HideStatementCompletionIncompatibleReturnType_On"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DecorateIncompatibleStatementCompletions_On {
+            get {
+                return ((bool)(this["DecorateIncompatibleStatementCompletions_On"]));
+            }
+            set {
+                this["DecorateIncompatibleStatementCompletions_On"] = value;
             }
         }
     }

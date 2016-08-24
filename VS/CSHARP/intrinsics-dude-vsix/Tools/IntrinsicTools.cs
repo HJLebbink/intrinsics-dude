@@ -1004,6 +1004,11 @@ namespace IntrinsicsDude.Tools
 
         public static Intrinsic parseIntrinsic(string str, bool warn = true)
         {
+            if (str == null)
+            {
+                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: str is null");
+                return Intrinsic.NONE;
+            }
             if (str.Length < 4)
             {
                 if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");

@@ -127,6 +127,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeCompletion\StatementCompletionStore.cs" />
     <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocClassifier.cs" />
     <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
     <Compile Include="CodeCompletion\CodeCompletionSource.cs" />

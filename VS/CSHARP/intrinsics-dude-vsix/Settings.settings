@@ -14,7 +14,7 @@
     <Setting Name="SyntaxHighlighting_On" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="CodeCompletion_On" Type="System.Boolean" Scope="User">
+    <Setting Name="StatementCompletion_On" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AsmDoc_url" Type="System.String" Scope="User">
@@ -164,7 +164,10 @@
     <Setting Name="ARCH_PREFETCHWT1" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="CodeCompletionRestrictions_On" Type="System.Boolean" Scope="User">
+    <Setting Name="HideStatementCompletionIncompatibleReturnType_On" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DecorateIncompatibleStatementCompletions_On" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

@@ -30,8 +30,9 @@ using System.Windows.Media;
 using System.IO;
 using Microsoft.VisualStudio.Text.Operations;
 using static IntrinsicsDude.Tools.IntrinsicTools;
+using System.Text;
 
-namespace IntrinsicsDude
+namespace IntrinsicsDude.CodeCompletion
 {
     public sealed class CompletionComparer : IComparer<Completion>
     {
@@ -45,26 +46,14 @@ namespace IntrinsicsDude
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
-        private readonly IDictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>> _cachedCompletions;
-        private CpuID _cachedCompletionsCpuID;
-
-        private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
+        private readonly StatementCompletionStore _completionStore;
         private bool _disposed = false;
-
-        private bool _anotateWronglyTypedCompletions = true;
-        private bool _hideWronglyTypedCompletions_Existing = false;
-        private bool _hideDisabledCompletions_Existing = false;
-
-        private bool _hideWronglyTypedCompletions_New = false;
 
         public CodeCompletionSource(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
             this._navigator = navigator;
-
-            this._cachedCompletions = new Dictionary<ReturnType, Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>>();
-            this._cachedCompletionsCpuID = CpuID.NONE;
-            this.loadIcons();
+            this._completionStore = new StatementCompletionStore();
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
@@ -72,7 +61,7 @@ namespace IntrinsicsDude
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession");
 
             if (_disposed) return;
-            if (!Settings.Default.CodeCompletion_On) return;
+            if (!Settings.Default.StatementCompletion_On) return;
 
             try
             {
@@ -94,57 +83,12 @@ namespace IntrinsicsDude
                         if (partialKeyword[0].Equals('_'))
                         {
                             ReturnType restrictedTo = this.findCompletionRestriction(extent);
-                            Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> tup = this.getAllowedCompletions(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn(), restrictedTo);
-                            SortedSet<Completion> set_intr = tup.Item1;
+                            SortedSet<Completion> set_intr = this.getCompletions(restrictedTo);
                             if (completionSets.Count > 0)
                             {
-                                ISet<Intrinsic> alreadyPresent = tup.Item2;
-                                ISet<Intrinsic> disabled = tup.Item3;
-                                ISet<Intrinsic> disallowed = tup.Item4;
                                 CompletionSet set_old = completionSets[0];
-                                SortedSet<Completion> set_all = new SortedSet<Completion>(set_intr, new CompletionComparer());
-                                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: AugmentCompletionSession: retrieved " + set_all.Count + " intrinsic completions");
+                                SortedSet<Completion> set_all = this.addExistingCompletions(set_intr, set_old.Completions);
 
-                                foreach (Completion c in set_old.Completions)
-                                {
-                                    string oldCompletionsText = c.InsertionText;
-                                    Intrinsic existingIntrinsic = IntrinsicTools.parseIntrinsic(oldCompletionsText, false);
-                                    if (existingIntrinsic == Intrinsic.NONE)
-                                    {
-                                        set_all.Add(c);
-                                    }
-                                    else
-                                    {
-                                        if (alreadyPresent.Contains(existingIntrinsic))
-                                        {
-                                            // do nothing
-                                        }
-                                        else if (disabled.Contains(existingIntrinsic))
-                                        {
-                                            if (_hideDisabledCompletions_Existing)
-                                            {
-                                                //TODO: unquote following line
-                                                set_all.Add(new Completion("[disabled] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
-                                            }
-                                            else
-                                            {
-                                                set_all.Add(new Completion("[disabled] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
-                                            }
-                                        }
-                                        else if (disallowed.Contains(existingIntrinsic))
-                                        {
-                                            if (_hideWronglyTypedCompletions_Existing)
-                                            {
-                                                //TODO: unquote following line
-                                                set_all.Add(new Completion("[disallowed] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
-                                            }
-                                            else
-                                            {
-                                                set_all.Add(new Completion("[disallowed] " + c.DisplayText, oldCompletionsText, c.Description, c.IconSource, c.IconAutomationText));
-                                            }
-                                        }
-                                    }
-                                }
                                 completionSets.Clear();
                                 completionSets.Add(new CompletionSet(set_old.Moniker, set_old.DisplayName, set_old.ApplicableTo, set_all, set_old.CompletionBuilders));
                                 completionSets.Add(new CompletionSet("Intrinsics", "Intrinsics", set_old.ApplicableTo, set_intr, Enumerable.Empty<Completion>()));
@@ -176,13 +120,23 @@ namespace IntrinsicsDude
 
         #region Private Methods
 
+        SortedSet<Completion> addExistingCompletions(SortedSet<Completion> set, IList<Completion> existing)
+        {
+            SortedSet<Completion> set2 = new SortedSet<Completion>(set, new CompletionComparer());
+            foreach (Completion c in existing)
+            {
+                string oldCompletionsText = c.InsertionText;
+                Intrinsic existingIntrinsic = IntrinsicTools.parseIntrinsic(oldCompletionsText, false);
+                if (existingIntrinsic == Intrinsic.NONE)
+                {
+                    set2.Add(c);
+                }
+            }
+            return set2;
+        }
+
         private ReturnType findCompletionRestriction(TextExtent currentKeywordExtent)
         {
-            if (!Settings.Default.CodeCompletionRestrictions_On)
-            {
-                return ReturnType.NONE;
-            }
-
             ReturnType returnType = this.findLeftHandType(currentKeywordExtent);
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
             if (returnType == ReturnType.NONE)
@@ -190,33 +144,8 @@ namespace IntrinsicsDude
                 returnType = findEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
-            ReturnType returnType2 = returnType;
-            switch (returnType)
-            {
-                case ReturnType.NONE:
-                case ReturnType.__INT16:
-                case ReturnType.__INT32:
-                case ReturnType.__INT64:
-                case ReturnType.__INT8:
-                case ReturnType.CONST_VOID_PTR:
-                //case ReturnType.DOUBLE:
-                //case ReturnType.FLOAT:
-                case ReturnType.INT:
-                case ReturnType.SHORT:
-                case ReturnType.UNSIGNED__INT32:
-                case ReturnType.UNSIGNED__INT64:
-                case ReturnType.UNSIGNED_CHAR:
-                case ReturnType.UNSIGNED_INT:
-                case ReturnType.UNSIGNED_LONG:
-                case ReturnType.UNSIGNED_SHORT:
 
-                case ReturnType.VOID:
-                case ReturnType.VOID_PTR:
-                    returnType2 = ReturnType.NONE;
-                    break;
-            }
-            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: findCompletionRestriction; returnType=" + returnType+ "; returnType2="+ returnType2);
-            return returnType2;
+            return funel(returnType);
         }
 
         private ReturnType findEmbeddedType(TextExtent currentKeywordExtent)
@@ -270,149 +199,80 @@ namespace IntrinsicsDude
             return returnType;
         }
 
-        private Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> getAllCompletions(CpuID selectedArchitectures)
-        {
-            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllMnemonics; selectedArchitectures=" + selectedArchitectures);
-
-            SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
-            ISet<Intrinsic> alreadyPresent = new HashSet<Intrinsic>();
-            ISet<Intrinsic> disallowed = new HashSet<Intrinsic>();
-            ISet<Intrinsic> disabled = new HashSet<Intrinsic>();
-
-            foreach (ReturnType returnType in Enum.GetValues(typeof(ReturnType)))
-            {
-                if (returnType != ReturnType.NONE)
-                {
-                    Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> tup = this.getAllowedCompletions(selectedArchitectures, returnType);
-                    foreach (Completion c in tup.Item1)
-                    {
-                        completions.Add(c);
-                    }
-                    foreach (Intrinsic s in tup.Item2)
-                    {
-                        alreadyPresent.Add(s);
-                    }
-                    foreach (Intrinsic s in tup.Item3)
-                    {
-                        disabled.Add(s);
-                    }
-                    foreach (Intrinsic s in tup.Item4)
-                    {
-                        disallowed.Add(s);
-                    }
-                }
-            }
-            return new Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>(completions, alreadyPresent, disabled, disallowed);
-        }
-
         /// <summary>
         /// Returns 1] sorted set of allowed completions, 2] list of intrinsics that are disabled, 3] list of intrinsics that are disallowed
         /// </summary>
-        private Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>> getAllowedCompletions(CpuID selectedArchitectures, ReturnType returnType)
+        private SortedSet<Completion> getCompletions(ReturnType returnType)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; selectedArchitectures=" + IntrinsicTools.ToString(selectedArchitectures) + "; returnType=" + returnType);
-
             DateTime time1 = DateTime.Now;
 
-            if (returnType == ReturnType.NONE)
-            {   // if there is no restriction on the possible completions, return all completions for all return types
-                return this.getAllCompletions(selectedArchitectures);
-            }
+            bool decorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
+            bool hideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;
 
-            CpuID currentCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
-            if (this._cachedCompletionsCpuID != currentCpuID)
+            SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
+
+            foreach (Tuple<Completion, ReturnType> e in _completionStore.data)
             {
-                this._cachedCompletionsCpuID = currentCpuID;
-                this._cachedCompletions.Clear();
-            }
+                Completion completion = e.Item1;
+                ReturnType returnType2 = e.Item2;
 
-
-            if (!this._cachedCompletions.ContainsKey(returnType))
-            {
-                IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
-                SortedSet<Completion> completions = new SortedSet<Completion>(new CompletionComparer());
-                ISet<Intrinsic> present = new HashSet<Intrinsic>();
-                ISet<Intrinsic> disabledSet = new HashSet<Intrinsic>();
-                ISet<Intrinsic> disallowedSet = new HashSet<Intrinsic>();
-
-                foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
+                if (!isCompatible(returnType2, returnType))
                 {
-                    if (intrinsic == Intrinsic.NONE) continue;
-                    IList<IntrinsicDataElement> dataElements = store.get(intrinsic);
-
-                    CpuID cpuID = CpuID.NONE;
-                    foreach (IntrinsicDataElement dataElement in dataElements)
+                    if (!hideStatementCompletionIncompatibleReturnType)
                     {
-                        if (IntrinsicTools.isCpuID_Enabled(dataElement.cpuID, selectedArchitectures)) {
-                            cpuID |= dataElement.cpuID;
-                        }
-                    }
-
-                    // if (cpuID == CpuID.AVX512F) 
-                    //     IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; cpuID=" + cpuID);
-
-                    //if (intrinsic == Intrinsic._MM512_ANDNOT_EPI32) IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedCompletions; intrinsic=" + intrinsic+"; cpuID=" + cpuID);
-
-
-                    bool disabled = (cpuID == CpuID.NONE);
-                    if (disabled)
-                    {
-                        disabledSet.Add(intrinsic);
-                    }
-                    else
-                    {
-                        IntrinsicDataElement dataElementFirst = dataElements[0];
-                        bool correctType = (dataElementFirst.returnType == returnType);
-
-                        if (_hideWronglyTypedCompletions_New)
+                        if (decorateIncompatibleStatementCompletions)
                         {
-                            if (correctType)
-                            {
-                                present.Add(intrinsic);
-                                completions.Add(this.createCompletion(intrinsic.ToString().ToLower(), cpuID, dataElementFirst, true));
-                            }
-                            else
-                            {
-                                disallowedSet.Add(intrinsic);
-                            }
+                            completions.Add(decorate(completion, "[Incompatible]"));
                         }
                         else
                         {
-                            present.Add(intrinsic);
-                            completions.Add(this.createCompletion(intrinsic.ToString().ToLower(), cpuID, dataElementFirst, correctType));
+                            completions.Add(completion);
                         }
                     }
                 }
-                this._cachedCompletions.Add(returnType, new Tuple<SortedSet<Completion>, ISet<Intrinsic>, ISet<Intrinsic>, ISet<Intrinsic>>(completions, present, disabledSet, disallowedSet));
+                else
+                {
+                    completions.Add(completion);
+                }
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Code Completion");
-            return this._cachedCompletions[returnType];
+            return completions;
         }
 
-        private Completion createCompletion(string intrinsicStr, CpuID cpuID, IntrinsicDataElement dataElement, bool correctType)
+        private bool isCompatible(ReturnType type1, ReturnType type2)
         {
-            string cpuID_str = (cpuID == CpuID.IA32) ? "" : " [" + IntrinsicTools.ToString(cpuID) + "]";
-            string prefix = (_anotateWronglyTypedCompletions) ? ((correctType) ? "" : "[wrong type] ") : ""; 
-            string displayText = IntrinsicsDudeToolsStatic.cleanup(prefix + intrinsicStr + cpuID_str + " - " + dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
-            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
-            return new Completion(displayText, intrinsicStr, dataElement.documenationString, this.icon_IF, "");
+            return funel(type1) == funel(type2);
         }
 
-        private void loadIcons()
+        private ReturnType funel(ReturnType type)
         {
-            Uri uri = null;
-            string installPath = IntrinsicsDudeToolsStatic.getInstallPath();
-            try
+            switch (type)
             {
-                uri = new Uri(installPath + "Resources/images/icon-IF.png");
-                this.icon_IF = IntrinsicsDudeToolsStatic.bitmapFromUri(uri);
-            }
-            catch (FileNotFoundException)
-            {
-                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
+                case ReturnType.__M128:
+                case ReturnType.__M128D:
+                case ReturnType.__M128I:
+                case ReturnType.__M256:
+                case ReturnType.__M256D:
+                case ReturnType.__M256I:
+                case ReturnType.__M512:
+                case ReturnType.__M512D:
+                case ReturnType.__M512I:
+                case ReturnType.__M64:
+                case ReturnType.__MMASK16:
+                case ReturnType.__MMASK32:
+                case ReturnType.__MMASK64:
+                case ReturnType.__MMASK8:
+                    return type;
+                default:
+                    return ReturnType.NONE;
             }
         }
 
+        private Completion decorate(Completion completion, string str)
+        {
+            string displayText = completion.DisplayText.Replace(" [", " "+str+"[");
+            return new Completion(displayText, completion.InsertionText, completion.Description, completion.IconSource, completion.IconAutomationText);
+        }
         #endregion
     }
 }

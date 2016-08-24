@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="IntrinsicsDude.OptionsPage.AsmDudeOptionsPageUI"
+﻿<UserControl x:Class="IntrinsicsDude.OptionsPage.IntrinsicsDudeOptionsPageUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
 			<StackPanel>
 				<Label x:Name="version_UI" Content="Intrinsics Dude version" />
 				<GroupBox Header="Syntax Highlighting" BorderBrush="DarkGray">
-					<Grid>
+					<Grid  Margin="0,2,0,0">
 						<StackPanel>
 							<CheckBox x:Name="useSyntaxHighlighting_UI" ToolTip="Syntax Highlighting Enabled" Content="Enable Syntax Highlighting" Margin="0,4,0,4"/>
 							<Grid>
@@ -30,7 +30,7 @@
 					</Grid>
 				</GroupBox>
 				<GroupBox Header="Documentation" BorderBrush="DarkGray" Visibility="Hidden" Height="0">
-					<Grid>
+					<Grid  Margin="0,2,0,0">
 						<StackPanel>
 							<CheckBox x:Name="useAsmDoc_UI" ToolTip="Assembly Documentation Enabled" Content="Enable Documentation" Margin="0,4,0,4" />
 							<Grid>
@@ -41,23 +41,37 @@
 					</Grid>
 				</GroupBox>
 				<GroupBox Header="Intellisense" BorderBrush="DarkGray">
-					<Grid>
+					<Grid  Margin="0,2,0,0">
 						<StackPanel>
-							<CheckBox x:Name="useCodeCompletion_UI" Content="Enable Code Completion" ToolTip="Code Completion Enabled" Margin="0,4,0,2" />
-							<CheckBox x:Name="useCodeCompletionRestrictions_UI" Content="Enable Code Completion return type restrictions" ToolTip="Try to restrict code completions to those that have correct return types" Margin="0,4,0,2" />
-							<CheckBox x:Name="useSignatureHelp_UI" Content="Enable Signature Help" ToolTip="Signature Help Enabled" Margin="0,2,0,2" />
+							<GroupBox Header="Statement Completion" BorderBrush="DarkGray">
+								<Grid>
+									<StackPanel>
+										<CheckBox x:Name="useCodeCompletion_UI" Content="Enable statement completion" ToolTip="Enable statement completion" Margin="0,4,0,2" />
+										<CheckBox x:Name="hideStatementCompletionIncompatibleReturnType_UI" Content="Hide statement completions with incompatible return types" ToolTip="Hide statement completions that have return types that are not compatible with the current context" Margin="0,2,0,2" />
+										<CheckBox x:Name="decorateIncompatibleStatementCompletions_UI" Content="Decorate incompatible statement completions with [Incompatible]" ToolTip="If statement completions with incompatible return types are not hidden, decorate them with [Incompatible]" Margin="0,2,0,2" />
+
+									</StackPanel>
+								</Grid>
+							</GroupBox>
+							<GroupBox Header="Signature Help" BorderBrush="DarkGray">
+								<Grid Margin="0,2,0,0">
+									<StackPanel>
+										<CheckBox x:Name="useSignatureHelp_UI" Content="Enable signature help" ToolTip="Enable signature help" Margin="0,4,0,2" />
+									</StackPanel>
+								</Grid>
+							</GroupBox>
 						</StackPanel>
 					</Grid>
 				</GroupBox>
 				<GroupBox Header="Intel Compiler" BorderBrush="DarkGray">
-					<Grid>
+					<Grid  Margin="0,2,0,0">
 						<StackPanel>
 							<CheckBox x:Name="useSvml_UI" Content="Enable SMVL" ToolTip="Short Vector Math Library for Intel Compiler" Margin="0,2,0,2" />
 						</StackPanel>
 					</Grid>
 				</GroupBox>
-				<GroupBox Header="Architectures (used for Code Completion and Signature Help)" BorderBrush="DarkGray">
-					<Grid>
+				<GroupBox Header="Architectures (used for statement completion and signature help)" BorderBrush="DarkGray">
+					<Grid  Margin="0,2,0,0">
                         <StackPanel>
                             <GroupBox Header="SIMD" BorderBrush="DarkGray">
                                 <Grid>

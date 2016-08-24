@@ -23,6 +23,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Xml.Linq;
@@ -41,6 +42,12 @@ namespace IntrinsicsDude.Tools
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
             //this.generateData();
             this.loadXml(filename);
+        }
+
+        public ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>> data {
+            get {
+                return new ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>>(this._data);
+            }
         }
 
         public IList<IntrinsicDataElement> get(Intrinsic intrinsic)

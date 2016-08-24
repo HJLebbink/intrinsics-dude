@@ -27,9 +27,9 @@ namespace IntrinsicsDude.OptionsPage {
     /// <summary>
     /// Interaction logic for AsmDudeOptionPageUI.xaml
     /// </summary>
-    public partial class AsmDudeOptionsPageUI : UserControl {
+    public partial class IntrinsicsDudeOptionsPageUI : UserControl {
 
-        public AsmDudeOptionsPageUI() {
+        public IntrinsicsDudeOptionsPageUI() {
             InitializeComponent();
             version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
         }
@@ -58,7 +58,7 @@ namespace IntrinsicsDude.OptionsPage {
                 if (colorMnemonic_UI.SelectedColor.HasValue) {
                     return IntrinsicsDudeToolsStatic.convertColor(colorMnemonic_UI.SelectedColor.Value);
                 } else {
-                    //IntrinsicsDudeToolsStatic.Output("INFO: AsmDudeOptionsPageUI.xaml: colorMnemonic_UI has no value, assuming BLUE");
+                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPageUI.xaml: colorMnemonic_UI has no value, assuming BLUE");
                     return System.Drawing.Color.Blue;
                 }
             }
@@ -97,10 +97,15 @@ namespace IntrinsicsDude.OptionsPage {
             get { return (useCodeCompletion_UI.IsChecked.HasValue) ? useCodeCompletion_UI.IsChecked.Value : false; }
             set { useCodeCompletion_UI.IsChecked = value; }
         }
-        public bool useCodeCompletionRestrictions {
-            get { return (useCodeCompletionRestrictions_UI.IsChecked.HasValue) ? useCodeCompletionRestrictions_UI.IsChecked.Value : false; }
-            set { useCodeCompletionRestrictions_UI.IsChecked = value; }
+        public bool hideStatementCompletionIncompatibleReturnType {
+            get { return (hideStatementCompletionIncompatibleReturnType_UI.IsChecked.HasValue) ? hideStatementCompletionIncompatibleReturnType_UI.IsChecked.Value : false; }
+            set { hideStatementCompletionIncompatibleReturnType_UI.IsChecked = value; }
         }
+        public bool decorateIncompatibleStatementCompletions {
+            get { return (decorateIncompatibleStatementCompletions_UI.IsChecked.HasValue) ? decorateIncompatibleStatementCompletions_UI.IsChecked.Value : false; }
+            set { decorateIncompatibleStatementCompletions_UI.IsChecked = value; }
+        }
+
         public bool useSignatureHelp {
             get { return (useSignatureHelp_UI.IsChecked.HasValue) ? useSignatureHelp_UI.IsChecked.Value : false; }
             set { useSignatureHelp_UI.IsChecked = value; }
