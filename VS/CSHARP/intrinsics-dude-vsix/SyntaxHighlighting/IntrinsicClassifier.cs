@@ -87,7 +87,7 @@ namespace IntrinsicsDude
                             break;
                     }
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic Classifier");
+                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Classifier");
             }
         }
     }

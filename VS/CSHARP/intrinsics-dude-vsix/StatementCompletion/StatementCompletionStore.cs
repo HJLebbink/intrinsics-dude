@@ -81,13 +81,13 @@ namespace IntrinsicsDude.CodeCompletion
                     IntrinsicDataElement dataElementFirst = dataElements[0];
                     string intrinsicStr = intrinsic.ToString().ToLower();
                     string displayText = this.createDisplayText(intrinsicStr, cpuID, dataElementFirst.description, true, true);
-                    //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
+                    //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
                     Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.documenationString, this.icon_IF, "");
 
                     this._data.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst.returnType));
                 }
             }
-            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Initializing Statement Completion Store");
+            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion-Store-Initialization");
         }
 
         public string createDisplayText(string intrinsicStr, CpuID cpuID, string description, bool correctType, bool decorateIncompatibleStatementCompletion)
@@ -114,7 +114,7 @@ namespace IntrinsicsDude.CodeCompletion
             }
             catch (FileNotFoundException)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: CodeCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
+                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
             }
         }
 

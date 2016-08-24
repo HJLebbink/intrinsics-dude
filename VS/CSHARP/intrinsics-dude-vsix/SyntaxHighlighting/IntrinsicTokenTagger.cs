@@ -101,7 +101,7 @@ namespace IntrinsicsDude
                     point = extent.Span.End + 1;
                 }
             }
-            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "IntrinsicTokenTagger");
+            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Token-Tagger");
         }
     }
 }

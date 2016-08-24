@@ -31,18 +31,17 @@ namespace IntrinsicsDude.CodeCompletion
 {
     [Export(typeof(ICompletionSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Order(After = "default")] // let the default code completion trigger first, such that we can add our completions to the existing ones.
-    [Name("Intrinsic Completion Source Provider")]
-    public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
+    [Order(After = "default")] // order after default: let the default code completion trigger first, such that we can add our completions to the existing ones.
+    [Name("Intrinsic Statement Completion Source Provider")]
+    public sealed class StatementCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+        private ITextStructureNavigatorSelectorService NavigatorService = null;
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
-            Func<CodeCompletionSource> sc = delegate ()
-            {
-                return new CodeCompletionSource(buffer, NavigatorService.GetTextStructureNavigator(buffer));
+            Func<StatementCompletionSource> sc = delegate () {
+                return new StatementCompletionSource(buffer, NavigatorService.GetTextStructureNavigator(buffer));
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

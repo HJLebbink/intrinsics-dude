@@ -127,11 +127,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeCompletion\StatementCompletionStore.cs" />
+    <Compile Include="StatementCompletion\StatementCompletionStore.cs" />
     <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocClassifier.cs" />
     <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
-    <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
-    <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
+    <Compile Include="StatementCompletion\StatementCompletionSource.cs" />
+    <Compile Include="StatementCompletion\StatementCompletionSourceProvider.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="OptionsPage\IntrinsicsDudeOptionPageUI.xaml.cs">
       <DependentUpon>IntrinsicsDudeOptionPageUI.xaml</DependentUpon>
