@@ -17,11 +17,11 @@ void main() {
 		const __m128 x1 = _m_packsswb(y1, y2); // bug no syntax highlighting code remarks
 		const __m512d x = _mm512_atan_pd(x); // svml
 		*/
-
+		_mm256_extract_epi64(a, 2);
 
 		//BUG: code completion does not work for non intrinsics
 
-		const __m512d x2 = _mm512_broadcastsd_pd()
+		const __m256d x2 = _mm256_extract_epi16
 
 
 		// SIGNATURE HELP: OK;
