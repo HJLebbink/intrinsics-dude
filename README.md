@@ -1,5 +1,5 @@
 # Intrinsics-Dude
-Opensource Visual Studio 2015 extension for compiler instrinsics in C/C++. This extension can be found in the visual studio extensions gallery or download latest installer IntrinsicsDude.vsix (v0.0.0.0)
+Improved support for compiler intrinsics in Visual Studio 2015. This extension can be found in the visual studio extensions gallery or download latest installer IntrinsicsDude.vsix (v0.0.0.0). If intrinsics are not low level enough, consider [Asm-Dude](https://github.com/HJLebbink/asm-dude).
 
 ### Features
 
