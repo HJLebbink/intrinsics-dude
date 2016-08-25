@@ -118,7 +118,7 @@ namespace IntrinsicsDude.Tools
 
         public enum ReturnType
         {
-            NONE,
+            UNKNOWN,
             __INT16,
             __INT32,
             __INT64,
@@ -306,7 +306,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID *": return ReturnType.VOID_PTR;
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
-                    return ReturnType.NONE;
+                    return ReturnType.UNKNOWN;
             }
         }
         
@@ -878,6 +878,72 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        /// <summary>return true if type2 be cast to type1; false otherwise</summary>
+        public static bool isConversionPossible(ReturnType type1, ReturnType type2) {
+
+            if (type2 == ReturnType.UNKNOWN) return true;
+
+            switch (type1) {
+                case ReturnType.UNKNOWN: return true;
+
+                case ReturnType.__M128: return (type2 == ReturnType.__M128);
+                case ReturnType.__M128D: return (type2 == ReturnType.__M128D);
+                case ReturnType.__M128I: return (type2 == ReturnType.__M128I);
+                case ReturnType.__M256: return (type2 == ReturnType.__M256);
+                case ReturnType.__M256D: return (type2 == ReturnType.__M256D);
+                case ReturnType.__M256I: return (type2 == ReturnType.__M256I);
+                case ReturnType.__M512: return (type2 == ReturnType.__M512);
+                case ReturnType.__M512D: return (type2 == ReturnType.__M512D);
+                case ReturnType.__M512I: return (type2 == ReturnType.__M512I);
+                case ReturnType.__M64: return (type2 == ReturnType.__M64);
+                case ReturnType.__MMASK16: return (type2 == ReturnType.__MMASK16);
+                case ReturnType.__MMASK32: return (type2 == ReturnType.__MMASK32);
+                case ReturnType.__MMASK64: return (type2 == ReturnType.__MMASK64);
+                case ReturnType.__MMASK8: return (type2 == ReturnType.__MMASK8);
+
+                case ReturnType.__INT16:
+                case ReturnType.__INT32:
+                case ReturnType.__INT64:
+                case ReturnType.__INT8:
+                case ReturnType.DOUBLE:
+                case ReturnType.FLOAT:
+                case ReturnType.INT:
+                case ReturnType.SHORT:
+                case ReturnType.UNSIGNED__INT32:
+                case ReturnType.UNSIGNED__INT64:
+                case ReturnType.UNSIGNED_CHAR:
+                case ReturnType.UNSIGNED_INT:
+                case ReturnType.UNSIGNED_LONG:
+                case ReturnType.UNSIGNED_SHORT:
+                case ReturnType.CONST_VOID_PTR:
+                case ReturnType.VOID:
+                case ReturnType.VOID_PTR:
+                    switch (type2) {
+                        case ReturnType.__M128:
+                        case ReturnType.__M128D:
+                        case ReturnType.__M128I:
+                        case ReturnType.__M256:
+                        case ReturnType.__M256D:
+                        case ReturnType.__M256I:
+                        case ReturnType.__M512:
+                        case ReturnType.__M512D:
+                        case ReturnType.__M512I:
+                        case ReturnType.__M64:
+                        case ReturnType.__MMASK16:
+                        case ReturnType.__MMASK32:
+                        case ReturnType.__MMASK64:
+                        case ReturnType.__MMASK8:
+                            return false;
+                        default:
+                            return true;
+                    }
+                    break;
+                default:
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: conversionPossible: unknown or unrecognized ReturnType \"" + type1 + "\": returning false");
+                    return false;
+            }
+        }
+
         public static bool isCpuID_Enabled(CpuID cpuID_intrisic, CpuID selectedArchitectures)
         {
             if (cpuID_intrisic.HasFlag(CpuID.SVML) && !selectedArchitectures.HasFlag(CpuID.SVML))
@@ -966,9 +1032,9 @@ namespace IntrinsicsDude.Tools
             {
                 TextExtent extent = nav.GetExtentOfWord(currentPos);
                 string word = extent.Span.GetText();
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=" + word);
+                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=\"" + word+"\".");
 
-                if (word.Equals(";")) break;
+                if (word.Contains(";")) break;
                 if (word.Equals("=")) break;
                 if (word.Equals(")"))
                 {

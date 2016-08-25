@@ -172,13 +172,13 @@ namespace IntrinsicsDude.StatementCompletion {
         {
             ReturnType returnType = this.findLeftHandType(currentKeywordExtent);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
-            if (returnType == ReturnType.NONE)
+            if (returnType == ReturnType.UNKNOWN)
             {
                 returnType = findEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
-
-            return funel(returnType);
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
+            return returnType;
         }
 
         private ReturnType findEmbeddedType(TextExtent currentKeywordExtent)
@@ -187,14 +187,14 @@ namespace IntrinsicsDude.StatementCompletion {
             Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this._navigator);
             if (tup.Item1 == Intrinsic.NONE)
             {
-                return ReturnType.NONE;
+                return ReturnType.UNKNOWN;
             }
 
             IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
             IntrinsicDataElement dataElement = store.get(tup.Item1)[0];
             ParamType paramType = dataElement.parameters[tup.Item2].Item1;
             ReturnType returnType = IntrinsicTools.parseReturnType(IntrinsicTools.ToString(paramType), false);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType);
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
         }
 
@@ -215,7 +215,7 @@ namespace IntrinsicsDude.StatementCompletion {
             }
             else
             {
-                return ReturnType.NONE;
+                return ReturnType.UNKNOWN;
             }
             if (word.Span.GetText().Equals(" "))
             {
@@ -234,6 +234,8 @@ namespace IntrinsicsDude.StatementCompletion {
 
         private List<Completion> getCompletions(ReturnType returnType)
         {
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getCompletions: returnType=" + returnType);
+
             bool decorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
             bool hideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;
 
@@ -244,7 +246,7 @@ namespace IntrinsicsDude.StatementCompletion {
                 Completion completion = e.Item1;
                 ReturnType returnType2 = e.Item2;
 
-                if (!isCompatible(returnType2, returnType))
+                if (!IntrinsicTools.isConversionPossible(returnType2, returnType))
                 {
                     if (!hideStatementCompletionIncompatibleReturnType)
                     {
@@ -257,38 +259,6 @@ namespace IntrinsicsDude.StatementCompletion {
                 }
             }
             return completions;
-        }
-
-        private bool isCompatible(ReturnType type1, ReturnType type2)
-        {
-            return funel(type1) == funel(type2);
-        }
-
-        private ReturnType funel(ReturnType type)
-        {
-            switch (type)
-            {
-                case ReturnType.__M128:
-                case ReturnType.__M128D:
-                case ReturnType.__M128I:
-                case ReturnType.__M256:
-                case ReturnType.__M256D:
-                case ReturnType.__M256I:
-                case ReturnType.__M512:
-                case ReturnType.__M512D:
-                case ReturnType.__M512I:
-                case ReturnType.__M64:
-                case ReturnType.__MMASK16:
-                case ReturnType.__MMASK32:
-                case ReturnType.__MMASK64:
-                case ReturnType.__MMASK8:
-                case ReturnType.FLOAT:
-                case ReturnType.DOUBLE:
-                case ReturnType.VOID:
-                    return type;
-                default:
-                    return ReturnType.NONE;
-            }
         }
 
         private Completion decorate(Completion completion, string str)
