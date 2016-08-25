@@ -25,11 +25,13 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 
 ### Known Issues
 * Incorrect syntax highlighting of SIMD registers and intrinsic functions in code comment blocks.
+* No support for AMD-specific intrinsics (ammintrin.h)
 
 ### Feature Requests: (desire something - let me know)
 * ~~Restrict code completion suggestions based on the return type when used as a parameter in an intrinsic.~~
 * No syntax highlighting for intrinsic keywords that are not enabled.
 * Descriptions for all int definitions such as _MM_ROUND_MASK etc.
+* Support AMD-specific intrinsics (ammintrin.h)
 
 ### Updates
 * 25 Juli 2016: Start of project
