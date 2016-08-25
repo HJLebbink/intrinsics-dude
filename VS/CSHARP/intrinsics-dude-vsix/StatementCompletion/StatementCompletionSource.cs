@@ -26,90 +26,16 @@ using System.Linq;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using IntrinsicsDude.Tools;
-using System.Windows.Media;
-using System.IO;
 using Microsoft.VisualStudio.Text.Operations;
 using static IntrinsicsDude.Tools.IntrinsicTools;
-using System.Text;
 
-namespace IntrinsicsDude.CodeCompletion
-{
+namespace IntrinsicsDude.StatementCompletion {
     public sealed class CompletionComparer : IComparer<Completion>
     {
         public int Compare(Completion x, Completion y)
         {
             return x.InsertionText.CompareTo(y.InsertionText);
         }
-    }
-
-    public sealed class StatementCompletionSource2 : ICompletionSource
-    {
-        private bool _disposed = false;
-
-        public StatementCompletionSource2()
-        {
-        }
-
-        public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
-        {
-            if (_disposed) return;
-            if (!Settings.Default.StatementCompletion_On) return;
-            DateTime time1 = DateTime.Now;
-
-            try
-            {
-                if (completionSets.Count > 1)
-                {
-                    CompletionSet intrinsicCompletions = completionSets[0];
-                    //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource2: AugmentCompletionSession: a=\"" + intrinsicCompletions.DisplayName + "\".");
-                    CompletionSet existingCompletions = completionSets[1];
-                    //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource2: AugmentCompletionSession: b=\"" + existingCompletions.DisplayName + "\".");
-
-                    List<Completion> set_all = new List<Completion>(intrinsicCompletions.Completions);
-
-                    string partialKeyword = intrinsicCompletions.ApplicableTo.GetText(session.TextView.TextSnapshot);
-                    if (partialKeyword.Length > 2)
-                    {
-                        foreach (Completion completion in existingCompletions.Completions)
-                        {
-                            string insertionText = completion.InsertionText;
-                            if (insertionText != null)
-                            {
-                                if (IntrinsicTools.parseIntrinsic(insertionText, false) == Intrinsic.NONE)
-                                {
-                                    if (insertionText.StartsWith(partialKeyword))
-                                    {
-                                        set_all.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
-                                        //set_all.Add(completion);
-                                    }
-                                }
-                            }
-                        }
-                        set_all.Sort(new CompletionComparer());
-                    }
-
-                    completionSets.Clear();
-                    completionSets.Add(new CompletionSet("New", "New", intrinsicCompletions.ApplicableTo, set_all, intrinsicCompletions.CompletionBuilders));
-                    completionSets.Add(intrinsicCompletions);
-                    completionSets.Add(existingCompletions);
-                }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion-2");
-            }
-            catch (Exception e)
-            {
-                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource2:AugmentCompletionSession; e=" + e.ToString());
-            }
-        }
-
-        public void Dispose()
-        {
-            if (!this._disposed)
-            {
-                GC.SuppressFinalize(this);
-                _disposed = true;
-            }
-        }
-
     }
 
     public sealed class StatementCompletionSource : ICompletionSource

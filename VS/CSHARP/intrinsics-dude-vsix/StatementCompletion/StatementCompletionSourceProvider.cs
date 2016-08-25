@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.Utilities;
 using System;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.CodeCompletion
+namespace IntrinsicsDude.StatementCompletion
 {
     [Export(typeof(ICompletionSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]

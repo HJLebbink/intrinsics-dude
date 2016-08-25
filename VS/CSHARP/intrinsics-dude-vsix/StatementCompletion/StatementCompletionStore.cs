@@ -30,7 +30,7 @@ using System.Text;
 using System.Windows.Media;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace IntrinsicsDude.CodeCompletion
+namespace IntrinsicsDude.StatementCompletion
 {
     public class StatementCompletionStore
     {
