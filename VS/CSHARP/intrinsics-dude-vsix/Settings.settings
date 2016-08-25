@@ -170,5 +170,8 @@
     <Setting Name="DecorateIncompatibleStatementCompletions_On" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="ARCH_IA32" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

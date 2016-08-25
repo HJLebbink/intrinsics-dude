@@ -101,7 +101,8 @@
                             <GroupBox Header="Extensions" BorderBrush="DarkGray">
                                 <Grid >
                                     <StackPanel>
-										<CheckBox x:Name="useArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,4,0,2"/>
+										<CheckBox x:Name="useArch_IA32_UI" Content="IA32" Margin="0,4,0,2"/>
+										<CheckBox x:Name="useArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_AES_UI" Content="AES - Advanced Encryption Standard" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_BMI1_UI" Content="BMI1 - Bit Manipulation Instructions Sets 1" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_BMI2_UI" Content="BMI2 - Bit Manipulation Instructions Sets 2" Margin="0,2,0,2"/>

@@ -694,5 +694,17 @@ namespace IntrinsicsDude {
                 this["DecorateIncompatibleStatementCompletions_On"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ARCH_IA32 {
+            get {
+                return ((bool)(this["ARCH_IA32"]));
+            }
+            set {
+                this["ARCH_IA32"] = value;
+            }
+        }
     }
 }

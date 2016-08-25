@@ -268,7 +268,7 @@ namespace IntrinsicsDude.Tools
                 case CpuID.PREFETCHWT1: return Settings.Default.ARCH_PREFETCHWT1;
 
                 case CpuID.SVML: return Settings.Default.USE_SVML;
-                case CpuID.IA32: return true;
+                case CpuID.IA32: return Settings.Default.ARCH_IA32;
                 case CpuID.UNKNOWN: return false;
 
                 default:

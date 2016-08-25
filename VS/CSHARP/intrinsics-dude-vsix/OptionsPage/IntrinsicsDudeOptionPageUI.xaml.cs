@@ -192,8 +192,10 @@ namespace IntrinsicsDude.OptionsPage {
         }
 
 
-
-
+        public bool useArch_IA32 {
+            get { return (useArch_IA32_UI.IsChecked.HasValue) ? useArch_IA32_UI.IsChecked.Value : false; }
+            set { useArch_IA32_UI.IsChecked = value; }
+        }
         public bool useArch_BMI1 {
             get { return (useArch_BMI1_UI.IsChecked.HasValue) ? useArch_BMI1_UI.IsChecked.Value : false; }
             set { useArch_BMI1_UI.IsChecked = value; }

@@ -109,6 +109,7 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI = Settings.Default.ARCH_AVX512VBMI;
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI_UI.ToolTip = this.makeToolTip(CpuID.AVX512VBMI);
 
+            this._intrinsicsDudeOptionsPageUI.useArch_IA32 = Settings.Default.ARCH_IA32;
             this._intrinsicsDudeOptionsPageUI.useArch_BMI1 = Settings.Default.ARCH_BMI1;
             this._intrinsicsDudeOptionsPageUI.useArch_BMI1_UI.ToolTip = this.makeToolTip(CpuID.BMI1);
             this._intrinsicsDudeOptionsPageUI.useArch_BMI2 = Settings.Default.ARCH_BMI2;
@@ -379,7 +380,10 @@ namespace IntrinsicsDude.OptionsPage
                 changed = true;
             }
 
-
+            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.useArch_IA32) {
+                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_IA32=" + this._intrinsicsDudeOptionsPageUI.useArch_IA32);
+                changed = true;
+            }
             if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.useArch_BMI1)
             {
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_BMI1=" + this._intrinsicsDudeOptionsPageUI.useArch_BMI1);
@@ -721,6 +725,10 @@ namespace IntrinsicsDude.OptionsPage
 
 
 
+            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.useArch_IA32) {
+                Settings.Default.ARCH_IA32 = this._intrinsicsDudeOptionsPageUI.useArch_IA32;
+                changed = true;
+            }
             if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.useArch_BMI1)
             {
                 Settings.Default.ARCH_BMI1 = this._intrinsicsDudeOptionsPageUI.useArch_BMI1;
