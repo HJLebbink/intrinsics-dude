@@ -29,17 +29,6 @@
 						</StackPanel>
 					</Grid>
 				</GroupBox>
-				<GroupBox Header="Documentation" BorderBrush="DarkGray" Visibility="Hidden" Height="0">
-					<Grid  Margin="0,2,0,0">
-						<StackPanel>
-							<CheckBox x:Name="useAsmDoc_UI" ToolTip="Assembly Documentation Enabled" Content="Enable Documentation" Margin="0,4,0,4" />
-							<Grid>
-								<Label Content="Documentation URL:" HorizontalAlignment="Left"/>
-								<TextBox x:Name="asmDocUrl_UI" ToolTip="URL to the documentation. E.g. https://hjlebbink.github.io/x86doc/html/" TextWrapping="Wrap" Text="https://hjlebbink.github.io/x86doc/html/" Margin="140,3,0,2"/>
-							</Grid>
-						</StackPanel>
-					</Grid>
-				</GroupBox>
 				<GroupBox Header="Intellisense" BorderBrush="DarkGray">
 					<Grid  Margin="0,2,0,0">
 						<StackPanel>

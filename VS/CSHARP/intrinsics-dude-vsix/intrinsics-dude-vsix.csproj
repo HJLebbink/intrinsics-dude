@@ -128,8 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StatementCompletion\StatementCompletionStore.cs" />
-    <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocClassifier.cs" />
-    <Compile Include="Experimental\IntrinsicDoc\IntrinsicDocMouseHandler.cs" />
     <Compile Include="StatementCompletion\StatementCompletionSource.cs" />
     <Compile Include="StatementCompletion\StatementCompletionSourceProvider.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />

@@ -85,30 +85,6 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("TODO")]
-        public string AsmDoc_url {
-            get {
-                return ((string)(this["AsmDoc_url"]));
-            }
-            set {
-                this["AsmDoc_url"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AsmDoc_On {
-            get {
-                return ((bool)(this["AsmDoc_On"]));
-            }
-            set {
-                this["AsmDoc_On"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ARCH_MMX {
             get {

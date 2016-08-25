@@ -27,11 +27,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AsmDude")]
-[assembly: AssemblyDescription("AsmDude")]
+[assembly: AssemblyTitle("IntrinsicsDude")]
+[assembly: AssemblyDescription("IntrinsicsDude")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lebbink")]
-[assembly: AssemblyProduct("AsmDude")]
+[assembly: AssemblyProduct("IntrinsicsDude")]
 [assembly: AssemblyCopyright("Copyright © Henk-Jan Lebbink")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

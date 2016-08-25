@@ -166,7 +166,7 @@ namespace IntrinsicsDude.Tools
             }
         }
         /// <summary>
-        /// Output message to the AsmDude window
+        /// Output message to the IntrinsicsDude window
         /// </summary>
         public static void Output(string msg)
         {

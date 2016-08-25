@@ -33,7 +33,7 @@ using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.OptionsPage
 {
-    [Guid(Guids.GuidOptionsPageAsmDude)]
+    [Guid(Guids.GuidOptionsPageIntrinsicsDude)]
     public class IntrinsicsDudeOptionsPage : UIElementDialogPage
     {
         private const bool logInfo = true;
@@ -61,11 +61,6 @@ namespace IntrinsicsDude.OptionsPage
         protected override void OnActivate(CancelEventArgs e)
         {
             base.OnActivate(e);
-
-            #region IntrinsicDoc
-            this._intrinsicsDudeOptionsPageUI.useAsmDoc = Settings.Default.AsmDoc_On;
-            this._intrinsicsDudeOptionsPageUI.asmDocUrl = Settings.Default.AsmDoc_url;
-            #endregion
 
             #region Syntax Highlighting
             this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting = Settings.Default.SyntaxHighlighting_On;
@@ -224,19 +219,6 @@ namespace IntrinsicsDude.OptionsPage
         protected override void OnDeactivate(CancelEventArgs e)
         {
             bool changed = false;
-
-            #region AsmDoc
-            if (Settings.Default.AsmDoc_On != this._intrinsicsDudeOptionsPageUI.useAsmDoc)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useAsmDoc=" + this._intrinsicsDudeOptionsPageUI.useAsmDoc);
-                changed = true;
-            }
-            if (Settings.Default.AsmDoc_url != this._intrinsicsDudeOptionsPageUI.asmDocUrl)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: asmDocUrl=" + this._intrinsicsDudeOptionsPageUI.asmDocUrl);
-                changed = true;
-            }
-            #endregion
 
             #region Syntax Highlighting
             if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting)
@@ -564,19 +546,6 @@ namespace IntrinsicsDude.OptionsPage
             //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:{0}:save", this.ToString()));
             bool changed = false;
             bool restartNeeded = false;
-            #region AsmDoc
-            if (Settings.Default.AsmDoc_On != this._intrinsicsDudeOptionsPageUI.useAsmDoc)
-            {
-                Settings.Default.AsmDoc_On = this._intrinsicsDudeOptionsPageUI.useAsmDoc;
-                changed = true;
-            }
-            if (Settings.Default.AsmDoc_url != this._intrinsicsDudeOptionsPageUI.asmDocUrl)
-            {
-                Settings.Default.AsmDoc_url = this._intrinsicsDudeOptionsPageUI.asmDocUrl;
-                changed = true;
-                restartNeeded = true;
-            }
-            #endregion
 
             #region Syntax Highlighting
             if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting)

@@ -25,7 +25,7 @@ using System.Windows.Controls;
 
 namespace IntrinsicsDude.OptionsPage {
     /// <summary>
-    /// Interaction logic for AsmDudeOptionPageUI.xaml
+    /// Interaction logic for IntrinsicsDudeOptionsPageUI.xaml
     /// </summary>
     public partial class IntrinsicsDudeOptionsPageUI : UserControl {
 
@@ -34,17 +34,6 @@ namespace IntrinsicsDude.OptionsPage {
             version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
         }
 
-        #region Asm Documentation
-        public bool useAsmDoc {
-            get { return (useAsmDoc_UI.IsChecked.HasValue) ? useAsmDoc_UI.IsChecked.Value : false; }
-            set { useAsmDoc_UI.IsChecked = value; }
-        }
-
-        public string asmDocUrl {
-            get { return asmDocUrl_UI.Text; }
-            set { asmDocUrl_UI.Text = value; }
-        }
-        #endregion Asm Documentation
 
         #region Syntax Highlighting
 
