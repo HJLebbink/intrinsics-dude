@@ -1032,7 +1032,7 @@ namespace IntrinsicsDude.Tools
             {
                 TextExtent extent = nav.GetExtentOfWord(currentPos);
                 string word = extent.Span.GetText();
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=\"" + word+"\".");
+                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=\"" + word+"\".");
 
                 if (word.Contains(";")) break;
                 if (word.Equals("=")) break;

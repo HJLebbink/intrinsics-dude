@@ -80,7 +80,6 @@ namespace IntrinsicsDude.StatementCompletion {
                         if (partialKeyword[0].Equals('_'))
                         {
                             List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
-                            this.addRegisterCompletions(ref intrinsicCompletions);
                             intrinsicCompletions.Sort(new CompletionComparer());
 
                             if (completionSets.Count > 0)
@@ -137,34 +136,35 @@ namespace IntrinsicsDude.StatementCompletion {
 
         #region Private Methods
 
-        private void addRegisterCompletions(ref List<Completion> completions)
+        private void addRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
         {
-            CpuID selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
+            if (returnType == ReturnType.UNKNOWN) {
+                CpuID selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
 
-            if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
-            {
-                completions.Add(new Completion("__m64 [MMX]", "__m64", null, null, null));
-            }
-            if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE4_1 | CpuID.SSE4_2 | CpuID.SSSE3)) != CpuID.NONE)
-            {
-                completions.Add(new Completion("__m128 [SSE]", "__m128", null, null, null));
-                completions.Add(new Completion("__m128d [SSE]", "__m128d", null, null, null));
-                completions.Add(new Completion("__m128i [SSE]", "__m128i", null, null, null));
-            }
-            if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE) {
-                completions.Add(new Completion("__m256 [AVX]", "__m256", null, null, null));
-                completions.Add(new Completion("__m256d [AVX]", "__m256d", null, null, null));
-                completions.Add(new Completion("__m256i [AVX]", "__m256i", null, null, null));
-            }
-            if ((selectedCpuID & (CpuID.AVX512BW | CpuID.AVX512CD | CpuID.AVX512DQ | CpuID.AVX512ER | CpuID.AVX512F | CpuID.AVX512IFMA52 | CpuID.AVX512PF | CpuID.AVX512VBMI | CpuID.AVX512VL | CpuID.KNCNI)) != CpuID.NONE)
-            {
-                completions.Add(new Completion("__m512 [AVX512F]", "__m512", null, null, null));
-                completions.Add(new Completion("__m512d [AVX512F]", "__m512d", null, null, null));
-                completions.Add(new Completion("__m512i [AVX512F]", "__m512i", null, null, null));
-                completions.Add(new Completion("__mmask8 [AVX512F]", "__mmask8", null, null, null));
-                completions.Add(new Completion("__mmask16 [AVX512F]", "__mmask16", null, null, null));
-                completions.Add(new Completion("__mmask32 [AVX512F]", "__mmask32", null, null, null));
-                completions.Add(new Completion("__mmask64 [AVX512F]", "__mmask64", null, null, null));
+                if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
+                {
+                    completions.Add(new Completion("__m64", "__m64 ", null, null, null));
+                }
+                if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE4_1 | CpuID.SSE4_2 | CpuID.SSSE3)) != CpuID.NONE)
+                {
+                    completions.Add(new Completion("__m128", "__m128 ", null, null, null));
+                    completions.Add(new Completion("__m128d", "__m128d ", null, null, null));
+                    completions.Add(new Completion("__m128i", "__m128i ", null, null, null));
+                }
+                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE) {
+                    completions.Add(new Completion("__m256", "__m256 ", null, null, null));
+                    completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
+                    completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
+                }
+                if ((selectedCpuID & (CpuID.AVX512BW | CpuID.AVX512CD | CpuID.AVX512DQ | CpuID.AVX512ER | CpuID.AVX512F | CpuID.AVX512IFMA52 | CpuID.AVX512PF | CpuID.AVX512VBMI | CpuID.AVX512VL | CpuID.KNCNI)) != CpuID.NONE) {
+                    completions.Add(new Completion("__m512", "__m512 ", null, null, null));
+                    completions.Add(new Completion("__m512d", "__m512d ", null, null, null));
+                    completions.Add(new Completion("__m512i", "__m512i ", null, null, null));
+                    completions.Add(new Completion("__mmask8", "__mmask8 ", null, null, null));
+                    completions.Add(new Completion("__mmask16", "__mmask16 ", null, null, null));
+                    completions.Add(new Completion("__mmask32", "__mmask32 ", null, null, null));
+                    completions.Add(new Completion("__mmask64", "__mmask64 ", null, null, null));
+                }
             }
         }
 
@@ -258,6 +258,8 @@ namespace IntrinsicsDude.StatementCompletion {
                     completions.Add(completion);
                 }
             }
+
+            this.addRegisterCompletions(ref completions, returnType);
             return completions;
         }
 

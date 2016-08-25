@@ -77,10 +77,6 @@ namespace IntrinsicsDude.OptionsPage {
         }
         #endregion Syntax Highlighting
 
-        #region Keyword Highlighting
-        public System.Drawing.Color _backgroundColor { get; set; }
-        #endregion
-
         #region Code Completion
         public bool useCodeCompletion {
             get { return (useCodeCompletion_UI.IsChecked.HasValue) ? useCodeCompletion_UI.IsChecked.Value : false; }

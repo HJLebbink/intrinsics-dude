@@ -1,12 +1,14 @@
 //Intrinsics Dude Example
 
-#include "mmintrin.h"  // mmx
-#include "emmintrin.h"  // sse
-#include "pmmintrin.h"  // sse3
-#include "tmmintrin.h"  // ssse3
-#include "smmintrin.h"  // sse4.1
-#include "nmmintrin.h"  // sse4.2
+//#include "mmintrin.h"  // mmx
+//#include "emmintrin.h"  // sse
+//#include "pmmintrin.h"  // sse3
+//#include "tmmintrin.h"  // ssse3
+//#include "smmintrin.h"  // sse4.1
+//#include "nmmintrin.h"  // sse4.2
 #include "immintrin.h"  // avx, avx2, avx512, FP16C, KNCNI, FMA
+//#include "ammintrin.h"  // AMD specific intrinsics
+
 
 void main() {
 
@@ -17,11 +19,11 @@ void main() {
 		const __m128 x1 = _m_packsswb(y1, y2); // bug no syntax highlighting code remarks
 		const __m512d x = _mm512_atan_pd(x); // svml
 		*/
-		_mm256_extract_epi64(a, 2);
+		_mm
 
 		//BUG: code completion does not work for non intrinsics
 
-		const __m256d x2 = _mm256_extract_epi16
+		const __m256d x2 = _mm25
 
 
 		// SIGNATURE HELP: OK;
