@@ -77,6 +77,7 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.useSignatureHelp = Settings.Default.SignatureHelp_On;
 
             this._intrinsicsDudeOptionsPageUI.useSvml = Settings.Default.USE_SVML;
+            this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.makeToolTip(CpuID.SVML);
             this._intrinsicsDudeOptionsPageUI.useArch_ADX = Settings.Default.ARCH_ADX;
             this._intrinsicsDudeOptionsPageUI.useArch_ADX_UI.ToolTip = this.makeToolTip(CpuID.ADX);
             this._intrinsicsDudeOptionsPageUI.useArch_AES = Settings.Default.ARCH_AES;
@@ -105,6 +106,7 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI_UI.ToolTip = this.makeToolTip(CpuID.AVX512VBMI);
 
             this._intrinsicsDudeOptionsPageUI.useArch_IA32 = Settings.Default.ARCH_IA32;
+            this._intrinsicsDudeOptionsPageUI.useArch_IA32_UI.ToolTip = this.makeToolTip(CpuID.IA32);
             this._intrinsicsDudeOptionsPageUI.useArch_BMI1 = Settings.Default.ARCH_BMI1;
             this._intrinsicsDudeOptionsPageUI.useArch_BMI1_UI.ToolTip = this.makeToolTip(CpuID.BMI1);
             this._intrinsicsDudeOptionsPageUI.useArch_BMI2 = Settings.Default.ARCH_BMI2;
