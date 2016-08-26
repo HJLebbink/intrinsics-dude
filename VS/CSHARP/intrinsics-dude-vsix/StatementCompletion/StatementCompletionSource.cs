@@ -87,7 +87,7 @@ namespace IntrinsicsDude.StatementCompletion {
                                 CompletionSet existingCompletions = completionSets[0];
                                 List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
 
-                                if (partialKeyword.Length > 2)
+                                if (partialKeyword.Length > 2) // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
                                 {
                                     foreach (Completion completion in existingCompletions.Completions)
                                     {
@@ -98,8 +98,10 @@ namespace IntrinsicsDude.StatementCompletion {
                                             {
                                                 if (insertionText.StartsWith(partialKeyword))
                                                 {
-                                                    allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
-                                                    //set_all.Add(completion);
+                                                    if (!IntrinsicTools.isSimdRegister(insertionText)) {
+                                                        allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
+                                                        //set_all.Add(completion); // adding the completion without a deep copy does not work.
+                                                    }
                                                 }
                                             }
                                         }
@@ -268,6 +270,7 @@ namespace IntrinsicsDude.StatementCompletion {
             string displayText = completion.DisplayText.Replace(" [", " "+str+"[");
             return new Completion(displayText, completion.InsertionText, completion.Description, completion.IconSource, completion.IconAutomationText);
         }
+       
         #endregion
     }
 }

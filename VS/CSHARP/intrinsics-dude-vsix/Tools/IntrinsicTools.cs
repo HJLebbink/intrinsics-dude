@@ -648,6 +648,28 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        public static bool isSimdRegister(string str) {
+            switch (str.ToUpper()) {
+                case "__M128":
+                case "__M128D":
+                case "__M128I":
+                case "__M256":
+                case "__M256D":
+                case "__M256I":
+                case "__M512":
+                case "__M512D":
+                case "__M512I":
+                case "__M64":
+                case "__MMASK16":
+                case "__MMASK32":
+                case "__MMASK64":
+                case "__MMASK8":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>
         /// Write cpuIDs to string. If silence_DEFAULT is true, the CpuID.DEFAULT is not written.
         /// </summary>
@@ -824,6 +846,8 @@ namespace IntrinsicsDude.Tools
             switch (cpuID)
             {
                 case CpuID.NONE: return "";
+                case CpuID.SVML: return "";
+                case CpuID.IA32: return "";
                 case CpuID.ADX: return "Multi-Precision Add-Carry Instruction Extension";
                 case CpuID.AES: return "Advanced Encryption Standard Extension";
                 case CpuID.AVX: return "";
