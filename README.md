@@ -32,6 +32,7 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 * No syntax highlighting for intrinsic keywords that are not enabled.
 * Descriptions for all int definitions such as _MM_ROUND_MASK etc.
 * Support AMD-specific intrinsics (ammintrin.h)
+* Fix _may_i_use_cpu_feature: not showing the valid feature flags 
 
 ### Updates
 * 25 Juli 2016: Start of project
