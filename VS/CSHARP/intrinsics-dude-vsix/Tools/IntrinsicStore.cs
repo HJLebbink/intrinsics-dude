@@ -148,8 +148,8 @@ namespace IntrinsicsDude.Tools
                                         case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                         case "DESC_VAR": break;
 
-                                        case "DESCRIPTION": dataElement.description = removeHtml(element2.InnerText); break;
-                                        case "OPERATION": dataElement.operation = removeHtml(element2.InnerHtml); break;
+                                        case "DESCRIPTION": dataElement.description = addAcronyms(removeHtml(element2.InnerText)); break;
+                                        case "OPERATION": dataElement.operation = addAcronyms(removeHtml(element2.InnerHtml)); break;
                                         case "CPUID": dataElement.cpuID |= IntrinsicTools.parseCpuID(element2.InnerText); break;
                                         case "PERFORMANCE": dataElement.performance = element2.InnerHtml; break;
                                         case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
@@ -357,6 +357,13 @@ namespace IntrinsicsDude.Tools
         {
             if (str == null) return null;
             return str.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
+        }
+
+        private static string addAcronyms(string str) {
+            return str.
+                Replace("floating-point", "FP").
+                Replace("double-precision", "DP").
+                Replace("single-precision", "SP");
         }
 
         #endregion
