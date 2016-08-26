@@ -1,5 +1,6 @@
 //Intrinsics Dude Example
 
+//#inlcude "intrin.h"  // declarations/definitions for platform specific intrinsic functions.
 //#include "mmintrin.h"  // mmx
 //#include "emmintrin.h"  // sse
 //#include "pmmintrin.h"  // sse3
