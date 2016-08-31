@@ -80,7 +80,18 @@ namespace IntrinsicsDude.Tools
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
                     description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
-                    description.Inlines.Add(new Run(this.operation));
+                    Run run = new Run(this.operation);
+                    run.FontFamily = new FontFamily("Consolas");
+                    description.Inlines.Add(run);
+                }
+
+                if ((this.performance != null) && (this.performance.Length > 0))
+                {
+                    description.Inlines.Add(makeRunBold("\n\nPerformance:\n"));
+                    foreach (Run run in makePerformance(this.performance))
+                    {
+                        description.Inlines.Add(run);
+                    }
                 }
 
                 description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
@@ -198,6 +209,28 @@ namespace IntrinsicsDude.Tools
             r1.Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.convertColor(color));
             return r1;
         }
+
+        private static IList<Run> makePerformance(string str)
+        {
+            FontFamily family = new FontFamily("Consolas");
+            IList<Run> list = new List<Run>();
+            Run run = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", "Architecture", "Latency", "Throughput"));
+            run.FontFamily = family;
+            run.FontStyle = FontStyles.Italic;
+            list.Add(run);
+
+            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>","").Replace("</tbody>","").Replace("<tr>","").Replace("<td>","");
+            string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 1; i<lines.Length; ++i)
+            {
+                string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
+                Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]));
+                run1.FontFamily = family;
+                list.Add(run1);
+            }
+            return list;
+        }
+
         #endregion
     }
 }

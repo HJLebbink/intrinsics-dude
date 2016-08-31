@@ -86,8 +86,8 @@ namespace IntrinsicsDude.Tools
             string filename = path + "Intel-Intrinsics-Guide.html";
             this.loadHtml(filename);
             this.saveXml(filename + ".xml");
-            this.loadXml(filename + ".xml");
-            this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
+            //this.loadXml(filename + ".xml");
+            //this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
         }
 
         private void loadHtml(string filename)
@@ -187,7 +187,7 @@ namespace IntrinsicsDude.Tools
                     }
                     if (dataElement.cpuID == CpuID.NONE)
                     {
-                        IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
+                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
                         dataElement.cpuID = CpuID.IA32;
                     }
                     #endregion
@@ -254,7 +254,7 @@ namespace IntrinsicsDude.Tools
                     sb.AppendLine("<instr>" + dataElement.instruction + "</instr>");
                     sb.AppendLine("<desc>" + addHtml(dataElement.description) + "</desc>");
                     sb.AppendLine("<oper>" + addHtml(dataElement.operation) + "</oper>");
-                    //sb.AppendLine("<performance>" + addHtml(dataElement.performance) + "</performance>");
+                    sb.AppendLine("<performance>" + addHtml(dataElement.performance) + "</performance>");
                     sb.AppendLine("</intrinsic>");
                 }
             }
@@ -317,6 +317,9 @@ namespace IntrinsicsDude.Tools
                                 break;
                             case "oper":
                                 dataElement.operation = removeHtml(value);
+                                break;
+                            case "performance":
+                                dataElement.performance = value;
                                 break;
                             default:
                                 IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());
