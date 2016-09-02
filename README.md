@@ -1,5 +1,5 @@
 # Intrinsics-Dude
-Improved support for compiler intrinsics in Visual Studio 2015. This extension can be found in the [visual studio extensions gallery](https://visualstudiogallery.msdn.microsoft.com/2deb6fbb-ff72-470b-a9ac-96115a0bf0ad) or download latest installer [IntrinsicsDude.vsix (v1.0.0.7)](https://github.com/HJLebbink/intrinsics-dude/releases/download/1.0.0.7/IntrinsicsDude.vsix). If intrinsics are not low level enough, consider [Asm-Dude](https://github.com/HJLebbink/asm-dude).
+Improved support for compiler intrinsics in Visual Studio 2015. This extension can be found in the [visual studio extensions gallery](https://visualstudiogallery.msdn.microsoft.com/2deb6fbb-ff72-470b-a9ac-96115a0bf0ad) or download latest installer [IntrinsicsDude.vsix (v1.1.0.0)](https://github.com/HJLebbink/intrinsics-dude/releases/download/1.1.0.0/IntrinsicsDude.vsix). If intrinsics are not low level enough, consider [Asm-Dude](https://github.com/HJLebbink/asm-dude).
 
 ### Features
 
