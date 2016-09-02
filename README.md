@@ -30,6 +30,7 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 ### Feature Requests: (desire something - let me know)
 * ~~Restrict code completion suggestions based on the return type when used as a parameter in an intrinsic.~~
 * ~~Fix _may_i_use_cpu_feature: not showing the valid feature flags.~~
+* ~~Add Performance data to QuickInfo tooltips.~~
 * No syntax highlighting for intrinsic keywords that are not enabled.
 * Descriptions for all int definitions such as _MM_ROUND_MASK etc.
 * Support AMD-specific intrinsics (ammintrin.h)
@@ -37,3 +38,4 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 ### Updates
 * 25 Juli 2016: Start of project
 * 26 August 2016: First release (v1.0.0.7)
+* 2 September 2016: Added Performance data to QuickInfo tooltips (v1.1.0.0)
