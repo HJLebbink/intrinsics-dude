@@ -219,14 +219,17 @@ namespace IntrinsicsDude.Tools
             run.FontStyle = FontStyles.Italic;
             list.Add(run);
 
-            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>","").Replace("</tbody>","").Replace("<tr>","").Replace("<td>","");
+            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
             string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 1; i<lines.Length; ++i)
+            for (int i = 1; i < lines.Length; ++i)
             {
                 string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
-                Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]));
-                run1.FontFamily = family;
-                list.Add(run1);
+                if (elements.Length == 3)
+                {
+                    Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]));
+                    run1.FontFamily = family;
+                    list.Add(run1);
+                }
             }
             return list;
         }

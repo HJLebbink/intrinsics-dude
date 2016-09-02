@@ -151,7 +151,10 @@ namespace IntrinsicsDude.Tools
                                         case "DESCRIPTION": dataElement.description = addAcronyms(removeHtml(element2.InnerText)); break;
                                         case "OPERATION": dataElement.operation = addAcronyms(removeHtml(element2.InnerHtml)); break;
                                         case "CPUID": dataElement.cpuID |= IntrinsicTools.parseCpuID(element2.InnerText); break;
-                                        case "PERFORMANCE": dataElement.performance = element2.InnerHtml; break;
+                                        case "PERFORMANCE":
+                                            dataElement.performance = element2.InnerHtml;
+                                            testPerformance(dataElement.performance);
+                                            break;
                                         case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
 
                                         case "SIG":
@@ -220,6 +223,22 @@ namespace IntrinsicsDude.Tools
             catch (Exception e)
             {
                 IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadHtml: exception " + e.ToString());
+            }
+        }
+        /// <summary>
+        /// Checks whether the performance string is ok
+        /// </summary>
+        private static void testPerformance(string str)
+        {
+            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
+            string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 1; i < lines.Length; ++i)
+            {
+                string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
+                if (elements.Length != 3)
+                {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: testPerformance");
+                }
             }
         }
 
