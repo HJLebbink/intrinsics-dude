@@ -156,7 +156,9 @@ namespace IntrinsicsDude.SignHelp
             signatureText.Append("]");
             #endregion Create Signature Text
 
-            IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), IntrinsicTools.linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips), null);
+
+            string doc = IntrinsicTools.linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
+            IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), doc, null);
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)

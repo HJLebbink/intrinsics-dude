@@ -44,17 +44,20 @@ namespace IntrinsicsDude.Tools
             this.loadXml(filename);
 
             /*
+            SortedSet<Intrinsic> set = new SortedSet<Intrinsic>();
             foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._data)
             {
-                IList<Tuple<ParamType, string>> list = pair.Value[0].parameters;
-
-                foreach (Tuple<ParamType, string> t in list)
+                foreach (Tuple<ParamType, string> t in pair.Value[0].parameters)
                 {
                     if ((t.Item1 == ParamType.__M64) || (t.Item1 == ParamType.__M64_CONST_PTR) || (t.Item1 == ParamType.__M64_PTR))
                     {
-                        IntrinsicsDudeToolsStatic.Output("  case Intrinsic." + pair.Key + ":");
+                        set.Add(pair.Key);
                     }
                 }
+            }
+            foreach (Intrinsic intrinsic in set)
+            {
+                IntrinsicsDudeToolsStatic.Output("  case Intrinsic." + intrinsic.ToString().ToUpper() + ":");
             }
             */
         }

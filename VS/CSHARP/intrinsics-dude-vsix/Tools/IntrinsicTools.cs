@@ -1013,7 +1013,7 @@ namespace IntrinsicsDude.Tools
                 {
                     var newLine = getLine(remainingLine, maxLength - prefix.Length);
                     lines.Add(newLine);
-                    remainingLine = remainingLine.Substring(newLine.Length).Trim();
+                    remainingLine = remainingLine.Substring(newLine.Length).TrimEnd();
                     // Keep iterating as int as we've got words remaining 
                     // in the line.
                 } while (remainingLine.Length > 0);
@@ -1200,6 +1200,7 @@ namespace IntrinsicsDude.Tools
                 case Intrinsic._MM_SRL_PI32:
                 case Intrinsic._MM_SRL_SI64:
                 case Intrinsic._MM_SRLI_PI16:
+                case Intrinsic._MM_SRLI_PI32:
                 case Intrinsic._MM_SRLI_SI64:
                 case Intrinsic._MM_STOREH_PI:
                 case Intrinsic._MM_STOREL_PI:

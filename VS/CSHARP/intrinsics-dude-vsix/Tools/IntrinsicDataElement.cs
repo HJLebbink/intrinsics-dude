@@ -77,6 +77,7 @@ namespace IntrinsicsDude.Tools
 
                 description.Inlines.Add(makeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
                 description.Inlines.Add(new Run(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
                     description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
