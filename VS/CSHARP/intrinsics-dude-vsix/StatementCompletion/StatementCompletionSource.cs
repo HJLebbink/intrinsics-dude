@@ -87,18 +87,20 @@ namespace IntrinsicsDude.StatementCompletion {
                                 CompletionSet existingCompletions = completionSets[0];
                                 List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
 
-                                if (partialKeyword.Length > 2) // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
-                                {
+                                if (partialKeyword.Length > 1)
+                                {   // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
                                     foreach (Completion completion in existingCompletions.Completions)
                                     {
                                         string insertionText = completion.InsertionText;
                                         if (insertionText != null)
                                         {
-                                            if (IntrinsicTools.parseIntrinsic(insertionText, false) == Intrinsic.NONE)
+                                            Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                                            if (intrinsic == Intrinsic.NONE)
                                             {
                                                 if (insertionText.StartsWith(partialKeyword))
                                                 {
-                                                    if (!IntrinsicTools.isSimdRegister(insertionText)) {
+                                                    if (!IntrinsicTools.isSimdRegister(insertionText))
+                                                    {
                                                         allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
                                                         //set_all.Add(completion); // adding the completion without a deep copy does not work.
                                                     }
@@ -106,8 +108,8 @@ namespace IntrinsicsDude.StatementCompletion {
                                             }
                                         }
                                     }
-                                    allCompletionsList.Sort(new CompletionComparer());
                                 }
+                                allCompletionsList.Sort(new CompletionComparer());
                                 completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, allCompletionsList, Enumerable.Empty<Completion>()));
                                 completionSets.Insert(1, new CompletionSet("Intrinsics-Only", "Intrinsics-Only", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
                             }

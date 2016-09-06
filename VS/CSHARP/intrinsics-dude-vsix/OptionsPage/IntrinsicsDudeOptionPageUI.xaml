@@ -36,7 +36,8 @@
 								<Grid>
 									<StackPanel>
 										<CheckBox x:Name="useCodeCompletion_UI" Content="Enable statement completion" ToolTip="Enable statement completion" Margin="0,4,0,2" />
-										<CheckBox x:Name="hideStatementCompletionIncompatibleReturnType_UI" Content="Hide statement completions with incompatible return types" ToolTip="Hide statement completions that have return types that are not compatible with the current context" Margin="0,2,0,2" />
+                                        <CheckBox x:Name="hideStatementCompletionMmxRegisters_UI" Content="Hide statement completions with MMX register parameter types" ToolTip="Hide statement completions that have MMX register parameter types. Some SSE intrinsics use these MMX register and you may want to hide those." Margin="0,2,0,2" />
+                                        <CheckBox x:Name="hideStatementCompletionIncompatibleReturnType_UI" Content="Hide statement completions with incompatible return types" ToolTip="Hide statement completions that have return types that are not compatible with the current context" Margin="0,2,0,2" />
 										<CheckBox x:Name="decorateIncompatibleStatementCompletions_UI" Content="Decorate incompatible statement completions with [Incompatible]" ToolTip="If statement completions with incompatible return types are not hidden, decorate them with [Incompatible]" Margin="0,2,0,2" />
 
 									</StackPanel>

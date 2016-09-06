@@ -82,6 +82,11 @@ namespace IntrinsicsDude.OptionsPage {
             get { return (useCodeCompletion_UI.IsChecked.HasValue) ? useCodeCompletion_UI.IsChecked.Value : false; }
             set { useCodeCompletion_UI.IsChecked = value; }
         }
+
+        public bool hideStatementCompletionMmxRegisters {
+            get { return (hideStatementCompletionMmxRegisters_UI.IsChecked.HasValue) ? hideStatementCompletionMmxRegisters_UI.IsChecked.Value : false; }
+            set { hideStatementCompletionMmxRegisters_UI.IsChecked = value; }
+        }
         public bool hideStatementCompletionIncompatibleReturnType {
             get { return (hideStatementCompletionIncompatibleReturnType_UI.IsChecked.HasValue) ? hideStatementCompletionIncompatibleReturnType_UI.IsChecked.Value : false; }
             set { hideStatementCompletionIncompatibleReturnType_UI.IsChecked = value; }

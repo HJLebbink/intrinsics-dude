@@ -71,6 +71,7 @@ namespace IntrinsicsDude.OptionsPage
 
             #region Code Completion
             this._intrinsicsDudeOptionsPageUI.useCodeCompletion = Settings.Default.StatementCompletion_On;
+            this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters = Settings.Default.HideStatementCompletionMmxRegisters_On;
             this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;
             this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
 
@@ -251,7 +252,12 @@ namespace IntrinsicsDude.OptionsPage
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useCodeCompletion=" + this._intrinsicsDudeOptionsPageUI.useCodeCompletion);
                 changed = true;
             }
-
+            
+            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters)
+            {
+                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: hideStatementCompletionMmxRegisters=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters);
+                changed = true;
+            }
             if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType)
             {
                 if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: hideStatementCompletionIncompatibleReturnType=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType);
@@ -580,6 +586,11 @@ namespace IntrinsicsDude.OptionsPage
             if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.useCodeCompletion)
             {
                 Settings.Default.StatementCompletion_On = this._intrinsicsDudeOptionsPageUI.useCodeCompletion;
+                changed = true;
+            }
+            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters)
+            {
+                Settings.Default.HideStatementCompletionMmxRegisters_On = this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters;
                 changed = true;
             }
             if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType)

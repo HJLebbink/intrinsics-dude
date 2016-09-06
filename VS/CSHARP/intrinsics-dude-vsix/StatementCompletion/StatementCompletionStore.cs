@@ -35,7 +35,10 @@ namespace IntrinsicsDude.StatementCompletion
     public class StatementCompletionStore
     {
         private readonly List<Tuple<Completion, ReturnType>> _data;
+
         private CpuID _selectedCpuID;
+        private bool _hide_mmx_reg_intrinsics;
+
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         
@@ -43,14 +46,14 @@ namespace IntrinsicsDude.StatementCompletion
         {
             this._data = new List<Tuple<Completion, ReturnType>>();
             this.loadIcons();
-            this.init(IntrinsicsDudeToolsStatic.getCpuIDSwithedOn());
+            this.init();
         }
 
         public ReadOnlyCollection<Tuple<Completion, ReturnType>> data {
             get {
-                CpuID selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
-                if (this._selectedCpuID != selectedCpuID) {
-                    this.init(selectedCpuID);
+                if (this.needInit())
+                {
+                    this.init();
                 }
                 return this._data.AsReadOnly();
             }
@@ -58,11 +61,26 @@ namespace IntrinsicsDude.StatementCompletion
 
         #region Private Methods
 
-        private void init(CpuID selectedCpuID)
+        private bool needInit()
+        {
+            if (this._selectedCpuID != IntrinsicsDudeToolsStatic.getCpuIDSwithedOn())
+            {
+                return true;
+            }
+            if (this._hide_mmx_reg_intrinsics != Settings.Default.HideStatementCompletionMmxRegisters_On)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void init()
         {
             DateTime time1 = DateTime.Now;
             this._data.Clear();
-            this._selectedCpuID = selectedCpuID;
+
+            this._selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
+            this._hide_mmx_reg_intrinsics = Settings.Default.HideStatementCompletionMmxRegisters_On;
 
             foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in IntrinsicsDudeTools.Instance.intrinsicStore.data)
             {
@@ -74,8 +92,17 @@ namespace IntrinsicsDude.StatementCompletion
                 {
                     cpuID |= dataElement.cpuID;
                 }
+                bool enabled = (cpuID & this._selectedCpuID) == cpuID;
 
-                bool enabled = (cpuID & selectedCpuID) == cpuID;
+
+                if (enabled && this._hide_mmx_reg_intrinsics)
+                {
+                    if (IntrinsicTools.uses_mmx_register(intrinsic))
+                    {
+                        enabled = false;
+                    }
+                }
+
                 if (enabled)
                 {
                     IntrinsicDataElement dataElementFirst = dataElements[0];

@@ -682,5 +682,17 @@ namespace IntrinsicsDude {
                 this["ARCH_IA32"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HideStatementCompletionMmxRegisters_On {
+            get {
+                return ((bool)(this["HideStatementCompletionMmxRegisters_On"]));
+            }
+            set {
+                this["HideStatementCompletionMmxRegisters_On"] = value;
+            }
+        }
     }
 }

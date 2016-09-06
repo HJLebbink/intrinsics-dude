@@ -42,6 +42,21 @@ namespace IntrinsicsDude.Tools
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
             //this.generateData();
             this.loadXml(filename);
+
+            /*
+            foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._data)
+            {
+                IList<Tuple<ParamType, string>> list = pair.Value[0].parameters;
+
+                foreach (Tuple<ParamType, string> t in list)
+                {
+                    if ((t.Item1 == ParamType.__M64) || (t.Item1 == ParamType.__M64_CONST_PTR) || (t.Item1 == ParamType.__M64_PTR))
+                    {
+                        IntrinsicsDudeToolsStatic.Output("  case Intrinsic." + pair.Key + ":");
+                    }
+                }
+            }
+            */
         }
 
         public ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>> data {
