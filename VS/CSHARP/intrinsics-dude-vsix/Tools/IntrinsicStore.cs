@@ -47,6 +47,11 @@ namespace IntrinsicsDude.Tools
             SortedSet<Intrinsic> set = new SortedSet<Intrinsic>();
             foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._data)
             {
+                ReturnType ret = pair.Value[0].returnType;
+                if (ret == ReturnType.__M64)
+                {
+                    set.Add(pair.Key);
+                }
                 foreach (Tuple<ParamType, string> t in pair.Value[0].parameters)
                 {
                     if ((t.Item1 == ParamType.__M64) || (t.Item1 == ParamType.__M64_CONST_PTR) || (t.Item1 == ParamType.__M64_PTR))

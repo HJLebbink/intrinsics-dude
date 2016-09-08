@@ -1046,10 +1046,15 @@ namespace IntrinsicsDude.Tools
 
         #endregion Text Wrap
 
+        /// <summary>
+        /// Return true if the provided intrinsic uses a MMX register as its parameters or return type
+        /// </summary>
         public static bool uses_mmx_register(Intrinsic intrinsic)
         {
             switch (intrinsic)
             {
+                case Intrinsic._M_FROM_INT:
+                case Intrinsic._M_FROM_INT64:
                 case Intrinsic._M_MASKMOVQ:
                 case Intrinsic._M_PACKSSDW:
                 case Intrinsic._M_PACKSSWB:
@@ -1140,15 +1145,25 @@ namespace IntrinsicsDude.Tools
                 case Intrinsic._MM_CMPGT_PI32:
                 case Intrinsic._MM_CMPGT_PI8:
                 case Intrinsic._MM_CVT_PI2PS:
+                case Intrinsic._MM_CVT_PS2PI:
                 case Intrinsic._MM_CVTM64_SI64:
+                case Intrinsic._MM_CVTPD_PI32:
                 case Intrinsic._MM_CVTPI16_PS:
                 case Intrinsic._MM_CVTPI32_PD:
                 case Intrinsic._MM_CVTPI32_PS:
                 case Intrinsic._MM_CVTPI32X2_PS:
                 case Intrinsic._MM_CVTPI8_PS:
+                case Intrinsic._MM_CVTPS_PI16:
+                case Intrinsic._MM_CVTPS_PI32:
+                case Intrinsic._MM_CVTPS_PI8:
                 case Intrinsic._MM_CVTPU16_PS:
                 case Intrinsic._MM_CVTPU8_PS:
+                case Intrinsic._MM_CVTSI32_SI64:
+                case Intrinsic._MM_CVTSI64_M64:
                 case Intrinsic._MM_CVTSI64_SI32:
+                case Intrinsic._MM_CVTT_PS2PI:
+                case Intrinsic._MM_CVTTPD_PI32:
+                case Intrinsic._MM_CVTTPS_PI32:
                 case Intrinsic._MM_EXTRACT_PI16:
                 case Intrinsic._MM_HADD_PI16:
                 case Intrinsic._MM_HADD_PI32:
@@ -1167,6 +1182,7 @@ namespace IntrinsicsDude.Tools
                 case Intrinsic._MM_MIN_PI16:
                 case Intrinsic._MM_MIN_PU8:
                 case Intrinsic._MM_MOVEMASK_PI8:
+                case Intrinsic._MM_MOVEPI64_PI64:
                 case Intrinsic._MM_MOVPI64_EPI64:
                 case Intrinsic._MM_MUL_SU32:
                 case Intrinsic._MM_MULHI_PI16:
@@ -1179,8 +1195,18 @@ namespace IntrinsicsDude.Tools
                 case Intrinsic._MM_PACKS_PU16:
                 case Intrinsic._MM_SAD_PU8:
                 case Intrinsic._MM_SET_EPI64:
+                case Intrinsic._MM_SET_PI16:
+                case Intrinsic._MM_SET_PI32:
+                case Intrinsic._MM_SET_PI8:
                 case Intrinsic._MM_SET1_EPI64:
+                case Intrinsic._MM_SET1_PI16:
+                case Intrinsic._MM_SET1_PI32:
+                case Intrinsic._MM_SET1_PI8:
                 case Intrinsic._MM_SETR_EPI64:
+                case Intrinsic._MM_SETR_PI16:
+                case Intrinsic._MM_SETR_PI32:
+                case Intrinsic._MM_SETR_PI8:
+                case Intrinsic._MM_SETZERO_SI64:
                 case Intrinsic._MM_SHUFFLE_PI16:
                 case Intrinsic._MM_SHUFFLE_PI8:
                 case Intrinsic._MM_SIGN_PI16:
