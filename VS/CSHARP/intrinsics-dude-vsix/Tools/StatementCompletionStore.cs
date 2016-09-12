@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Language.Intellisense;
 using System;
 using System.Collections.Generic;
@@ -30,11 +29,15 @@ using System.Text;
 using System.Windows.Media;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace IntrinsicsDude.StatementCompletion
+namespace IntrinsicsDude.Tools
 {
     public class StatementCompletionStore
     {
-        private readonly List<Tuple<Completion, ReturnType>> _data;
+        private readonly IntrinsicStore _intrinsic_Store;
+        private readonly List<Tuple<Completion, ReturnType>> _intrinsic_Completions;
+        private readonly IDictionary<string, Completion> _cached_Completions;
+
+
 
         private CpuID _selectedCpuID;
         private bool _hide_mmx_reg_intrinsics;
@@ -42,22 +45,38 @@ namespace IntrinsicsDude.StatementCompletion
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         
-        public StatementCompletionStore()
+        public StatementCompletionStore(IntrinsicStore intrinsic_Store)
         {
-            this._data = new List<Tuple<Completion, ReturnType>>();
+            this._intrinsic_Store = intrinsic_Store;
+            this._intrinsic_Completions = new List<Tuple<Completion, ReturnType>>();
+            this._cached_Completions = new Dictionary<string, Completion>();
             this.loadIcons();
             this.init();
         }
 
-        public ReadOnlyCollection<Tuple<Completion, ReturnType>> data {
+        public ReadOnlyCollection<Tuple<Completion, ReturnType>> intrinsic_Completions {
             get {
                 if (this.needInit())
                 {
                     this.init();
                 }
-                return this._data.AsReadOnly();
+                return this._intrinsic_Completions.AsReadOnly();
             }
         }
+
+        public Completion get_Cached_Completion(Completion completion)
+        {
+            Completion result;
+            string insertion_Text = completion.InsertionText;
+
+            if (!this._cached_Completions.TryGetValue(insertion_Text, out result))
+            {
+                result = new Completion(completion.DisplayText, insertion_Text, completion.Description, completion.IconSource, completion.IconAutomationText);
+                this._cached_Completions.Add(insertion_Text, result);
+            };
+            return result;
+        }
+
 
         #region Private Methods
 
@@ -77,12 +96,12 @@ namespace IntrinsicsDude.StatementCompletion
         private void init()
         {
             DateTime time1 = DateTime.Now;
-            this._data.Clear();
+            this._intrinsic_Completions.Clear();
 
             this._selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
             this._hide_mmx_reg_intrinsics = Settings.Default.HideStatementCompletionMmxRegisters_On;
 
-            foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in IntrinsicsDudeTools.Instance.intrinsicStore.data)
+            foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._intrinsic_Store.data)
             {
                 Intrinsic intrinsic = pair.Key;
                 IList<IntrinsicDataElement> dataElements = pair.Value;
@@ -111,7 +130,7 @@ namespace IntrinsicsDude.StatementCompletion
                     //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
                     Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.documenationString, this.icon_IF, "");
 
-                    this._data.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst.returnType));
+                    this._intrinsic_Completions.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst.returnType));
                 }
             }
             IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion-Store-Initialization");

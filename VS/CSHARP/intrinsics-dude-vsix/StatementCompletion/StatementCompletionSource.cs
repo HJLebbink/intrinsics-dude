@@ -29,11 +29,13 @@ using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Text.Operations;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
-namespace IntrinsicsDude.StatementCompletion {
+namespace IntrinsicsDude.StatementCompletion
+{
     public sealed class CompletionComparer : IComparer<Completion>
     {
         public int Compare(Completion x, Completion y)
         {
+            if ((y == null) || (x == null)) return 0;
             return x.InsertionText.CompareTo(y.InsertionText);
         }
     }
@@ -42,28 +44,31 @@ namespace IntrinsicsDude.StatementCompletion {
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
-        private readonly StatementCompletionStore _completionStore;
+        private readonly StatementCompletionStore _statement_Completion_Store;
+
         private bool _disposed = false;
 
         public StatementCompletionSource(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
             this._navigator = navigator;
-            this._completionStore = new StatementCompletionStore();
+            this._statement_Completion_Store = IntrinsicsDudeTools.Instance.statementCompletionStore;
+
+            IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
         }
 
         public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
         {
             try
             {
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
+                IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
 
                 if (_disposed) return;
                 if (!Settings.Default.StatementCompletion_On) return;
+
                 DateTime time1 = DateTime.Now;
 
-                ITextSnapshot snapshot = this._buffer.CurrentSnapshot;
-                SnapshotPoint triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
+                SnapshotPoint triggerPoint = (SnapshotPoint)session.GetTriggerPoint(this._buffer.CurrentSnapshot);
                 if (triggerPoint == null)
                 {
                     return;
@@ -77,57 +82,147 @@ namespace IntrinsicsDude.StatementCompletion {
 
                     if (partialKeyword.Length > 0)
                     {
-                        if (partialKeyword[0].Equals('_'))
-                        {
-                            List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
-                            intrinsicCompletions.Sort(new CompletionComparer());
-
-                            if (completionSets.Count > 0)
-                            {
-                                CompletionSet existingCompletions = completionSets[0];
-                                List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
-
-                                if (partialKeyword.Length > 1)
-                                {   // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
-                                    foreach (Completion completion in existingCompletions.Completions)
-                                    {
-                                        string insertionText = completion.InsertionText;
-                                        if (insertionText != null)
-                                        {
-                                            Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
-                                            if (intrinsic == Intrinsic.NONE)
-                                            {
-                                                if (insertionText.StartsWith(partialKeyword))
-                                                {
-                                                    if (!IntrinsicTools.isSimdRegister(insertionText))
-                                                    {
-                                                        allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
-                                                        //set_all.Add(completion); // adding the completion without a deep copy does not work.
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                allCompletionsList.Sort(new CompletionComparer());
-                                completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, allCompletionsList, Enumerable.Empty<Completion>()));
-                                completionSets.Insert(1, new CompletionSet("Intrinsics-Only", "Intrinsics-Only", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                            }
-                            else
-                            {
-                                ITrackingSpan applicableTo = snapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
-                                completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                            }
-                        }
+                        //this.updateCompletionsSets_method1(partialKeyword, extent, session, completionSets);
+                        this.updateCompletionsSets_method2(partialKeyword, extent, session, completionSets);
                     }
                 }
                 IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion");
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource:AugmentCompletionSession; e=" + e.ToString());
+                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource: AugmentCompletionSession; e=" + e.ToString());
             }
         }
+
+        private void updateCompletionsSets_method1(
+            string partialKeyword, 
+            TextExtent extent, 
+            ICompletionSession session, 
+            IList<CompletionSet> completionSets)
+        {
+            if (partialKeyword[0].Equals('_'))
+            {
+                List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
+                intrinsicCompletions.Sort(new CompletionComparer());
+
+                if (completionSets.Count > 0)
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
+
+                    CompletionSet existingCompletions = completionSets[0];
+                    List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
+
+                    if (partialKeyword.Length > 1)
+                    {   // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
+                        foreach (Completion completion in existingCompletions.Completions)
+                        {
+                            string insertionText = completion.InsertionText;
+                            if (insertionText != null)
+                            {
+                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                                if (intrinsic == Intrinsic.NONE)
+                                {
+                                    if (insertionText.StartsWith(partialKeyword))
+                                    {
+                                        if (!IntrinsicTools.isSimdRegister(insertionText))
+                                        {
+                                            allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
+                                            //set_all.Add(completion); // adding the completion without a deep copy does not work.
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    allCompletionsList.Sort(new CompletionComparer());
+                    completionSets.Add(new CompletionSet("New", "New", existingCompletions.ApplicableTo, allCompletionsList, Enumerable.Empty<Completion>()));
+                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                } else
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
+
+                    ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                }
+            }
+        }
+
+        private void updateCompletionsSets_method2(
+            string partialKeyword,
+            TextExtent extent,
+            ICompletionSession session,
+            IList<CompletionSet> completionSets)
+        {
+
+            if (partialKeyword[0].Equals('_'))
+            {
+                /*
+                if (!this._initialized)
+                {
+                    if (!this._is_Initializing)
+                    {
+                        this._existing_Completions = new List<Completion>(completionSets[0].Completions);
+                        //this._existing_Completions = completionSets[0].Completions;
+                        IntrinsicsDudeTools.Instance.threadPool.QueueWorkItem(this.init_cache);
+                    }
+                }
+                */
+
+                List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
+                intrinsicCompletions.Sort(new CompletionComparer());
+
+                if (completionSets.Count > 0)
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method2: there are existing completionSets");
+
+                    CompletionSet existingCompletions = completionSets[0];
+                    //existingCompletions.SelectionStatusChanged += ExistingCompletions_SelectionStatusChanged;
+                    //List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
+                    List<Completion> allCompletionsList = intrinsicCompletions;
+
+                    if (true)
+                    //if (partialKeyword.Length > 1)
+                    {   // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
+                        int already_Present = 0;
+                        int newly_Created = 0;
+
+
+                        foreach (Completion completion in existingCompletions.Completions)
+                        {
+                            string insertionText = completion.InsertionText;
+                            if (insertionText != null)
+                            {
+                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                                if (intrinsic == Intrinsic.NONE)
+                                {
+                                    if (true) 
+                                    //if (this._initialized)
+                                    //if (insertionText.StartsWith(partialKeyword))
+                                    {
+                                        if (!IntrinsicTools.isSimdRegister(insertionText))
+                                        {
+                                            allCompletionsList.Add(this._statement_Completion_Store.get_Cached_Completion(completion));
+                                            //allCompletionsList.Add(completion); // adding the completion without a deep copy does not work.
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method2: already_Present="+ already_Present+ "; newly_Created="+ newly_Created);
+                    }
+                    allCompletionsList.Sort(new CompletionComparer());
+                    completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, allCompletionsList, Enumerable.Empty<Completion>()));
+                    //completionSets.Insert(1, new CompletionSet("Intrinsics-Only", "Intrinsics-Only", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                } else
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:AugmentCompletionSession: no existing completionSet");
+
+                    ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                }
+            }
+        }
+
 
         public void Dispose()
         {
@@ -147,7 +242,7 @@ namespace IntrinsicsDude.StatementCompletion {
 
                 if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
                 {
-                    completions.Add(new Completion("__m64", "__m64 ", null, null, null));
+                    completions.Add(new Completion("__m64", "__m64", null, null, null));
                 }
                 if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE4_1 | CpuID.SSE4_2 | CpuID.SSSE3)) != CpuID.NONE)
                 {
@@ -245,7 +340,7 @@ namespace IntrinsicsDude.StatementCompletion {
 
             List<Completion> completions = new List<Completion>();
 
-            foreach (Tuple<Completion, ReturnType> e in _completionStore.data)
+            foreach (Tuple<Completion, ReturnType> e in IntrinsicsDudeTools.Instance.statementCompletionStore.intrinsic_Completions)
             {
                 Completion completion = e.Item1;
                 ReturnType returnType2 = e.Item2;

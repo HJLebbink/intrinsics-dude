@@ -11,7 +11,7 @@ namespace IntrinsicsDude
         public const string Name = "IntrinsicsDude";
         public const string Description = "Improved Statement Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio 2015";
         public const string Language = "en-US";
-        public const string Version = "1.1.0.3";
+        public const string Version = "1.1.0.6";
         public const string Author = "Henk-Jan Lebbink";
         public const string Tags = "Compiler Intrinsics, Statement Completion, Quickinfo Tooltips, Signature Help, AVX512";
     }

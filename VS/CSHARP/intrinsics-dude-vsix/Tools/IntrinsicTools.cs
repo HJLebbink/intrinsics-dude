@@ -1252,8 +1252,6 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-
-
         public static Tuple<Intrinsic, int> getIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
         {
             int nClosingParenthesis = 0;

@@ -1,4 +1,4 @@
-﻿// The MIT License (MIT)
+// The MIT License (MIT)
 //
 // Copyright (c) 2016 Henk-Jan Lebbink
 // 
@@ -22,37 +22,35 @@
 
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.SignHelp
+namespace IntrinsicsDude.CodeCompletion
 {
     [Export(typeof(IVsTextViewCreationListener))]
-    [Name("Intrinsic Signature Help controller")] // make sure this name is unique!
-    [TextViewRole(PredefinedTextViewRoles.Editable)]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    internal sealed class IntrSignHelpCommandProvider : IVsTextViewCreationListener
+    [TextViewRole(PredefinedTextViewRoles.Interactive)]
+    internal sealed class VsTextViewCreationListener : IVsTextViewCreationListener
     {
         [Import]
-        private IVsEditorAdaptersFactoryService _adapterService = null;
+        private IVsEditorAdaptersFactoryService _adaptersFactory = null;
 
         [Import]
-        private ITextStructureNavigatorSelectorService _navigatorService = null;
-
-        [Import]
-        private ISignatureHelpBroker _signatureHelpBroker = null;
+        private ICompletionBroker _completionBroker = null;
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
-            if (textView != null)
+            IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
+            if (view != null)
             {
-                textView.Properties.GetOrCreateSingletonProperty(
-                    () => new IntrSignHelpCommandHandler(textViewAdapter, textView, _navigatorService.GetTextStructureNavigator(textView.TextBuffer), _signatureHelpBroker)
-                );
+                StatementCompletionCommandHandler filter = new StatementCompletionCommandHandler(view, this._completionBroker);
+
+                IOleCommandTarget next;
+                textViewAdapter.AddCommandFilter(filter, out next);
+                filter._nextCommandHandler = next;
             }
         }
     }

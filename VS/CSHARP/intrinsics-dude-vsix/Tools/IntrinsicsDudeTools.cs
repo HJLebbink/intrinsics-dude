@@ -33,6 +33,7 @@ namespace IntrinsicsDude.Tools
         private readonly ErrorListProvider _errorListProvider;
         private readonly IntrinsicStore _intrinsicStore;
         private readonly SmartThreadPool _smartThreadPool;
+        private readonly StatementCompletionStore _statement_Completion_Store;
 
         #region Singleton Stuff
         private static readonly Lazy<IntrinsicsDudeTools> lazy = new Lazy<IntrinsicsDudeTools>(() => new IntrinsicsDudeTools());
@@ -57,13 +58,18 @@ namespace IntrinsicsDude.Tools
             }
             #endregion
 
+            #region Start thread pool
             this._smartThreadPool = new SmartThreadPool();
+            this._smartThreadPool.Start();
+            #endregion
 
             #region load intrinsic store
             string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
             string filename_intrinsics = path + "Intrinsics-Data.xml";
             this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
             #endregion
+
+            this._statement_Completion_Store = new StatementCompletionStore(this._intrinsicStore);
         }
 
         #region Public Methods
@@ -71,6 +77,8 @@ namespace IntrinsicsDude.Tools
         public ErrorListProvider errorListProvider { get { return this._errorListProvider; } }
 
         public IntrinsicStore intrinsicStore { get { return this._intrinsicStore; } }
+
+        public StatementCompletionStore statementCompletionStore {  get { return this._statement_Completion_Store; } }
 
         public SmartThreadPool threadPool { get { return this._smartThreadPool; } }
 

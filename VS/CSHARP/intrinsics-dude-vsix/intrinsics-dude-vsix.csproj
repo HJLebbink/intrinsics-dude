@@ -127,7 +127,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StatementCompletion\StatementCompletionStore.cs" />
+    <Compile Include="StatementCompletion\StatementCompletionCommandHandler.cs" />
     <Compile Include="StatementCompletion\StatementCompletionSource.cs" />
     <Compile Include="StatementCompletion\StatementCompletionSourceProvider.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
@@ -155,6 +155,7 @@
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
+    <Compile Include="StatementCompletion\VsTextViewCreationListener.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassificationDefinition.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifier.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifierProvider.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Tools\IntrinsicsDudeToolsStatic.cs" />
     <Compile Include="Tools\IntrinsicStore.cs" />
     <Compile Include="Tools\IntrinsicTools.cs" />
+    <Compile Include="Tools\StatementCompletionStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
