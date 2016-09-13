@@ -34,7 +34,7 @@ namespace IntrinsicsDude
     internal sealed class StatementCompletionCommandHandler : IOleCommandTarget
     {
         private ICompletionSession _session;
-        private const bool LOG_ON = true;
+        private const bool LOG_ON = false;
 
 
         public StatementCompletionCommandHandler(IWpfTextView textView, ICompletionBroker broker)
@@ -42,7 +42,7 @@ namespace IntrinsicsDude
             this._session = null;
             this._textView = textView;
             this._broker = broker;
-            IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
         }
 
         public IWpfTextView _textView { get; private set; }
@@ -91,17 +91,6 @@ namespace IntrinsicsDude
                 if (!handledChar)
                 {
                     hresult = this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-                    /*
-                    if (!typedChar.Equals(char.MinValue))
-                    {
-                        switch (typedChar)
-                        {
-                            default:
-                                this.Filter();
-                                break;
-                        }
-                    }
-                    */
                 }
                 #endregion
 
@@ -209,6 +198,7 @@ namespace IntrinsicsDude
                 return false;
             } else
             {
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. committing insertion_Text=" + this._session.SelectedCompletionSet.SelectionStatus.Completion.InsertionText);
                 this._session.Commit();
                 return true;
             }

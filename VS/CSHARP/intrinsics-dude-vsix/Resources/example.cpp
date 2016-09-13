@@ -20,9 +20,7 @@ void main() {
 		const __m128 x1 = _m_packsswb(y1, y2); // bug no syntax highlighting code remarks
 		const __m512d x = _mm512_atan_pd(x); // svml
 		*/
-		_mm
-
-		//BUG: code completion does not work for non intrinsics
+		
 
 		const __m256d x2 = _mm25
 

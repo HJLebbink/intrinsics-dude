@@ -39,7 +39,7 @@ namespace IntrinsicsDude
     internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider {
 
         [Import]
-        internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
+        private ITextStructureNavigatorSelectorService NavigatorService = null;
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag {
             Func <ITagger<T>> sc = delegate () {

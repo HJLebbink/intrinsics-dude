@@ -165,10 +165,20 @@ namespace IntrinsicsDude.Tools
                 return cleanedString;
             }
         }
+
         /// <summary>
         /// Output message to the IntrinsicsDude window
         /// </summary>
         public static void Output(string msg)
+        {
+            //IntrinsicsDudeTools.Instance.threadPool.QueueWorkItem(IntrinsicsDudeToolsStatic.Output_Sync, msg);
+            IntrinsicsDudeToolsStatic.Output_Sync(msg);
+        }
+
+        /// <summary>
+        /// Output message to the IntrinsicsDude window
+        /// </summary>
+        public static void Output_Sync(string msg)
         {
             IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
@@ -178,12 +188,12 @@ namespace IntrinsicsDude.Tools
             }
             else
             {
-                //Guid paneGuid = Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.GeneralPane_guid;
                 Guid paneGuid = new Guid("A9F2F5E5-C21D-4BB3-B4A7-FEE69DC0E03A");
                 IVsOutputWindowPane pane;
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
                 outputWindow.GetPane(paneGuid, out pane);
                 pane.OutputString(msg2);
+                pane.FlushToTaskList();
                 pane.Activate();
             }
         }

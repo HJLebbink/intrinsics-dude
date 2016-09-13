@@ -37,11 +37,8 @@ namespace IntrinsicsDude.Tools
         private readonly List<Tuple<Completion, ReturnType>> _intrinsic_Completions;
         private readonly IDictionary<string, Completion> _cached_Completions;
 
-
-
         private CpuID _selectedCpuID;
         private bool _hide_mmx_reg_intrinsics;
-
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
         
@@ -71,12 +68,14 @@ namespace IntrinsicsDude.Tools
 
             if (!this._cached_Completions.TryGetValue(insertion_Text, out result))
             {
+                //result = completion; // a reference to an existing completion does not work, you need to make a deep copy.
                 result = new Completion(completion.DisplayText, insertion_Text, completion.Description, completion.IconSource, completion.IconAutomationText);
                 this._cached_Completions.Add(insertion_Text, result);
             };
             return result;
         }
 
+        public bool is_Initialized { get { return this._cached_Completions.Count > 0; } }
 
         #region Private Methods
 

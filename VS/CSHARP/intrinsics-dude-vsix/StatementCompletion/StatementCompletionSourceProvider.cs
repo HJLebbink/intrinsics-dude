@@ -20,8 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Adornments;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using System;
@@ -41,7 +44,8 @@ namespace IntrinsicsDude.StatementCompletion
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
             Func<StatementCompletionSource> sc = delegate () {
-                return new StatementCompletionSource(buffer, NavigatorService.GetTextStructureNavigator(buffer));
+                ITextStructureNavigator textNavigator = NavigatorService.GetTextStructureNavigator(buffer);
+                return new StatementCompletionSource(buffer, textNavigator);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

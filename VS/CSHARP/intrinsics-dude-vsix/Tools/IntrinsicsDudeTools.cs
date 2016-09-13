@@ -37,7 +37,13 @@ namespace IntrinsicsDude.Tools
 
         #region Singleton Stuff
         private static readonly Lazy<IntrinsicsDudeTools> lazy = new Lazy<IntrinsicsDudeTools>(() => new IntrinsicsDudeTools());
-        public static IntrinsicsDudeTools Instance { get { return lazy.Value; } }
+        public static IntrinsicsDudeTools Instance {
+            get {
+                IntrinsicsDudeTools intrinsicsDudeTools = lazy.Value;
+                intrinsicsDudeTools.init();
+                return intrinsicsDudeTools;
+            }
+        }
         #endregion Singleton Stuff
 
 
@@ -60,6 +66,7 @@ namespace IntrinsicsDude.Tools
 
             #region Start thread pool
             this._smartThreadPool = new SmartThreadPool();
+            this._smartThreadPool.MaxThreads = 4;
             this._smartThreadPool.Start();
             #endregion
 
@@ -71,6 +78,12 @@ namespace IntrinsicsDude.Tools
 
             this._statement_Completion_Store = new StatementCompletionStore(this._intrinsicStore);
         }
+
+        private void init()
+        {
+            //TODO move initialization stuff from constructor to here
+        }
+
 
         #region Public Methods
 
