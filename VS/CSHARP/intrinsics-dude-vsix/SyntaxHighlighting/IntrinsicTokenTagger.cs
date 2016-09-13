@@ -60,7 +60,7 @@ namespace IntrinsicsDude
 
         public IEnumerable<ITagSpan<IntrinsicTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
-            DateTime time1 = DateTime.Now;
+            //DateTime time1 = DateTime.Now;
 
             if (spans.Count == 0)
             {  //there is no content in the buffer
@@ -101,7 +101,7 @@ namespace IntrinsicsDude
                     point = extent.Span.End + 1;
                 }
             }
-            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Token-Tagger");
+            //IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Token-Tagger");
         }
     }
 }

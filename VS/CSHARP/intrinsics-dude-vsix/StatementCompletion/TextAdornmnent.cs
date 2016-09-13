@@ -41,11 +41,11 @@ public sealed class TextAdornment
     {
         this._view = view;
 
-        IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: constructor");
+        //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: constructor");
         ITextViewLine line = this.getLine(this._view.TextViewLines, lineNumber);
         if (line == null) return;
 
-        IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: show: line=\"" + line.Extent.GetText() + "\".");
+        //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: show: line=\"" + line.Extent.GetText() + "\".");
         var geometry = this._view.TextViewLines.GetMarkerGeometry(line.Extent);
         if (geometry == null) return;
         this._adornment = new TextBlock {

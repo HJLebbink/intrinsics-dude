@@ -74,7 +74,7 @@ namespace IntrinsicsDude
                 {  //there is no content in the buffer
                     yield break;
                 }
-                DateTime time1 = DateTime.Now;
+                //DateTime time1 = DateTime.Now;
                 foreach (IMappingTagSpan<IntrinsicTokenTag> tagSpan in _aggregator.GetTags(spans))
                 {
                     NormalizedSnapshotSpanCollection tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
@@ -87,7 +87,7 @@ namespace IntrinsicsDude
                             break;
                     }
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Classifier");
+                //IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Classifier");
             }
         }
     }

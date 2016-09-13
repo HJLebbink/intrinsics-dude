@@ -51,9 +51,6 @@ namespace IntrinsicsDude.StatementCompletion
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
         private readonly StatementCompletionStore _statement_Completion_Store;
-        private TextAdornment _textAdornment;
-        private IWpfTextView _textView;
-
         private bool _disposed = false;
 
         public StatementCompletionSource(
@@ -63,16 +60,16 @@ namespace IntrinsicsDude.StatementCompletion
             this._buffer = buffer;
             this._navigator = navigator;
             this._statement_Completion_Store = IntrinsicsDudeTools.Instance.statementCompletionStore;
-            this._textAdornment = null;
-            this._textView = null;
-            IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
         }
 
-        public void AugmentCompletionSession(ICompletionSession session, IList<CompletionSet> completionSets)
+        public void AugmentCompletionSession(
+            ICompletionSession session, 
+            IList<CompletionSet> completionSets)
         {
             try
             {
-                IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
+                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
 
                 if (_disposed) return;
                 if (!Settings.Default.StatementCompletion_On) return;
@@ -80,10 +77,7 @@ namespace IntrinsicsDude.StatementCompletion
                 DateTime time1 = DateTime.Now;
 
                 SnapshotPoint triggerPoint = (SnapshotPoint)session.GetTriggerPoint(this._buffer.CurrentSnapshot);
-                if (triggerPoint == null)
-                {
-                    return;
-                }
+                if (triggerPoint == null) return;
 
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
                 if (extent.IsSignificant)
@@ -91,10 +85,27 @@ namespace IntrinsicsDude.StatementCompletion
                     string partialKeyword = extent.Span.GetText();
                     //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
 
-                    if (partialKeyword.Length > 0)
+                    if ((partialKeyword.Length > 0) && (partialKeyword[0].Equals('_')))
                     {
-                        //this.updateCompletionsSets_method1(partialKeyword, extent, session, completionSets);
-                        this.updateCompletionsSets_method2(partialKeyword, extent, session, completionSets);
+                        List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
+
+                        if (completionSets.Count > 0)
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
+
+                            CompletionSet existingCompletions = completionSets[0];
+                            this.init_Cached_Completions_method1(existingCompletions, intrinsicCompletions, session, partialKeyword);
+                            //this.init_Cached_Completions_method2(existingCompletions, intrinsicCompletions, session);
+                            intrinsicCompletions.Sort(new CompletionComparer());
+                            completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                        } else
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
+
+                            ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
+                            intrinsicCompletions.Sort(new CompletionComparer());
+                            completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
+                        }
                     }
                 }
 
@@ -103,89 +114,6 @@ namespace IntrinsicsDude.StatementCompletion
             catch (Exception e)
             {
                 IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource: AugmentCompletionSession; e=" + e.ToString());
-            }
-        }
-
-        private void updateCompletionsSets_method1(
-            string partialKeyword, 
-            TextExtent extent, 
-            ICompletionSession session, 
-            IList<CompletionSet> completionSets)
-        {
-            if (partialKeyword[0].Equals('_'))
-            {
-                List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
-                intrinsicCompletions.Sort(new CompletionComparer());
-
-                if (completionSets.Count > 0)
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
-
-                    CompletionSet existingCompletions = completionSets[0];
-                    List<Completion> allCompletionsList = new List<Completion>(intrinsicCompletions);
-
-                    if (partialKeyword.Length > 1)
-                    {   // only add existing code completions when the partial keyword has more than 2 chars, this for speed considerations
-                        foreach (Completion completion in existingCompletions.Completions)
-                        {
-                            string insertionText = completion.InsertionText;
-                            if (insertionText != null)
-                            {
-                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
-                                if (intrinsic == Intrinsic.NONE)
-                                {
-                                    if (insertionText.StartsWith(partialKeyword))
-                                    {
-                                        if (!IntrinsicTools.isSimdRegister(insertionText))
-                                        {
-                                            allCompletionsList.Add(new Completion(completion.DisplayText, insertionText, completion.Description, completion.IconSource, completion.IconAutomationText));
-                                            //set_all.Add(completion); // adding the completion without a deep copy does not work.
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    allCompletionsList.Sort(new CompletionComparer());
-                    completionSets.Add(new CompletionSet("New", "New", existingCompletions.ApplicableTo, allCompletionsList, Enumerable.Empty<Completion>()));
-                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                } else
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
-
-                    ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
-                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                }
-            }
-        }
-
-        private void updateCompletionsSets_method2(
-            string partialKeyword,
-            TextExtent extent,
-            ICompletionSession session,
-            IList<CompletionSet> completionSets)
-        {
-            if (partialKeyword[0].Equals('_'))
-            {
-                List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
-
-                if (completionSets.Count > 0)
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method2: there are existing completionSets");
-
-                    CompletionSet existingCompletions = completionSets[0];
-                    this.init_Cached_Completions(existingCompletions, intrinsicCompletions, session);
-                    intrinsicCompletions.Sort(new CompletionComparer());
-                    completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                }
-                else
-                {
-                    IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:AugmentCompletionSession: no existing completionSet");
-
-                    ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
-                    intrinsicCompletions.Sort(new CompletionComparer());
-                    completionSets.Add(new CompletionSet("Intrinsics-Only", "Intrinsics-Only", applicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                }
             }
         }
 
@@ -200,11 +128,41 @@ namespace IntrinsicsDude.StatementCompletion
 
         #region Private Methods
 
-        private void init_Cached_Completions(CompletionSet existingCompletions, List<Completion> intrinsicCompletions, ICompletionSession session)
+        private void init_Cached_Completions_method1(
+            CompletionSet existingCompletions, 
+            List<Completion> intrinsicCompletions, 
+            ICompletionSession session,
+            string partialKeyword)
+        {
+
+            string partialKeyword2 = (partialKeyword.Length < 2) ? "__" : partialKeyword.Substring(0, 2);
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions_method1: partialKeyword=" + partialKeyword+ "; partialKeyword2="+ partialKeyword2);
+
+            foreach (Completion completion in existingCompletions.Completions)
+            {
+                string insertionText = completion.InsertionText;
+                if ((insertionText != null) && (insertionText.Length > 0) && (insertionText[0].Equals('_')) && (insertionText.StartsWith(partialKeyword2)))
+                {
+                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                    if (intrinsic == Intrinsic.NONE)
+                    {
+                        if (!IntrinsicTools.isSimdRegister(insertionText))
+                        {
+                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
+                            intrinsicCompletions.Add(this._statement_Completion_Store.get_Cached_Completion(completion));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void init_Cached_Completions_method2(
+            CompletionSet existingCompletions, 
+            List<Completion> intrinsicCompletions, 
+            ICompletionSession session)
         {
             DateTime startTime = DateTime.Now;
-            IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions");
-
+            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions");
 
             bool is_Initialized = this._statement_Completion_Store.is_Initialized;
 
@@ -228,26 +186,10 @@ namespace IntrinsicsDude.StatementCompletion
             {
                 int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
                 int pos = 0;// session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
-                string message = "Done Initializing Statement Completions. Sorry for that";
-
-                this._textView = (IWpfTextView)session.TextView;
-                if (false)
-                {
-                    var x = WorkItemPriority.Highest;
-                    IntrinsicsDudeTools.Instance.threadPool.QueueWorkItem(this.makeAdornment, lineNumber, pos, message, x);
-                } else
-                {
-                    this.makeAdornment(lineNumber, pos, message);
-                }
+                string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
+                TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }
             //IntrinsicsDudeToolsStatic.printSpeedWarning(startTime, "Init-Cached-Completions");
-        }
-
-        private void makeAdornment(int lineNumber, int pos, string message)
-        {
-            IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: makeAdornment: pos="+pos);
-            this._textAdornment = new TextAdornment(this._textView, lineNumber, pos, message);
-            this._textView.TextBuffer.Insert(0, "x");
         }
 
         private void addRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
