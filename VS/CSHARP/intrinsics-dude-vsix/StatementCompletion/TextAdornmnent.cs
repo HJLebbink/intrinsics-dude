@@ -11,26 +11,27 @@ namespace MefRegistration
     using Microsoft.VisualStudio.Utilities;
     using Microsoft.VisualStudio.Text.Editor;
 
-    [Export(typeof(IWpfTextViewCreationListener))]
-    [ContentType("text")]
-    [TextViewRole(PredefinedTextViewRoles.Document)]
-    public sealed class TextAdornment1TextViewCreationListener : IWpfTextViewCreationListener
-    {
-        public void TextViewCreated(IWpfTextView textView)
+    /*
+        [Export(typeof(IWpfTextViewCreationListener))]
+        [ContentType("text")]
+        [TextViewRole(PredefinedTextViewRoles.Document)]
+        public sealed class TextAdornment1TextViewCreationListener : IWpfTextViewCreationListener
         {
-            //TextAdornment a = new TextAdornment(textView, 0, "BLA1");
-            //a.show(1, "BLA2");
+            public void TextViewCreated(IWpfTextView textView)
+            {
+                //TextAdornment a = new TextAdornment(textView, 0, "BLA1");
+                //a.show(1, "BLA2");
+            }
+
+    #pragma warning disable CS0169 // C# warning "the field editorAdornmentLayer is never used" -- but it is used, by MEF!
+            [Export(typeof(AdornmentLayerDefinition))]
+            [Name("TextAdornment1")]
+            [Order(After = PredefinedAdornmentLayers.Selection, Before = PredefinedAdornmentLayers.Text)]
+            private AdornmentLayerDefinition editorAdornmentLayer;
+    #pragma warning restore CS0169
         }
-
-#pragma warning disable CS0169 // C# warning "the field editorAdornmentLayer is never used" -- but it is used, by MEF!
-        [Export(typeof(AdornmentLayerDefinition))]
-        [Name("TextAdornment1")]
-        [Order(After = PredefinedAdornmentLayers.Selection, Before = PredefinedAdornmentLayers.Text)]
-        private AdornmentLayerDefinition editorAdornmentLayer;
-#pragma warning restore CS0169
-    }
+    */
 }
-
 
 public sealed class TextAdornment
 {

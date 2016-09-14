@@ -68,20 +68,17 @@ namespace IntrinsicsDude
                             //handledChar = this.StartSession(); // do not start the session; the existing commandHandler does that for you, otherwise you may create multiple sessions at the same time.
                             break;
                         case VSConstants.VSStd2KCmdID.RETURN:
-                            handledChar = this.Complete(true); // this line is necessary. If not present, enter does not commit the completion.
-                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; return pressed. handledChar=" + handledChar);
-                            break;
                         case VSConstants.VSStd2KCmdID.TAB:
-                            handledChar = this.Complete(false);
-                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; tab pressed. handledChar=" + handledChar);
+                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; tab or enter pressed.");
+                            handledChar = this.Complete();
                             break;
                         case VSConstants.VSStd2KCmdID.CANCEL:
+                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; cancel pressed.");
                             handledChar = this.Cancel();
-                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; cancel pressed. handledChar=" + handledChar);
                             break;
                         case VSConstants.VSStd2KCmdID.TYPECHAR:
+                            //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; "+typedChar+" pressed.");
                             typedChar = GetTypeChar(pvaIn);
-                            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; "+typedChar+" pressed. handledChar=" + handledChar);
                             break;
                     }
                 }
@@ -106,7 +103,7 @@ namespace IntrinsicsDude
                             case VSConstants.VSStd2KCmdID.TYPECHAR:
                             case VSConstants.VSStd2KCmdID.BACKSPACE:
                             case VSConstants.VSStd2KCmdID.DELETE:
-                                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; Post-process");
+                                //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; Post-process");
                                 this.Filter();
                                 break;
                         }
@@ -149,59 +146,87 @@ namespace IntrinsicsDude
             #region Clear all existing sessions
             if (this._session != null)
             {
-                //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. already an active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. dismissing already active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
                 this._session.Dismiss();
             }
-            this._broker.DismissAllSessions(this._textView);
+            //this._broker.DismissAllSessions(this._textView);
             #endregion
 
             SnapshotPoint caret = this._textView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
-            this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
+
+            this._session = this._broker.TriggerCompletion(this._textView);
+            //this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
 
-            this._session.Dismissed += (sender, args) => _session = null;
-            if (!this._session.IsStarted)
-            {
+            //this._session.Dismissed += (sender, args) => _session = null;
+            //if (!this._session.IsStarted)
+            //{
                 //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession: starting session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
-                this._session.Start();
-            }
+             //   this._session.Start();
+            //}
 
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession", this.ToString()));
             return true;
         }
 
-        /// <summary>
-        /// Complete the auto-complete
-        /// </summary>
-        /// <param name="force">force the selection even if it has not been manually selected</param>
-        /// <returns></returns>
-        private bool Complete(bool force)
+        private bool Complete()
         {
-            if (this._broker.IsCompletionActive(_textView))
-            {   // if _session is zero, it is possible that _broker has a session that has been started by the default code completion code, reuse this session
-                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. reusing existing session.");
-                this._session = this._broker.GetSessions(_textView)[0];
+            if (this._session == null)
+            {
+                if (this._broker.IsCompletionActive(_textView))
+                {
+                    this._session = this._broker.GetSessions(_textView)[0];
+                    if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. current session was null; reusing existing session.");
+                }
+            } else if (this._session.IsDismissed)
+            {
+                if (this._broker.IsCompletionActive(_textView))
+                {
+                    this._session = this._broker.GetSessions(_textView)[0];
+                    if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. current session was dismissed; reusing existing session.");
+                }
             }
             if (this._session == null)
             {
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. Session is null: no completions.");
                 return false;
             }
             if (this._session.IsDismissed)
             {
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. Session is dismissed: no completions.");
                 return false;
             }
-            if (!_session.SelectedCompletionSet.SelectionStatus.IsSelected && !force)
+            if (!this._session.IsStarted)
             {
-                this._session.Dismiss();
-                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. exiting; no completion.");
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. Session is not started: no completions.");
                 return false;
-            } else
+            }
+
+
+            bool isSelected = _session.SelectedCompletionSet.SelectionStatus.IsSelected;
+            bool isUnique = _session.SelectedCompletionSet.SelectionStatus.IsUnique;
+            string insertionText = this._session.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
+
+            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. IsSelected="+ isSelected + "; IsUnique=" + isUnique+ "; insertionText="+ insertionText);
+
+            if (isSelected)
             {
-                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. committing insertion_Text=" + this._session.SelectedCompletionSet.SelectionStatus.Completion.InsertionText);
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. Committing InsertionText=" + insertionText);
                 this._session.Commit();
                 return true;
             }
+
+            if (isUnique)
+            {
+                if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. Committing InsertionText=" + insertionText);
+                this._session.Commit();
+                return true;
+            }
+
+            this._session.Dismiss();
+            if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. exiting; no completion.");
+            return false;
         }
 
         private bool Cancel()

@@ -157,7 +157,6 @@
     </Compile>
     <Compile Include="StatementCompletion\TextAdornmnent.cs" />
     <Compile Include="StatementCompletion\VsTextViewCreationListener.cs" />
-    <Compile Include="StatementCompletion\WaitAdornment.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassificationDefinition.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifier.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifierProvider.cs" />
