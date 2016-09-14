@@ -26,14 +26,10 @@ using System.Linq;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Operations;
-using Microsoft.VisualStudio.Text.Adornments;
 
 using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
-using System.Windows;
 using Microsoft.VisualStudio.Text.Editor;
-using System.Threading;
-using Amib.Threading;
 
 namespace IntrinsicsDude.StatementCompletion
 {
@@ -134,9 +130,12 @@ namespace IntrinsicsDude.StatementCompletion
             ICompletionSession session,
             string partialKeyword)
         {
-
+            DateTime startTime = DateTime.Now;
             string partialKeyword2 = (partialKeyword.Length < 2) ? "__" : partialKeyword.Substring(0, 2);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions_method1: partialKeyword=" + partialKeyword+ "; partialKeyword2="+ partialKeyword2);
+
+            int nCompletionsAdded = 0;
+            int maxTimeMs = 1000;
 
             foreach (Completion completion in existingCompletions.Completions)
             {
@@ -150,10 +149,17 @@ namespace IntrinsicsDude.StatementCompletion
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.get_Cached_Completion(completion));
+                            nCompletionsAdded++;
+                            if ((DateTime.Now.Ticks - startTime.Ticks) > (maxTimeMs * 10000))
+                            {
+                                IntrinsicsDudeToolsStatic.Output("Warning: StatementCompletionSource: Truncated initialization: took more than the maximum "+maxTimeMs+" ms to initialize " + nCompletionsAdded + " existing statement completions (of total "+ existingCompletions.Completions.Count +")");
+                                break; 
+                            }
                         }
                     }
                 }
             }
+           // IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
         }
 
         private void init_Cached_Completions_method2(
@@ -189,7 +195,7 @@ namespace IntrinsicsDude.StatementCompletion
                 string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
                 TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }
-            //IntrinsicsDudeToolsStatic.printSpeedWarning(startTime, "Init-Cached-Completions");
+            IntrinsicsDudeToolsStatic.printSpeedWarning(startTime, "Init-Cached-Completions");
         }
 
         private void addRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
