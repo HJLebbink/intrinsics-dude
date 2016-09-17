@@ -73,7 +73,7 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool StatementCompletion_On {
             get {
                 return ((bool)(this["StatementCompletion_On"]));
