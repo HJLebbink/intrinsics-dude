@@ -9,10 +9,10 @@ namespace IntrinsicsDude
     {
         public const string Id = "5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06";
         public const string Name = "IntrinsicsDude";
-        public const string Description = "Improved Statement Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio 2015";
+        public const string Description = "Improved Statement Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio";
         public const string Language = "en-US";
-        public const string Version = "1.1.1.5";
+        public const string Version = "1.1.2.0";
         public const string Author = "Henk-Jan Lebbink";
-        public const string Tags = "Compiler Intrinsics, Statement Completion, Quickinfo Tooltips, Signature Help, AVX512";
+        public const string Tags = "Compiler Intrinsics, Statement Completion, Quickinfo Tooltips, Signature Help, AVX2, AVX512";
     }
 }
