@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,10 +47,8 @@ namespace IntrinsicsDude.CodeCompletion
             if (view != null)
             {
                 StatementCompletionCommandHandler filter = new StatementCompletionCommandHandler(view, this._completionBroker);
-
-                IOleCommandTarget next;
-                textViewAdapter.AddCommandFilter(filter, out next);
-                filter._nextCommandHandler = next;
+                textViewAdapter.AddCommandFilter(filter, out var next);
+                filter.NextCommandHandler = next;
             }
         }
     }

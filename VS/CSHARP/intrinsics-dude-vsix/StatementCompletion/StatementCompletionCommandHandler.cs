@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,14 +40,14 @@ namespace IntrinsicsDude
         public StatementCompletionCommandHandler(IWpfTextView textView, ICompletionBroker broker)
         {
             this._session = null;
-            this._textView = textView;
-            this._broker = broker;
+            this.TextView = textView;
+            this.Broker = broker;
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
         }
 
-        public IWpfTextView _textView { get; private set; }
-        public ICompletionBroker _broker { get; private set; }
-        public IOleCommandTarget _nextCommandHandler { get; set; }
+        public IWpfTextView TextView { get; private set; }
+        public ICompletionBroker Broker { get; private set; }
+        public IOleCommandTarget NextCommandHandler { get; set; }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
@@ -87,7 +87,7 @@ namespace IntrinsicsDude
                 #region 2. Handle the typed char
                 if (!handledChar)
                 {
-                    hresult = this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                    hresult = this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
                 }
                 #endregion
 
@@ -116,7 +116,7 @@ namespace IntrinsicsDude
             } catch (Exception e)
             {
                 IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionCommandHandler: Exec; e=" + e.ToString());
-                return this._nextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                return this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
             }
         }
 
@@ -136,7 +136,7 @@ namespace IntrinsicsDude
                         return VSConstants.S_OK;
                 }
             }
-            return this._nextCommandHandler.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
+            return this.NextCommandHandler.QueryStatus(pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 
         #region Private Stuff
@@ -146,16 +146,16 @@ namespace IntrinsicsDude
             #region Clear all existing sessions
             if (this._session != null)
             {
-                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. dismissing already active session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+                IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. dismissing already active session(" + this._session.GetTriggerPoint(this.TextView.TextBuffer) + ")");
                 this._session.Dismiss();
             }
             //this._broker.DismissAllSessions(this._textView);
             #endregion
 
-            SnapshotPoint caret = this._textView.Caret.Position.BufferPosition;
+            SnapshotPoint caret = this.TextView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
 
-            this._session = this._broker.TriggerCompletion(this._textView);
+            this._session = this.Broker.TriggerCompletion(this.TextView);
             //this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
 
@@ -174,16 +174,16 @@ namespace IntrinsicsDude
         {
             if (this._session == null)
             {
-                if (this._broker.IsCompletionActive(_textView))
+                if (this.Broker.IsCompletionActive(this.TextView))
                 {
-                    this._session = this._broker.GetSessions(_textView)[0];
+                    this._session = this.Broker.GetSessions(this.TextView)[0];
                     if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. current session was null; reusing existing session.");
                 }
             } else if (this._session.IsDismissed)
             {
-                if (this._broker.IsCompletionActive(_textView))
+                if (this.Broker.IsCompletionActive(this.TextView))
                 {
-                    this._session = this._broker.GetSessions(_textView)[0];
+                    this._session = this.Broker.GetSessions(this.TextView)[0];
                     if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. current session was dismissed; reusing existing session.");
                 }
             }
@@ -204,8 +204,8 @@ namespace IntrinsicsDude
             }
 
 
-            bool isSelected = _session.SelectedCompletionSet.SelectionStatus.IsSelected;
-            bool isUnique = _session.SelectedCompletionSet.SelectionStatus.IsUnique;
+            bool isSelected = this._session.SelectedCompletionSet.SelectionStatus.IsSelected;
+            bool isUnique = this._session.SelectedCompletionSet.SelectionStatus.IsUnique;
             string insertionText = this._session.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
 
             if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Complete. IsSelected="+ isSelected + "; IsUnique=" + isUnique+ "; insertionText="+ insertionText);

@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -55,7 +55,7 @@ namespace IntrinsicsDude.StatementCompletion
         {
             this._buffer = buffer;
             this._navigator = navigator;
-            this._statement_Completion_Store = IntrinsicsDudeTools.Instance.statementCompletionStore;
+            this._statement_Completion_Store = IntrinsicsDudeTools.Instance.StatementCompletionStore;
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
         }
 
@@ -67,7 +67,7 @@ namespace IntrinsicsDude.StatementCompletion
             {
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
 
-                if (_disposed) return;
+                if (this._disposed) return;
                 if (!Settings.Default.StatementCompletion_On) return;
 
                 DateTime time1 = DateTime.Now;
@@ -83,14 +83,14 @@ namespace IntrinsicsDude.StatementCompletion
 
                     if ((partialKeyword.Length > 0) && (partialKeyword[0].Equals('_')))
                     {
-                        List<Completion> intrinsicCompletions = this.getCompletions(this.findCompletionRestriction(extent));
+                        List<Completion> intrinsicCompletions = this.GetCompletions(this.FindCompletionRestriction(extent));
 
                         if (completionSets.Count > 0)
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
 
                             CompletionSet existingCompletions = completionSets[0];
-                            this.init_Cached_Completions_method1(existingCompletions, intrinsicCompletions, session, partialKeyword);
+                            this.Init_Cached_Completions_method1(existingCompletions, intrinsicCompletions, session, partialKeyword);
                             //this.init_Cached_Completions_method2(existingCompletions, intrinsicCompletions, session);
                             intrinsicCompletions.Sort(new CompletionComparer());
                             completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
@@ -105,7 +105,7 @@ namespace IntrinsicsDude.StatementCompletion
                     }
                 }
 
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion");
+                IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Statement-Completion");
             }
             catch (Exception e)
             {
@@ -118,13 +118,13 @@ namespace IntrinsicsDude.StatementCompletion
             if (!this._disposed)
             {
                 GC.SuppressFinalize(this);
-                _disposed = true;
+                this._disposed = true;
             }
         }
 
         #region Private Methods
 
-        private void init_Cached_Completions_method1(
+        private void Init_Cached_Completions_method1(
             CompletionSet existingCompletions, 
             List<Completion> intrinsicCompletions, 
             ICompletionSession session,
@@ -142,13 +142,13 @@ namespace IntrinsicsDude.StatementCompletion
                 string insertionText = completion.InsertionText;
                 if ((insertionText != null) && (insertionText.Length > 0) && (insertionText[0].Equals('_')) && (insertionText.StartsWith(partialKeyword2)))
                 {
-                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(insertionText, false);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IntrinsicTools.isSimdRegister(insertionText))
+                        if (!IntrinsicTools.IsSimdRegister(insertionText))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
-                            intrinsicCompletions.Add(this._statement_Completion_Store.get_Cached_Completion(completion));
+                            intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
                             nCompletionsAdded++;
                             if ((DateTime.Now.Ticks - startTime.Ticks) > (maxTimeMs * 10000))
                             {
@@ -162,7 +162,7 @@ namespace IntrinsicsDude.StatementCompletion
            // IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
         }
 
-        private void init_Cached_Completions_method2(
+        private void Init_Cached_Completions_method2(
             CompletionSet existingCompletions, 
             List<Completion> intrinsicCompletions, 
             ICompletionSession session)
@@ -170,20 +170,20 @@ namespace IntrinsicsDude.StatementCompletion
             DateTime startTime = DateTime.Now;
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions");
 
-            bool is_Initialized = this._statement_Completion_Store.is_Initialized;
+            bool is_Initialized = this._statement_Completion_Store.Is_Initialized;
 
             foreach (Completion completion in existingCompletions.Completions)
             {
                 string insertionText = completion.InsertionText;
                 if (insertionText != null)
                 {
-                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(insertionText, false);
+                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(insertionText, false);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IntrinsicTools.isSimdRegister(insertionText))
+                        if (!IntrinsicTools.IsSimdRegister(insertionText))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
-                            intrinsicCompletions.Add(this._statement_Completion_Store.get_Cached_Completion(completion));
+                            intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
                         }
                     }
                 }
@@ -195,13 +195,13 @@ namespace IntrinsicsDude.StatementCompletion
                 string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
                 TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }
-            IntrinsicsDudeToolsStatic.printSpeedWarning(startTime, "Init-Cached-Completions");
+            IntrinsicsDudeToolsStatic.PrintSpeedWarning(startTime, "Init-Cached-Completions");
         }
 
-        private void addRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
+        private void AddRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
         {
             if (returnType == ReturnType.UNKNOWN) {
-                CpuID selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
+                CpuID selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
 
                 if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
                 {
@@ -230,37 +230,37 @@ namespace IntrinsicsDude.StatementCompletion
             }
         }
 
-        private ReturnType findCompletionRestriction(TextExtent currentKeywordExtent)
+        private ReturnType FindCompletionRestriction(TextExtent currentKeywordExtent)
         {
-            ReturnType returnType = this.findLeftHandType(currentKeywordExtent);
+            ReturnType returnType = this.FindLeftHandType(currentKeywordExtent);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
             if (returnType == ReturnType.UNKNOWN)
             {
-                returnType = findEmbeddedType(currentKeywordExtent);
+                returnType = FindEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
             return returnType;
         }
 
-        private ReturnType findEmbeddedType(TextExtent currentKeywordExtent)
+        private ReturnType FindEmbeddedType(TextExtent currentKeywordExtent)
         {
             SnapshotPoint point = currentKeywordExtent.Span.Start;
-            Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, this._navigator);
+            Tuple<Intrinsic, int> tup = IntrinsicTools.GetIntrinsicAndParamIndex(point, this._navigator);
             if (tup.Item1 == Intrinsic.NONE)
             {
                 return ReturnType.UNKNOWN;
             }
 
-            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
-            IntrinsicDataElement dataElement = store.get(tup.Item1)[0];
+            IntrinsicStore store = IntrinsicsDudeTools.Instance.IntrinsicStore;
+            IntrinsicDataElement dataElement = store.Get(tup.Item1)[0];
             ParamType paramType = dataElement.parameters[tup.Item2].Item1;
-            ReturnType returnType = IntrinsicTools.parseReturnType(IntrinsicTools.ToString(paramType), false);
+            ReturnType returnType = IntrinsicTools.ParseReturnType(IntrinsicTools.ToString(paramType), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
         }
 
-        private ReturnType findLeftHandType(TextExtent currentKeywordExtent)
+        private ReturnType FindLeftHandType(TextExtent currentKeywordExtent)
         {
             TextExtent word = this._navigator.GetExtentOfWord(currentKeywordExtent.Span.Start - 1);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: A: word=\"" + word.Span.GetText() + "\".");
@@ -289,12 +289,12 @@ namespace IntrinsicsDude.StatementCompletion
 
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
-            ReturnType returnType = IntrinsicTools.parseReturnType(word.Span.GetText(), false);
+            ReturnType returnType = IntrinsicTools.ParseReturnType(word.Span.GetText(), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
             return returnType;
         }
 
-        private List<Completion> getCompletions(ReturnType returnType)
+        private List<Completion> GetCompletions(ReturnType returnType)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getCompletions: returnType=" + returnType);
 
@@ -303,16 +303,16 @@ namespace IntrinsicsDude.StatementCompletion
 
             List<Completion> completions = new List<Completion>();
 
-            foreach (Tuple<Completion, ReturnType> e in IntrinsicsDudeTools.Instance.statementCompletionStore.intrinsic_Completions)
+            foreach (Tuple<Completion, ReturnType> e in IntrinsicsDudeTools.Instance.StatementCompletionStore.Intrinsic_Completions)
             {
                 Completion completion = e.Item1;
                 ReturnType returnType2 = e.Item2;
 
-                if (!IntrinsicTools.isConversionPossible(returnType2, returnType))
+                if (!IntrinsicTools.IsConversionPossible(returnType2, returnType))
                 {
                     if (!hideStatementCompletionIncompatibleReturnType)
                     {
-                        completions.Add((decorateIncompatibleStatementCompletions) ? decorate(completion, "[Incompatible]") : completion);
+                        completions.Add((decorateIncompatibleStatementCompletions) ? Decorate(completion, "[Incompatible]") : completion);
                     }
                 }
                 else
@@ -321,13 +321,13 @@ namespace IntrinsicsDude.StatementCompletion
                 }
             }
 
-            this.addRegisterCompletions(ref completions, returnType);
+            this.AddRegisterCompletions(ref completions, returnType);
             return completions;
         }
 
-        private Completion decorate(Completion completion, string str)
+        private Completion Decorate(Completion completion, string str)
         {
-            string displayText = completion.DisplayText.Replace(" [", " "+str+"[");
+            string displayText = completion.DisplayText.Replace(" [", " " + str + "[");
             return new Completion(displayText, completion.InsertionText, completion.Description, completion.IconSource, completion.IconAutomationText);
         }
        

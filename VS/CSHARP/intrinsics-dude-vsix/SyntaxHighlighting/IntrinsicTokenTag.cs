@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,11 @@ namespace IntrinsicsDude.SyntaxHighlighting
 {
     public class IntrinsicTokenTag : ITag
     {
-        public IntrinsicTokenType type { get; private set; }
+        public IntrinsicTokenType Type { get; private set; }
 
         public IntrinsicTokenTag(IntrinsicTokenType type)
         {
-            this.type = type;
+            this.Type = type;
         }
     }
 }

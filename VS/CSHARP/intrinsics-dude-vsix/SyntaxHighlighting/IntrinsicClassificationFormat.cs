@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ namespace IntrinsicsDude
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             this.DisplayName = "IntrinsicsDude - Instruction"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Intrinsic);
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Intrinsic);
         }
     }
 
@@ -54,7 +54,7 @@ namespace IntrinsicsDude
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             this.DisplayName = "IntrinsicsDude - Register Type"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Register);
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Register);
         }
     }
 
@@ -69,7 +69,7 @@ namespace IntrinsicsDude
         {
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: Entering constructor for: {0}", this.ToString()));
             this.DisplayName = "IntrinsicsDude - Misc"; //human readable version of the name found in Tools>Options>Environment>Fonts and Colors>Text Editor
-            this.ForegroundColor = IntrinsicsDudeToolsStatic.convertColor(Settings.Default.SyntaxHighlighting_Misc);
+            this.ForegroundColor = IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Misc);
         }
     }
 }

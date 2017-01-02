@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,10 +47,10 @@ namespace IntrinsicsDude.SyntaxHighlighting
             {
                 Func<ITagAggregator<IntrinsicTokenTag>> sc2 = delegate ()
                 {
-                    return _aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
+                    return this._aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
                 };
                 ITagAggregator<IntrinsicTokenTag> aggregator = buffer.Properties.GetOrCreateSingletonProperty(sc2);
-                return new IntrinsicClassifier(buffer, aggregator, _classificationTypeRegistry) as ITagger<T>;
+                return new IntrinsicClassifier(buffer, aggregator, this._classificationTypeRegistry) as ITagger<T>;
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicClassifierProvider: CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);

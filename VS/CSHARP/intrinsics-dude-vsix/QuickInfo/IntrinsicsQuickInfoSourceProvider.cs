@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,11 +43,12 @@ namespace IntrinsicsDude.QuickInfo
         [Import]
         private IBufferTagAggregatorFactoryService _aggregatorFactory = null;
 
+
         public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer buffer)
         {
             Func<IntrinsicsQuickInfoSource> sc = delegate ()
             {
-                ITagAggregator<IntrinsicTokenTag> aggregator = IntrinsicsDudeToolsStatic.getAggregator(buffer, _aggregatorFactory);
+                ITagAggregator<IntrinsicTokenTag> aggregator = IntrinsicsDudeToolsStatic.GetAggregator(buffer, this._aggregatorFactory);
                 return new IntrinsicsQuickInfoSource(buffer, aggregator);
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSourceProvider: TryCreateQuickInfoSource");

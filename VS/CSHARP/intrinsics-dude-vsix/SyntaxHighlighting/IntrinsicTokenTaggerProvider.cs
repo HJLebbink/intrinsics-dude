@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -43,7 +43,7 @@ namespace IntrinsicsDude
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag {
             Func <ITagger<T>> sc = delegate () {
-                return new IntrinsicTokenTagger(buffer, NavigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
+                return new IntrinsicTokenTagger(buffer, this.NavigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);

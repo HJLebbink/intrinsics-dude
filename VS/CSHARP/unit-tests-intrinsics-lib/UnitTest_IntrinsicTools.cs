@@ -14,7 +14,7 @@ namespace intrinsics_dude_unit_tests
             foreach (ReturnType x in Enum.GetValues(typeof(ReturnType)))
             {
                 string str = IntrinsicTools.ToString(x);
-                ReturnType x2 = IntrinsicTools.parseReturnType(str);
+                ReturnType x2 = IntrinsicTools.ParseReturnType(str);
                 if (x != x2)
                 {
                     Assert.AreEqual(x, x2, "ReturnType " + x.ToString() + " does not yield the same enumeration.");
@@ -28,7 +28,7 @@ namespace intrinsics_dude_unit_tests
             foreach (ParamType x in Enum.GetValues(typeof(ParamType)))
             {
                 string str = IntrinsicTools.ToString(x);
-                ParamType x2 = IntrinsicTools.parseParamType(str);
+                ParamType x2 = IntrinsicTools.ParseParamType(str);
                 if (x != x2)
                 {
                     Assert.AreEqual(x, x2, "TestParamType=" + x.ToString() + "; toString="+str+"; parse="+ x2 + ".");
@@ -42,7 +42,7 @@ namespace intrinsics_dude_unit_tests
             foreach (ParamType x in Enum.GetValues(typeof(ParamType)))
             {
                 string str = x.ToString();
-                ParamType x2 = IntrinsicTools.parseParamType_InternalName(str);
+                ParamType x2 = IntrinsicTools.ParseParamType_InternalName(str);
                 if (x != x2)
                 {
                     Assert.AreEqual(x, x2, "TestParamType_InternalName=" + x.ToString() + "; toString=" + str + "; parse=" + x2 + ".");
@@ -56,7 +56,7 @@ namespace intrinsics_dude_unit_tests
             foreach (CpuID x in Enum.GetValues(typeof(CpuID)))
             {
                 string str = IntrinsicTools.ToString(x);
-                CpuID x2 = IntrinsicTools.parseCpuID(str);
+                CpuID x2 = IntrinsicTools.ParseCpuID(str);
                 if (x != x2)
                 {
                     Assert.AreEqual(x, x2, "TestCpuID=" + x.ToString() + "; toString=" + str + "; parse=" + x2 + ".");
@@ -70,7 +70,7 @@ namespace intrinsics_dude_unit_tests
             foreach (SimdRegisterType x in Enum.GetValues(typeof(SimdRegisterType)))
             {
                 string str = x.ToString();
-                SimdRegisterType x2 = IntrinsicTools.parseSimdRegisterType(str);
+                SimdRegisterType x2 = IntrinsicTools.ParseSimdRegisterType(str);
                 if (x != x2)
                 {
                     Assert.AreEqual(x, x2, "TestSimdRegisterType=" + x.ToString() + "; toString=" + str + "; parse=" + x2 + ".");

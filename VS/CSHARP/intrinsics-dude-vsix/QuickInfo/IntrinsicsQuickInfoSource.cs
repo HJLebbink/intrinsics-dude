@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -67,7 +67,7 @@ namespace IntrinsicsDude.QuickInfo
             {
                 DateTime time1 = DateTime.Now;
 
-                ITextSnapshot snapshot = _sourceBuffer.CurrentSnapshot;
+                ITextSnapshot snapshot = this._sourceBuffer.CurrentSnapshot;
                 var triggerPoint = (SnapshotPoint)session.GetTriggerPoint(snapshot);
                 if (triggerPoint == null)
                 {
@@ -82,19 +82,19 @@ namespace IntrinsicsDude.QuickInfo
                 if (enumerator.Count() > 0)
                 {
                     IMappingTagSpan<IntrinsicTokenTag> tokenTag = enumerator.First();
-                    switch (tokenTag.Tag.type)
+                    switch (tokenTag.Tag.Type)
                     {
                         case IntrinsicTokenType.Intrinsic:
                             {
-                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(_sourceBuffer).First();
+                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(this._sourceBuffer).First();
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
-                                Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(keyword, false);
+                                Intrinsic intrinsic = IntrinsicTools.GarseIntrinsic(keyword, false);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
-                                    IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.intrinsicStore.get(intrinsic);
+                                    IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.IntrinsicStore.Get(intrinsic);
                                     if (dataElements.Count > 0)
                                     {
                                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
@@ -103,22 +103,22 @@ namespace IntrinsicsDude.QuickInfo
                                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
-                                        quickInfoContent.Add(dataElements[0].documentationTextBlock); //only show the description of the first intrinsic data element
+                                        quickInfoContent.Add(dataElements[0].DocumentationTextBlock); //only show the description of the first intrinsic data element
                                     }
                                 }
                             }
                             break;
                         case IntrinsicTokenType.RegType:
                             {
-                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(_sourceBuffer).First();
+                                SnapshotSpan tagSpan = tokenTag.Span.GetSpans(this._sourceBuffer).First();
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                                SimdRegisterType reg = IntrinsicTools.parseSimdRegisterType(keyword, true);
+                                SimdRegisterType reg = IntrinsicTools.ParseSimdRegisterType(keyword, true);
                                 if (reg != SimdRegisterType.NONE)
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
-                                    TextBlock description = this.makeRegisterDescription(reg);
+                                    TextBlock description = this.MakeRegisterDescription(reg);
                                     if (description != null)
                                     {
                                         quickInfoContent.Add(description);
@@ -129,7 +129,7 @@ namespace IntrinsicsDude.QuickInfo
                         default: break;
                     }
                 }
-                IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "QuickInfo");
+                IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "QuickInfo");
             }
             catch (Exception e)
             {
@@ -144,25 +144,29 @@ namespace IntrinsicsDude.QuickInfo
 
         #region Private Methods
 
-        private TextBlock makeRegisterDescription(SimdRegisterType reg)
+        private TextBlock MakeRegisterDescription(SimdRegisterType reg)
         {
             TextBlock description = new TextBlock();
-            description.Inlines.Add(makeRunBold(reg.ToString()));
+            description.Inlines.Add(MakeRunBold(reg.ToString()));
             return description;
         }
 
-        private static Run makeRunBold(string str)
+        private static Run MakeRunBold(string str)
         {
-            Run r1 = new Run(str);
-            r1.FontWeight = FontWeights.Bold;
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold
+            };
             return r1;
         }
 
-        private static Run makeRun2(string str, System.Drawing.Color color)
+        private static Run MakeRun2(string str, System.Drawing.Color color)
         {
-            Run r1 = new Run(str);
-            r1.FontWeight = FontWeights.Bold;
-            r1.Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.convertColor(color));
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(color))
+            };
             return r1;
         }
 

@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,11 @@ namespace IntrinsicsDude.SignHelp
     {
         public IntrParam(string documentation, Span locus, string name, ISignature signature)
         {
-            Documentation = documentation;
-            Locus = locus;
-            Name = name;
-            Signature = signature;
-            PrettyPrintedLocus = locus;
+            this.Documentation = documentation;
+            this.Locus = locus;
+            this.Name = name;
+            this.Signature = signature;
+            this.PrettyPrintedLocus = locus;
         }
         public string Documentation { get; private set; }
         public Span Locus { get; private set; }

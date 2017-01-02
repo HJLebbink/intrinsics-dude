@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,11 +47,11 @@ namespace IntrinsicsDude.SignHelp
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            ITextView textView = _adapterService.GetWpfTextView(textViewAdapter);
+            ITextView textView = this._adapterService.GetWpfTextView(textViewAdapter);
             if (textView != null)
             {
                 textView.Properties.GetOrCreateSingletonProperty(
-                    () => new IntrSignHelpCommandHandler(textViewAdapter, textView, _navigatorService.GetTextStructureNavigator(textView.TextBuffer), _signatureHelpBroker)
+                    () => new IntrSignHelpCommandHandler(textViewAdapter, textView, this._navigatorService.GetTextStructureNavigator(textView.TextBuffer), this._signatureHelpBroker)
                 );
             }
         }

@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,11 +49,11 @@ namespace IntrinsicsDude.Tools
         /// <summary>Constructor</summary>
         public IntrinsicDataElement()
         {
-            parameters = new List<Tuple<ParamType, string>>();
-            cpuID = CpuID.NONE;
+            this.parameters = new List<Tuple<ParamType, string>>();
+            this.cpuID = CpuID.NONE;
         }
 
-        public TextBlock documentationTextBlock {
+        public TextBlock DocumentationTextBlock {
             get {
                 StringBuilder sb = new StringBuilder();
                 sb.Append(IntrinsicTools.ToString(this.returnType));
@@ -73,29 +73,31 @@ namespace IntrinsicsDude.Tools
                 }
                 sb.Append(".)");
                 
-                TextBlock description = this.addSyntaxHighlighting(sb.ToString());
+                TextBlock description = this.AddSyntaxHighlighting(sb.ToString());
 
-                description.Inlines.Add(makeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
-                description.Inlines.Add(new Run(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+                description.Inlines.Add(MakeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
+                description.Inlines.Add(new Run(IntrinsicTools.Linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
 
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
-                    description.Inlines.Add(makeRunBold("\n\nOperation:\n"));
-                    Run run = new Run(this.operation);
-                    run.FontFamily = new FontFamily("Consolas");
+                    description.Inlines.Add(MakeRunBold("\n\nOperation:\n"));
+                    Run run = new Run(this.operation)
+                    {
+                        FontFamily = new FontFamily("Consolas")
+                    };
                     description.Inlines.Add(run);
                 }
 
                 if ((this.performance != null) && (this.performance.Length > 0))
                 {
-                    description.Inlines.Add(makeRunBold("\n\nPerformance:\n"));
-                    foreach (Run run in makePerformance(this.performance))
+                    description.Inlines.Add(MakeRunBold("\n\nPerformance:\n"));
+                    foreach (Run run in MakePerformance(this.performance))
                     {
                         description.Inlines.Add(run);
                     }
                 }
 
-                description.FontSize = IntrinsicsDudeToolsStatic.getFontSize() + 2;
+                description.FontSize = IntrinsicsDudeToolsStatic.GetFontSize() + 2;
                 //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
                 //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
 
@@ -103,7 +105,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public string documenationString {
+        public string DocumenationString {
             get {
                 #region Add intrinsic signature
 
@@ -129,7 +131,7 @@ namespace IntrinsicsDude.Tools
                 sb.AppendLine("]");
                 #endregion
 
-                sb.Append(IntrinsicTools.linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));
+                sb.Append(IntrinsicTools.Linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips));
                 if ((this.operation != null) && (this.operation.Length > 0))
                 {
                     sb.Append("\n\nOperation:\n");
@@ -141,7 +143,7 @@ namespace IntrinsicsDude.Tools
 
         #region Private Methods
 
-        private TextBlock addSyntaxHighlighting(string str)
+        private TextBlock AddSyntaxHighlighting(string str)
         {
             TextBlock textBlock = new TextBlock();
 
@@ -149,13 +151,13 @@ namespace IntrinsicsDude.Tools
             for (int i2 = 0; i2<a2.Length; ++i2)
             {
                 string str2 = a2[i2];
-                if (IntrinsicTools.parseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
+                if (IntrinsicTools.ParseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
                 {
-                    textBlock.Inlines.Add(makeRun2(str2, Settings.Default.SyntaxHighlighting_Register));
+                    textBlock.Inlines.Add(MakeRun2(str2, Settings.Default.SyntaxHighlighting_Register));
                 }
-                else if (IntrinsicTools.parseIntrinsic(str2, false) != Intrinsic.NONE)
+                else if (IntrinsicTools.GarseIntrinsic(str2, false) != Intrinsic.NONE)
                 {
-                    textBlock.Inlines.Add(makeRun2(str2, Settings.Default.SyntaxHighlighting_Intrinsic));
+                    textBlock.Inlines.Add(MakeRun2(str2, Settings.Default.SyntaxHighlighting_Intrinsic));
                 }
                 else
                 {
@@ -180,10 +182,10 @@ namespace IntrinsicsDude.Tools
                             case "int":
                             case "double":
                             case "float":
-                                textBlock.Inlines.Add(makeRun2(str3, System.Drawing.Color.Blue));
+                                textBlock.Inlines.Add(MakeRun2(str3, System.Drawing.Color.Blue));
                                 break;
                             default:
-                                textBlock.Inlines.Add(makeRunBold(str3));
+                                textBlock.Inlines.Add(MakeRunBold(str3));
                                 break;
                         }
                         if (i3 < a3.Length - 1)
@@ -196,28 +198,34 @@ namespace IntrinsicsDude.Tools
             return textBlock;
         }
 
-        private static Run makeRunBold(string str)
+        private static Run MakeRunBold(string str)
         {
-            Run r1 = new Run(str);
-            r1.FontWeight = FontWeights.Bold;
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold
+            };
             return r1;
         }
 
-        private static Run makeRun2(string str, System.Drawing.Color color)
+        private static Run MakeRun2(string str, System.Drawing.Color color)
         {
-            Run r1 = new Run(str);
-            r1.FontWeight = FontWeights.Bold;
-            r1.Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.convertColor(color));
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(color))
+            };
             return r1;
         }
 
-        private static IList<Run> makePerformance(string str)
+        private static IList<Run> MakePerformance(string str)
         {
             FontFamily family = new FontFamily("Consolas");
             IList<Run> list = new List<Run>();
-            Run run = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", "Architecture", "Latency", "Throughput"));
-            run.FontFamily = family;
-            run.FontStyle = FontStyles.Italic;
+            Run run = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", "Architecture", "Latency", "Throughput"))
+            {
+                FontFamily = family,
+                FontStyle = FontStyles.Italic
+            };
             list.Add(run);
 
             string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
@@ -227,8 +235,10 @@ namespace IntrinsicsDude.Tools
                 string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
                 if (elements.Length == 3)
                 {
-                    Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]));
-                    run1.FontFamily = family;
+                    Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]))
+                    {
+                        FontFamily = family
+                    };
                     list.Add(run1);
                 }
             }

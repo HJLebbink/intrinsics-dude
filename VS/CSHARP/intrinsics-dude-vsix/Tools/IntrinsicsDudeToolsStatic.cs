@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ namespace IntrinsicsDude.Tools
 {
     public static class IntrinsicsDudeToolsStatic
     {
-        public static ITagAggregator<IntrinsicTokenTag> getAggregator(
+        public static ITagAggregator<IntrinsicTokenTag> GetAggregator(
             ITextBuffer buffer,
             IBufferTagAggregatorFactoryService aggregatorFactory)
         {
@@ -53,7 +53,7 @@ namespace IntrinsicsDude.Tools
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
 
-        public static void printSpeedWarning(DateTime startTime, string component)
+        public static void PrintSpeedWarning(DateTime startTime, string component)
         {
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
             if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec)
@@ -67,17 +67,15 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public static string GetFileName(ITextBuffer buffer)
         {
-            Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer bufferAdapter;
-            buffer.Properties.TryGetProperty(typeof(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer), out bufferAdapter);
+            buffer.Properties.TryGetProperty(typeof(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer), out IVsTextBuffer bufferAdapter);
             if (bufferAdapter != null)
             {
                 IPersistFileFormat persistFileFormat = bufferAdapter as IPersistFileFormat;
 
                 string filename = null;
-                uint dummyInteger;
                 if (persistFileFormat != null)
                 {
-                    persistFileFormat.GetCurFile(out filename, out dummyInteger);
+                    persistFileFormat.GetCurFile(out filename, out uint dummyInteger);
                 }
                 return filename;
             }
@@ -87,7 +85,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static int getFontSize()
+        public static int GetFontSize()
         {
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
@@ -96,7 +94,7 @@ namespace IntrinsicsDude.Tools
             return fontSize;
         }
 
-        public static FontFamily getFontType()
+        public static FontFamily GetFontType()
         {
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
@@ -109,7 +107,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Get the path where this visual studio extension is installed.
         /// </summary>
-        public static string getInstallPath()
+        public static string GetInstallPath()
         {
             try
             {
@@ -123,17 +121,17 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static System.Windows.Media.Color convertColor(System.Drawing.Color drawingColor)
+        public static System.Windows.Media.Color ConvertColor(System.Drawing.Color drawingColor)
         {
             return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
-        public static System.Drawing.Color convertColor(System.Windows.Media.Color mediaColor)
+        public static System.Drawing.Color ConvertColor(System.Windows.Media.Color mediaColor)
         {
             return System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
         }
 
-        public static ImageSource bitmapFromUri(Uri bitmapUri)
+        public static ImageSource BitmapFromUri(Uri bitmapUri)
         {
             var bitmap = new BitmapImage();
             try
@@ -153,7 +151,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Cleans the provided line by removing multiple white spaces and cropping if the line is too long
         /// </summary>
-        public static string cleanup(string line, int maxNumOfChars)
+        public static string Cleanup(string line, int maxNumOfChars)
         {
             string cleanedString = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
             if (cleanedString.Length > maxNumOfChars)
@@ -189,16 +187,15 @@ namespace IntrinsicsDude.Tools
             else
             {
                 Guid paneGuid = new Guid("A9F2F5E5-C21D-4BB3-B4A7-FEE69DC0E03A");
-                IVsOutputWindowPane pane;
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
-                outputWindow.GetPane(paneGuid, out pane);
+                outputWindow.GetPane(paneGuid, out var pane);
                 pane.OutputString(msg2);
                 pane.FlushToTaskList();
                 pane.Activate();
             }
         }
 
-        public static bool isAllUpper(string input)
+        public static bool IsAllUpper(string input)
         {
             for (int i = 0; i < input.Length; i++)
             {
@@ -210,12 +207,12 @@ namespace IntrinsicsDude.Tools
             return true;
         }
 
-        public static CpuID getCpuIDSwithedOn()
+        public static CpuID GetCpuIDSwithedOn()
         {
             CpuID cpuID = CpuID.NONE;
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
-                if (isArchSwitchedOn(value))
+                if (IsArchSwitchedOn(value))
                 {
                     cpuID |= value;
                 }
@@ -224,7 +221,7 @@ namespace IntrinsicsDude.Tools
             return cpuID;
         }
 
-        public static bool isArchSwitchedOn(CpuID arch)
+        public static bool IsArchSwitchedOn(CpuID arch)
         {
             switch (arch)
             {

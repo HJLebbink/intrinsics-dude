@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -47,26 +47,25 @@ namespace IntrinsicsDude.Tools
             this._intrinsic_Store = intrinsic_Store;
             this._intrinsic_Completions = new List<Tuple<Completion, ReturnType>>();
             this._cached_Completions = new Dictionary<string, Completion>();
-            this.loadIcons();
-            this.init();
+            this.LoadIcons();
+            this.Init();
         }
 
-        public ReadOnlyCollection<Tuple<Completion, ReturnType>> intrinsic_Completions {
+        public ReadOnlyCollection<Tuple<Completion, ReturnType>> Intrinsic_Completions {
             get {
-                if (this.needInit())
+                if (this.NeedInit())
                 {
-                    this.init();
+                    this.Init();
                 }
                 return this._intrinsic_Completions.AsReadOnly();
             }
         }
 
-        public Completion get_Cached_Completion(Completion completion)
+        public Completion Get_Cached_Completion(Completion completion)
         {
-            Completion result;
             string insertion_Text = completion.InsertionText;
 
-            if (!this._cached_Completions.TryGetValue(insertion_Text, out result))
+            if (!this._cached_Completions.TryGetValue(insertion_Text, out var result))
             {
                 //result = completion; // a reference to an existing completion does not work, you need to make a deep copy.
                 result = new Completion(completion.DisplayText, insertion_Text, completion.Description, completion.IconSource, completion.IconAutomationText);
@@ -75,13 +74,13 @@ namespace IntrinsicsDude.Tools
             return result;
         }
 
-        public bool is_Initialized { get { return this._cached_Completions.Count > 0; } }
+        public bool Is_Initialized { get { return this._cached_Completions.Count > 0; } }
 
         #region Private Methods
 
-        private bool needInit()
+        private bool NeedInit()
         {
-            if (this._selectedCpuID != IntrinsicsDudeToolsStatic.getCpuIDSwithedOn())
+            if (this._selectedCpuID != IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn())
             {
                 return true;
             }
@@ -92,15 +91,15 @@ namespace IntrinsicsDude.Tools
             return false;
         }
 
-        private void init()
+        private void Init()
         {
             DateTime time1 = DateTime.Now;
             this._intrinsic_Completions.Clear();
 
-            this._selectedCpuID = IntrinsicsDudeToolsStatic.getCpuIDSwithedOn();
+            this._selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
             this._hide_mmx_reg_intrinsics = Settings.Default.HideStatementCompletionMmxRegisters_On;
 
-            foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._intrinsic_Store.data)
+            foreach (KeyValuePair<Intrinsic, IList<IntrinsicDataElement>> pair in this._intrinsic_Store.Data)
             {
                 Intrinsic intrinsic = pair.Key;
                 IList<IntrinsicDataElement> dataElements = pair.Value;
@@ -115,7 +114,7 @@ namespace IntrinsicsDude.Tools
 
                 if (enabled && this._hide_mmx_reg_intrinsics)
                 {
-                    if (IntrinsicTools.uses_mmx_register(intrinsic))
+                    if (IntrinsicTools.Uses_MMX_Register(intrinsic))
                     {
                         enabled = false;
                     }
@@ -125,17 +124,17 @@ namespace IntrinsicsDude.Tools
                 {
                     IntrinsicDataElement dataElementFirst = dataElements[0];
                     string intrinsicStr = intrinsic.ToString().ToLower();
-                    string displayText = this.createDisplayText(intrinsicStr, cpuID, dataElementFirst.description, true, true);
+                    string displayText = this.CreateDisplayText(intrinsicStr, cpuID, dataElementFirst.description, true, true);
                     //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
-                    Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.documenationString, this.icon_IF, "");
+                    Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.DocumenationString, this.icon_IF, "");
 
                     this._intrinsic_Completions.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst.returnType));
                 }
             }
-            IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Statement-Completion-Store-Initialization");
+            IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Statement-Completion-Store-Initialization");
         }
 
-        public string createDisplayText(string intrinsicStr, CpuID cpuID, string description, bool correctType, bool decorateIncompatibleStatementCompletion)
+        public string CreateDisplayText(string intrinsicStr, CpuID cpuID, string description, bool correctType, bool decorateIncompatibleStatementCompletion)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(intrinsicStr);
@@ -144,18 +143,18 @@ namespace IntrinsicsDude.Tools
             sb.Append("] - ");
             sb.Append(description);
 
-            string displayText = IntrinsicsDudeToolsStatic.cleanup(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
+            string displayText = IntrinsicsDudeToolsStatic.Cleanup(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInCompletions);
             return displayText;
         }
 
-        private void loadIcons()
+        private void LoadIcons()
         {
             Uri uri = null;
-            string installPath = IntrinsicsDudeToolsStatic.getInstallPath();
+            string installPath = IntrinsicsDudeToolsStatic.GetInstallPath();
             try
             {
                 uri = new Uri(installPath + "Resources/images/icon-IF.png");
-                this.icon_IF = IntrinsicsDudeToolsStatic.bitmapFromUri(uri);
+                this.icon_IF = IntrinsicsDudeToolsStatic.BitmapFromUri(uri);
             }
             catch (FileNotFoundException)
             {

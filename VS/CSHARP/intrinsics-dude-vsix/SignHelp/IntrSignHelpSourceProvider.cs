@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,7 @@ namespace IntrinsicsDude.SignHelp
 
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            return new IntrSignHelpSource(textBuffer, NavigatorService.GetTextStructureNavigator(textBuffer));
+            return new IntrSignHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
         }
     }
 }

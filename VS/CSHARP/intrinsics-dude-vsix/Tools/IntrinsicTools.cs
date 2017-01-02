@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -242,7 +242,7 @@ namespace IntrinsicsDude.Tools
             VOID_CONST_PTR
         }
 
-        public static SimdRegisterType parseSimdRegisterType(string str, bool warn = true)
+        public static SimdRegisterType ParseSimdRegisterType(string str, bool warn = true)
         {
             if (!str.StartsWith("__")) return SimdRegisterType.NONE;
             switch (str.ToUpper())
@@ -267,7 +267,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static ReturnType parseReturnType(string str, bool warn = true)
+        public static ReturnType ParseReturnType(string str, bool warn = true)
         {
             switch (str.ToUpper())
             {
@@ -313,7 +313,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// parse internal paramType name to ParamTYpe
         /// </summary>
-        public static ParamType parseParamType_InternalName(string str, bool warn = true)
+        public static ParamType ParseParamType_InternalName(string str, bool warn = true)
         {
             switch (str)
             {
@@ -411,7 +411,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// parse human readable text to ParamType
         /// </summary>
-        public static ParamType parseParamType(string str, bool warn = true)
+        public static ParamType ParseParamType(string str, bool warn = true)
         {
             string str2 = str.ToUpper().Replace(" *", "*");
 
@@ -510,7 +510,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static CpuID parseCpuID(string str, bool warn = true)
+        public static CpuID ParseCpuID(string str, bool warn = true)
         {
             switch (str.ToUpper())
             {
@@ -575,17 +575,17 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static CpuID parseCpuID_multiple(string str, bool warn = true)
+        public static CpuID ParseCpuID_multiple(string str, bool warn = true)
         {
             CpuID cpuID = CpuID.NONE;
             foreach (string cpuID_str in str.Split(','))
             {
-                cpuID |= parseCpuID(cpuID_str.Trim(), warn);
+                cpuID |= ParseCpuID(cpuID_str.Trim(), warn);
             }
             return cpuID;
         }
 
-        public static bool isSimdRegister(ReturnType type)
+        public static bool IsSimdRegister(ReturnType type)
         {
             switch (type)
             {
@@ -609,7 +609,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static bool isSimdRegister(ParamType type)
+        public static bool IsSimdRegister(ParamType type)
         {
             switch (type)
             {
@@ -648,7 +648,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static bool isSimdRegister(string str) {
+        public static bool IsSimdRegister(string str) {
             switch (str.ToUpper()) {
                 case "__M128":
                 case "__M128D":
@@ -841,7 +841,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static string getCpuID_Documentation(CpuID cpuID)
+        public static string GetCpuID_Documentation(CpuID cpuID)
         {
             switch (cpuID)
             {
@@ -903,7 +903,7 @@ namespace IntrinsicsDude.Tools
         }
 
         /// <summary>return true if type2 be cast to type1; false otherwise</summary>
-        public static bool isConversionPossible(ReturnType type1, ReturnType type2) {
+        public static bool IsConversionPossible(ReturnType type1, ReturnType type2) {
 
             if (type2 == ReturnType.UNKNOWN) return true;
 
@@ -968,7 +968,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static bool isCpuID_Enabled(CpuID cpuID_intrisic, CpuID selectedArchitectures)
+        public static bool IsCpuID_Enabled(CpuID cpuID_intrisic, CpuID selectedArchitectures)
         {
             if (cpuID_intrisic.HasFlag(CpuID.SVML) && !selectedArchitectures.HasFlag(CpuID.SVML))
             {
@@ -986,9 +986,9 @@ namespace IntrinsicsDude.Tools
         /// <param name="str">The string to wrap.</param>
         /// <param name="maxLength">The maximum number of characters per line.</param>
         /// <returns></returns>
-        public static string linewrap(this string str, int maxLength)
+        public static string Linewrap(this string str, int maxLength)
         {
-            return linewrap(str, maxLength, "");
+            return Linewrap(str, maxLength, "");
         }
 
         /// <summary>
@@ -998,7 +998,7 @@ namespace IntrinsicsDude.Tools
         /// <param name="maxLength">The maximum number of characters per line.</param>
         /// <param name="prefix">Adds this string to the beginning of each line.</param>
         /// <returns></returns>
-        private static string linewrap(string str, int maxLength, string prefix)
+        private static string Linewrap(string str, int maxLength, string prefix)
         {
             if (string.IsNullOrEmpty(str)) return "";
             if (maxLength <= 0) return prefix + str;
@@ -1011,7 +1011,7 @@ namespace IntrinsicsDude.Tools
                 var remainingLine = line.Trim();
                 do
                 {
-                    var newLine = getLine(remainingLine, maxLength - prefix.Length);
+                    var newLine = GetLine(remainingLine, maxLength - prefix.Length);
                     lines.Add(newLine);
                     remainingLine = remainingLine.Substring(newLine.Length).TrimEnd();
                     // Keep iterating as int as we've got words remaining 
@@ -1021,7 +1021,7 @@ namespace IntrinsicsDude.Tools
 
             return string.Join(Environment.NewLine + prefix, lines.ToArray());
         }
-        private static string getLine(string str, int maxLength)
+        private static string GetLine(string str, int maxLength)
         {
             // The string is less than the max length so just return it.
             if (str.Length <= maxLength) return str;
@@ -1031,7 +1031,7 @@ namespace IntrinsicsDude.Tools
             // (if the next char is a whitespace, the last word fits).
             for (int i = maxLength; i >= 0; i--)
             {
-                if (isTextSeparatorChar(str[i]))
+                if (IsTextSeparatorChar(str[i]))
                     return str.Substring(0, i).TrimEnd();
             }
 
@@ -1039,7 +1039,7 @@ namespace IntrinsicsDude.Tools
             return str.Substring(0, maxLength);
         }
 
-        private static bool isTextSeparatorChar(char c)
+        private static bool IsTextSeparatorChar(char c)
         {
             return char.IsWhiteSpace(c) || c.Equals('.') || c.Equals(',') || c.Equals(';') || c.Equals('?') || c.Equals('!') || c.Equals(')') || c.Equals(']') || c.Equals('-');
         }
@@ -1049,7 +1049,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Return true if the provided intrinsic uses a MMX register as its parameters or return type
         /// </summary>
-        public static bool uses_mmx_register(Intrinsic intrinsic)
+        public static bool Uses_MMX_Register(Intrinsic intrinsic)
         {
             switch (intrinsic)
             {
@@ -1252,7 +1252,7 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static Tuple<Intrinsic, int> getIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
+        public static Tuple<Intrinsic, int> GetIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
         {
             int nClosingParenthesis = 0;
             int nParameters = 0;
@@ -1277,7 +1277,7 @@ namespace IntrinsicsDude.Tools
                         if (extent.Span.Start > 0)
                         {
                             string word2 = nav.GetExtentOfWord(extent.Span.Start - 1).Span.GetText();
-                            return new Tuple<Intrinsic, int>(IntrinsicTools.parseIntrinsic(word2, false), nParameters);
+                            return new Tuple<Intrinsic, int>(IntrinsicTools.ParseIntrinsic(word2, false), nParameters);
                         }
                     }
                     else
@@ -1298,7 +1298,7 @@ namespace IntrinsicsDude.Tools
             return new Tuple<Intrinsic, int>(Intrinsic.NONE, 0);
         }
 
-        public static Intrinsic parseIntrinsic(string str, bool warn = true)
+        public static Intrinsic ParseIntrinsic(string str, bool warn = true)
         {
             if (str == null)
             {

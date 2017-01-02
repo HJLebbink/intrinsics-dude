@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ namespace IntrinsicsDude.SignHelp
                 DateTime time1 = DateTime.Now;
 
                 ITextSnapshot snapshot = this._textBuffer.CurrentSnapshot;
-                int triggerPosition = session.GetTriggerPoint(_textBuffer).GetPosition(snapshot);
+                int triggerPosition = session.GetTriggerPoint(this._textBuffer).GetPosition(snapshot);
 
                 SnapshotPoint point = new SnapshotPoint(snapshot, triggerPosition - 1);
                 TextExtent extent = this._navigator.GetExtentOfWord(point);
@@ -75,12 +75,12 @@ namespace IntrinsicsDude.SignHelp
                     // 1] when opening parenthesis "(" is typed after an intrinsic function, or
                     // 2] when an comma "," is typed as an parameter separator in an intrinsic function.
 
-                    Intrinsic intrinsic = IntrinsicTools.parseIntrinsic(text, false);
+                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(text, false);
                     int paramIndex = 0;
 
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        Tuple<Intrinsic, int> tup = IntrinsicTools.getIntrinsicAndParamIndex(point, _navigator);
+                        Tuple<Intrinsic, int> tup = IntrinsicTools.GetIntrinsicAndParamIndex(point, this._navigator);
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); intrinsic=" + tup.Item1 + "(" + tup.Item2 + ")");
                         intrinsic = tup.Item1;
                         paramIndex = tup.Item2 + 1; // add one because the current typed char was an comma.
@@ -88,28 +88,28 @@ namespace IntrinsicsDude.SignHelp
 
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
+                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
                         return;
                     }
 
-                    IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.intrinsicStore.get(intrinsic);
+                    IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.IntrinsicStore.Get(intrinsic);
                     if (dataElements.Count == 0)
                     {
-                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(_textBuffer) + "); no dataElements for intrinsic " + intrinsic);
+                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no dataElements for intrinsic " + intrinsic);
                         return;
                     }
 
-                    ITrackingSpan applicableToSpan = _textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
+                    ITrackingSpan applicableToSpan = this._textBuffer.CurrentSnapshot.CreateTrackingSpan(new Span(triggerPosition, 0), SpanTrackingMode.EdgeInclusive, 0);
                     foreach (IntrinsicDataElement dataElement in dataElements)
                     {
                         signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
                     }
-                    IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Signature Help");
+                    IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Signature Help");
                 }
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpSource: AugmentSignatureHelpSession; e="+ e.ToString());
+                IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpSource:AugmentSignatureHelpSession; e="+ e.ToString());
             }
         }
 
@@ -124,7 +124,7 @@ namespace IntrinsicsDude.SignHelp
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
                 return session.Signatures[0];
             }
-            IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: GetBestMatch: could not find intrinsic.");
+            IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource:GetBestMatch: could not find intrinsic.");
             return null;
         }
 
@@ -157,7 +157,7 @@ namespace IntrinsicsDude.SignHelp
             #endregion Create Signature Text
 
 
-            string doc = IntrinsicTools.linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
+            string doc = IntrinsicTools.Linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
             IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), doc, null);
 
             List<IParameter> paramList = new List<IParameter>();
@@ -182,10 +182,10 @@ namespace IntrinsicsDude.SignHelp
         public void Dispose()
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Dispose");
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 GC.SuppressFinalize(this);
-                _isDisposed = true;
+                this._isDisposed = true;
             }
         }
     }

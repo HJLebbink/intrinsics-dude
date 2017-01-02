@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,14 +52,14 @@ namespace IntrinsicsDude.SignHelp
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
 
         public IParameter CurrentParameter {
-            get { return m_currentParameter; }
+            get { return this.m_currentParameter; }
             internal set {
-                if (m_currentParameter != value)
+                if (this.m_currentParameter != value)
                 {
-                    IParameter prevCurrentParameter = m_currentParameter;
-                    m_currentParameter = value;
+                    IParameter prevCurrentParameter = this.m_currentParameter;
+                    this.m_currentParameter = value;
                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: CurrentParameter: going to RaiseCurrentParameterChanged.");
-                    this.RaiseCurrentParameterChanged(prevCurrentParameter, m_currentParameter);
+                    this.RaiseCurrentParameterChanged(prevCurrentParameter, this.m_currentParameter);
                 }
             }
         }
@@ -76,23 +76,23 @@ namespace IntrinsicsDude.SignHelp
         }
 
         public string Content {
-            get { return (m_content); }
-            internal set { m_content = value; }
+            get { return (this.m_content); }
+            internal set { this.m_content = value; }
         }
 
         public string Documentation {
-            get { return (m_documentation); }
-            internal set { m_documentation = value; }
+            get { return (this.m_documentation); }
+            internal set { this.m_documentation = value; }
         }
 
         public ReadOnlyCollection<IParameter> Parameters {
-            get { return (m_parameters); }
-            internal set { m_parameters = value; }
+            get { return (this.m_parameters); }
+            internal set { this.m_parameters = value; }
         }
 
         public string PrettyPrintedContent {
-            get { return (m_printContent); }
-            internal set { m_printContent = value; }
+            get { return (this.m_printContent); }
+            internal set { this.m_printContent = value; }
         }
 
         #endregion
@@ -102,12 +102,7 @@ namespace IntrinsicsDude.SignHelp
         void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
-
-            EventHandler<CurrentParameterChangedEventArgs> tempHandler = this.CurrentParameterChanged;
-            if (tempHandler != null)
-            {
-                tempHandler(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
-            }
+            this.CurrentParameterChanged?.Invoke(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
         }
         #endregion
 

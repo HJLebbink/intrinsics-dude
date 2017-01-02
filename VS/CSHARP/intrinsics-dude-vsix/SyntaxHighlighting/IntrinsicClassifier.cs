@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -75,14 +75,14 @@ namespace IntrinsicsDude
                     yield break;
                 }
                 //DateTime time1 = DateTime.Now;
-                foreach (IMappingTagSpan<IntrinsicTokenTag> tagSpan in _aggregator.GetTags(spans))
+                foreach (IMappingTagSpan<IntrinsicTokenTag> tagSpan in this._aggregator.GetTags(spans))
                 {
                     NormalizedSnapshotSpanCollection tagSpans = tagSpan.Span.GetSpans(spans[0].Snapshot);
-                    switch (tagSpan.Tag.type)
+                    switch (tagSpan.Tag.Type)
                     {
-                        case IntrinsicTokenType.Intrinsic: yield return new TagSpan<ClassificationTag>(tagSpans[0], _intrinsic); break;
-                        case IntrinsicTokenType.RegType: yield return new TagSpan<ClassificationTag>(tagSpans[0], _register); break;
-                        case IntrinsicTokenType.Misc: yield return new TagSpan<ClassificationTag>(tagSpans[0], _misc); break;
+                        case IntrinsicTokenType.Intrinsic: yield return new TagSpan<ClassificationTag>(tagSpans[0], this._intrinsic); break;
+                        case IntrinsicTokenType.RegType: yield return new TagSpan<ClassificationTag>(tagSpans[0], this._register); break;
+                        case IntrinsicTokenType.Misc: yield return new TagSpan<ClassificationTag>(tagSpans[0], this._misc); break;
                         default:
                             break;
                     }

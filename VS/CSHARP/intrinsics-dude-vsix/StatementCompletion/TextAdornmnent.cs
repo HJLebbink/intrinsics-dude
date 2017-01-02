@@ -43,7 +43,7 @@ public sealed class TextAdornment
         this._view = view;
 
         //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: constructor");
-        ITextViewLine line = this.getLine(this._view.TextViewLines, lineNumber);
+        ITextViewLine line = this.GetLine(this._view.TextViewLines, lineNumber);
         if (line == null) return;
 
         //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: show: line=\"" + line.Extent.GetText() + "\".");
@@ -59,15 +59,15 @@ public sealed class TextAdornment
         Canvas.SetLeft(this._adornment, pos);
         Canvas.SetTop(this._adornment, geometry.Bounds.Top);
         IAdornmentLayer layer = this._view.GetAdornmentLayer("TextAdornment1");
-        layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, line.Extent, null, _adornment, (tag, ui) => this._adornment = null);
+        layer.AddAdornment(AdornmentPositioningBehavior.TextRelative, line.Extent, null, this._adornment, (tag, ui) => this._adornment = null);
     }
 
-    public void cleanup()
+    public void Cleanup()
     {
         this._view.GetAdornmentLayer("TextAdornment1").RemoveAllAdornments();
     }
 
-    private ITextViewLine getLine(ITextViewLineCollection c, int lineNumber)
+    private ITextViewLine GetLine(ITextViewLineCollection c, int lineNumber)
     {
         ITextViewLine line = null;
         for (int i = 0; i < c.Count; ++i)

@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ namespace IntrinsicsDude.Tools
         public static IntrinsicsDudeTools Instance {
             get {
                 IntrinsicsDudeTools intrinsicsDudeTools = lazy.Value;
-                intrinsicsDudeTools.init();
+                intrinsicsDudeTools.Init();
                 return intrinsicsDudeTools;
             }
         }
@@ -55,23 +55,27 @@ namespace IntrinsicsDude.Tools
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: IntrinsicsDudeTools constructor"));
 
             #region Initialize ErrorListProvider
-            if (false)
+            if (false) // not used
             {
                 IServiceProvider serviceProvider = new ServiceProvider(Package.GetGlobalService(typeof(Microsoft.VisualStudio.OLE.Interop.IServiceProvider)) as Microsoft.VisualStudio.OLE.Interop.IServiceProvider);
-                this._errorListProvider = new ErrorListProvider(serviceProvider);
-                this._errorListProvider.ProviderName = "Intrinsics Errors";
-                this._errorListProvider.ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode);
+                this._errorListProvider = new ErrorListProvider(serviceProvider)
+                {
+                    ProviderName = "Intrinsics Errors",
+                    ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode)
+                };
             }
             #endregion
 
             #region Start thread pool
-            this._smartThreadPool = new SmartThreadPool();
-            this._smartThreadPool.MaxThreads = 4;
+            this._smartThreadPool = new SmartThreadPool()
+            {
+                MaxThreads = 4
+            };
             this._smartThreadPool.Start();
             #endregion
 
             #region load intrinsic store
-            string path = IntrinsicsDudeToolsStatic.getInstallPath() + "Resources" + Path.DirectorySeparatorChar;
+            string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
             string filename_intrinsics = path + "Intrinsics-Data.xml";
             this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
             #endregion
@@ -79,7 +83,7 @@ namespace IntrinsicsDude.Tools
             this._statement_Completion_Store = new StatementCompletionStore(this._intrinsicStore);
         }
 
-        private void init()
+        private void Init()
         {
             //TODO move initialization stuff from constructor to here
         }
@@ -87,25 +91,25 @@ namespace IntrinsicsDude.Tools
 
         #region Public Methods
 
-        public ErrorListProvider errorListProvider { get { return this._errorListProvider; } }
+        public ErrorListProvider ErrorListProvider { get { return this._errorListProvider; } }
 
-        public IntrinsicStore intrinsicStore { get { return this._intrinsicStore; } }
+        public IntrinsicStore IntrinsicStore { get { return this._intrinsicStore; } }
 
-        public StatementCompletionStore statementCompletionStore {  get { return this._statement_Completion_Store; } }
+        public StatementCompletionStore StatementCompletionStore {  get { return this._statement_Completion_Store; } }
 
-        public SmartThreadPool threadPool { get { return this._smartThreadPool; } }
+        public SmartThreadPool ThreadPool { get { return this._smartThreadPool; } }
 
         /// <summary>
         /// get url for the provided keyword. Returns empty string if the keyword does not exist or the keyword does not have an url.
         /// </summary>
-        public string getUrl(string keyword)
+        public string GetUrl(string keyword)
         {
             try
             {
-                Intrinsic mnemonic = IntrinsicTools.parseIntrinsic(keyword, false);
+                Intrinsic mnemonic = IntrinsicTools.ParseIntrinsic(keyword, false);
                 if (mnemonic != Intrinsic.NONE)
                 {
-                    IList<IntrinsicDataElement> dataElements = this._intrinsicStore.get(mnemonic);
+                    IList<IntrinsicDataElement> dataElements = this._intrinsicStore.Get(mnemonic);
                     if (dataElements.Count > 0)
                     {
                         string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + dataElements[0].id;

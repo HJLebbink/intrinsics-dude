@@ -1,6 +1,6 @@
 // The MIT License (MIT)
 //
-// Copyright (c) 2016 Henk-Jan Lebbink
+// Copyright (c) 2017 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -78,126 +78,126 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.useSignatureHelp = Settings.Default.SignatureHelp_On;
 
             this._intrinsicsDudeOptionsPageUI.useSvml = Settings.Default.USE_SVML;
-            this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.makeToolTip(CpuID.SVML);
+            this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.MakeToolTip(CpuID.SVML);
             this._intrinsicsDudeOptionsPageUI.useArch_ADX = Settings.Default.ARCH_ADX;
-            this._intrinsicsDudeOptionsPageUI.useArch_ADX_UI.ToolTip = this.makeToolTip(CpuID.ADX);
+            this._intrinsicsDudeOptionsPageUI.useArch_ADX_UI.ToolTip = this.MakeToolTip(CpuID.ADX);
             this._intrinsicsDudeOptionsPageUI.useArch_AES = Settings.Default.ARCH_AES;
-            this._intrinsicsDudeOptionsPageUI.useArch_AES_UI.ToolTip = this.makeToolTip(CpuID.AES);
+            this._intrinsicsDudeOptionsPageUI.useArch_AES_UI.ToolTip = this.MakeToolTip(CpuID.AES);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX = Settings.Default.ARCH_AVX;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX_UI.ToolTip = this.makeToolTip(CpuID.AVX);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX_UI.ToolTip = this.MakeToolTip(CpuID.AVX);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX2 = Settings.Default.ARCH_AVX2;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX2_UI.ToolTip = this.makeToolTip(CpuID.AVX2);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX2_UI.ToolTip = this.MakeToolTip(CpuID.AVX2);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512F = Settings.Default.ARCH_AVX512F;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512F_UI.ToolTip = this.makeToolTip(CpuID.AVX512F);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512F_UI.ToolTip = this.MakeToolTip(CpuID.AVX512F);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL = Settings.Default.ARCH_AVX512VL;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL_UI.ToolTip = this.makeToolTip(CpuID.AVX512VL);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL_UI.ToolTip = this.MakeToolTip(CpuID.AVX512VL);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ = Settings.Default.ARCH_AVX512DQ;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ_UI.ToolTip = this.makeToolTip(CpuID.AVX512DQ);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ_UI.ToolTip = this.MakeToolTip(CpuID.AVX512DQ);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW = Settings.Default.ARCH_AVX512BW;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW_UI.ToolTip = this.makeToolTip(CpuID.AVX512BW);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW_UI.ToolTip = this.MakeToolTip(CpuID.AVX512BW);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER = Settings.Default.ARCH_AVX512ER;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER_UI.ToolTip = this.makeToolTip(CpuID.AVX512ER);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER_UI.ToolTip = this.MakeToolTip(CpuID.AVX512ER);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD = Settings.Default.ARCH_AVX512CD;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD_UI.ToolTip = this.makeToolTip(CpuID.AVX512CD);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD_UI.ToolTip = this.MakeToolTip(CpuID.AVX512CD);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF = Settings.Default.ARCH_AVX512PF;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF_UI.ToolTip = this.makeToolTip(CpuID.AVX512PF);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF_UI.ToolTip = this.MakeToolTip(CpuID.AVX512PF);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52 = Settings.Default.ARCH_AVX512IFMA52;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52_UI.ToolTip = this.makeToolTip(CpuID.AVX512IFMA52);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52_UI.ToolTip = this.MakeToolTip(CpuID.AVX512IFMA52);
             this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI = Settings.Default.ARCH_AVX512VBMI;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI_UI.ToolTip = this.makeToolTip(CpuID.AVX512VBMI);
+            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI_UI.ToolTip = this.MakeToolTip(CpuID.AVX512VBMI);
 
             this._intrinsicsDudeOptionsPageUI.useArch_IA32 = Settings.Default.ARCH_IA32;
-            this._intrinsicsDudeOptionsPageUI.useArch_IA32_UI.ToolTip = this.makeToolTip(CpuID.IA32);
+            this._intrinsicsDudeOptionsPageUI.useArch_IA32_UI.ToolTip = this.MakeToolTip(CpuID.IA32);
             this._intrinsicsDudeOptionsPageUI.useArch_BMI1 = Settings.Default.ARCH_BMI1;
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI1_UI.ToolTip = this.makeToolTip(CpuID.BMI1);
+            this._intrinsicsDudeOptionsPageUI.useArch_BMI1_UI.ToolTip = this.MakeToolTip(CpuID.BMI1);
             this._intrinsicsDudeOptionsPageUI.useArch_BMI2 = Settings.Default.ARCH_BMI2;
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI2_UI.ToolTip = this.makeToolTip(CpuID.BMI2);
+            this._intrinsicsDudeOptionsPageUI.useArch_BMI2_UI.ToolTip = this.MakeToolTip(CpuID.BMI2);
             this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT = Settings.Default.ARCH_CLFLUSHOPT;
-            this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT_UI.ToolTip = this.makeToolTip(CpuID.CLFLUSHOPT);
+            this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT_UI.ToolTip = this.MakeToolTip(CpuID.CLFLUSHOPT);
             this._intrinsicsDudeOptionsPageUI.useArch_FMA = Settings.Default.ARCH_FMA;
-            this._intrinsicsDudeOptionsPageUI.useArch_FMA_UI.ToolTip = this.makeToolTip(CpuID.FMA);
+            this._intrinsicsDudeOptionsPageUI.useArch_FMA_UI.ToolTip = this.MakeToolTip(CpuID.FMA);
             this._intrinsicsDudeOptionsPageUI.useArch_FP16C = Settings.Default.ARCH_FP16C;
-            this._intrinsicsDudeOptionsPageUI.useArch_FP16C_UI.ToolTip = this.makeToolTip(CpuID.FP16C);
+            this._intrinsicsDudeOptionsPageUI.useArch_FP16C_UI.ToolTip = this.MakeToolTip(CpuID.FP16C);
             this._intrinsicsDudeOptionsPageUI.useArch_FXSR = Settings.Default.ARCH_FXSR;
-            this._intrinsicsDudeOptionsPageUI.useArch_FXSR_UI.ToolTip = this.makeToolTip(CpuID.FXSR);
+            this._intrinsicsDudeOptionsPageUI.useArch_FXSR_UI.ToolTip = this.MakeToolTip(CpuID.FXSR);
             this._intrinsicsDudeOptionsPageUI.useArch_KNCNI = Settings.Default.ARCH_KNCNI;
-            this._intrinsicsDudeOptionsPageUI.useArch_KNCNI_UI.ToolTip = this.makeToolTip(CpuID.KNCNI);
+            this._intrinsicsDudeOptionsPageUI.useArch_KNCNI_UI.ToolTip = this.MakeToolTip(CpuID.KNCNI);
             this._intrinsicsDudeOptionsPageUI.useArch_MMX = Settings.Default.ARCH_MMX;
-            this._intrinsicsDudeOptionsPageUI.useArch_MMX_UI.ToolTip = this.makeToolTip(CpuID.MMX);
+            this._intrinsicsDudeOptionsPageUI.useArch_MMX_UI.ToolTip = this.MakeToolTip(CpuID.MMX);
             this._intrinsicsDudeOptionsPageUI.useArch_MPX = Settings.Default.ARCH_MPX;
-            this._intrinsicsDudeOptionsPageUI.useArch_MPX_UI.ToolTip = this.makeToolTip(CpuID.MPX);
+            this._intrinsicsDudeOptionsPageUI.useArch_MPX_UI.ToolTip = this.MakeToolTip(CpuID.MPX);
             this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ = Settings.Default.ARCH_PCLMULQDQ;
-            this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ_UI.ToolTip = this.makeToolTip(CpuID.PCLMULQDQ);
+            this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ_UI.ToolTip = this.MakeToolTip(CpuID.PCLMULQDQ);
             this._intrinsicsDudeOptionsPageUI.useArch_SSE = Settings.Default.ARCH_SSE;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE_UI.ToolTip = this.makeToolTip(CpuID.SSE);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSE_UI.ToolTip = this.MakeToolTip(CpuID.SSE);
             this._intrinsicsDudeOptionsPageUI.useArch_SSE2 = Settings.Default.ARCH_SSE2;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE2_UI.ToolTip = this.makeToolTip(CpuID.SSE2);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSE2_UI.ToolTip = this.MakeToolTip(CpuID.SSE2);
             this._intrinsicsDudeOptionsPageUI.useArch_SSE3 = Settings.Default.ARCH_SSE3;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE3_UI.ToolTip = this.makeToolTip(CpuID.SSE3);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSE3);
             this._intrinsicsDudeOptionsPageUI.useArch_SSSE3 = Settings.Default.ARCH_SSSE3;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSSE3_UI.ToolTip = this.makeToolTip(CpuID.SSSE3);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSSE3);
             this._intrinsicsDudeOptionsPageUI.useArch_SSE41 = Settings.Default.ARCH_SSE41;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE41_UI.ToolTip = this.makeToolTip(CpuID.SSE4_1);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSE41_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_1);
             this._intrinsicsDudeOptionsPageUI.useArch_SSE42 = Settings.Default.ARCH_SSE42;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE42_UI.ToolTip = this.makeToolTip(CpuID.SSE4_2);
+            this._intrinsicsDudeOptionsPageUI.useArch_SSE42_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_2);
 
             this._intrinsicsDudeOptionsPageUI.useArch_LZCNT = Settings.Default.ARCH_LZCNT;
-            this._intrinsicsDudeOptionsPageUI.useArch_LZCNT_UI.ToolTip = this.makeToolTip(CpuID.LZCNT);
+            this._intrinsicsDudeOptionsPageUI.useArch_LZCNT_UI.ToolTip = this.MakeToolTip(CpuID.LZCNT);
             this._intrinsicsDudeOptionsPageUI.useArch_INVPCID = Settings.Default.ARCH_INVPCID;
-            this._intrinsicsDudeOptionsPageUI.useArch_INVPCID_UI.ToolTip = this.makeToolTip(CpuID.INVPCID);
+            this._intrinsicsDudeOptionsPageUI.useArch_INVPCID_UI.ToolTip = this.MakeToolTip(CpuID.INVPCID);
             this._intrinsicsDudeOptionsPageUI.useArch_MONITOR = Settings.Default.ARCH_MONITOR;
-            this._intrinsicsDudeOptionsPageUI.useArch_MONITOR_UI.ToolTip = this.makeToolTip(CpuID.MONITOR);
+            this._intrinsicsDudeOptionsPageUI.useArch_MONITOR_UI.ToolTip = this.MakeToolTip(CpuID.MONITOR);
             this._intrinsicsDudeOptionsPageUI.useArch_POPCNT = Settings.Default.ARCH_POPCNT;
-            this._intrinsicsDudeOptionsPageUI.useArch_POPCNT_UI.ToolTip = this.makeToolTip(CpuID.POPCNT);
+            this._intrinsicsDudeOptionsPageUI.useArch_POPCNT_UI.ToolTip = this.MakeToolTip(CpuID.POPCNT);
             this._intrinsicsDudeOptionsPageUI.useArch_RDRAND = Settings.Default.ARCH_RDRAND;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDRAND_UI.ToolTip = this.makeToolTip(CpuID.RDRAND);
+            this._intrinsicsDudeOptionsPageUI.useArch_RDRAND_UI.ToolTip = this.MakeToolTip(CpuID.RDRAND);
             this._intrinsicsDudeOptionsPageUI.useArch_RDSEED = Settings.Default.ARCH_RDSEED;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDSEED_UI.ToolTip = this.makeToolTip(CpuID.RDSEED);
+            this._intrinsicsDudeOptionsPageUI.useArch_RDSEED_UI.ToolTip = this.MakeToolTip(CpuID.RDSEED);
             this._intrinsicsDudeOptionsPageUI.useArch_TSC = Settings.Default.ARCH_TSC;
-            this._intrinsicsDudeOptionsPageUI.useArch_TSC_UI.ToolTip = this.makeToolTip(CpuID.TSC);
+            this._intrinsicsDudeOptionsPageUI.useArch_TSC_UI.ToolTip = this.MakeToolTip(CpuID.TSC);
             this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP = Settings.Default.ARCH_RDTSCP;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP_UI.ToolTip = this.makeToolTip(CpuID.RDTSCP);
+            this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP_UI.ToolTip = this.MakeToolTip(CpuID.RDTSCP);
             this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE = Settings.Default.ARCH_FSGSBASE;
-            this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE_UI.ToolTip = this.makeToolTip(CpuID.FSGSBASE);
+            this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE_UI.ToolTip = this.MakeToolTip(CpuID.FSGSBASE);
             this._intrinsicsDudeOptionsPageUI.useArch_SHA = Settings.Default.ARCH_SHA;
-            this._intrinsicsDudeOptionsPageUI.useArch_SHA_UI.ToolTip = this.makeToolTip(CpuID.SHA);
+            this._intrinsicsDudeOptionsPageUI.useArch_SHA_UI.ToolTip = this.MakeToolTip(CpuID.SHA);
             this._intrinsicsDudeOptionsPageUI.useArch_RTM = Settings.Default.ARCH_RTM;
-            this._intrinsicsDudeOptionsPageUI.useArch_RTM_UI.ToolTip = this.makeToolTip(CpuID.RTM);
+            this._intrinsicsDudeOptionsPageUI.useArch_RTM_UI.ToolTip = this.MakeToolTip(CpuID.RTM);
             this._intrinsicsDudeOptionsPageUI.useArch_XSAVE = Settings.Default.ARCH_XSAVE;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVE_UI.ToolTip = this.makeToolTip(CpuID.XSAVE);
+            this._intrinsicsDudeOptionsPageUI.useArch_XSAVE_UI.ToolTip = this.MakeToolTip(CpuID.XSAVE);
             this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC = Settings.Default.ARCH_XSAVEC;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC_UI.ToolTip = this.makeToolTip(CpuID.XSAVEC);
+            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEC);
             this._intrinsicsDudeOptionsPageUI.useArch_XSS = Settings.Default.ARCH_XSS;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSS_UI.ToolTip = this.makeToolTip(CpuID.XSS);
+            this._intrinsicsDudeOptionsPageUI.useArch_XSS_UI.ToolTip = this.MakeToolTip(CpuID.XSS);
             this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT = Settings.Default.ARCH_XSAVEOPT;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT_UI.ToolTip = this.makeToolTip(CpuID.XSAVEOPT);
+            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEOPT);
             this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1 = Settings.Default.ARCH_PREFETCHWT1;
-            this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1_UI.ToolTip = this.makeToolTip(CpuID.PREFETCHWT1);
+            this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1_UI.ToolTip = this.MakeToolTip(CpuID.PREFETCHWT1);
 
             #endregion
         }
 
-        private string makeToolTip(CpuID arch)
+        private string MakeToolTip(CpuID arch)
         {
-            IntrinsicStore store = IntrinsicsDudeTools.Instance.intrinsicStore;
+            IntrinsicStore store = IntrinsicsDudeTools.Instance.IntrinsicStore;
             SortedSet<Intrinsic> usedMnemonics = new SortedSet<Intrinsic>();
 
             StringBuilder sb = new StringBuilder();
-            string docArch = IntrinsicTools.getCpuID_Documentation(arch);
+            string docArch = IntrinsicTools.GetCpuID_Documentation(arch);
             if (docArch.Length > 0)
             {
                 sb.Append(docArch + ": ");
             }
             foreach (Intrinsic mnemonic in Enum.GetValues(typeof(Intrinsic)))
             {
-                if (store.getCpuID(mnemonic).HasFlag(arch))
+                if (store.GetCpuID(mnemonic).HasFlag(arch))
                 {
                     sb.Append(mnemonic.ToString());
                     sb.Append(", ");
                 }
             }
             if (sb.Length > 2) sb.Length -= 2; // get rid of last comma.
-            return IntrinsicTools.linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
+            return IntrinsicTools.Linewrap(sb.ToString(), IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
         }
 
         /// <summary>
@@ -524,10 +524,10 @@ namespace IntrinsicsDude.OptionsPage
             {
                 string title = null;
                 string message = "Unsaved changes exist. Would you like to save.";
-                int result = VsShellUtilities.ShowMessageBox(Site, message, title, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                int result = VsShellUtilities.ShowMessageBox(this.Site, message, title, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                 if (result == (int)VSConstants.MessageBoxResult.IDOK)
                 {
-                    this.save();
+                    this.Save();
                 }
                 else if (result == (int)VSConstants.MessageBoxResult.IDCANCEL)
                 {
@@ -545,11 +545,11 @@ namespace IntrinsicsDude.OptionsPage
         /// </devdoc>
         protected override void OnApply(PageApplyEventArgs e)
         {
-            this.save();
+            this.Save();
             base.OnApply(e);
         }
 
-        private void save()
+        private void Save()
         {
             //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:{0}:save", this.ToString()));
             bool changed = false;
@@ -864,7 +864,7 @@ namespace IntrinsicsDude.OptionsPage
             {
                 string title = null;
                 string message = "You may need to restart visual studio for the changes to take effect.";
-                int result = VsShellUtilities.ShowMessageBox(Site, message, title, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                int result = VsShellUtilities.ShowMessageBox(this.Site, message, title, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             }
         }
 
