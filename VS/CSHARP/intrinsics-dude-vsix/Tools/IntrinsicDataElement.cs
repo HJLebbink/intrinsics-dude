@@ -27,6 +27,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Shell;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.Tools
@@ -53,56 +55,59 @@ namespace IntrinsicsDude.Tools
             this.cpuID = CpuID.NONE;
         }
 
-        public TextBlock DocumentationTextBlock {
-            get {
-                StringBuilder sb = new StringBuilder();
-                sb.Append(IntrinsicTools.ToString(this.returnType));
+        public TextBlock DocumentationTextBlock(Brush foreground)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(IntrinsicTools.ToString(this.returnType));
+            sb.Append(". .");
+            sb.Append(this.intrinsic.ToString().ToLower());
+            sb.Append(".(.");
+            foreach (Tuple<ParamType, string> param in this.parameters)
+            {
+                sb.Append(IntrinsicTools.ToString(param.Item1));
                 sb.Append(". .");
-                sb.Append(this.intrinsic.ToString().ToLower());
-                sb.Append(".(.");
-                foreach (Tuple<ParamType, string> param in this.parameters)
-                {
-                    sb.Append(IntrinsicTools.ToString(param.Item1));
-                    sb.Append(". .");
-                    sb.Append(param.Item2);
-                    sb.Append("., .");
-                }
-                if (this.parameters.Count > 0)
-                {
-                    sb.Length -= 4; // remove the last comma
-                }
-                sb.Append(".)");
-                
-                TextBlock description = this.AddSyntaxHighlighting(sb.ToString());
+                sb.Append(param.Item2);
+                sb.Append("., .");
+            }
+            if (this.parameters.Count > 0)
+            {
+                sb.Length -= 4; // remove the last comma
+            }
+            sb.Append(".)");
 
-                description.Inlines.Add(MakeRunBold("  ["+IntrinsicTools.ToString(this.cpuID)+ "]\n"));
-                description.Inlines.Add(new Run(IntrinsicTools.Linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips)));
+            TextBlock description = this.AddSyntaxHighlighting(sb.ToString(), foreground);
 
-                if ((this.operation != null) && (this.operation.Length > 0))
+            description.Inlines.Add(MakeRunBold("  [" + IntrinsicTools.ToString(this.cpuID) + "]\n", foreground));
+            description.Inlines.Add(new Run(IntrinsicTools.Linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips))
+            {
+                Foreground = IntrinsicsDudeToolsStatic.GetFontColor()
+            });
+
+            if ((this.operation != null) && (this.operation.Length > 0))
+            {
+                description.Inlines.Add(MakeRunBold("\n\nOperation:\n", foreground));
+                description.Inlines.Add(new Run(this.operation)
                 {
-                    description.Inlines.Add(MakeRunBold("\n\nOperation:\n"));
-                    Run run = new Run(this.operation)
-                    {
-                        FontFamily = new FontFamily("Consolas")
-                    };
+                    FontFamily = new FontFamily("Consolas"),
+                    Foreground = foreground
+                }
+                );
+            }
+
+            if ((this.performance != null) && (this.performance.Length > 0))
+            {
+                description.Inlines.Add(MakeRunBold("\n\nPerformance:\n", foreground));
+                foreach (Run run in MakePerformance(this.performance, foreground))
+                {
                     description.Inlines.Add(run);
                 }
-
-                if ((this.performance != null) && (this.performance.Length > 0))
-                {
-                    description.Inlines.Add(MakeRunBold("\n\nPerformance:\n"));
-                    foreach (Run run in MakePerformance(this.performance))
-                    {
-                        description.Inlines.Add(run);
-                    }
-                }
-
-                description.FontSize = IntrinsicsDudeToolsStatic.GetFontSize() + 2;
-                //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
-                //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
-
-                return description;
             }
+
+            description.FontSize = IntrinsicsDudeToolsStatic.GetFontSize() + 2;
+            //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
+            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
+
+            return description;
         }
 
         public string DocumenationString {
@@ -143,7 +148,7 @@ namespace IntrinsicsDude.Tools
 
         #region Private Methods
 
-        private TextBlock AddSyntaxHighlighting(string str)
+        private TextBlock AddSyntaxHighlighting(string str, Brush foreground)
         {
             TextBlock textBlock = new TextBlock();
 
@@ -153,11 +158,11 @@ namespace IntrinsicsDude.Tools
                 string str2 = a2[i2];
                 if (IntrinsicTools.ParseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
                 {
-                    textBlock.Inlines.Add(MakeRun2(str2, Settings.Default.SyntaxHighlighting_Register));
+                    textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Register))));
                 }
-                else if (IntrinsicTools.GarseIntrinsic(str2, false) != Intrinsic.NONE)
+                else if (IntrinsicTools.ParseIntrinsic(str2, false) != Intrinsic.NONE)
                 {
-                    textBlock.Inlines.Add(MakeRun2(str2, Settings.Default.SyntaxHighlighting_Intrinsic));
+                    textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Intrinsic))));
                 }
                 else
                 {
@@ -182,10 +187,10 @@ namespace IntrinsicsDude.Tools
                             case "int":
                             case "double":
                             case "float":
-                                textBlock.Inlines.Add(MakeRun2(str3, System.Drawing.Color.Blue));
+                                textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
                                 break;
                             default:
-                                textBlock.Inlines.Add(MakeRunBold(str3));
+                                textBlock.Inlines.Add(MakeRunBold(str3, foreground));
                                 break;
                         }
                         if (i3 < a3.Length - 1)
@@ -198,34 +203,39 @@ namespace IntrinsicsDude.Tools
             return textBlock;
         }
 
-        private static Run MakeRunBold(string str)
-        {
-            Run r1 = new Run(str)
-            {
-                FontWeight = FontWeights.Bold
-            };
-            return r1;
-        }
-
-        private static Run MakeRun2(string str, System.Drawing.Color color)
+        private static Run MakeRunBold(string str, Brush foreground)
         {
             Run r1 = new Run(str)
             {
                 FontWeight = FontWeights.Bold,
-                Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(color))
+                Foreground = foreground //new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.TextEditorColorForeGround))
             };
             return r1;
         }
 
-        private static IList<Run> MakePerformance(string str)
+        private static Run MakeRun2(string str, Brush foreground)
+        {
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = foreground
+            };
+            return r1;
+        }
+
+        private static IList<Run> MakePerformance(string str, Brush foreground)
         {
             FontFamily family = new FontFamily("Consolas");
             IList<Run> list = new List<Run>();
+
             Run run = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", "Architecture", "Latency", "Throughput"))
             {
                 FontFamily = family,
-                FontStyle = FontStyles.Italic
+                FontStyle = FontStyles.Italic,
+                Foreground = foreground
             };
+            run.SetResourceReference(Border.BackgroundProperty, VsBrushes.ToolWindowTextKey);
+
             list.Add(run);
 
             string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
@@ -237,7 +247,8 @@ namespace IntrinsicsDude.Tools
                 {
                     Run run1 = new Run(string.Format("{0,-20}{1,-10}{2,-10}\n", elements[0], elements[1], elements[2]))
                     {
-                        FontFamily = family
+                        FontFamily = family,
+                        Foreground = foreground
                     };
                     list.Add(run1);
                 }

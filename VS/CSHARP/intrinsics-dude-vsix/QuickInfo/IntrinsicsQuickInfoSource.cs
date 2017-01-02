@@ -45,16 +45,18 @@ namespace IntrinsicsDude.QuickInfo
         private readonly ITextBuffer _sourceBuffer;
         private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
         private readonly IntrinsicsDudeTools _intrinsicDudeTools;
+        private readonly Brush _textForegroundColor;
 
         public object CSharpEditorResources { get; private set; }
 
         public IntrinsicsQuickInfoSource(
-                ITextBuffer buffer,
-                ITagAggregator<IntrinsicTokenTag> aggregator)
+            ITextBuffer buffer,
+            ITagAggregator<IntrinsicTokenTag> aggregator)
         {
             this._sourceBuffer = buffer;
             this._aggregator = aggregator;
             this._intrinsicDudeTools = IntrinsicsDudeTools.Instance;
+            this._textForegroundColor = IntrinsicsDudeToolsStatic.GetFontColor();
         }
 
         /// <summary>
@@ -74,6 +76,8 @@ namespace IntrinsicsDude.QuickInfo
                     return;
                 }
 
+                Brush foreground = IntrinsicsDudeToolsStatic.GetFontColor();
+
                 IEnumerable<IMappingTagSpan<IntrinsicTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
                 if (enumerator.Count() > 1)
                 {
@@ -91,7 +95,7 @@ namespace IntrinsicsDude.QuickInfo
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
-                                Intrinsic intrinsic = IntrinsicTools.GarseIntrinsic(keyword, false);
+                                Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(keyword, false);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
                                     IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.IntrinsicStore.Get(intrinsic);
@@ -103,7 +107,7 @@ namespace IntrinsicsDude.QuickInfo
                                             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
-                                        quickInfoContent.Add(dataElements[0].DocumentationTextBlock); //only show the description of the first intrinsic data element
+                                        quickInfoContent.Add(dataElements[0].DocumentationTextBlock(foreground)); //only show the description of the first intrinsic data element
                                     }
                                 }
                             }
@@ -147,25 +151,26 @@ namespace IntrinsicsDude.QuickInfo
         private TextBlock MakeRegisterDescription(SimdRegisterType reg)
         {
             TextBlock description = new TextBlock();
-            description.Inlines.Add(MakeRunBold(reg.ToString()));
+            description.Inlines.Add(MakeRunBold(reg.ToString(), this._textForegroundColor));
             return description;
         }
 
-        private static Run MakeRunBold(string str)
-        {
-            Run r1 = new Run(str)
-            {
-                FontWeight = FontWeights.Bold
-            };
-            return r1;
-        }
-
-        private static Run MakeRun2(string str, System.Drawing.Color color)
+        private static Run MakeRunBold(string str, Brush foreGround)
         {
             Run r1 = new Run(str)
             {
                 FontWeight = FontWeights.Bold,
-                Foreground = new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(color))
+                Foreground = foreGround
+            };
+            return r1;
+        }
+
+        private static Run MakeRun2(string str, Brush foreground) ///System.Drawing.Color color)
+        {
+            Run r1 = new Run(str)
+            {
+                FontWeight = FontWeights.Bold,
+                Foreground = foreground // new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(color))
             };
             return r1;
         }

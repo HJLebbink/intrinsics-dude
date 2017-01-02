@@ -20,14 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.ErrorSquiggles;
 using IntrinsicsDude.SyntaxHighlighting;
 using EnvDTE;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Text.Tagging;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System;
@@ -36,6 +33,7 @@ using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static IntrinsicsDude.Tools.IntrinsicTools;
+//using System.Drawing;
 
 namespace IntrinsicsDude.Tools
 {
@@ -102,6 +100,29 @@ namespace IntrinsicsDude.Tools
             string font = (string)prop.Value;
             //IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:getFontType {0}", font));
             return new FontFamily(font);
+        }
+
+        public static Brush GetFontColor() {
+            try {
+                DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
+                EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
+                Property prop = propertiesList.Item("FontsAndColorsItems");
+
+                FontsAndColorsItems fci = (FontsAndColorsItems)prop.Object;
+
+                for (int i = 1; i<fci.Count; ++i) {
+                    ColorableItems ci = fci.Item(i);
+                    if (ci.Name.Equals("PLAIN TEXT", StringComparison.OrdinalIgnoreCase))
+                    {
+                        //IntrinsicsDudeToolsStatic.Output("INFO:GetFontColor: i=" + i + ": " + ci.Name + "; " + ci.Foreground);
+                        return new SolidColorBrush(ConvertColor(System.Drawing.ColorTranslator.FromOle((int)ci.Foreground)));
+                    }
+                }
+            } catch (Exception e) {
+                IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:GetFontColor {0}", e.Message));
+            }
+            IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "WARNING: IntrinsicsDudeToolsStatic:GetFontColor: could not retrieve text color"));
+            return new SolidColorBrush(Colors.Gray);
         }
 
         /// <summary>
