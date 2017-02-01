@@ -40,7 +40,10 @@ namespace IntrinsicsDude.Tools
         public IntrinsicStore(string filename)
         {
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
-            //this.generateData();
+            if (false)
+            {
+                this.GenerateData();
+            }
             this.LoadXml(filename);
         }
 
@@ -76,14 +79,18 @@ namespace IntrinsicsDude.Tools
         #region Private Methods
 
         /// <summary>
-        /// used once to generate the data from the Intel intrinsics guide
+        /// used once to generate the data from the Intel intrinsics guide. 
+        /// To create the hmtl, use https://software.intel.com/sites/landingpage/IntrinsicsGuide/#=undefined
         /// </summary>
         private void GenerateData()
         {
             string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            string filename = path + "Intel-Intrinsics-Guide.html";
+            //string filename = path + "Intel-Intrinsics-Guide-(11-aug-16).html";
+            string filename = path + "Intel-Intrinsics-Guide-(01-feb-17).html";
+
+            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore:GenerateData; filename=" + filename + " will be converted");
             this.LoadHtml(filename);
-            this.SaveXml(filename + ".xml");
+            this.SaveXml(path + "Intrinsics-Data.xml");
             //this.loadXml(filename + ".xml");
             //this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
         }

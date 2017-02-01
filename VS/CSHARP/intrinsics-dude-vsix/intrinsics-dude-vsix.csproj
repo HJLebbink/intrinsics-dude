@@ -112,7 +112,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\Intel-Intrinsics-Guide.html" />
+    <Content Include="Resources\Intel-Intrinsics-Guide-%2801-feb-17%29.html" />
+    <Content Include="Resources\Intel-Intrinsics-Guide-%2811-aug-16%29.html" />
+    <Content Include="Resources\Intrinsics-Data-%2811-aug-16%29.xml" />
     <Content Include="Resources\Intrinsics-Data.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

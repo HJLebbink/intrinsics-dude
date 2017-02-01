@@ -174,6 +174,10 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1 = Settings.Default.ARCH_PREFETCHWT1;
             this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1_UI.ToolTip = this.MakeToolTip(CpuID.PREFETCHWT1);
 
+            this._intrinsicsDudeOptionsPageUI.useArch_RDPID = Settings.Default.ARCH_RDPID;
+            this._intrinsicsDudeOptionsPageUI.useArch_RDPID_UI.ToolTip = this.MakeToolTip(CpuID.RDPID);
+            this._intrinsicsDudeOptionsPageUI.useArch_CLWB = Settings.Default.ARCH_CLWB;
+            this._intrinsicsDudeOptionsPageUI.useArch_CLWB_UI.ToolTip = this.MakeToolTip(CpuID.CLWB);
             #endregion
         }
 

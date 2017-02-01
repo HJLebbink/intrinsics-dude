@@ -108,6 +108,15 @@ namespace IntrinsicsDude.Tools
             SVML        = 1L << 45,
             IA32        = 1L << 46,
 
+            /// <summary>
+            /// Read Processor ID
+            /// </summary>
+            RDPID       = 1L << 47,
+            /// <summary>
+            /// Cache Line Write Back
+            /// </summary>
+            CLWB        = 1L << 48,
+
             // bits 47-62 are reserved for future use
 
             /// <summary>
@@ -431,6 +440,7 @@ namespace IntrinsicsDude.Tools
                 case "__M128D*": return ParamType.__M128D_PTR;
                 case "__M128I": return ParamType.__M128I;
                 case "__M128I CONST*": return ParamType.__M128I_CONST_PTR;
+                case "CONST __M128I*": return ParamType.__M128I_CONST_PTR;
                 case "__M128I*": return ParamType.__M128I_PTR;
                 case "__M256": return ParamType.__M256;
                 case "__M256*": return ParamType.__M256_PTR;
@@ -505,7 +515,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\"; \"" + str2 + "\".");
                     return ParamType.NONE;
             }
         }
@@ -568,6 +578,8 @@ namespace IntrinsicsDude.Tools
                 case "PREFETCHWT1": return CpuID.PREFETCHWT1;
 
                 case "SVML": return CpuID.SVML;
+                case "RDPID": return CpuID.RDPID;
+                case "CLWB": return CpuID.CLWB;
 
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
@@ -895,6 +907,9 @@ namespace IntrinsicsDude.Tools
                 case CpuID.XSS: return "";
                 case CpuID.XSAVEOPT: return "";
                 case CpuID.PREFETCHWT1: return "";
+
+                case CpuID.RDPID: return "Read Processor ID";
+                case CpuID.CLWB: return "Cache Line Write Back";
 
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
@@ -6990,6 +7005,43 @@ namespace IntrinsicsDude.Tools
                 case "_XSAVES64": return Intrinsic._XSAVES64;
                 case "_XSETBV": return Intrinsic._XSETBV;
                 case "_XTEST": return Intrinsic._XTEST;
+
+                case "_ANDN_U32": return Intrinsic._ANDN_U32;
+                case "_ANDN_U64": return Intrinsic._ANDN_U64;
+                case "_BEXTR2_U32": return Intrinsic._BEXTR2_U32;
+                case "_BEXTR2_U64": return Intrinsic._BEXTR2_U64;
+                case "_MM_BROADCASTSI128_SI256": return Intrinsic._MM_BROADCASTSI128_SI256;
+                case "_MM_CLWB": return Intrinsic._MM_CLWB;
+                case "_MM256_CVTSD_F64": return Intrinsic._MM256_CVTSD_F64;
+                case "_MM512_CVTSD_F64": return Intrinsic._MM512_CVTSD_F64;
+                case "_MM256_CVTSI256_SI32": return Intrinsic._MM256_CVTSI256_SI32;
+                case "_MM512_CVTSI512_SI32": return Intrinsic._MM512_CVTSI512_SI32;
+                case "_MM256_CVTSS_F32": return Intrinsic._MM256_CVTSS_F32;
+                case "_MM512_CVTSS_F32": return Intrinsic._MM512_CVTSS_F32;
+                case "_MM_FMADD_ROUND_SD": return Intrinsic._MM_FMADD_ROUND_SD;
+                case "_MM_FMADD_ROUND_SS": return Intrinsic._MM_FMADD_ROUND_SS;
+                case "_MM_FMSUB_ROUND_SD": return Intrinsic._MM_FMSUB_ROUND_SD;
+                case "_MM_FMSUB_ROUND_SS": return Intrinsic._MM_FMSUB_ROUND_SS;
+                case "_MM_FNMADD_ROUND_SD": return Intrinsic._MM_FNMADD_ROUND_SD;
+                case "_MM_FNMADD_ROUND_SS": return Intrinsic._MM_FNMADD_ROUND_SS;
+                case "_MM_FNMSUB_ROUND_SD": return Intrinsic._MM_FNMSUB_ROUND_SD;
+                case "_MM_FNMSUB_ROUND_SS": return Intrinsic._MM_FNMSUB_ROUND_SS;
+                case "_MULX_U32": return Intrinsic._MULX_U32;
+                case "_MULX_U64": return Intrinsic._MULX_U64;
+                case "_RDPID_U32": return Intrinsic._RDPID_U32;
+                case "_ROTL64": return Intrinsic._ROTL64;
+                case "_ROTR64": return Intrinsic._ROTR64;
+                case "_MM512_SET_EPI16": return Intrinsic._MM512_SET_EPI16;
+                case "_MM512_SET_EPI8": return Intrinsic._MM512_SET_EPI8;
+                case "_MM256_ZEXTPD128_PD256": return Intrinsic._MM256_ZEXTPD128_PD256;
+                case "_MM512_ZEXTPD128_PD512": return Intrinsic._MM512_ZEXTPD128_PD512;
+                case "_MM512_ZEXTPD256_PD512": return Intrinsic._MM512_ZEXTPD256_PD512;
+                case "_MM256_ZEXTPS128_PS256": return Intrinsic._MM256_ZEXTPS128_PS256;
+                case "_MM512_ZEXTPS128_PS512": return Intrinsic._MM512_ZEXTPS128_PS512;
+                case "_MM512_ZEXTPS256_PS512": return Intrinsic._MM512_ZEXTPS256_PS512;
+                case "_MM256_ZEXTSI128_SI256": return Intrinsic._MM256_ZEXTSI128_SI256;
+                case "_MM512_ZEXTSI128_SI512": return Intrinsic._MM512_ZEXTSI128_SI512;
+                case "_MM512_ZEXTSI256_SI512": return Intrinsic._MM512_ZEXTSI256_SI512;
 
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");

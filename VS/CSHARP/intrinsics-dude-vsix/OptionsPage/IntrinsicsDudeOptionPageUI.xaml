@@ -85,6 +85,7 @@
                                         <CheckBox x:Name="useArch_AVX512IFMA52_UI" Content="AVX512IFMA52 - AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_AVX512VBMI_UI" Content="AVX512VBMI - AVX512 Vector Bit-Manipulation (Xeon Cannonlake)" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_KNCNI_UI" Content="KNCNI" Margin="0,2,0,2"/>
+                                        <CheckBox x:Name="useArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
                                     </StackPanel>
                                 </Grid>
                             </GroupBox>
@@ -100,13 +101,15 @@
                                         <CheckBox x:Name="useArch_RTM_UI" Content="RTM - Transactional Synchronization Extensions" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_SHA_UI" Content="SHA - Secure Hash Algorithm Extension" Margin="0,2,0,2"/>
 										
-										<CheckBox x:Name="useArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
 										<CheckBox x:Name="useArch_FP16C_UI" Content="FP16C - Half Precision FP Conversion" Margin="0,2,0,2"/>
 										<CheckBox x:Name="useArch_PCLMULQDQ_UI" Content="PCLMULQDQ - Carry-Less Multiplication Quadword" Margin="0,2,0,2"/>
 										<CheckBox x:Name="useArch_CLFLUSHOPT_UI" Content="CLFLUSHOPT" Margin="0,2,0,2"/>
 										<CheckBox x:Name="useArch_FXSR_UI" Content="FXSR" Margin="0,2,0,2"/>
 
-										<CheckBox x:Name="useArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
+                                        <CheckBox x:Name="useArch_RDPID_UI" Content="RDPID - Read Processor ID" Margin="0,2,0,2"/>
+                                        <CheckBox x:Name="useArch_CLWB_UI" Content="CLWB - Cache Line Write Back" Margin="0,2,0,2"/>
+                                        
+                                        <CheckBox x:Name="useArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_INVPCID_UI" Content="INVPCID - Invalidates TLBs" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_MONITOR_UI" Content="MONITOR" Margin="0,2,0,2"/>
                                         <CheckBox x:Name="useArch_POPCNT_UI" Content="POPCNT" Margin="0,2,0,2"/>

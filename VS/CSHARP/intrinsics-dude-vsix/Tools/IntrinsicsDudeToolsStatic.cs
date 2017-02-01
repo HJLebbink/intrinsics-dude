@@ -297,6 +297,10 @@ namespace IntrinsicsDude.Tools
 
                 case CpuID.SVML: return Settings.Default.USE_SVML;
                 case CpuID.IA32: return Settings.Default.ARCH_IA32;
+
+                case CpuID.RDPID: return Settings.Default.ARCH_RDPID;
+                case CpuID.CLWB: return Settings.Default.ARCH_CLWB;
+
                 case CpuID.UNKNOWN: return false;
 
                 default:
