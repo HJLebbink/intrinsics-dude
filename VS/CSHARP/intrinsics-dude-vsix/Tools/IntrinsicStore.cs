@@ -36,15 +36,15 @@ namespace IntrinsicsDude.Tools
         private readonly IDictionary<Intrinsic, IList<IntrinsicDataElement>> _data;
         private static readonly IList<IntrinsicDataElement> empty = new List<IntrinsicDataElement>(0);
 
-        /// <summary>Constructor</summary>
-        public IntrinsicStore(string filename)
+        public IntrinsicStore()
         {
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
-            if (false)
-            {
-                this.GenerateData();
-            }
-            this.LoadXml(filename);
+        }
+
+        public IntrinsicStore(string xmlfilename)
+        {
+            this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
+            this.LoadXml(xmlfilename);
         }
 
         public ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>> Data {
@@ -76,31 +76,24 @@ namespace IntrinsicsDude.Tools
             return cpuID;
         }
 
-        #region Private Methods
+        #region Loading/Saving
 
-        /// <summary>
-        /// used once to generate the data from the Intel intrinsics guide. 
-        /// To create the hmtl, use https://software.intel.com/sites/landingpage/IntrinsicsGuide/#=undefined
-        /// </summary>
-        private void GenerateData()
+        public void LoadHtml(string filename)
         {
-            string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            //string filename = path + "Intel-Intrinsics-Guide-(11-aug-16).html";
-            string filename = path + "Intel-Intrinsics-Guide-(01-feb-17).html";
-
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore:GenerateData; filename=" + filename + " will be converted");
-            this.LoadHtml(filename);
-            this.SaveXml(path + "Intrinsics-Data.xml");
-            //this.loadXml(filename + ".xml");
-            //this.saveXml(filename + ".2.xml"); // to check that that loading and saving results in the same file
-        }
-
-        private void LoadHtml(string filename)
-        {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: filename " + filename);
             try
             {
                 DateTime time1 = DateTime.Now;
+
+                if (File.Exists(filename))
+                {
+                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: going to load file " + filename);
+                }
+                else
+                {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadHtml: file " + filename + " does not exist.");
+                    return;
+                }
+
                 HtmlDocument doc = new HtmlDocument();
                 doc.Load(filename);
 
@@ -114,11 +107,12 @@ namespace IntrinsicsDude.Tools
                         id = item.GetAttributeValue("id", -1),
                         intrinsic = Intrinsic.NONE
                     };
-                    if (item.GetAttributeValue("class", "").Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase)) {
+                    if (item.GetAttributeValue("class", "").Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
+                    {
                         dataElement.cpuID |= CpuID.SVML;
                     }
 
-                    IList <string> paramName = new List<string>(2);
+                    IList<string> paramName = new List<string>(2);
                     IList<string> paramType = new List<string>(2);
 
                     #region payload
@@ -133,7 +127,7 @@ namespace IntrinsicsDude.Tools
                                 string instruction = element.InnerText.ToUpper();
                                 dataElement.instruction = (instruction.Equals("...")) ? "UNKNOWN" : instruction;
                                 break;
-                                #endregion
+                            #endregion
                             case "SIGNATURE":
                                 break;
                             case "DETAILS":
@@ -153,25 +147,35 @@ namespace IntrinsicsDude.Tools
                                         case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                         case "DESC_VAR": break;
 
-                                        case "DESCRIPTION": dataElement.description = AddAcronyms(RemoveHtml(element2.InnerText)); break;
-                                        case "OPERATION": dataElement.operation = AddAcronyms(RemoveHtml(element2.InnerHtml)); break;
+                                        case "DESCRIPTION": dataElement.description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
+                                        case "OPERATION": dataElement.operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
                                         case "CPUID": dataElement.cpuID |= IntrinsicTools.ParseCpuID(element2.InnerText); break;
                                         case "PERFORMANCE":
                                             dataElement.performance = element2.InnerHtml;
                                             TestPerformance(dataElement.performance);
                                             break;
-                                        case "INSTRUCTION_NOTE": dataElement.instructionNote = element2.InnerText; break;
-
-                                        case "SIG":
+                                        case "INSTRUCTION_NOTE":
+                                            dataElement.instructionNote = element2.InnerText; break;
                                         case "SYNOPSIS":
+                                            dataElement.asm = RetrieveAsmStr(element2.InnerHtml);
+                                            if (dataElement.asm.Equals("psraw"))
+                                            {
+                                                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: found asmStr=" + dataElement.asm);
+                                            }
+
+
+                                            break;
+                                        case "SIG":
                                         case "DESC_NOTE":
                                         case "NONE":
                                             break;
 
                                         default:
-                                            if (element2Class.StartsWith("DESC_VAR")) {
+                                            if (element2Class.StartsWith("DESC_VAR"))
+                                            {
                                                 // ok
-                                            } else
+                                            }
+                                            else
                                             {
                                                 IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: B: found unexpected element2Class=" + element2Class + "; " + element2.InnerHtml);
                                             }
@@ -230,30 +234,14 @@ namespace IntrinsicsDude.Tools
                 IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadHtml: exception " + e.ToString());
             }
         }
-        /// <summary>
-        /// Checks whether the performance string is ok
-        /// </summary>
-        private static void TestPerformance(string str)
-        {
-            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
-            string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 1; i < lines.Length; ++i)
-            {
-                string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
-                if (elements.Length != 3)
-                {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: testPerformance");
-                }
-            }
-        }
 
-        private void SaveXml(string filename)
+        public void SaveXml(string filename)
         {
             IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: saveXml: filename " + filename);
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version = \"1.0\" encoding = \"utf-8\" ?>");
             sb.AppendLine("<intrinsicsdudedata>");
-            
+
             foreach (Intrinsic intrinsic in new SortedSet<Intrinsic>(this._data.Keys))
             {
                 foreach (IntrinsicDataElement dataElement in this._data[intrinsic])
@@ -276,6 +264,7 @@ namespace IntrinsicsDude.Tools
                     sb.AppendLine("</sign>");
 
                     sb.AppendLine("<instr>" + dataElement.instruction + "</instr>");
+                    sb.AppendLine("<asm>" + dataElement.asm + "</asm>");
                     sb.AppendLine("<desc>" + AddHtml(dataElement.description) + "</desc>");
                     sb.AppendLine("<oper>" + AddHtml(dataElement.operation) + "</oper>");
                     sb.AppendLine("<performance>" + AddHtml(dataElement.performance) + "</performance>");
@@ -286,7 +275,7 @@ namespace IntrinsicsDude.Tools
             System.IO.File.WriteAllText(filename, sb.ToString());
         }
 
-        private void LoadXml(string filename)
+        public void LoadXml(string filename)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: filename " + filename);
             try
@@ -336,11 +325,14 @@ namespace IntrinsicsDude.Tools
                             case "instr":
                                 dataElement.instruction = value;
                                 break;
+                            case "asm":
+                                dataElement.asm = value;
+                                break;
                             case "desc":
                                 dataElement.description = value;
                                 break;
                             case "oper":
-                                dataElement.operation = RemoveHtml(value);
+                                dataElement.operation = ReplaceHtml(value);
                                 break;
                             case "performance":
                                 dataElement.performance = value;
@@ -375,7 +367,81 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        private static string RemoveHtml(string str)
+        #endregion
+       
+        #region Private Methods
+
+        private static string RetrieveAsmStr(string str)
+        {
+            string startKeyword = "Instruction: ";
+            string endKeyword = "<br>";
+
+            int startPos = str.IndexOf(startKeyword);
+            if (startPos == -1) return "";
+            startPos += startKeyword.Length;
+            int endPos = str.IndexOf(endKeyword, startPos);
+            if (endPos == -1) return "";
+            string result = str.Substring(startPos, endPos - startPos);
+            // the result string may contain a hazard remark, remove it.
+            result = Remove1SpanTag(result).ToUpper();
+
+            result = result.Replace(", ", ",");
+            result = result.Replace(" {ER}", "");
+            result = result.Replace(" {K}", "");
+            return result;
+        }
+
+        /// <summary>
+        /// Remove one xml tag, nothing more.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private static string Remove1SpanTag(string str)
+        {
+            char beginChar = '>';
+            string endKeyword = "</span>";
+
+            int endPos = str.IndexOf(endKeyword);
+            if (endPos == -1) return str;
+            endPos--;
+
+
+            string result = "";
+            for (int i = endPos; i>0; --i)
+            {
+                if (str[i].Equals(beginChar))
+                {
+                    result = str.Substring(i+1, endPos - i);
+                    break;
+                }
+            }
+
+            return result + str.Substring(endPos + 1 + endKeyword.Length);
+        }
+
+        /// <summary>
+        /// Checks whether the performance string is ok
+        /// </summary>
+        private static void TestPerformance(string str)
+        {
+            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
+            string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 1; i < lines.Length; ++i)
+            {
+                string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
+                if (elements.Length != 3)
+                {
+                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: testPerformance");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Replace some html special chars with asci chars
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        private static string ReplaceHtml(string str)
         {
             if (str == null) return null;
             return str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("&amp;", "&");

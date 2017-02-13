@@ -40,9 +40,9 @@ namespace IntrinsicsDude.Tools
         public readonly IList<Tuple<ParamType, string>> parameters;
         public CpuID cpuID;
         public int id;
-        public String instruction;
+        public string instruction;
         public string instructionNote;
-
+        public string asm;
         public string description;
         public string operation;
         public string performance; // unused
