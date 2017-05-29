@@ -31,7 +31,7 @@ namespace IntrinsicsDude.OptionsPage {
 
         public IntrinsicsDudeOptionsPageUI() {
             InitializeComponent();
-            this.version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToString()+")";
+            this.version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToUniversalTime().ToString()+")";
         }
 
 

@@ -51,14 +51,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Intel-Intrinsics-Guide-%2801-feb-17%29.html" />
-    <Content Include="Resources\Intel-Intrinsics-Guide-%2811-aug-16%29.html" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\intrinsics-dude-vsix\intrinsics-dude-vsix.csproj">
       <Project>{6bb67359-a10c-4688-9383-e989e971f0ea}</Project>
       <Name>intrinsics-dude-vsix</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

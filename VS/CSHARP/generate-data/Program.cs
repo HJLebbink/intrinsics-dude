@@ -39,17 +39,16 @@ namespace IntrinsicsDude.GenerateData
             /// To create the hmtl, use https://software.intel.com/sites/landingpage/IntrinsicsGuide/#=undefined
 
             string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            //string filename = path + "Intel-Intrinsics-Guide-(11-aug-16).html";
-            string fileIn = path + "Intel-Intrinsics-Guide-(01-feb-17).html";
+            //string fileIn = path + "Intel-Intrinsics-Guide-(11-aug-16).html";
+            //string fileIn = path + "Intel-Intrinsics-Guide-(01-feb-17).html";
+            string fileIn = path + "Intel-Intrinsics-Guide-(29-may-17).html";
             string performance_Filename = path + "Performance.txt";
-
-
 
             Console.WriteLine("Converting file " + fileIn + ".");
             store.LoadHtml(fileIn);
 
             string fileOut = path + "Intrinsics-Data.xml";
-            if (false)
+            if (true)
             {
                 Console.WriteLine("Saving file " + fileOut + ".");
                 store.SaveXml(fileOut);
@@ -62,7 +61,7 @@ namespace IntrinsicsDude.GenerateData
                 store2.SaveXml(fileOut + ".2.xml"); // to check that that loading and saving results in the same file
             }
 
-            if (true)
+            if (false)
             {
                 IDictionary<string, string> performanceData = new SortedDictionary<string, string>();
 
