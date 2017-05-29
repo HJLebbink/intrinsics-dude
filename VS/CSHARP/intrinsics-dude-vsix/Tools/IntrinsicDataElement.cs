@@ -187,7 +187,8 @@ namespace IntrinsicsDude.Tools
                             case "int":
                             case "double":
                             case "float":
-                                textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
+                                //textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
+                                textBlock.Inlines.Add(MakeRunBold(str3, foreground));
                                 break;
                             default:
                                 textBlock.Inlines.Add(MakeRunBold(str3, foreground));
