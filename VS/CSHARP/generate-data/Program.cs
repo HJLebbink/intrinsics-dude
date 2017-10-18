@@ -35,76 +35,87 @@ namespace IntrinsicsDude.GenerateData
         {
             IntrinsicStore store = new IntrinsicStore();
 
-            /// used once to generate the data from the Intel intrinsics guide. 
-            /// To create the hmtl, use https://software.intel.com/sites/landingpage/IntrinsicsGuide/#=undefined
+            /// to generate html data from the Intel Intrinsics Guide. 
+            /// To create the html, use https://software.intel.com/sites/landingpage/IntrinsicsGuide/#=undefined
 
             string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            //string fileIn = path + "Intel-Intrinsics-Guide-(11-aug-16).html";
-            //string fileIn = path + "Intel-Intrinsics-Guide-(01-feb-17).html";
-            string fileIn = path + "Intel-Intrinsics-Guide-(29-may-17).html";
-            string performance_Filename = path + "Performance.txt";
 
-            Console.WriteLine("Converting file " + fileIn + ".");
-            store.LoadHtml(fileIn);
+            //string filename_input = "Intel-Intrinsics-Guide-(11-aug-16).html";
+            //string filename_input = "Intel-Intrinsics-Guide-(01-feb-17).html";
+            string filename_input = "Intel-Intrinsics-Guide-(18-oct-17).html";
+            string filename_input_full = path + filename_input;
 
-            string fileOut = path + "Intrinsics-Data.xml";
-            if (true)
+            //string filename_output_full = path + filename_input + ".xml";
+            string filename_output_full = path + "Intrinsics-Data.xml";
+
+            if (!File.Exists(filename_input_full))
             {
-                Console.WriteLine("Saving file " + fileOut + ".");
-                store.SaveXml(fileOut);
+                Console.WriteLine("Could not find input file " + filename_input_full + ".");
             }
-
-            if (false)
+            else
             {
-                IntrinsicStore store2 = new IntrinsicStore();
-                store2.LoadXml(fileOut);
-                store2.SaveXml(fileOut + ".2.xml"); // to check that that loading and saving results in the same file
-            }
+                Console.WriteLine("Converting input file " + filename_input_full + ".");
+                store.LoadHtml(filename_input_full);
 
-            if (false)
-            {
-                IDictionary<string, string> performanceData = new SortedDictionary<string, string>();
-
-                foreach (var x in store.Data)
+                if (true)
                 {
-                    if (x.Value.Count > 1)
-                        Console.WriteLine("intrinsic " + x.Key + " : " + x.Value.Count);
+                    Console.WriteLine("Saving file " + filename_output_full + ".");
+                    store.SaveXml(filename_output_full);
+                }
 
-                    foreach (IntrinsicDataElement y in x.Value)
+                if (false) // test if loading and saving yield the same fileOut file
+                {
+                    IntrinsicStore store2 = new IntrinsicStore();
+                    store2.LoadXml(filename_output_full);
+                    store2.SaveXml(filename_output_full + ".2.xml"); // to check that that loading and saving results in the same file
+                }
+
+                if (false) // write performance data
+                {
+                    string filename_performance_full = path + "performance.txt";
+                    IDictionary<string, string> performanceData = new SortedDictionary<string, string>();
+
+                    foreach (var x in store.Data)
                     {
-                        string perf = y.performance;
-                        string asm = y.asm;
+                        if (x.Value.Count > 1)
+                            Console.WriteLine("intrinsic " + x.Key + " : " + x.Value.Count);
 
-                        if ((perf == null) || (perf.Length == 0))
+                        foreach (IntrinsicDataElement y in x.Value)
                         {
-                            //Console.WriteLine("intrinsic " + x.Key + " : performance is null");
-                        }
-                        else
-                        {
-                            if (performanceData.ContainsKey(asm))
+                            string perf = y.performance;
+                            string asm = y.asm;
+
+                            if ((perf == null) || (perf.Length == 0))
                             {
-                                if (!performanceData[asm].Equals(perf))
+                                //Console.WriteLine("intrinsic " + x.Key + " : performance is null");
+                            }
+                            else
+                            {
+                                if (performanceData.ContainsKey(asm))
                                 {
-                                    Console.WriteLine("Asm" + asm + " already exists!");
-                                    Console.WriteLine("  : " + perf);
-                                    Console.WriteLine("  : " + performanceData[asm]);
+                                    if (!performanceData[asm].Equals(perf))
+                                    {
+                                        Console.WriteLine("Asm" + asm + " already exists!");
+                                        Console.WriteLine("  : " + perf);
+                                        Console.WriteLine("  : " + performanceData[asm]);
+                                    }
                                 }
-                            } else
-                            {
-                                performanceData.Add(new KeyValuePair<string, string>(asm, perf));
+                                else
+                                {
+                                    performanceData.Add(new KeyValuePair<string, string>(asm, perf));
+                                }
                             }
                         }
                     }
-                }
 
-                StringBuilder sb = new StringBuilder();
-                foreach (KeyValuePair<string, string> entry in performanceData)
-                {
-                    sb.AppendLine(entry.Key.ToUpper() + "\t" + entry.Value);
+                    StringBuilder sb = new StringBuilder();
+                    foreach (KeyValuePair<string, string> entry in performanceData)
+                    {
+                        sb.AppendLine(entry.Key.ToUpper() + "\t" + entry.Value);
+                    }
+                    System.IO.File.WriteAllText(filename_performance_full, sb.ToString());
                 }
-                System.IO.File.WriteAllText(performance_Filename, sb.ToString());
             }
-
             Console.WriteLine("Press any key to continue");
             Console.ReadLine();
         }

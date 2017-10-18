@@ -69,7 +69,10 @@ namespace IntrinsicsDude.Tools
             AVX512PF    = 1L << 9,
             AVX512VL    = 1L << 10,
             AVX512IFMA52 = 1L << 28,
-            AVX512VBMI = 1L << 31,
+            AVX512VBMI  = 1L << 31,
+            AVX512_4VNNIW = 1L << 49,
+            AVX512_4FMAPS = 1L << 50,
+            AVX512VPOPCNTDQ = 1L << 51,
 
             BMI1        = 1L << 11,
             BMI2        = 1L << 12,
@@ -441,6 +444,7 @@ namespace IntrinsicsDude.Tools
                 case "__M128I": return ParamType.__M128I;
                 case "__M128I CONST*": return ParamType.__M128I_CONST_PTR;
                 case "CONST __M128I*": return ParamType.__M128I_CONST_PTR;
+                case "_M128I*": return ParamType.__M128I_PTR;
                 case "__M128I*": return ParamType.__M128I_PTR;
                 case "__M256": return ParamType.__M256;
                 case "__M256*": return ParamType.__M256_PTR;
@@ -449,14 +453,17 @@ namespace IntrinsicsDude.Tools
                 case "__M256I": return ParamType.__M256I;
                 case "__M256I CONST*": return ParamType.__M256I_CONST_PTR;
                 case "__M256I*": return ParamType.__M256I_PTR;
+                case "_M512": return ParamType.__M512;
                 case "__M512": return ParamType.__M512;
                 case "__M512*": return ParamType.__M512_PTR;
                 case "__M512D": return ParamType.__M512D;
                 case "__M512D*": return ParamType.__M512D_PTR;
+                case "_M512I": return ParamType.__M512I;
                 case "__M512I": return ParamType.__M512I;
                 case "__M64": return ParamType.__M64;
                 case "__M64*": return ParamType.__M64_PTR;
                 case "__M64 CONST*": return ParamType.__M64_CONST_PTR;
+                case "_MMASK16": return ParamType.__MMASK16;
                 case "__MMASK16": return ParamType.__MMASK16;
                 case "__MMASK16*": return ParamType.__MMASK16_PTR;
                 case "__MMASK32": return ParamType.__MMASK32;
@@ -515,7 +522,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType \"" + str + "\"; \"" + str2 + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType: str=\"" + str + "\"; str2=\"" + str2 + "\".");
                     return ParamType.NONE;
             }
         }
@@ -532,13 +539,19 @@ namespace IntrinsicsDude.Tools
                 case "AES": return CpuID.AES;
                 case "AVX": return CpuID.AVX;
                 case "AVX2": return CpuID.AVX2;
+
                 case "AVX512BW": return CpuID.AVX512BW;
                 case "AVX512CD": return CpuID.AVX512CD;
                 case "AVX512DQ": return CpuID.AVX512DQ;
                 case "AVX512ER": return CpuID.AVX512ER;
+                case "AVX512": return CpuID.AVX512F;
                 case "AVX512F": return CpuID.AVX512F;
                 case "AVX512PF": return CpuID.AVX512PF;
                 case "AVX512VL": return CpuID.AVX512VL;
+                case "AVX512_4VNNIW": return CpuID.AVX512_4VNNIW;
+                case "AVX512_4FMAPS": return CpuID.AVX512_4FMAPS;
+                case "AVX512VPOPCNTDQ": return CpuID.AVX512VPOPCNTDQ;
+
                 case "BMI1": return CpuID.BMI1;
                 case "BMI2": return CpuID.BMI2;
                 case "CLFLUSHOPT": return CpuID.CLFLUSHOPT;
@@ -7043,6 +7056,30 @@ namespace IntrinsicsDude.Tools
                 case "_MM512_ZEXTSI128_SI512": return Intrinsic._MM512_ZEXTSI128_SI512;
                 case "_MM512_ZEXTSI256_SI512": return Intrinsic._MM512_ZEXTSI256_SI512;
 
+                case "_MM512_4DPWSSD_EPI32": return Intrinsic._MM512_4DPWSSD_EPI32;
+                case "_MM512_MASK_4DPWSSD_EPI32": return Intrinsic._MM512_MASK_4DPWSSD_EPI32;
+                case "_MM512_MASKZ_4DPWSSD_EPI32": return Intrinsic._MM512_MASKZ_4DPWSSD_EPI32;
+                case "_MM512_4DPWSSDS_EPI32": return Intrinsic._MM512_4DPWSSDS_EPI32;
+                case "_MM512_MASK_4DPWSSDS_EPI32": return Intrinsic._MM512_MASK_4DPWSSDS_EPI32;
+                case "_MM512_MASKZ_4DPWSSDS_EPI32": return Intrinsic._MM512_MASKZ_4DPWSSDS_EPI32;
+                case "_MM512_4FMADD_PS": return Intrinsic._MM512_4FMADD_PS;
+                case "_MM512_MASK_4FMADD_PS": return Intrinsic._MM512_MASK_4FMADD_PS;
+                case "_MM512_MASKZ_4FMADD_PS": return Intrinsic._MM512_MASKZ_4FMADD_PS;
+                case "_MM_4FMADD_SS": return Intrinsic._MM_4FMADD_SS;
+                case "_MM_MASK_4FMADD_SS": return Intrinsic._MM_MASK_4FMADD_SS;
+                case "_MM_MASKZ_4FMADD_SS": return Intrinsic._MM_MASKZ_4FMADD_SS;
+                case "_MM512_4FNMADD_PS": return Intrinsic._MM512_4FNMADD_PS;
+                case "_MM512_MASK_4FNMADD_PS": return Intrinsic._MM512_MASK_4FNMADD_PS;
+                case "_MM512_MASKZ_4FNMADD_PS": return Intrinsic._MM512_MASKZ_4FNMADD_PS;
+                case "_MM_4FNMADD_SS": return Intrinsic._MM_4FNMADD_SS;
+                case "_MM_MASK_4FNMADD_SS": return Intrinsic._MM_MASK_4FNMADD_SS;
+                case "_MM_MASKZ_4FNMADD_SS": return Intrinsic._MM_MASKZ_4FNMADD_SS;
+                case "_MM512_MASK_POPCNT_EPI32": return Intrinsic._MM512_MASK_POPCNT_EPI32;
+                case "_MM512_MASKZ_POPCNT_EPI32": return Intrinsic._MM512_MASKZ_POPCNT_EPI32;
+                case "_MM512_POPCNT_EPI32": return Intrinsic._MM512_POPCNT_EPI32;
+                case "_MM512_MASK_POPCNT_EPI64": return Intrinsic._MM512_MASK_POPCNT_EPI64;
+                case "_MM512_MASKZ_POPCNT_EPI64": return Intrinsic._MM512_MASKZ_POPCNT_EPI64;
+                case "_MM512_POPCNT_EPI64": return Intrinsic._MM512_POPCNT_EPI64;
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
                     return Intrinsic.NONE;
