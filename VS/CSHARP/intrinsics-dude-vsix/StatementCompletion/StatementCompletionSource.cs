@@ -218,7 +218,7 @@ namespace IntrinsicsDude.StatementCompletion
                     completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
                     completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
                 }
-                if ((selectedCpuID & (CpuID.AVX512BW | CpuID.AVX512CD | CpuID.AVX512DQ | CpuID.AVX512ER | CpuID.AVX512F | CpuID.AVX512IFMA52 | CpuID.AVX512PF | CpuID.AVX512VBMI | CpuID.AVX512VL | CpuID.KNCNI)) != CpuID.NONE) {
+                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA52 | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE) {
                     completions.Add(new Completion("__m512", "__m512 ", null, null, null));
                     completions.Add(new Completion("__m512d", "__m512d ", null, null, null));
                     completions.Add(new Completion("__m512i", "__m512i ", null, null, null));

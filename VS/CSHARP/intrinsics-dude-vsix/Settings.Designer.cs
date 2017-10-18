@@ -194,72 +194,72 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512VL {
+        public bool ARCH_AVX512_VL {
             get {
-                return ((bool)(this["ARCH_AVX512VL"]));
+                return ((bool)(this["ARCH_AVX512_VL"]));
             }
             set {
-                this["ARCH_AVX512VL"] = value;
+                this["ARCH_AVX512_VL"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512DQ {
+        public bool ARCH_AVX512_DQ {
             get {
-                return ((bool)(this["ARCH_AVX512DQ"]));
+                return ((bool)(this["ARCH_AVX512_DQ"]));
             }
             set {
-                this["ARCH_AVX512DQ"] = value;
+                this["ARCH_AVX512_DQ"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512BW {
+        public bool ARCH_AVX512_BW {
             get {
-                return ((bool)(this["ARCH_AVX512BW"]));
+                return ((bool)(this["ARCH_AVX512_BW"]));
             }
             set {
-                this["ARCH_AVX512BW"] = value;
+                this["ARCH_AVX512_BW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_ER {
+            get {
+                return ((bool)(this["ARCH_AVX512_ER"]));
+            }
+            set {
+                this["ARCH_AVX512_ER"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512ER {
+        public bool ARCH_AVX512_F {
             get {
-                return ((bool)(this["ARCH_AVX512ER"]));
+                return ((bool)(this["ARCH_AVX512_F"]));
             }
             set {
-                this["ARCH_AVX512ER"] = value;
+                this["ARCH_AVX512_F"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512F {
+        public bool ARCH_AVX512_CD {
             get {
-                return ((bool)(this["ARCH_AVX512F"]));
+                return ((bool)(this["ARCH_AVX512_CD"]));
             }
             set {
-                this["ARCH_AVX512F"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512CD {
-            get {
-                return ((bool)(this["ARCH_AVX512CD"]));
-            }
-            set {
-                this["ARCH_AVX512CD"] = value;
+                this["ARCH_AVX512_CD"] = value;
             }
         }
         
@@ -385,7 +385,7 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ARCH_KNCNI {
             get {
                 return ((bool)(this["ARCH_KNCNI"]));
@@ -421,37 +421,37 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512PF {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_PF {
             get {
-                return ((bool)(this["ARCH_AVX512PF"]));
+                return ((bool)(this["ARCH_AVX512_PF"]));
             }
             set {
-                this["ARCH_AVX512PF"] = value;
+                this["ARCH_AVX512_PF"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512IFMA52 {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_IFMA52 {
             get {
-                return ((bool)(this["ARCH_AVX512IFMA52"]));
+                return ((bool)(this["ARCH_AVX512_IFMA52"]));
             }
             set {
-                this["ARCH_AVX512IFMA52"] = value;
+                this["ARCH_AVX512_IFMA52"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ARCH_AVX512VBMI {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VBMI {
             get {
-                return ((bool)(this["ARCH_AVX512VBMI"]));
+                return ((bool)(this["ARCH_AVX512_VBMI"]));
             }
             set {
-                this["ARCH_AVX512VBMI"] = value;
+                this["ARCH_AVX512_VBMI"] = value;
             }
         }
         
@@ -716,6 +716,42 @@ namespace IntrinsicsDude {
             }
             set {
                 this["ARCH_CLWB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VPOPCNTDQ {
+            get {
+                return ((bool)(this["ARCH_AVX512_VPOPCNTDQ"]));
+            }
+            set {
+                this["ARCH_AVX512_VPOPCNTDQ"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_4VNNIW {
+            get {
+                return ((bool)(this["ARCH_AVX512_4VNNIW"]));
+            }
+            set {
+                this["ARCH_AVX512_4VNNIW"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_4FMAPS {
+            get {
+                return ((bool)(this["ARCH_AVX512_4FMAPS"]));
+            }
+            set {
+                this["ARCH_AVX512_4FMAPS"] = value;
             }
         }
     }

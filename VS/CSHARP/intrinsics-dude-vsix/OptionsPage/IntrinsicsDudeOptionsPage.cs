@@ -79,105 +79,111 @@ namespace IntrinsicsDude.OptionsPage
 
             this._intrinsicsDudeOptionsPageUI.useSvml = Settings.Default.USE_SVML;
             this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.MakeToolTip(CpuID.SVML);
-            this._intrinsicsDudeOptionsPageUI.useArch_ADX = Settings.Default.ARCH_ADX;
-            this._intrinsicsDudeOptionsPageUI.useArch_ADX_UI.ToolTip = this.MakeToolTip(CpuID.ADX);
-            this._intrinsicsDudeOptionsPageUI.useArch_AES = Settings.Default.ARCH_AES;
-            this._intrinsicsDudeOptionsPageUI.useArch_AES_UI.ToolTip = this.MakeToolTip(CpuID.AES);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX = Settings.Default.ARCH_AVX;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX_UI.ToolTip = this.MakeToolTip(CpuID.AVX);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX2 = Settings.Default.ARCH_AVX2;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX2_UI.ToolTip = this.MakeToolTip(CpuID.AVX2);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512F = Settings.Default.ARCH_AVX512F;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512F_UI.ToolTip = this.MakeToolTip(CpuID.AVX512F);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL = Settings.Default.ARCH_AVX512VL;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL_UI.ToolTip = this.MakeToolTip(CpuID.AVX512VL);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ = Settings.Default.ARCH_AVX512DQ;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ_UI.ToolTip = this.MakeToolTip(CpuID.AVX512DQ);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW = Settings.Default.ARCH_AVX512BW;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW_UI.ToolTip = this.MakeToolTip(CpuID.AVX512BW);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER = Settings.Default.ARCH_AVX512ER;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER_UI.ToolTip = this.MakeToolTip(CpuID.AVX512ER);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD = Settings.Default.ARCH_AVX512CD;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD_UI.ToolTip = this.MakeToolTip(CpuID.AVX512CD);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF = Settings.Default.ARCH_AVX512PF;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF_UI.ToolTip = this.MakeToolTip(CpuID.AVX512PF);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52 = Settings.Default.ARCH_AVX512IFMA52;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52_UI.ToolTip = this.MakeToolTip(CpuID.AVX512IFMA52);
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI = Settings.Default.ARCH_AVX512VBMI;
-            this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI_UI.ToolTip = this.MakeToolTip(CpuID.AVX512VBMI);
+            this._intrinsicsDudeOptionsPageUI.UseArch_ADX = Settings.Default.ARCH_ADX;
+            this._intrinsicsDudeOptionsPageUI.UseArch_ADX_UI.ToolTip = this.MakeToolTip(CpuID.ADX);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AES = Settings.Default.ARCH_AES;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AES_UI.ToolTip = this.MakeToolTip(CpuID.AES);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX = Settings.Default.ARCH_AVX;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX_UI.ToolTip = this.MakeToolTip(CpuID.AVX);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX2 = Settings.Default.ARCH_AVX2;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX2_UI.ToolTip = this.MakeToolTip(CpuID.AVX2);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F = Settings.Default.ARCH_AVX512_F;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_F);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL = Settings.Default.ARCH_AVX512_VL;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VL);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ = Settings.Default.ARCH_AVX512_DQ;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_DQ);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW = Settings.Default.ARCH_AVX512_BW;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_BW);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER = Settings.Default.ARCH_AVX512_ER;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_ER);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD = Settings.Default.ARCH_AVX512_CD;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_CD);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF = Settings.Default.ARCH_AVX512_PF;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_PF);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA52 = Settings.Default.ARCH_AVX512_IFMA52;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_IFMA52);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI = Settings.Default.ARCH_AVX512_VBMI;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VBMI);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ = Settings.Default.ARCH_AVX512_VPOPCNTDQ;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VPOPCNTDQ);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW = Settings.Default.ARCH_AVX512_4VNNIW;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_4VNNIW);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS = Settings.Default.ARCH_AVX512_4FMAPS;
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_4FMAPS);
 
-            this._intrinsicsDudeOptionsPageUI.useArch_IA32 = Settings.Default.ARCH_IA32;
-            this._intrinsicsDudeOptionsPageUI.useArch_IA32_UI.ToolTip = this.MakeToolTip(CpuID.IA32);
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI1 = Settings.Default.ARCH_BMI1;
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI1_UI.ToolTip = this.MakeToolTip(CpuID.BMI1);
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI2 = Settings.Default.ARCH_BMI2;
-            this._intrinsicsDudeOptionsPageUI.useArch_BMI2_UI.ToolTip = this.MakeToolTip(CpuID.BMI2);
-            this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT = Settings.Default.ARCH_CLFLUSHOPT;
-            this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT_UI.ToolTip = this.MakeToolTip(CpuID.CLFLUSHOPT);
-            this._intrinsicsDudeOptionsPageUI.useArch_FMA = Settings.Default.ARCH_FMA;
-            this._intrinsicsDudeOptionsPageUI.useArch_FMA_UI.ToolTip = this.MakeToolTip(CpuID.FMA);
-            this._intrinsicsDudeOptionsPageUI.useArch_FP16C = Settings.Default.ARCH_FP16C;
-            this._intrinsicsDudeOptionsPageUI.useArch_FP16C_UI.ToolTip = this.MakeToolTip(CpuID.FP16C);
-            this._intrinsicsDudeOptionsPageUI.useArch_FXSR = Settings.Default.ARCH_FXSR;
-            this._intrinsicsDudeOptionsPageUI.useArch_FXSR_UI.ToolTip = this.MakeToolTip(CpuID.FXSR);
-            this._intrinsicsDudeOptionsPageUI.useArch_KNCNI = Settings.Default.ARCH_KNCNI;
-            this._intrinsicsDudeOptionsPageUI.useArch_KNCNI_UI.ToolTip = this.MakeToolTip(CpuID.KNCNI);
-            this._intrinsicsDudeOptionsPageUI.useArch_MMX = Settings.Default.ARCH_MMX;
-            this._intrinsicsDudeOptionsPageUI.useArch_MMX_UI.ToolTip = this.MakeToolTip(CpuID.MMX);
-            this._intrinsicsDudeOptionsPageUI.useArch_MPX = Settings.Default.ARCH_MPX;
-            this._intrinsicsDudeOptionsPageUI.useArch_MPX_UI.ToolTip = this.MakeToolTip(CpuID.MPX);
-            this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ = Settings.Default.ARCH_PCLMULQDQ;
-            this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ_UI.ToolTip = this.MakeToolTip(CpuID.PCLMULQDQ);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE = Settings.Default.ARCH_SSE;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE_UI.ToolTip = this.MakeToolTip(CpuID.SSE);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE2 = Settings.Default.ARCH_SSE2;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE2_UI.ToolTip = this.MakeToolTip(CpuID.SSE2);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE3 = Settings.Default.ARCH_SSE3;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSE3);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSSE3 = Settings.Default.ARCH_SSSE3;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSSE3);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE41 = Settings.Default.ARCH_SSE41;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE41_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_1);
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE42 = Settings.Default.ARCH_SSE42;
-            this._intrinsicsDudeOptionsPageUI.useArch_SSE42_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_2);
+            this._intrinsicsDudeOptionsPageUI.UseArch_IA32 = Settings.Default.ARCH_IA32;
+            this._intrinsicsDudeOptionsPageUI.UseArch_IA32_UI.ToolTip = this.MakeToolTip(CpuID.IA32);
+            this._intrinsicsDudeOptionsPageUI.UseArch_BMI1 = Settings.Default.ARCH_BMI1;
+            this._intrinsicsDudeOptionsPageUI.UseArch_BMI1_UI.ToolTip = this.MakeToolTip(CpuID.BMI1);
+            this._intrinsicsDudeOptionsPageUI.UseArch_BMI2 = Settings.Default.ARCH_BMI2;
+            this._intrinsicsDudeOptionsPageUI.UseArch_BMI2_UI.ToolTip = this.MakeToolTip(CpuID.BMI2);
+            this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT = Settings.Default.ARCH_CLFLUSHOPT;
+            this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT_UI.ToolTip = this.MakeToolTip(CpuID.CLFLUSHOPT);
+            this._intrinsicsDudeOptionsPageUI.UseArch_FMA = Settings.Default.ARCH_FMA;
+            this._intrinsicsDudeOptionsPageUI.UseArch_FMA_UI.ToolTip = this.MakeToolTip(CpuID.FMA);
+            this._intrinsicsDudeOptionsPageUI.UseArch_FP16C = Settings.Default.ARCH_FP16C;
+            this._intrinsicsDudeOptionsPageUI.UseArch_FP16C_UI.ToolTip = this.MakeToolTip(CpuID.FP16C);
+            this._intrinsicsDudeOptionsPageUI.UseArch_FXSR = Settings.Default.ARCH_FXSR;
+            this._intrinsicsDudeOptionsPageUI.UseArch_FXSR_UI.ToolTip = this.MakeToolTip(CpuID.FXSR);
+            this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI = Settings.Default.ARCH_KNCNI;
+            this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI_UI.ToolTip = this.MakeToolTip(CpuID.KNCNI);
+            this._intrinsicsDudeOptionsPageUI.UseArch_MMX = Settings.Default.ARCH_MMX;
+            this._intrinsicsDudeOptionsPageUI.UseArch_MMX_UI.ToolTip = this.MakeToolTip(CpuID.MMX);
+            this._intrinsicsDudeOptionsPageUI.UseArch_MPX = Settings.Default.ARCH_MPX;
+            this._intrinsicsDudeOptionsPageUI.UseArch_MPX_UI.ToolTip = this.MakeToolTip(CpuID.MPX);
+            this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ = Settings.Default.ARCH_PCLMULQDQ;
+            this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ_UI.ToolTip = this.MakeToolTip(CpuID.PCLMULQDQ);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE = Settings.Default.ARCH_SSE;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE_UI.ToolTip = this.MakeToolTip(CpuID.SSE);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE2 = Settings.Default.ARCH_SSE2;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE2_UI.ToolTip = this.MakeToolTip(CpuID.SSE2);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE3 = Settings.Default.ARCH_SSE3;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSE3);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3 = Settings.Default.ARCH_SSSE3;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3_UI.ToolTip = this.MakeToolTip(CpuID.SSSE3);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE41 = Settings.Default.ARCH_SSE41;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE41_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_1);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE42 = Settings.Default.ARCH_SSE42;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SSE42_UI.ToolTip = this.MakeToolTip(CpuID.SSE4_2);
 
-            this._intrinsicsDudeOptionsPageUI.useArch_LZCNT = Settings.Default.ARCH_LZCNT;
-            this._intrinsicsDudeOptionsPageUI.useArch_LZCNT_UI.ToolTip = this.MakeToolTip(CpuID.LZCNT);
-            this._intrinsicsDudeOptionsPageUI.useArch_INVPCID = Settings.Default.ARCH_INVPCID;
-            this._intrinsicsDudeOptionsPageUI.useArch_INVPCID_UI.ToolTip = this.MakeToolTip(CpuID.INVPCID);
-            this._intrinsicsDudeOptionsPageUI.useArch_MONITOR = Settings.Default.ARCH_MONITOR;
-            this._intrinsicsDudeOptionsPageUI.useArch_MONITOR_UI.ToolTip = this.MakeToolTip(CpuID.MONITOR);
-            this._intrinsicsDudeOptionsPageUI.useArch_POPCNT = Settings.Default.ARCH_POPCNT;
-            this._intrinsicsDudeOptionsPageUI.useArch_POPCNT_UI.ToolTip = this.MakeToolTip(CpuID.POPCNT);
-            this._intrinsicsDudeOptionsPageUI.useArch_RDRAND = Settings.Default.ARCH_RDRAND;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDRAND_UI.ToolTip = this.MakeToolTip(CpuID.RDRAND);
-            this._intrinsicsDudeOptionsPageUI.useArch_RDSEED = Settings.Default.ARCH_RDSEED;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDSEED_UI.ToolTip = this.MakeToolTip(CpuID.RDSEED);
-            this._intrinsicsDudeOptionsPageUI.useArch_TSC = Settings.Default.ARCH_TSC;
-            this._intrinsicsDudeOptionsPageUI.useArch_TSC_UI.ToolTip = this.MakeToolTip(CpuID.TSC);
-            this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP = Settings.Default.ARCH_RDTSCP;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP_UI.ToolTip = this.MakeToolTip(CpuID.RDTSCP);
-            this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE = Settings.Default.ARCH_FSGSBASE;
-            this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE_UI.ToolTip = this.MakeToolTip(CpuID.FSGSBASE);
-            this._intrinsicsDudeOptionsPageUI.useArch_SHA = Settings.Default.ARCH_SHA;
-            this._intrinsicsDudeOptionsPageUI.useArch_SHA_UI.ToolTip = this.MakeToolTip(CpuID.SHA);
-            this._intrinsicsDudeOptionsPageUI.useArch_RTM = Settings.Default.ARCH_RTM;
-            this._intrinsicsDudeOptionsPageUI.useArch_RTM_UI.ToolTip = this.MakeToolTip(CpuID.RTM);
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVE = Settings.Default.ARCH_XSAVE;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVE_UI.ToolTip = this.MakeToolTip(CpuID.XSAVE);
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC = Settings.Default.ARCH_XSAVEC;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEC);
-            this._intrinsicsDudeOptionsPageUI.useArch_XSS = Settings.Default.ARCH_XSS;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSS_UI.ToolTip = this.MakeToolTip(CpuID.XSS);
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT = Settings.Default.ARCH_XSAVEOPT;
-            this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEOPT);
-            this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1 = Settings.Default.ARCH_PREFETCHWT1;
-            this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1_UI.ToolTip = this.MakeToolTip(CpuID.PREFETCHWT1);
+            this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT = Settings.Default.ARCH_LZCNT;
+            this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT_UI.ToolTip = this.MakeToolTip(CpuID.LZCNT);
+            this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID = Settings.Default.ARCH_INVPCID;
+            this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID_UI.ToolTip = this.MakeToolTip(CpuID.INVPCID);
+            this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR = Settings.Default.ARCH_MONITOR;
+            this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR_UI.ToolTip = this.MakeToolTip(CpuID.MONITOR);
+            this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT = Settings.Default.ARCH_POPCNT;
+            this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT_UI.ToolTip = this.MakeToolTip(CpuID.POPCNT);
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND = Settings.Default.ARCH_RDRAND;
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND_UI.ToolTip = this.MakeToolTip(CpuID.RDRAND);
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED = Settings.Default.ARCH_RDSEED;
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED_UI.ToolTip = this.MakeToolTip(CpuID.RDSEED);
+            this._intrinsicsDudeOptionsPageUI.UseArch_TSC = Settings.Default.ARCH_TSC;
+            this._intrinsicsDudeOptionsPageUI.UseArch_TSC_UI.ToolTip = this.MakeToolTip(CpuID.TSC);
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP = Settings.Default.ARCH_RDTSCP;
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP_UI.ToolTip = this.MakeToolTip(CpuID.RDTSCP);
+            this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE = Settings.Default.ARCH_FSGSBASE;
+            this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE_UI.ToolTip = this.MakeToolTip(CpuID.FSGSBASE);
+            this._intrinsicsDudeOptionsPageUI.UseArch_SHA = Settings.Default.ARCH_SHA;
+            this._intrinsicsDudeOptionsPageUI.UseArch_SHA_UI.ToolTip = this.MakeToolTip(CpuID.SHA);
+            this._intrinsicsDudeOptionsPageUI.UseArch_RTM = Settings.Default.ARCH_RTM;
+            this._intrinsicsDudeOptionsPageUI.UseArch_RTM_UI.ToolTip = this.MakeToolTip(CpuID.RTM);
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE = Settings.Default.ARCH_XSAVE;
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE_UI.ToolTip = this.MakeToolTip(CpuID.XSAVE);
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC = Settings.Default.ARCH_XSAVEC;
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEC);
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSS = Settings.Default.ARCH_XSS;
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSS_UI.ToolTip = this.MakeToolTip(CpuID.XSS);
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT = Settings.Default.ARCH_XSAVEOPT;
+            this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT_UI.ToolTip = this.MakeToolTip(CpuID.XSAVEOPT);
+            this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1 = Settings.Default.ARCH_PREFETCHWT1;
+            this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1_UI.ToolTip = this.MakeToolTip(CpuID.PREFETCHWT1);
 
-            this._intrinsicsDudeOptionsPageUI.useArch_RDPID = Settings.Default.ARCH_RDPID;
-            this._intrinsicsDudeOptionsPageUI.useArch_RDPID_UI.ToolTip = this.MakeToolTip(CpuID.RDPID);
-            this._intrinsicsDudeOptionsPageUI.useArch_CLWB = Settings.Default.ARCH_CLWB;
-            this._intrinsicsDudeOptionsPageUI.useArch_CLWB_UI.ToolTip = this.MakeToolTip(CpuID.CLWB);
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDPID = Settings.Default.ARCH_RDPID;
+            this._intrinsicsDudeOptionsPageUI.UseArch_RDPID_UI.ToolTip = this.MakeToolTip(CpuID.RDPID);
+            this._intrinsicsDudeOptionsPageUI.UseArch_CLWB = Settings.Default.ARCH_CLWB;
+            this._intrinsicsDudeOptionsPageUI.UseArch_CLWB_UI.ToolTip = this.MakeToolTip(CpuID.CLWB);
             #endregion
         }
 
@@ -226,26 +232,27 @@ namespace IntrinsicsDude.OptionsPage
         protected override void OnDeactivate(CancelEventArgs e)
         {
             bool changed = false;
+            StringBuilder sb = new StringBuilder();
 
             #region Syntax Highlighting
             if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useSyntaxHighlighting=" + this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting);
+                sb.AppendLine("useSyntaxHighlighting=" + this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting);
                 changed = true;
             }
             if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMnemonic.ToArgb())
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: stored=" + Settings.Default.SyntaxHighlighting_Intrinsic + "; new colorMnemonic=" + this._intrinsicsDudeOptionsPageUI.colorMnemonic);
+                sb.AppendLine("stored=" + Settings.Default.SyntaxHighlighting_Intrinsic + "; new colorMnemonic=" + this._intrinsicsDudeOptionsPageUI.colorMnemonic);
                 changed = true;
             }
             if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorRegister.ToArgb())
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: colorRegister=" + this._intrinsicsDudeOptionsPageUI.colorRegister);
+                sb.AppendLine("colorRegister=" + this._intrinsicsDudeOptionsPageUI.colorRegister);
                 changed = true;
             }
             if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMisc.ToArgb())
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: colorMisc=" + this._intrinsicsDudeOptionsPageUI.colorMisc);
+                sb.AppendLine("colorMisc=" + this._intrinsicsDudeOptionsPageUI.colorMisc);
                 changed = true;
             }
             #endregion
@@ -253,271 +260,289 @@ namespace IntrinsicsDude.OptionsPage
             #region Code Completion
             if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.useCodeCompletion)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useCodeCompletion=" + this._intrinsicsDudeOptionsPageUI.useCodeCompletion);
+                sb.AppendLine("useCodeCompletion=" + this._intrinsicsDudeOptionsPageUI.useCodeCompletion);
                 changed = true;
             }
             
             if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: hideStatementCompletionMmxRegisters=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters);
+                sb.AppendLine("hideStatementCompletionMmxRegisters=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters);
                 changed = true;
             }
             if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: hideStatementCompletionIncompatibleReturnType=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType);
+                sb.AppendLine("hideStatementCompletionIncompatibleReturnType=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType);
                 changed = true;
             }
             if (Settings.Default.DecorateIncompatibleStatementCompletions_On != this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: decorateIncompatibleStatementCompletions=" + this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions);
+                sb.AppendLine("decorateIncompatibleStatementCompletions=" + this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions);
                 changed = true;
             }
 
             if (Settings.Default.SignatureHelp_On != this._intrinsicsDudeOptionsPageUI.useSignatureHelp)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useSignatureHelp=" + this._intrinsicsDudeOptionsPageUI.useSignatureHelp);
+                sb.AppendLine("useSignatureHelp=" + this._intrinsicsDudeOptionsPageUI.useSignatureHelp);
                 changed = true;
             }
             if (Settings.Default.USE_SVML != this._intrinsicsDudeOptionsPageUI.useSvml)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useSvml=" + this._intrinsicsDudeOptionsPageUI.useSvml);
+                sb.AppendLine("useSvml=" + this._intrinsicsDudeOptionsPageUI.useSvml);
                 changed = true;
             }
-            if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.useArch_MMX)
+            if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.UseArch_MMX)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_MMX=" + this._intrinsicsDudeOptionsPageUI.useArch_MMX);
+                sb.AppendLine("UseArch_MMX=" + this._intrinsicsDudeOptionsPageUI.UseArch_MMX);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE != this._intrinsicsDudeOptionsPageUI.useArch_SSE)
+            if (Settings.Default.ARCH_SSE != this._intrinsicsDudeOptionsPageUI.UseArch_SSE)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSE=" + this._intrinsicsDudeOptionsPageUI.useArch_SSE);
+                sb.AppendLine("UseArch_SSE=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSE);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE2 != this._intrinsicsDudeOptionsPageUI.useArch_SSE2)
+            if (Settings.Default.ARCH_SSE2 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE2)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSE2=" + this._intrinsicsDudeOptionsPageUI.useArch_SSE2);
+                sb.AppendLine("UseArch_SSE2=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSE2);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE3 != this._intrinsicsDudeOptionsPageUI.useArch_SSE3)
+            if (Settings.Default.ARCH_SSE3 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE3)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSE3=" + this._intrinsicsDudeOptionsPageUI.useArch_SSE3);
+                sb.AppendLine("UseArch_SSE3=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSE3);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSSE3 != this._intrinsicsDudeOptionsPageUI.useArch_SSSE3)
+            if (Settings.Default.ARCH_SSSE3 != this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSSE3=" + this._intrinsicsDudeOptionsPageUI.useArch_SSSE3);
+                sb.AppendLine("UseArch_SSSE3=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE41 != this._intrinsicsDudeOptionsPageUI.useArch_SSE41)
+            if (Settings.Default.ARCH_SSE41 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE41)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSE41=" + this._intrinsicsDudeOptionsPageUI.useArch_SSE41);
+                sb.AppendLine("UseArch_SSE41=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSE41);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE42 != this._intrinsicsDudeOptionsPageUI.useArch_SSE42)
+            if (Settings.Default.ARCH_SSE42 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE42)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SSE42=" + this._intrinsicsDudeOptionsPageUI.useArch_SSE42);
+                sb.AppendLine("UseArch_SSE42=" + this._intrinsicsDudeOptionsPageUI.UseArch_SSE42);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX != this._intrinsicsDudeOptionsPageUI.useArch_AVX)
+            if (Settings.Default.ARCH_AVX != this._intrinsicsDudeOptionsPageUI.UseArch_AVX)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX);
+                sb.AppendLine("UseArch_AVX=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX2 != this._intrinsicsDudeOptionsPageUI.useArch_AVX2)
+            if (Settings.Default.ARCH_AVX2 != this._intrinsicsDudeOptionsPageUI.UseArch_AVX2)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX2=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX2);
+                sb.AppendLine("UseArch_AVX2=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX2);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512VL != this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL)
+            if (Settings.Default.ARCH_AVX512_VL != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512VL=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL);
+                sb.AppendLine("UseArch_AVX512_VL=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512DQ != this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ)
+            if (Settings.Default.ARCH_AVX512_DQ != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512DQ=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ);
+                sb.AppendLine("UseArch_AVX512_DQ=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512BW != this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW)
+            if (Settings.Default.ARCH_AVX512_BW != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512BW=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW);
+                sb.AppendLine("UseArch_AVX512_BW=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512ER != this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER)
+            if (Settings.Default.ARCH_AVX512_ER != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512ER=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER);
+                sb.AppendLine("UseArch_AVX512_ER=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512F != this._intrinsicsDudeOptionsPageUI.useArch_AVX512F)
+            if (Settings.Default.ARCH_AVX512_F != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512PF=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512F);
+                sb.AppendLine("UseArch_AVX512_F=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512CD != this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD)
+            if (Settings.Default.ARCH_AVX512_CD != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512CD=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD);
+                sb.AppendLine("UseArch_AVX512_CD=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512PF != this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF)
+            if (Settings.Default.ARCH_AVX512_PF != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512PF=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF);
+                sb.AppendLine("UseArch_AVX512_PF=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512IFMA52 != this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52)
+            if (Settings.Default.ARCH_AVX512_IFMA52 != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA52)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512IFMA52=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52);
+                sb.AppendLine("UseArch_AVX512_IFMA52=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA52);
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512VBMI != this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI)
+            if (Settings.Default.ARCH_AVX512_VBMI != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AVX512VBMI=" + this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI);
+                sb.AppendLine("UseArch_AVX512_VBMI=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI);
                 changed = true;
             }
 
-            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.useArch_IA32) {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_IA32=" + this._intrinsicsDudeOptionsPageUI.useArch_IA32);
+            if (Settings.Default.ARCH_AVX512_VPOPCNTDQ != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ)
+            {
+                sb.AppendLine("UseArch_AVX512_VPOPCNTDQ=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ);
                 changed = true;
             }
-            if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.useArch_BMI1)
+            if (Settings.Default.ARCH_AVX512_4VNNIW != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_BMI1=" + this._intrinsicsDudeOptionsPageUI.useArch_BMI1);
+                sb.AppendLine("UseArch_AVX512_4VNNIW=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW);
                 changed = true;
             }
-            if (Settings.Default.ARCH_BMI2 != this._intrinsicsDudeOptionsPageUI.useArch_BMI2)
+            if (Settings.Default.ARCH_AVX512_4FMAPS != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_BMI2=" + this._intrinsicsDudeOptionsPageUI.useArch_BMI2);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_FMA != this._intrinsicsDudeOptionsPageUI.useArch_FMA)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_FMA=" + this._intrinsicsDudeOptionsPageUI.useArch_FMA);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_MPX != this._intrinsicsDudeOptionsPageUI.useArch_MPX)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_MPX=" + this._intrinsicsDudeOptionsPageUI.useArch_MPX);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_ADX != this._intrinsicsDudeOptionsPageUI.useArch_ADX)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_ADX=" + this._intrinsicsDudeOptionsPageUI.useArch_ADX);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_FP16C != this._intrinsicsDudeOptionsPageUI.useArch_FP16C)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_F16C=" + this._intrinsicsDudeOptionsPageUI.useArch_FP16C);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_PCLMULQDQ != this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_PCLMULQDQ=" + this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_AES != this._intrinsicsDudeOptionsPageUI.useArch_AES)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_AES=" + this._intrinsicsDudeOptionsPageUI.useArch_AES);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_CLFLUSHOPT != this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_CLFLUSHOPT=" + this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_FXSR != this._intrinsicsDudeOptionsPageUI.useArch_FXSR)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_FXSR=" + this._intrinsicsDudeOptionsPageUI.useArch_FXSR);
-                changed = true;
-            }
-            if (Settings.Default.ARCH_KNCNI != this._intrinsicsDudeOptionsPageUI.useArch_KNCNI)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_KNCNI=" + this._intrinsicsDudeOptionsPageUI.useArch_KNCNI);
+                sb.AppendLine("UseArch_AVX512_4FMAPS=" + this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS);
                 changed = true;
             }
 
 
-            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.useArch_LZCNT)
-            {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_LZCNT=" + this._intrinsicsDudeOptionsPageUI.useArch_LZCNT);
+
+            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.UseArch_IA32) {
+                sb.AppendLine("UseArch_IA32=" + this._intrinsicsDudeOptionsPageUI.UseArch_IA32);
                 changed = true;
             }
-            if (Settings.Default.ARCH_INVPCID != this._intrinsicsDudeOptionsPageUI.useArch_INVPCID)
+            if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.UseArch_BMI1)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_INVPCID=" + this._intrinsicsDudeOptionsPageUI.useArch_INVPCID);
+                sb.AppendLine("UseArch_BMI1=" + this._intrinsicsDudeOptionsPageUI.UseArch_BMI1);
                 changed = true;
             }
-            if (Settings.Default.ARCH_MONITOR != this._intrinsicsDudeOptionsPageUI.useArch_MONITOR)
+            if (Settings.Default.ARCH_BMI2 != this._intrinsicsDudeOptionsPageUI.UseArch_BMI2)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_MONITOR=" + this._intrinsicsDudeOptionsPageUI.useArch_MONITOR);
+                sb.AppendLine("UseArch_BMI2=" + this._intrinsicsDudeOptionsPageUI.UseArch_BMI2);
                 changed = true;
             }
-            if (Settings.Default.ARCH_POPCNT != this._intrinsicsDudeOptionsPageUI.useArch_POPCNT)
+            if (Settings.Default.ARCH_FMA != this._intrinsicsDudeOptionsPageUI.UseArch_FMA)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_POPCNT=" + this._intrinsicsDudeOptionsPageUI.useArch_POPCNT);
+                sb.AppendLine("UseArch_FMA=" + this._intrinsicsDudeOptionsPageUI.UseArch_FMA);
                 changed = true;
             }
-            if (Settings.Default.ARCH_RDRAND != this._intrinsicsDudeOptionsPageUI.useArch_RDRAND)
+            if (Settings.Default.ARCH_MPX != this._intrinsicsDudeOptionsPageUI.UseArch_MPX)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_RDRAND=" + this._intrinsicsDudeOptionsPageUI.useArch_RDRAND);
+                sb.AppendLine("UseArch_MPX=" + this._intrinsicsDudeOptionsPageUI.UseArch_MPX);
                 changed = true;
             }
-            if (Settings.Default.ARCH_RDSEED != this._intrinsicsDudeOptionsPageUI.useArch_RDSEED)
+            if (Settings.Default.ARCH_ADX != this._intrinsicsDudeOptionsPageUI.UseArch_ADX)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_RDSEED=" + this._intrinsicsDudeOptionsPageUI.useArch_RDSEED);
+                sb.AppendLine("UseArch_ADX=" + this._intrinsicsDudeOptionsPageUI.UseArch_ADX);
                 changed = true;
             }
-            if (Settings.Default.ARCH_TSC != this._intrinsicsDudeOptionsPageUI.useArch_TSC)
+            if (Settings.Default.ARCH_FP16C != this._intrinsicsDudeOptionsPageUI.UseArch_FP16C)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_TSC=" + this._intrinsicsDudeOptionsPageUI.useArch_TSC);
+                sb.AppendLine("UseArch_F16C=" + this._intrinsicsDudeOptionsPageUI.UseArch_FP16C);
                 changed = true;
             }
-            if (Settings.Default.ARCH_RDTSCP != this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP)
+            if (Settings.Default.ARCH_PCLMULQDQ != this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_RDTSCP=" + this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP);
+                sb.AppendLine("UseArch_PCLMULQDQ=" + this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ);
                 changed = true;
             }
-            if (Settings.Default.ARCH_FSGSBASE != this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE)
+            if (Settings.Default.ARCH_AES != this._intrinsicsDudeOptionsPageUI.UseArch_AES)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_FSGSBASE=" + this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE);
+                sb.AppendLine("UseArch_AES=" + this._intrinsicsDudeOptionsPageUI.UseArch_AES);
                 changed = true;
             }
-            if (Settings.Default.ARCH_SHA != this._intrinsicsDudeOptionsPageUI.useArch_SHA)
+            if (Settings.Default.ARCH_CLFLUSHOPT != this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_SHA=" + this._intrinsicsDudeOptionsPageUI.useArch_SHA);
+                sb.AppendLine("UseArch_CLFLUSHOPT=" + this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT);
                 changed = true;
             }
-            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.useArch_LZCNT)
+            if (Settings.Default.ARCH_FXSR != this._intrinsicsDudeOptionsPageUI.UseArch_FXSR)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_LZCNT=" + this._intrinsicsDudeOptionsPageUI.useArch_LZCNT);
+                sb.AppendLine("UseArch_FXSR=" + this._intrinsicsDudeOptionsPageUI.UseArch_FXSR);
                 changed = true;
             }
-            if (Settings.Default.ARCH_RTM != this._intrinsicsDudeOptionsPageUI.useArch_RTM)
+            if (Settings.Default.ARCH_KNCNI != this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_RTM=" + this._intrinsicsDudeOptionsPageUI.useArch_RTM);
+                sb.AppendLine("UseArch_KNCNI=" + this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI);
                 changed = true;
             }
-            if (Settings.Default.ARCH_XSAVE != this._intrinsicsDudeOptionsPageUI.useArch_XSAVE)
+
+
+            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_XSAVE=" + this._intrinsicsDudeOptionsPageUI.useArch_XSAVE);
+                sb.AppendLine("UseArch_LZCNT=" + this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT);
                 changed = true;
             }
-            if (Settings.Default.ARCH_XSAVEC != this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC)
+            if (Settings.Default.ARCH_INVPCID != this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_XSAVEC=" + this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC);
+                sb.AppendLine("UseArch_INVPCID=" + this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID);
                 changed = true;
             }
-            if (Settings.Default.ARCH_XSS != this._intrinsicsDudeOptionsPageUI.useArch_XSS)
+            if (Settings.Default.ARCH_MONITOR != this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_XSS=" + this._intrinsicsDudeOptionsPageUI.useArch_XSS);
+                sb.AppendLine("UseArch_MONITOR=" + this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR);
                 changed = true;
             }
-            if (Settings.Default.ARCH_XSAVEOPT != this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT)
+            if (Settings.Default.ARCH_POPCNT != this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_XSAVEOPT=" + this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT);
+                sb.AppendLine("UseArch_POPCNT=" + this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT);
                 changed = true;
             }
-            if (Settings.Default.ARCH_PREFETCHWT1 != this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1)
+            if (Settings.Default.ARCH_RDRAND != this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND)
             {
-                if (logInfo) IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeOptionsPage: OnDeactivate: change detected: useArch_PREFETCHWT1=" + this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1);
+                sb.AppendLine("UseArch_RDRAND=" + this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_RDSEED != this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED)
+            {
+                sb.AppendLine("UseArch_RDSEED=" + this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_TSC != this._intrinsicsDudeOptionsPageUI.UseArch_TSC)
+            {
+                sb.AppendLine("UseArch_TSC=" + this._intrinsicsDudeOptionsPageUI.UseArch_TSC);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_RDTSCP != this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP)
+            {
+                sb.AppendLine("UseArch_RDTSCP=" + this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_FSGSBASE != this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE)
+            {
+                sb.AppendLine("UseArch_FSGSBASE=" + this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_SHA != this._intrinsicsDudeOptionsPageUI.UseArch_SHA)
+            {
+                sb.AppendLine("UseArch_SHA=" + this._intrinsicsDudeOptionsPageUI.UseArch_SHA);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT)
+            {
+                sb.AppendLine("UseArch_LZCNT=" + this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_RTM != this._intrinsicsDudeOptionsPageUI.UseArch_RTM)
+            {
+                sb.AppendLine("UseArch_RTM=" + this._intrinsicsDudeOptionsPageUI.UseArch_RTM);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_XSAVE != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE)
+            {
+                sb.AppendLine("UseArch_XSAVE=" + this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_XSAVEC != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC)
+            {
+                sb.AppendLine("UseArch_XSAVEC=" + this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_XSS != this._intrinsicsDudeOptionsPageUI.UseArch_XSS)
+            {
+                sb.AppendLine("UseArch_XSS=" + this._intrinsicsDudeOptionsPageUI.UseArch_XSS);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_XSAVEOPT != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT)
+            {
+                sb.AppendLine("UseArch_XSAVEOPT=" + this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT);
+                changed = true;
+            }
+            if (Settings.Default.ARCH_PREFETCHWT1 != this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1)
+            {
+                sb.AppendLine("UseArch_PREFETCHWT1=" + this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1);
                 changed = true;
             }
 
@@ -527,7 +552,7 @@ namespace IntrinsicsDude.OptionsPage
             if (changed)
             {
                 string title = null;
-                string message = "Unsaved changes exist. Would you like to save.";
+                string message = "Unsaved changes exist.\n\n" + sb.ToString() + "\nWould you like to save?";
                 int result = VsShellUtilities.ShowMessageBox(this.Site, message, title, OLEMSGICON.OLEMSGICON_QUERY, OLEMSGBUTTON.OLEMSGBUTTON_OKCANCEL, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
                 if (result == (int)VSConstants.MessageBoxResult.IDOK)
                 {
@@ -618,243 +643,256 @@ namespace IntrinsicsDude.OptionsPage
                 Settings.Default.USE_SVML = this._intrinsicsDudeOptionsPageUI.useSvml;
                 changed = true;
             }
-            if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.useArch_MMX)
+            if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.UseArch_MMX)
             {
-                Settings.Default.ARCH_MMX = this._intrinsicsDudeOptionsPageUI.useArch_MMX;
+                Settings.Default.ARCH_MMX = this._intrinsicsDudeOptionsPageUI.UseArch_MMX;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE != this._intrinsicsDudeOptionsPageUI.useArch_SSE)
+            if (Settings.Default.ARCH_SSE != this._intrinsicsDudeOptionsPageUI.UseArch_SSE)
             {
-                Settings.Default.ARCH_SSE = this._intrinsicsDudeOptionsPageUI.useArch_SSE;
+                Settings.Default.ARCH_SSE = this._intrinsicsDudeOptionsPageUI.UseArch_SSE;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE2 != this._intrinsicsDudeOptionsPageUI.useArch_SSE2)
+            if (Settings.Default.ARCH_SSE2 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE2)
             {
-                Settings.Default.ARCH_SSE2 = this._intrinsicsDudeOptionsPageUI.useArch_SSE2;
+                Settings.Default.ARCH_SSE2 = this._intrinsicsDudeOptionsPageUI.UseArch_SSE2;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE3 != this._intrinsicsDudeOptionsPageUI.useArch_SSE3)
+            if (Settings.Default.ARCH_SSE3 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE3)
             {
-                Settings.Default.ARCH_SSE3 = this._intrinsicsDudeOptionsPageUI.useArch_SSE3;
+                Settings.Default.ARCH_SSE3 = this._intrinsicsDudeOptionsPageUI.UseArch_SSE3;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSSE3 != this._intrinsicsDudeOptionsPageUI.useArch_SSSE3)
+            if (Settings.Default.ARCH_SSSE3 != this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3)
             {
-                Settings.Default.ARCH_SSSE3 = this._intrinsicsDudeOptionsPageUI.useArch_SSSE3;
+                Settings.Default.ARCH_SSSE3 = this._intrinsicsDudeOptionsPageUI.UseArch_SSSE3;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE41 != this._intrinsicsDudeOptionsPageUI.useArch_SSE41)
+            if (Settings.Default.ARCH_SSE41 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE41)
             {
-                Settings.Default.ARCH_SSE41 = this._intrinsicsDudeOptionsPageUI.useArch_SSE41;
+                Settings.Default.ARCH_SSE41 = this._intrinsicsDudeOptionsPageUI.UseArch_SSE41;
                 changed = true;
             }
-            if (Settings.Default.ARCH_SSE42 != this._intrinsicsDudeOptionsPageUI.useArch_SSE42)
+            if (Settings.Default.ARCH_SSE42 != this._intrinsicsDudeOptionsPageUI.UseArch_SSE42)
             {
-                Settings.Default.ARCH_SSE42 = this._intrinsicsDudeOptionsPageUI.useArch_SSE42;
+                Settings.Default.ARCH_SSE42 = this._intrinsicsDudeOptionsPageUI.UseArch_SSE42;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX != this._intrinsicsDudeOptionsPageUI.useArch_AVX)
+            if (Settings.Default.ARCH_AVX != this._intrinsicsDudeOptionsPageUI.UseArch_AVX)
             {
-                Settings.Default.ARCH_AVX = this._intrinsicsDudeOptionsPageUI.useArch_AVX;
+                Settings.Default.ARCH_AVX = this._intrinsicsDudeOptionsPageUI.UseArch_AVX;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX2 != this._intrinsicsDudeOptionsPageUI.useArch_AVX2)
+            if (Settings.Default.ARCH_AVX2 != this._intrinsicsDudeOptionsPageUI.UseArch_AVX2)
             {
-                Settings.Default.ARCH_AVX2 = this._intrinsicsDudeOptionsPageUI.useArch_AVX2;
+                Settings.Default.ARCH_AVX2 = this._intrinsicsDudeOptionsPageUI.UseArch_AVX2;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512VL != this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL)
+            if (Settings.Default.ARCH_AVX512_VL != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL)
             {
-                Settings.Default.ARCH_AVX512VL = this._intrinsicsDudeOptionsPageUI.useArch_AVX512VL;
+                Settings.Default.ARCH_AVX512_VL = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VL;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512DQ != this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ)
+            if (Settings.Default.ARCH_AVX512_DQ != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ)
             {
-                Settings.Default.ARCH_AVX512DQ = this._intrinsicsDudeOptionsPageUI.useArch_AVX512DQ;
+                Settings.Default.ARCH_AVX512_DQ = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_DQ;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512BW != this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW)
+            if (Settings.Default.ARCH_AVX512_BW != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW)
             {
-                Settings.Default.ARCH_AVX512BW = this._intrinsicsDudeOptionsPageUI.useArch_AVX512BW;
+                Settings.Default.ARCH_AVX512_BW = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BW;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512ER != this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER)
+            if (Settings.Default.ARCH_AVX512_ER != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER)
             {
-                Settings.Default.ARCH_AVX512ER = this._intrinsicsDudeOptionsPageUI.useArch_AVX512ER;
+                Settings.Default.ARCH_AVX512_ER = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_ER;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512F != this._intrinsicsDudeOptionsPageUI.useArch_AVX512F)
+            if (Settings.Default.ARCH_AVX512_F != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F)
             {
-                Settings.Default.ARCH_AVX512F = this._intrinsicsDudeOptionsPageUI.useArch_AVX512F;
+                Settings.Default.ARCH_AVX512_F = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_F;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512CD != this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD)
+            if (Settings.Default.ARCH_AVX512_CD != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD)
             {
-                Settings.Default.ARCH_AVX512CD = this._intrinsicsDudeOptionsPageUI.useArch_AVX512CD;
+                Settings.Default.ARCH_AVX512_CD = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_CD;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512PF != this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF)
+            if (Settings.Default.ARCH_AVX512_PF != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF)
             {
-                Settings.Default.ARCH_AVX512PF = this._intrinsicsDudeOptionsPageUI.useArch_AVX512PF;
+                Settings.Default.ARCH_AVX512_PF = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_PF;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512IFMA52 != this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52)
+            if (Settings.Default.ARCH_AVX512_IFMA52 != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA52)
             {
-                Settings.Default.ARCH_AVX512IFMA52 = this._intrinsicsDudeOptionsPageUI.useArch_AVX512IFMA52;
+                Settings.Default.ARCH_AVX512_IFMA52 = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_IFMA52;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AVX512VBMI != this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI)
+            if (Settings.Default.ARCH_AVX512_VBMI != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI)
             {
-                Settings.Default.ARCH_AVX512VBMI = this._intrinsicsDudeOptionsPageUI.useArch_AVX512VBMI;
+                Settings.Default.ARCH_AVX512_VBMI = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_AVX512_VPOPCNTDQ != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ)
+            {
+                Settings.Default.ARCH_AVX512_VPOPCNTDQ = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPOPCNTDQ;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_AVX512_4VNNIW != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW)
+            {
+                Settings.Default.ARCH_AVX512_4VNNIW = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4VNNIW;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_AVX512_4FMAPS != this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS)
+            {
+                Settings.Default.ARCH_AVX512_4FMAPS = this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS;
+                changed = true;
+            }
+
+            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.UseArch_IA32) {
+                Settings.Default.ARCH_IA32 = this._intrinsicsDudeOptionsPageUI.UseArch_IA32;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.UseArch_BMI1)
+            {
+                Settings.Default.ARCH_BMI1 = this._intrinsicsDudeOptionsPageUI.UseArch_BMI1;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_BMI2 != this._intrinsicsDudeOptionsPageUI.UseArch_BMI2)
+            {
+                Settings.Default.ARCH_BMI2 = this._intrinsicsDudeOptionsPageUI.UseArch_BMI2;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_FMA != this._intrinsicsDudeOptionsPageUI.UseArch_FMA)
+            {
+                Settings.Default.ARCH_FMA = this._intrinsicsDudeOptionsPageUI.UseArch_FMA;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_MPX != this._intrinsicsDudeOptionsPageUI.UseArch_MPX)
+            {
+                Settings.Default.ARCH_MPX = this._intrinsicsDudeOptionsPageUI.UseArch_MPX;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_ADX != this._intrinsicsDudeOptionsPageUI.UseArch_ADX)
+            {
+                Settings.Default.ARCH_ADX = this._intrinsicsDudeOptionsPageUI.UseArch_ADX;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_FP16C != this._intrinsicsDudeOptionsPageUI.UseArch_FP16C)
+            {
+                Settings.Default.ARCH_FP16C = this._intrinsicsDudeOptionsPageUI.UseArch_FP16C;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_PCLMULQDQ != this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ)
+            {
+                Settings.Default.ARCH_PCLMULQDQ = this._intrinsicsDudeOptionsPageUI.UseArch_PCLMULQDQ;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_AES != this._intrinsicsDudeOptionsPageUI.UseArch_AES)
+            {
+                Settings.Default.ARCH_AES = this._intrinsicsDudeOptionsPageUI.UseArch_AES;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_CLFLUSHOPT != this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT)
+            {
+                Settings.Default.ARCH_CLFLUSHOPT = this._intrinsicsDudeOptionsPageUI.UseArch_CLFLUSHOPT;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_FXSR != this._intrinsicsDudeOptionsPageUI.UseArch_FXSR)
+            {
+                Settings.Default.ARCH_FXSR = this._intrinsicsDudeOptionsPageUI.UseArch_FXSR;
+                changed = true;
+            }
+            if (Settings.Default.ARCH_KNCNI != this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI)
+            {
+                Settings.Default.ARCH_KNCNI = this._intrinsicsDudeOptionsPageUI.UseArch_KNCNI;
                 changed = true;
             }
 
 
-
-            if (Settings.Default.ARCH_IA32 != this._intrinsicsDudeOptionsPageUI.useArch_IA32) {
-                Settings.Default.ARCH_IA32 = this._intrinsicsDudeOptionsPageUI.useArch_IA32;
+            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT)
+            {
+                Settings.Default.ARCH_LZCNT = this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT;
                 changed = true;
             }
-            if (Settings.Default.ARCH_BMI1 != this._intrinsicsDudeOptionsPageUI.useArch_BMI1)
+            if (Settings.Default.ARCH_INVPCID != this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID)
             {
-                Settings.Default.ARCH_BMI1 = this._intrinsicsDudeOptionsPageUI.useArch_BMI1;
+                Settings.Default.ARCH_INVPCID = this._intrinsicsDudeOptionsPageUI.UseArch_INVPCID;
                 changed = true;
             }
-            if (Settings.Default.ARCH_BMI2 != this._intrinsicsDudeOptionsPageUI.useArch_BMI2)
+            if (Settings.Default.ARCH_MONITOR != this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR)
             {
-                Settings.Default.ARCH_BMI2 = this._intrinsicsDudeOptionsPageUI.useArch_BMI2;
+                Settings.Default.ARCH_MONITOR = this._intrinsicsDudeOptionsPageUI.UseArch_MONITOR;
                 changed = true;
             }
-            if (Settings.Default.ARCH_FMA != this._intrinsicsDudeOptionsPageUI.useArch_FMA)
+            if (Settings.Default.ARCH_POPCNT != this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT)
             {
-                Settings.Default.ARCH_FMA = this._intrinsicsDudeOptionsPageUI.useArch_FMA;
+                Settings.Default.ARCH_POPCNT = this._intrinsicsDudeOptionsPageUI.UseArch_POPCNT;
                 changed = true;
             }
-            if (Settings.Default.ARCH_MPX != this._intrinsicsDudeOptionsPageUI.useArch_MPX)
+            if (Settings.Default.ARCH_RDRAND != this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND)
             {
-                Settings.Default.ARCH_MPX = this._intrinsicsDudeOptionsPageUI.useArch_MPX;
+                Settings.Default.ARCH_RDRAND = this._intrinsicsDudeOptionsPageUI.UseArch_RDRAND;
                 changed = true;
             }
-            if (Settings.Default.ARCH_ADX != this._intrinsicsDudeOptionsPageUI.useArch_ADX)
+            if (Settings.Default.ARCH_RDSEED != this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED)
             {
-                Settings.Default.ARCH_ADX = this._intrinsicsDudeOptionsPageUI.useArch_ADX;
+                Settings.Default.ARCH_RDSEED = this._intrinsicsDudeOptionsPageUI.UseArch_RDSEED;
                 changed = true;
             }
-            if (Settings.Default.ARCH_FP16C != this._intrinsicsDudeOptionsPageUI.useArch_FP16C)
+            if (Settings.Default.ARCH_TSC != this._intrinsicsDudeOptionsPageUI.UseArch_TSC)
             {
-                Settings.Default.ARCH_FP16C = this._intrinsicsDudeOptionsPageUI.useArch_FP16C;
+                Settings.Default.ARCH_TSC = this._intrinsicsDudeOptionsPageUI.UseArch_TSC;
                 changed = true;
             }
-            if (Settings.Default.ARCH_PCLMULQDQ != this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ)
+            if (Settings.Default.ARCH_RDTSCP != this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP)
             {
-                Settings.Default.ARCH_PCLMULQDQ = this._intrinsicsDudeOptionsPageUI.useArch_PCLMULQDQ;
+                Settings.Default.ARCH_RDTSCP = this._intrinsicsDudeOptionsPageUI.UseArch_RDTSCP;
                 changed = true;
             }
-            if (Settings.Default.ARCH_AES != this._intrinsicsDudeOptionsPageUI.useArch_AES)
+            if (Settings.Default.ARCH_FSGSBASE != this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE)
             {
-                Settings.Default.ARCH_AES = this._intrinsicsDudeOptionsPageUI.useArch_AES;
+                Settings.Default.ARCH_FSGSBASE = this._intrinsicsDudeOptionsPageUI.UseArch_FSGSBASE;
                 changed = true;
             }
-            if (Settings.Default.ARCH_CLFLUSHOPT != this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT)
+            if (Settings.Default.ARCH_SHA != this._intrinsicsDudeOptionsPageUI.UseArch_SHA)
             {
-                Settings.Default.ARCH_CLFLUSHOPT = this._intrinsicsDudeOptionsPageUI.useArch_CLFLUSHOPT;
+                Settings.Default.ARCH_SHA = this._intrinsicsDudeOptionsPageUI.UseArch_SHA;
                 changed = true;
             }
-            if (Settings.Default.ARCH_FXSR != this._intrinsicsDudeOptionsPageUI.useArch_FXSR)
+            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT)
             {
-                Settings.Default.ARCH_FXSR = this._intrinsicsDudeOptionsPageUI.useArch_FXSR;
+                Settings.Default.ARCH_LZCNT = this._intrinsicsDudeOptionsPageUI.UseArch_LZCNT;
                 changed = true;
             }
-            if (Settings.Default.ARCH_KNCNI != this._intrinsicsDudeOptionsPageUI.useArch_KNCNI)
+            if (Settings.Default.ARCH_RTM != this._intrinsicsDudeOptionsPageUI.UseArch_RTM)
             {
-                Settings.Default.ARCH_KNCNI = this._intrinsicsDudeOptionsPageUI.useArch_KNCNI;
+                Settings.Default.ARCH_RTM = this._intrinsicsDudeOptionsPageUI.UseArch_RTM;
                 changed = true;
             }
-
-
-            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.useArch_LZCNT)
+            if (Settings.Default.ARCH_XSAVE != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE)
             {
-                Settings.Default.ARCH_LZCNT = this._intrinsicsDudeOptionsPageUI.useArch_LZCNT;
+                Settings.Default.ARCH_XSAVE = this._intrinsicsDudeOptionsPageUI.UseArch_XSAVE;
                 changed = true;
             }
-            if (Settings.Default.ARCH_INVPCID != this._intrinsicsDudeOptionsPageUI.useArch_INVPCID)
+            if (Settings.Default.ARCH_XSAVEC != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC)
             {
-                Settings.Default.ARCH_INVPCID = this._intrinsicsDudeOptionsPageUI.useArch_INVPCID;
+                Settings.Default.ARCH_XSAVEC = this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEC;
                 changed = true;
             }
-            if (Settings.Default.ARCH_MONITOR != this._intrinsicsDudeOptionsPageUI.useArch_MONITOR)
+            if (Settings.Default.ARCH_XSS != this._intrinsicsDudeOptionsPageUI.UseArch_XSS)
             {
-                Settings.Default.ARCH_MONITOR = this._intrinsicsDudeOptionsPageUI.useArch_MONITOR;
+                Settings.Default.ARCH_XSS = this._intrinsicsDudeOptionsPageUI.UseArch_XSS;
                 changed = true;
             }
-            if (Settings.Default.ARCH_POPCNT != this._intrinsicsDudeOptionsPageUI.useArch_POPCNT)
+            if (Settings.Default.ARCH_XSAVEOPT != this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT)
             {
-                Settings.Default.ARCH_POPCNT = this._intrinsicsDudeOptionsPageUI.useArch_POPCNT;
+                Settings.Default.ARCH_XSAVEOPT = this._intrinsicsDudeOptionsPageUI.UseArch_XSAVEOPT;
                 changed = true;
             }
-            if (Settings.Default.ARCH_RDRAND != this._intrinsicsDudeOptionsPageUI.useArch_RDRAND)
+            if (Settings.Default.ARCH_PREFETCHWT1 != this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1)
             {
-                Settings.Default.ARCH_RDRAND = this._intrinsicsDudeOptionsPageUI.useArch_RDRAND;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_RDSEED != this._intrinsicsDudeOptionsPageUI.useArch_RDSEED)
-            {
-                Settings.Default.ARCH_RDSEED = this._intrinsicsDudeOptionsPageUI.useArch_RDSEED;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_TSC != this._intrinsicsDudeOptionsPageUI.useArch_TSC)
-            {
-                Settings.Default.ARCH_TSC = this._intrinsicsDudeOptionsPageUI.useArch_TSC;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_RDTSCP != this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP)
-            {
-                Settings.Default.ARCH_RDTSCP = this._intrinsicsDudeOptionsPageUI.useArch_RDTSCP;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_FSGSBASE != this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE)
-            {
-                Settings.Default.ARCH_FSGSBASE = this._intrinsicsDudeOptionsPageUI.useArch_FSGSBASE;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_SHA != this._intrinsicsDudeOptionsPageUI.useArch_SHA)
-            {
-                Settings.Default.ARCH_SHA = this._intrinsicsDudeOptionsPageUI.useArch_SHA;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_LZCNT != this._intrinsicsDudeOptionsPageUI.useArch_LZCNT)
-            {
-                Settings.Default.ARCH_LZCNT = this._intrinsicsDudeOptionsPageUI.useArch_LZCNT;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_RTM != this._intrinsicsDudeOptionsPageUI.useArch_RTM)
-            {
-                Settings.Default.ARCH_RTM = this._intrinsicsDudeOptionsPageUI.useArch_RTM;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_XSAVE != this._intrinsicsDudeOptionsPageUI.useArch_XSAVE)
-            {
-                Settings.Default.ARCH_XSAVE = this._intrinsicsDudeOptionsPageUI.useArch_XSAVE;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_XSAVEC != this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC)
-            {
-                Settings.Default.ARCH_XSAVEC = this._intrinsicsDudeOptionsPageUI.useArch_XSAVEC;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_XSS != this._intrinsicsDudeOptionsPageUI.useArch_XSS)
-            {
-                Settings.Default.ARCH_XSS = this._intrinsicsDudeOptionsPageUI.useArch_XSS;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_XSAVEOPT != this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT)
-            {
-                Settings.Default.ARCH_XSAVEOPT = this._intrinsicsDudeOptionsPageUI.useArch_XSAVEOPT;
-                changed = true;
-            }
-            if (Settings.Default.ARCH_PREFETCHWT1 != this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1)
-            {
-                Settings.Default.ARCH_PREFETCHWT1 = this._intrinsicsDudeOptionsPageUI.useArch_PREFETCHWT1;
+                Settings.Default.ARCH_PREFETCHWT1 = this._intrinsicsDudeOptionsPageUI.UseArch_PREFETCHWT1;
                 changed = true;
             }
 

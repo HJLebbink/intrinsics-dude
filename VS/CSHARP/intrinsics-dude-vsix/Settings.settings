@@ -44,22 +44,22 @@
     <Setting Name="ARCH_AVX2" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512VL" Type="System.Boolean" Scope="User">
+    <Setting Name="ARCH_AVX512_VL" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512DQ" Type="System.Boolean" Scope="User">
+    <Setting Name="ARCH_AVX512_DQ" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512BW" Type="System.Boolean" Scope="User">
+    <Setting Name="ARCH_AVX512_BW" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512ER" Type="System.Boolean" Scope="User">
+    <Setting Name="ARCH_AVX512_ER" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ARCH_AVX512_F" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512F" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="ARCH_AVX512CD" Type="System.Boolean" Scope="User">
+    <Setting Name="ARCH_AVX512_CD" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ARCH_BMI1" Type="System.Boolean" Scope="User">
@@ -93,7 +93,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ARCH_KNCNI" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ARCH_AES" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -101,14 +101,14 @@
     <Setting Name="USE_SVML" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512PF" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="ARCH_AVX512_PF" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512IFMA52" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="ARCH_AVX512_IFMA52" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ARCH_AVX512VBMI" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="ARCH_AVX512_VBMI" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ARCH_LZCNT" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -174,6 +174,15 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ARCH_CLWB" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ARCH_AVX512_VPOPCNTDQ" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ARCH_AVX512_4VNNIW" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ARCH_AVX512_4FMAPS" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

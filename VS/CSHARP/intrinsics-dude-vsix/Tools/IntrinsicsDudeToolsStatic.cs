@@ -251,15 +251,15 @@ namespace IntrinsicsDude.Tools
                 case CpuID.AES: return Settings.Default.ARCH_AES;
                 case CpuID.AVX: return Settings.Default.ARCH_AVX;
                 case CpuID.AVX2: return Settings.Default.ARCH_AVX2;
-                case CpuID.AVX512F: return Settings.Default.ARCH_AVX512F;
-                case CpuID.AVX512CD: return Settings.Default.ARCH_AVX512CD;
-                case CpuID.AVX512ER: return Settings.Default.ARCH_AVX512ER;
-                case CpuID.AVX512VL: return Settings.Default.ARCH_AVX512VL;
-                case CpuID.AVX512DQ: return Settings.Default.ARCH_AVX512DQ;
-                case CpuID.AVX512PF: return Settings.Default.ARCH_AVX512PF;
-                case CpuID.AVX512BW: return Settings.Default.ARCH_AVX512BW;
-                case CpuID.AVX512IFMA52: return Settings.Default.ARCH_AVX512IFMA52;
-                case CpuID.AVX512VBMI: return Settings.Default.ARCH_AVX512VBMI;
+                case CpuID.AVX512_F: return Settings.Default.ARCH_AVX512_F;
+                case CpuID.AVX512_CD: return Settings.Default.ARCH_AVX512_CD;
+                case CpuID.AVX512_ER: return Settings.Default.ARCH_AVX512_ER;
+                case CpuID.AVX512_VL: return Settings.Default.ARCH_AVX512_VL;
+                case CpuID.AVX512_DQ: return Settings.Default.ARCH_AVX512_DQ;
+                case CpuID.AVX512_PF: return Settings.Default.ARCH_AVX512_PF;
+                case CpuID.AVX512_BW: return Settings.Default.ARCH_AVX512_BW;
+                case CpuID.AVX512_IFMA52: return Settings.Default.ARCH_AVX512_IFMA52;
+                case CpuID.AVX512_VBMI: return Settings.Default.ARCH_AVX512_VBMI;
 
                 case CpuID.BMI1: return Settings.Default.ARCH_BMI1;
                 case CpuID.BMI2: return Settings.Default.ARCH_BMI2;

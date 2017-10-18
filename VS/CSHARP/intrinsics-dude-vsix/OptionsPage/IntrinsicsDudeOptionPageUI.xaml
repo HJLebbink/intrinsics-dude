@@ -61,73 +61,150 @@
 					</Grid>
 				</GroupBox>
 				<GroupBox Header="Architectures (used for statement completion and signature help)" BorderBrush="DarkGray">
-					<Grid  Margin="0,2,0,0">
-                        <StackPanel>
-                            <GroupBox Header="SIMD" BorderBrush="DarkGray">
-                                <Grid>
+                    <StackPanel>
+                        <GroupBox Header="SIMD" >
+                            <StackPanel>
+                                <GroupBox Header="Streaming SIMD Extensions">
                                     <StackPanel>
-                                        <CheckBox x:Name="useArch_MMX_UI" Content="MMX" Margin="0,4,0,2"/>
-                                        <CheckBox x:Name="useArch_SSE_UI" Content="SSE" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SSE2_UI" Content="SSE2" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SSE3_UI" Content="SSE3" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SSSE3_UI" Content="SSSE3" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SSE41_UI" Content="SSE4.1" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SSE42_UI" Content="SSE4.2" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX_UI" Content="AVX" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX2_UI" Content="AVX2" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512F_UI" Content="AVX512F - AVX512 Foundation (Xeon Phi Knights Landing, Xeon Skylake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512CD_UI" Content="AVX512CD - AVX512 Conflict Detection (Xeon Phi Knights Landing, Xeon Skylake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512ER_UI" Content="AVX512ER - AVX512 Exponential and Reciprocal (Xeon Phi Knights Landing)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512PF_UI" Content="AVX512PF - AVX512 Prefetch (Xeon Phi Knights Landing)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512BW_UI" Content="AVX512BW - AVX512 Byte and Word (Xeon Skylake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512DQ_UI" Content="AVX512DQ - AVX512 Doubleword and QuadWord (Xeon Skylake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512VL_UI" Content="AVX512VL - AVX512 Vector Length Extensions (Xeon Skylake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512IFMA52_UI" Content="AVX512IFMA52 - AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AVX512VBMI_UI" Content="AVX512VBMI - AVX512 Vector Bit-Manipulation (Xeon Cannonlake)" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_KNCNI_UI" Content="KNCNI" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
+                                        <CheckBox x:Name="UseArch_MMX_UI" Content="MMX" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSE_UI" Content="SSE" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSE2_UI" Content="SSE2" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSE3_UI" Content="SSE3" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSSE3_UI" Content="SSSE3" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSE41_UI" Content="SSE4.1" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_SSE42_UI" Content="SSE4.2" Width="Auto" />
                                     </StackPanel>
-                                </Grid>
-                            </GroupBox>
-                            <GroupBox Header="Extensions" BorderBrush="DarkGray">
-                                <Grid >
+                                </GroupBox>
+                                <GroupBox Header="Advanced Vector Extensions">
                                     <StackPanel>
-										<CheckBox x:Name="useArch_IA32_UI" Content="IA32" Margin="0,4,0,2"/>
-										<CheckBox x:Name="useArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_AES_UI" Content="AES - Advanced Encryption Standard" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_BMI1_UI" Content="BMI1 - Bit Manipulation Instructions Sets 1" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_BMI2_UI" Content="BMI2 - Bit Manipulation Instructions Sets 2" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_MPX_UI" Content="MPX - Memory Protection Extensions" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_RTM_UI" Content="RTM - Transactional Synchronization Extensions" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_SHA_UI" Content="SHA - Secure Hash Algorithm Extension" Margin="0,2,0,2"/>
-										
-										<CheckBox x:Name="useArch_FP16C_UI" Content="FP16C - Half Precision FP Conversion" Margin="0,2,0,2"/>
-										<CheckBox x:Name="useArch_PCLMULQDQ_UI" Content="PCLMULQDQ - Carry-Less Multiplication Quadword" Margin="0,2,0,2"/>
-										<CheckBox x:Name="useArch_CLFLUSHOPT_UI" Content="CLFLUSHOPT" Margin="0,2,0,2"/>
-										<CheckBox x:Name="useArch_FXSR_UI" Content="FXSR" Margin="0,2,0,2"/>
+                                        <CheckBox x:Name="UseArch_AVX_UI" Content="AVX" HorizontalAlignment="Left" Width="Auto" />
+                                        <CheckBox x:Name="UseArch_AVX2_UI" Content="AVX2" HorizontalAlignment="Left" Width="Auto" />
 
-                                        <CheckBox x:Name="useArch_RDPID_UI" Content="RDPID - Read Processor ID" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_CLWB_UI" Content="CLWB - Cache Line Write Back" Margin="0,2,0,2"/>
-                                        
-                                        <CheckBox x:Name="useArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_INVPCID_UI" Content="INVPCID - Invalidates TLBs" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_MONITOR_UI" Content="MONITOR" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_POPCNT_UI" Content="POPCNT" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_RDRAND_UI" Content="RDRAND - Read Random Number" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_RDSEED_UI" Content="RDSEED - Read Random Seed" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_TSC_UI" Content="TSC" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_RDTSCP_UI" Content="RDTSCP" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_FSGSBASE_UI" Content="FSGSBASE" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_XSAVE_UI" Content="XSAVE" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_XSAVEC_UI" Content="XSAVEC" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_XSS_UI" Content="XSS" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_XSAVEOPT_UI" Content="XSAVEOPT - Save Processor Extended States Optimized" Margin="0,2,0,2"/>
-                                        <CheckBox x:Name="useArch_PREFETCHWT1_UI" Content="PREFETCHWT1" Margin="0,2,0,2"/>
+                                        <GroupBox Header="AVX512">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Text="SkyLake" Grid.Column="1" Grid.Row="0" TextWrapping="WrapWithOverflow" IsEnabled="False" HorizontalAlignment="Center" />
+                                                <TextBlock Text="Knights Landing" Grid.Column="2" Grid.Row="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" />
+                                                <TextBlock Text="Cannon-Lake" Grid.Column="3" Grid.Row="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center"/>
+                                                <TextBlock Text="Knights Mill" Grid.Column="4" Grid.Row="0" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_F_UI" Grid.Column="0" Grid.Row="1" Content="AVX512-F" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_CD_UI" Grid.Column="0" Grid.Row="2" Content="AVX512-CD" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_ER_UI" Grid.Column="0" Grid.Row="3" Content="AVX512-ER" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="2" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_PF_UI" Grid.Column="0" Grid.Row="4" Content="AVX512-PF" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_BW_UI" Grid.Column="0" Grid.Row="5" Content="AVX512-BW" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_DQ_UI" Grid.Column="0" Grid.Row="6" Content="AVX512-DQ" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_VL_UI" Grid.Column="0" Grid.Row="7" Content="AVX512-VL" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_IFMA_UI" Grid.Column="0" Grid.Row="8" Content="AVX512-IFMA" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_VBMI_UI" Grid.Column="0" Grid.Row="9" Content="AVX512-VBMI" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="3" Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_VPOPCNTDQ_UI" Grid.Column="0" Grid.Row="10" Content="AVX512-VPOPCNTDQ" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_4VNNIW_UI" Grid.Column="0" Grid.Row="11" Content="AVX512-4VNNIW" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_AVX512_4FMAPS_UI" Grid.Column="0" Grid.Row="12" Content="AVX512-4FMAPS" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="4" Grid.Row="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                <CheckBox x:Name="UseArch_KNCNI_UI" Grid.Column="0" Grid.Row="13" Content="KNCNI" VerticalAlignment="Center" Width="Auto" />
+                                                <TextBlock Text="X" Grid.Column="2" Grid.Row="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                            </Grid>
+                                        </GroupBox>
                                     </StackPanel>
-                                </Grid>
-                            </GroupBox>
-                        </StackPanel>
-                    </Grid>
+                                </GroupBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Extensions" BorderBrush="DarkGray">
+                            <StackPanel>
+								<CheckBox x:Name="UseArch_IA32_UI" Content="IA32" Margin="0,4,0,2"/>
+								<CheckBox x:Name="UseArch_ADX_UI" Content="ADX - Multi-Precision Add-Carry Instruction Extensions" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_AES_UI" Content="AES - Advanced Encryption Standard" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_BMI1_UI" Content="BMI1 - Bit Manipulation Instructions Sets 1" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_BMI2_UI" Content="BMI2 - Bit Manipulation Instructions Sets 2" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_MPX_UI" Content="MPX - Memory Protection Extensions" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_RTM_UI" Content="RTM - Transactional Synchronization Extensions" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_SHA_UI" Content="SHA - Secure Hash Algorithm Extension" Margin="0,2,0,2"/>
+
+                                <CheckBox x:Name="UseArch_FMA_UI" Content="FMA - Fused Multiply-Add" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_FP16C_UI" Content="FP16C - Half Precision FP Conversion" Margin="0,2,0,2"/>
+								<CheckBox x:Name="UseArch_PCLMULQDQ_UI" Content="PCLMULQDQ - Carry-Less Multiplication Quadword" Margin="0,2,0,2"/>
+								<CheckBox x:Name="UseArch_CLFLUSHOPT_UI" Content="CLFLUSHOPT" Margin="0,2,0,2"/>
+								<CheckBox x:Name="UseArch_FXSR_UI" Content="FXSR" Margin="0,2,0,2"/>
+
+                                <CheckBox x:Name="UseArch_RDPID_UI" Content="RDPID - Read Processor ID" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_CLWB_UI" Content="CLWB - Cache Line Write Back" Margin="0,2,0,2"/>
+                                        
+                                <CheckBox x:Name="UseArch_LZCNT_UI" Content="LZCNT - Leading Zero Count" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_INVPCID_UI" Content="INVPCID - Invalidates TLBs" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_MONITOR_UI" Content="MONITOR" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_POPCNT_UI" Content="POPCNT" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_RDRAND_UI" Content="RDRAND - Read Random Number" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_RDSEED_UI" Content="RDSEED - Read Random Seed" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_TSC_UI" Content="TSC" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_RDTSCP_UI" Content="RDTSCP" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_FSGSBASE_UI" Content="FSGSBASE" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_XSAVE_UI" Content="XSAVE" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_XSAVEC_UI" Content="XSAVEC" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_XSS_UI" Content="XSS" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_XSAVEOPT_UI" Content="XSAVEOPT - Save Processor Extended States Optimized" Margin="0,2,0,2"/>
+                                <CheckBox x:Name="UseArch_PREFETCHWT1_UI" Content="PREFETCHWT1" Margin="0,2,0,2"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
 				</GroupBox>
 			</StackPanel>
 		</ScrollViewer>

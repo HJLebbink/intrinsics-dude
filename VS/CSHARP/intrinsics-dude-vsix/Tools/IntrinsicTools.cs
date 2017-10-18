@@ -61,18 +61,18 @@ namespace IntrinsicsDude.Tools
             AES         = 1L << 1,
             AVX         = 1L << 2,
             AVX2        = 1L << 3,
-            AVX512BW    = 1L << 4,
-            AVX512CD    = 1L << 5,
-            AVX512DQ    = 1L << 6,
-            AVX512ER    = 1L << 7,
-            AVX512F     = 1L << 8,
-            AVX512PF    = 1L << 9,
-            AVX512VL    = 1L << 10,
-            AVX512IFMA52 = 1L << 28,
-            AVX512VBMI  = 1L << 31,
+            AVX512_BW    = 1L << 4,
+            AVX512_CD    = 1L << 5,
+            AVX512_DQ    = 1L << 6,
+            AVX512_ER    = 1L << 7,
+            AVX512_F     = 1L << 8,
+            AVX512_PF    = 1L << 9,
+            AVX512_VL    = 1L << 10,
+            AVX512_IFMA52 = 1L << 28,
+            AVX512_VBMI  = 1L << 31,
             AVX512_4VNNIW = 1L << 49,
             AVX512_4FMAPS = 1L << 50,
-            AVX512VPOPCNTDQ = 1L << 51,
+            AVX512_VPOPCNTDQ = 1L << 51,
 
             BMI1        = 1L << 11,
             BMI2        = 1L << 12,
@@ -540,17 +540,17 @@ namespace IntrinsicsDude.Tools
                 case "AVX": return CpuID.AVX;
                 case "AVX2": return CpuID.AVX2;
 
-                case "AVX512BW": return CpuID.AVX512BW;
-                case "AVX512CD": return CpuID.AVX512CD;
-                case "AVX512DQ": return CpuID.AVX512DQ;
-                case "AVX512ER": return CpuID.AVX512ER;
-                case "AVX512": return CpuID.AVX512F;
-                case "AVX512F": return CpuID.AVX512F;
-                case "AVX512PF": return CpuID.AVX512PF;
-                case "AVX512VL": return CpuID.AVX512VL;
+                case "AVX512BW": return CpuID.AVX512_BW;
+                case "AVX512CD": return CpuID.AVX512_CD;
+                case "AVX512DQ": return CpuID.AVX512_DQ;
+                case "AVX512ER": return CpuID.AVX512_ER;
+                case "AVX512": return CpuID.AVX512_F;
+                case "AVX512F": return CpuID.AVX512_F;
+                case "AVX512PF": return CpuID.AVX512_PF;
+                case "AVX512VL": return CpuID.AVX512_VL;
                 case "AVX512_4VNNIW": return CpuID.AVX512_4VNNIW;
                 case "AVX512_4FMAPS": return CpuID.AVX512_4FMAPS;
-                case "AVX512VPOPCNTDQ": return CpuID.AVX512VPOPCNTDQ;
+                case "AVX512VPOPCNTDQ": return CpuID.AVX512_VPOPCNTDQ;
 
                 case "BMI1": return CpuID.BMI1;
                 case "BMI2": return CpuID.BMI2;
@@ -572,10 +572,10 @@ namespace IntrinsicsDude.Tools
                 case "SSSE3": return CpuID.SSSE3;
 
                 case "LZCNT": return CpuID.LZCNT;
-                case "AVX512IFMA52": return CpuID.AVX512IFMA52;
+                case "AVX512IFMA52": return CpuID.AVX512_IFMA52;
                 case "INVPCID": return CpuID.INVPCID;
                 case "MONITOR": return CpuID.MONITOR;
-                case "AVX512VBMI": return CpuID.AVX512VBMI;
+                case "AVX512VBMI": return CpuID.AVX512_VBMI;
                 case "POPCNT": return CpuID.POPCNT;
                 case "RDRAND": return CpuID.RDRAND;
                 case "RDSEED": return CpuID.RDSEED;
@@ -877,15 +877,15 @@ namespace IntrinsicsDude.Tools
                 case CpuID.AES: return "Advanced Encryption Standard Extension";
                 case CpuID.AVX: return "";
                 case CpuID.AVX2: return "";
-                case CpuID.AVX512F: return "Instruction set AVX512 Foundation (Xeon Phi Knights Landing, Xeon Skylake)";
-                case CpuID.AVX512CD: return "Instruction set AVX512 Conflict Detection (Xeon Phi Knights Landing, Xeon Skylake)";
-                case CpuID.AVX512ER: return "Instruction set AVX512 Exponential and Reciprocal (Xeon Phi Knights Landing)";
-                case CpuID.AVX512PF: return "Instruction set AVX512 Prefetch (Xeon Phi Knights Landing)";
-                case CpuID.AVX512BW: return "Instruction set AVX512 Byte and Word (Xeon Skylake)";
-                case CpuID.AVX512DQ: return "Instruction set AVX512 Doubleword and QuadWord (Xeon Skylake)";
-                case CpuID.AVX512VL: return "Instruction set AVX512 Vector Length Extensions (Xeon Skylake)";
-                case CpuID.AVX512IFMA52: return "Instruction set AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)";
-                case CpuID.AVX512VBMI: return "Instruction set AVX512 Vector Bit-Manipulation (Xeon Cannonlake)";
+                case CpuID.AVX512_F: return "Instruction set AVX512 Foundation (Xeon Phi Knights Landing, Xeon Skylake)";
+                case CpuID.AVX512_CD: return "Instruction set AVX512 Conflict Detection (Xeon Phi Knights Landing, Xeon Skylake)";
+                case CpuID.AVX512_ER: return "Instruction set AVX512 Exponential and Reciprocal (Xeon Phi Knights Landing)";
+                case CpuID.AVX512_PF: return "Instruction set AVX512 Prefetch (Xeon Phi Knights Landing)";
+                case CpuID.AVX512_BW: return "Instruction set AVX512 Byte and Word (Xeon Skylake)";
+                case CpuID.AVX512_DQ: return "Instruction set AVX512 Doubleword and QuadWord (Xeon Skylake)";
+                case CpuID.AVX512_VL: return "Instruction set AVX512 Vector Length Extensions (Xeon Skylake)";
+                case CpuID.AVX512_IFMA52: return "Instruction set AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)";
+                case CpuID.AVX512_VBMI: return "Instruction set AVX512 Vector Bit-Manipulation (Xeon Cannonlake)";
 
                 case CpuID.BMI1: return "Bit Manipulation Instruction Set 1";
                 case CpuID.BMI2: return "Bit Manipulation Instruction Set 2";
