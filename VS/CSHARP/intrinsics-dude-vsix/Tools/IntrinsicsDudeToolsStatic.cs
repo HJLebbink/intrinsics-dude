@@ -260,6 +260,9 @@ namespace IntrinsicsDude.Tools
                 case CpuID.AVX512_BW: return Settings.Default.ARCH_AVX512_BW;
                 case CpuID.AVX512_IFMA52: return Settings.Default.ARCH_AVX512_IFMA52;
                 case CpuID.AVX512_VBMI: return Settings.Default.ARCH_AVX512_VBMI;
+                case CpuID.AVX512_VPOPCNTDQ: return Settings.Default.ARCH_AVX512_VPOPCNTDQ;
+                case CpuID.AVX512_4VNNIW: return Settings.Default.ARCH_AVX512_4VNNIW;
+                case CpuID.AVX512_4FMAPS: return Settings.Default.ARCH_AVX512_4FMAPS;
 
                 case CpuID.BMI1: return Settings.Default.ARCH_BMI1;
                 case CpuID.BMI2: return Settings.Default.ARCH_BMI2;
