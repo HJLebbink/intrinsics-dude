@@ -9,7 +9,7 @@ QuickInfo is an IntelliSense feature that displays method signatures and descrip
 ![label-analysis](https://github.com/HJLebbink/intrinsics-dude/blob/master/Images/QuickInfo.png?raw=true "QuickInfo")
 
 #### Statement Completion
-Statement completion is the process by which the language service helps users finish a language keyword or element that they have started typing in the editor. The minimal default tooltips are replaced by more informative ones. If the current keyword starts with _m the code completion key combination (typically CTRL+SPACE) will populate a separate completion list called Intrinsics.
+Statement completion is the process by which the language service helps users finish a language keyword or element that they have started typing in the editor. The minimal default tooltips are replaced by more informative ones. If the current keyword starts with _m the code completion key combination (typically CTRL+SPACE) will populate a separate completion list called Intrinsics. (Note: this feature is switched off by default.)
 
 ![label-analysis](https://github.com/HJLebbink/intrinsics-dude/blob/master/Images/StatementCompletion.png?raw=true "Statement Completion")
 
