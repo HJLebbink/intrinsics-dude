@@ -158,11 +158,6 @@ namespace IntrinsicsDude.Tools
                                                 dataElement.instructionNote = element2.InnerText; break;
                                             case "SYNOPSIS":
                                                 dataElement.asm = RetrieveAsmStr(element2.InnerHtml);
-                                                if (dataElement.asm.Equals("psraw"))
-                                                {
-                                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: found asmStr=" + dataElement.asm);
-                                                }
-
 
                                                 break;
                                             case "SIG":

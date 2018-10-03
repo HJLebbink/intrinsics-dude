@@ -5759,6 +5759,11 @@ namespace IntrinsicsDude.Tools
         _MM512_POPCNT_EPI32,
         _MM512_MASK_POPCNT_EPI64,
         _MM512_MASKZ_POPCNT_EPI64,
-        _MM512_POPCNT_EPI64
-   }
+        _MM512_POPCNT_EPI64,
+
+        _ENCLS_U32,
+        _ENCLU_U32,
+        _PTWRITE32,
+        _PTWRITE64
+    }
 }

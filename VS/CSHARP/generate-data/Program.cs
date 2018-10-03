@@ -1,6 +1,6 @@
 ﻿// The MIT License (MIT)
 //
-// Copyright (c) 2017 Henk-Jan Lebbink
+// Copyright (c) 2018 Henk-Jan Lebbink
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -42,7 +42,8 @@ namespace IntrinsicsDude.GenerateData
 
             //string filename_input = "Intel-Intrinsics-Guide-(11-aug-16).html";
             //string filename_input = "Intel-Intrinsics-Guide-(01-feb-17).html";
-            string filename_input = "Intel-Intrinsics-Guide-(18-oct-17).html";
+            //string filename_input = "Intel-Intrinsics-Guide-(18-oct-17).html";
+            string filename_input = "Intel-Intrinsics-Guide-(11-jul-18).html";
             string filename_input_full = path + filename_input;
 
             //string filename_output_full = path + filename_input + ".xml";

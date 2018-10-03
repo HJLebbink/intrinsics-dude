@@ -237,6 +237,7 @@ namespace IntrinsicsDude.Tools
             INT_PTR,
             LONG_LONG,
             SIZE_T,
+            SIZE_T_PTR,
             SHORT,
             UNSIGNED__INT32,
             UNSIGNED__INT32_PTR,
@@ -399,6 +400,7 @@ namespace IntrinsicsDude.Tools
                 case "INT_PTR": return ParamType.INT_PTR;
                 case "LONG_LONG": return ParamType.LONG_LONG;
                 case "SIZE_T": return ParamType.SIZE_T;
+                case "SIZE_T_PTR": return ParamType.SIZE_T_PTR;
                 case "SHORT": return ParamType.SHORT;
                 case "UNSIGNED__INT32": return ParamType.UNSIGNED__INT32;
                 case "UNSIGNED__INT32_PTR": return ParamType.UNSIGNED__INT32_PTR;
@@ -506,6 +508,7 @@ namespace IntrinsicsDude.Tools
                 case "INT*": return ParamType.INT_PTR;
                 case "LONG LONG": return ParamType.LONG_LONG;
                 case "SIZE_T": return ParamType.SIZE_T;
+                case "SIZE_T*": return ParamType.SIZE_T_PTR;
                 case "SHORT": return ParamType.SHORT;
                 case "UNSIGNED __INT32": return ParamType.UNSIGNED__INT32;
                 case "UNSIGNED __INT32*": return ParamType.UNSIGNED__INT32_PTR;
@@ -540,17 +543,27 @@ namespace IntrinsicsDude.Tools
                 case "AVX": return CpuID.AVX;
                 case "AVX2": return CpuID.AVX2;
 
-                case "AVX512BW": return CpuID.AVX512_BW;
-                case "AVX512CD": return CpuID.AVX512_CD;
-                case "AVX512DQ": return CpuID.AVX512_DQ;
-                case "AVX512ER": return CpuID.AVX512_ER;
-                case "AVX512": return CpuID.AVX512_F;
-                case "AVX512F": return CpuID.AVX512_F;
-                case "AVX512PF": return CpuID.AVX512_PF;
-                case "AVX512VL": return CpuID.AVX512_VL;
+                case "AVX512BW":
+                case "AVX512_BW": return CpuID.AVX512_BW;
+                case "AVX512CD":
+                case "AVX512_CD": return CpuID.AVX512_CD;
+                case "AVX512DQ":
+                case "AVX512_DQ": return CpuID.AVX512_DQ;
+                case "AVX512ER":
+                case "AVX512_ER": return CpuID.AVX512_ER;
+                case "AVX512":
+                case "AVX512F":
+                case "AVX512_F": return CpuID.AVX512_F;
+                case "AVX512PF":
+                case "AVX512_PF": return CpuID.AVX512_PF;
+                case "AVX512VL":
+                case "AVX512_VL": return CpuID.AVX512_VL;
+                case "AVX5124VNNIW":
                 case "AVX512_4VNNIW": return CpuID.AVX512_4VNNIW;
+                case "AVX5124FMAPS":
                 case "AVX512_4FMAPS": return CpuID.AVX512_4FMAPS;
-                case "AVX512VPOPCNTDQ": return CpuID.AVX512_VPOPCNTDQ;
+                case "AVX512VPOPCNTDQ":
+                case "AVX512_VPOPCNTDQ": return CpuID.AVX512_VPOPCNTDQ;
 
                 case "BMI1": return CpuID.BMI1;
                 case "BMI2": return CpuID.BMI2;
@@ -572,10 +585,12 @@ namespace IntrinsicsDude.Tools
                 case "SSSE3": return CpuID.SSSE3;
 
                 case "LZCNT": return CpuID.LZCNT;
-                case "AVX512IFMA52": return CpuID.AVX512_IFMA52;
+                case "AVX512IFMA52":
+                case "AVX512_IFMA52": return CpuID.AVX512_IFMA52;
                 case "INVPCID": return CpuID.INVPCID;
                 case "MONITOR": return CpuID.MONITOR;
-                case "AVX512VBMI": return CpuID.AVX512_VBMI;
+                case "AVX512VBMI":
+                case "AVX512_VBMI": return CpuID.AVX512_VBMI;
                 case "POPCNT": return CpuID.POPCNT;
                 case "RDRAND": return CpuID.RDRAND;
                 case "RDSEED": return CpuID.RDSEED;
@@ -7080,6 +7095,11 @@ namespace IntrinsicsDude.Tools
                 case "_MM512_MASK_POPCNT_EPI64": return Intrinsic._MM512_MASK_POPCNT_EPI64;
                 case "_MM512_MASKZ_POPCNT_EPI64": return Intrinsic._MM512_MASKZ_POPCNT_EPI64;
                 case "_MM512_POPCNT_EPI64": return Intrinsic._MM512_POPCNT_EPI64;
+
+                case "_ENCLS_U32": return Intrinsic._ENCLS_U32;
+                case "_ENCLU_U32": return Intrinsic._ENCLU_U32;
+                case "_PTWRITE32": return Intrinsic._PTWRITE32;
+                case "_PTWRITE64": return Intrinsic._PTWRITE64;
                 default:
                     if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
                     return Intrinsic.NONE;
