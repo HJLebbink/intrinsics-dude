@@ -791,6 +791,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.INT: return "int";
                 case ParamType.INT_CONST_PTR: return "int const *";
                 case ParamType.SIZE_T: return "size_t";
+                case ParamType.SIZE_T_PTR: return "size_t *";
                 case ParamType.SHORT: return "short";
                 case ParamType.UNSIGNED__INT32: return "unsigned __int32";
                 case ParamType.UNSIGNED__INT32_PTR: return "unsigned __int32 *";
@@ -938,6 +939,11 @@ namespace IntrinsicsDude.Tools
 
                 case CpuID.RDPID: return "Read Processor ID";
                 case CpuID.CLWB: return "Cache Line Write Back";
+
+                case CpuID.AVX512_4VNNIW: return "";
+                case CpuID.AVX512_4FMAPS: return "";
+                case CpuID.AVX512_VPOPCNTDQ: return "";
+
 
                 default:
                     IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
