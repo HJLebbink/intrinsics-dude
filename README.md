@@ -1,5 +1,5 @@
 # Intrinsics-Dude
-Improved support for compiler intrinsics in Visual Studio. This extension can be found in the [visual studio extensions gallery](https://visualstudiogallery.msdn.microsoft.com/2deb6fbb-ff72-470b-a9ac-96115a0bf0ad) or download latest installer [IntrinsicsDude.vsix (v1.1.5.0)](https://github.com/HJLebbink/intrinsics-dude/releases/download/1.1.5.0/IntrinsicsDude.vsix). If intrinsics are not low level enough, consider [Asm-Dude](https://github.com/HJLebbink/asm-dude).
+Improved support for compiler intrinsics in Visual Studio. This extension can be found in the [visual studio extensions gallery](https://visualstudiogallery.msdn.microsoft.com/2deb6fbb-ff72-470b-a9ac-96115a0bf0ad) or download latest installer [IntrinsicsDude.vsix (v1.1.0.1)](https://github.com/HJLebbink/intrinsics-dude/releases/download/1.2.0.1/IntrinsicsDude.vsix). If intrinsics are not low level enough, consider [Asm-Dude](https://github.com/HJLebbink/asm-dude).
 
 ### Features
 
@@ -39,3 +39,4 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 * 25 Juli 2016: Start of project
 * 26 August 2016: First release (v1.0.0.7)
 * 2 September 2016: Added Performance data to QuickInfo tooltips (v1.1.0.0)
+* 6 January 2019: Assed VS2019 (v1.2.0.1)
