@@ -141,15 +141,15 @@ namespace IntrinsicsDude.Tools
                                             case "NAME":
                                                 string intrinsicStr = element2.InnerText;
                                                 //allIntrinsicNames.Add(intrinsicStr);
-                                                dataElement.intrinsic = IntrinsicTools.ParseIntrinsic(intrinsicStr); break;
-                                            case "RETTYPE": dataElement.returnType = IntrinsicTools.ParseReturnType(element2.InnerText); break;
+                                                dataElement.intrinsic = ParseIntrinsic(intrinsicStr); break;
+                                            case "RETTYPE": dataElement.returnType = ParseReturnType(element2.InnerText); break;
                                             case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
                                             case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                             case "DESC_VAR": break;
 
                                             case "DESCRIPTION": dataElement.description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
                                             case "OPERATION": dataElement.operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
-                                            case "CPUID": dataElement.cpuID |= IntrinsicTools.ParseCpuID(element2.InnerText.Trim()); break;
+                                            case "CPUID": dataElement.cpuID |= ParseCpuID(element2.InnerText.Trim()); break;
                                             case "PERFORMANCE":
                                                 dataElement.performance = element2.InnerHtml;
                                                 TestPerformance(dataElement.performance);
@@ -191,7 +191,7 @@ namespace IntrinsicsDude.Tools
 
                         for (int i = 0; i < paramName.Count; ++i)
                         {
-                            dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.ParseParamType(paramType[i]), paramName[i]));
+                            dataElement.parameters.Add(new Tuple<ParamType, string>(ParseParamType(paramType[i]), paramName[i]));
                         }
                     }
                     if (dataElement.cpuID == CpuID.NONE)
@@ -269,7 +269,7 @@ namespace IntrinsicsDude.Tools
                 }
             }
             sb.AppendLine("</intrinsicsdudedata>");
-            System.IO.File.WriteAllText(filename, sb.ToString());
+            File.WriteAllText(filename, sb.ToString());
         }
 
         public void LoadXml(string filename)
@@ -291,16 +291,16 @@ namespace IntrinsicsDude.Tools
                         switch (element.Name.ToString())
                         {
                             case "name":
-                                dataElement.intrinsic = IntrinsicTools.ParseIntrinsic(value);
+                                dataElement.intrinsic = ParseIntrinsic(value);
                                 break;
                             case "id":
-                                if (!Int32.TryParse(value, out dataElement.id)) dataElement.id = -1;
+                                if (!int.TryParse(value, out dataElement.id)) dataElement.id = -1;
                                 break;
                             case "cpuid":
-                                dataElement.cpuID = IntrinsicTools.ParseCpuID_multiple(value);
+                                dataElement.cpuID = ParseCpuID_multiple(value);
                                 break;
                             case "ret":
-                                dataElement.returnType = IntrinsicTools.ParseReturnType(value);
+                                dataElement.returnType = ParseReturnType(value);
                                 break;
                             case "sign":
                                 if (value.Length > 0)
@@ -310,7 +310,7 @@ namespace IntrinsicsDude.Tools
                                         string[] a2 = s1.Split(' ');
                                         if (a2.Length == 2)
                                         {
-                                            dataElement.parameters.Add(new Tuple<ParamType, string>(IntrinsicTools.ParseParamType_InternalName(a2[0]), a2[1]));
+                                            dataElement.parameters.Add(new Tuple<ParamType, string>(ParseParamType_InternalName(a2[0]), a2[1]));
                                         }
                                         else
                                         {

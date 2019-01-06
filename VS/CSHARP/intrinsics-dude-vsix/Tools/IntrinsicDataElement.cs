@@ -156,11 +156,11 @@ namespace IntrinsicsDude.Tools
             for (int i2 = 0; i2<a2.Length; ++i2)
             {
                 string str2 = a2[i2];
-                if (IntrinsicTools.ParseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
+                if (ParseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
                 {
                     textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Register))));
                 }
-                else if (IntrinsicTools.ParseIntrinsic(str2, false) != Intrinsic.NONE)
+                else if (ParseIntrinsic(str2, false) != Intrinsic.NONE)
                 {
                     textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Intrinsic))));
                 }

@@ -63,18 +63,6 @@ namespace IntrinsicsDude
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await base.InitializeAsync(cancellationToken, progress);
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Welcome to\n");
-            sb.Append(" ____     _       _         _           ____        _     \n");
-            sb.Append("|    |___| |_ ___|_|___ ___|_|___ ___  |    \\ _ _ _| |___ \n");
-            sb.Append("|-  -|   |  _|  _| |   |_ -| |  _|_ -| |  |  | | | . | -_|\n");
-            sb.Append("|____|_|_|_| |_| |_|_|_|___|_|___|___| |____/|___|___|___|\n");
-            sb.Append("INFO: Loaded IntrinsicsDude version " + typeof(IntrinsicsDudePackage).Assembly.GetName().Version + " (" + ApplicationInformation.CompileDate.ToString() + ")\n");
-            //sb.Append("INFO: Loaded " + IntrinsicsDudeTools.Instance.IntrinsicStore.Data.Count + " intrinsic function definitions.\n");
-            sb.Append("INFO: More info at https://github.com/HJLebbink/intrinsics-dude \n");
-            sb.Append("----------------------------------");
-            await IntrinsicsDudeToolsStatic.OutputAsync(sb.ToString());
         }
     }
 }

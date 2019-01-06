@@ -79,9 +79,9 @@ namespace IntrinsicsDude
                         string keyword = extent.Span.GetText();
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
 
-                        if (IntrinsicTools.ParseIntrinsic(keyword, false) == Intrinsic.NONE)
+                        if (ParseIntrinsic(keyword, false) == Intrinsic.NONE)
                         {
-                            if (IntrinsicTools.ParseSimdRegisterType(keyword, false) != SimdRegisterType.NONE)
+                            if (ParseSimdRegisterType(keyword, false) != SimdRegisterType.NONE)
                             {
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic type \"" + keyword + "\".");
                                 yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.RegType));

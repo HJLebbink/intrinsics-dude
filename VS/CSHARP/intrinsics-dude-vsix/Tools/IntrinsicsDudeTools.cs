@@ -30,18 +30,31 @@ namespace IntrinsicsDude.Tools
 {
     public sealed class IntrinsicsDudeTools : IDisposable
     {
-        private readonly ErrorListProvider _errorListProvider;
-        private readonly IntrinsicStore _intrinsicStore;
-        private readonly SmartThreadPool _smartThreadPool;
-        private readonly StatementCompletionStore _statement_Completion_Store;
+        private ErrorListProvider _errorListProvider;
+        private IntrinsicStore _intrinsicStore;
+        private StatementCompletionStore _statement_Completion_Store;
 
         #region Singleton Stuff
-        private static readonly Lazy<IntrinsicsDudeTools> lazy = new Lazy<IntrinsicsDudeTools>(() => new IntrinsicsDudeTools());
-        public static IntrinsicsDudeTools Instance {
-            get {
-                IntrinsicsDudeTools intrinsicsDudeTools = lazy.Value;
-                intrinsicsDudeTools.Init();
-                return intrinsicsDudeTools;
+        private static IntrinsicsDudeTools instance = null;
+        private static readonly object padlock = new object();
+        public static IntrinsicsDudeTools Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        var startTime = DateTime.Now;
+                        IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudeTools.Instance: going to create singleton IntrinsicsDudeTools");
+                        instance = new IntrinsicsDudeTools();
+                        instance.InitAsync().ConfigureAwait(true);
+
+                        double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
+                        IntrinsicsDudeToolsStatic.Output_INFO(string.Format("IntrinsicsDudeTools.Instance: Done creating singleton IntrinsicsDudeTools. Took {0:F3} seconds to load {1} intrinsic definitions.", elapsedSec, instance.IntrinsicStore.Data.Count));
+                    }
+                    return instance;
+                }
             }
         }
         #endregion Singleton Stuff
@@ -52,9 +65,15 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         private IntrinsicsDudeTools()
         {
-            //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor", this.ToString()));
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor", this.ToString()));
+        }
 
-            ThreadHelper.ThrowIfNotOnUIThread();
+        private async System.Threading.Tasks.Task InitAsync()
+        {
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:InitAsync", this.ToString()));
+
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
             #region Initialize ErrorListProvider
             if (false) // not used
@@ -69,11 +88,11 @@ namespace IntrinsicsDude.Tools
             #endregion
 
             #region Start thread pool
-            this._smartThreadPool = new SmartThreadPool()
+            this.ThreadPool = new SmartThreadPool()
             {
                 MaxThreads = 4
             };
-            this._smartThreadPool.Start();
+            this.ThreadPool.Start();
             #endregion
 
             #region load intrinsic store
@@ -87,12 +106,6 @@ namespace IntrinsicsDude.Tools
             this._statement_Completion_Store = new StatementCompletionStore(this._intrinsicStore);
         }
 
-        private void Init()
-        {
-            //TODO move initialization stuff from constructor to here
-        }
-
-
         #region Public Methods
 
         public ErrorListProvider ErrorListProvider { get { return this._errorListProvider; } }
@@ -101,7 +114,7 @@ namespace IntrinsicsDude.Tools
 
         public StatementCompletionStore StatementCompletionStore {  get { return this._statement_Completion_Store; } }
 
-        public SmartThreadPool ThreadPool { get { return this._smartThreadPool; } }
+        public SmartThreadPool ThreadPool { get; private set; }
 
         /// <summary>
         /// get url for the provided keyword. Returns empty string if the keyword does not exist or the keyword does not have an url.
@@ -137,7 +150,7 @@ namespace IntrinsicsDude.Tools
         public void Dispose()
         {
             this._errorListProvider.Dispose();
-            this._smartThreadPool.Dispose();
+            this.ThreadPool.Dispose();
         }
 
         #endregion

@@ -43,16 +43,13 @@ namespace IntrinsicsDude.QuickInfo
         [Import]
         private IBufferTagAggregatorFactoryService _aggregatorFactory = null;
 
-
         public IQuickInfoSource TryCreateQuickInfoSource(ITextBuffer buffer)
         {
-            Func<IntrinsicsQuickInfoSource> sc = delegate ()
+            IntrinsicsQuickInfoSource sc()
             {
                 ITagAggregator<IntrinsicTokenTag> aggregator = IntrinsicsDudeToolsStatic.GetAggregator(buffer, this._aggregatorFactory);
                 return new IntrinsicsQuickInfoSource(buffer, aggregator);
-            };
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSourceProvider: TryCreateQuickInfoSource");
-
+            }
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }

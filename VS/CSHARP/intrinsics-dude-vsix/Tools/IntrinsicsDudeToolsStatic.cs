@@ -26,7 +26,6 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.TextManager.Interop;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -34,12 +33,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 using System.Threading.Tasks;
-//using System.Drawing;
+using System.Text;
 
 namespace IntrinsicsDude.Tools
 {
     public static class IntrinsicsDudeToolsStatic
     {
+        private static bool first_log_message = true;
+
+
         public static ITagAggregator<IntrinsicTokenTag> GetAggregator(
             ITextBuffer buffer,
             IBufferTagAggregatorFactoryService aggregatorFactory)
@@ -57,7 +59,7 @@ namespace IntrinsicsDude.Tools
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
             if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec)
             {
-                IntrinsicsDudeToolsStatic.Output_WARNING(string.Format("SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
+                Output_WARNING(string.Format("SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
             }
         }
 
@@ -127,12 +129,12 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static System.Windows.Media.Color ConvertColor(System.Drawing.Color drawingColor)
+        public static Color ConvertColor(System.Drawing.Color drawingColor)
         {
-            return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
+            return Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
-        public static System.Drawing.Color ConvertColor(System.Windows.Media.Color mediaColor)
+        public static System.Drawing.Color ConvertColor(Color mediaColor)
         {
             return System.Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
         }
@@ -149,7 +151,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output_WARNING("bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
+                Output_WARNING("bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
             }
             return bitmap;
         }
@@ -198,6 +200,23 @@ namespace IntrinsicsDude.Tools
 
             IVsOutputWindowPane outputPane = await GetOutputPaneAsync();
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
+
+            if (first_log_message)
+            {
+                first_log_message = false;
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Welcome to\n");
+                sb.Append(" ____     _       _         _           ____        _     \n");
+                sb.Append("|    |___| |_ ___|_|___ ___|_|___ ___  |    \\ _ _ _| |___ \n");
+                sb.Append("|-  -|   |  _|  _| |   |_ -| |  _|_ -| |  |  | | | . | -_|\n");
+                sb.Append("|____|_|_|_| |_| |_|_|_|___|_|___|___| |____/|___|___|___|\n");
+                sb.Append("INFO: Loaded IntrinsicsDude version " + typeof(IntrinsicsDudePackage).Assembly.GetName().Version + " (" + ApplicationInformation.CompileDate.ToString() + ")\n");
+                sb.Append("INFO: More info at https://github.com/HJLebbink/intrinsics-dude \n");
+                sb.Append("----------------------------------\n");
+                msg2 = sb.ToString() + msg2;
+            }
+
             if (outputPane == null)
             {
                 Debug.Write(msg2);
@@ -232,7 +251,7 @@ namespace IntrinsicsDude.Tools
         {
             for (int i = 0; i < input.Length; i++)
             {
-                if (Char.IsLetter(input[i]) && !Char.IsUpper(input[i]))
+                if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))
                 {
                     return false;
                 }
@@ -319,7 +338,7 @@ namespace IntrinsicsDude.Tools
                 case CpuID.UNKNOWN: return false;
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
+                    Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
                     return false;
             }
         }

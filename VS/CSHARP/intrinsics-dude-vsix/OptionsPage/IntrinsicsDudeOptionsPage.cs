@@ -193,7 +193,7 @@ namespace IntrinsicsDude.OptionsPage
             SortedSet<Intrinsic> usedMnemonics = new SortedSet<Intrinsic>();
 
             StringBuilder sb = new StringBuilder();
-            string docArch = IntrinsicTools.GetCpuID_Documentation(arch);
+            string docArch = GetCpuID_Documentation(arch);
             if (docArch.Length > 0)
             {
                 sb.Append(docArch + ": ");

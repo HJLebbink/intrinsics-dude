@@ -1326,7 +1326,7 @@ namespace IntrinsicsDude.Tools
                         if (extent.Span.Start > 0)
                         {
                             string word2 = nav.GetExtentOfWord(extent.Span.Start - 1).Span.GetText();
-                            return new Tuple<Intrinsic, int>(IntrinsicTools.ParseIntrinsic(word2, false), nParameters);
+                            return new Tuple<Intrinsic, int>(ParseIntrinsic(word2, false), nParameters);
                         }
                     }
                     else

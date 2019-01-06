@@ -142,10 +142,10 @@ namespace IntrinsicsDude.StatementCompletion
                 string insertionText = completion.InsertionText;
                 if ((insertionText != null) && (insertionText.Length > 0) && (insertionText[0].Equals('_')) && (insertionText.StartsWith(partialKeyword2)))
                 {
-                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(insertionText, false);
+                    Intrinsic intrinsic = ParseIntrinsic(insertionText, false);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IntrinsicTools.IsSimdRegister(insertionText))
+                        if (!IsSimdRegister(insertionText))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
@@ -177,10 +177,10 @@ namespace IntrinsicsDude.StatementCompletion
                 string insertionText = completion.InsertionText;
                 if (insertionText != null)
                 {
-                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(insertionText, false);
+                    Intrinsic intrinsic = ParseIntrinsic(insertionText, false);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IntrinsicTools.IsSimdRegister(insertionText))
+                        if (!IsSimdRegister(insertionText))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
@@ -246,7 +246,7 @@ namespace IntrinsicsDude.StatementCompletion
         private ReturnType FindEmbeddedType(TextExtent currentKeywordExtent)
         {
             SnapshotPoint point = currentKeywordExtent.Span.Start;
-            Tuple<Intrinsic, int> tup = IntrinsicTools.GetIntrinsicAndParamIndex(point, this._navigator);
+            Tuple<Intrinsic, int> tup = GetIntrinsicAndParamIndex(point, this._navigator);
             if (tup.Item1 == Intrinsic.NONE)
             {
                 return ReturnType.UNKNOWN;
@@ -255,7 +255,7 @@ namespace IntrinsicsDude.StatementCompletion
             IntrinsicStore store = IntrinsicsDudeTools.Instance.IntrinsicStore;
             IntrinsicDataElement dataElement = store.Get(tup.Item1)[0];
             ParamType paramType = dataElement.parameters[tup.Item2].Item1;
-            ReturnType returnType = IntrinsicTools.ParseReturnType(IntrinsicTools.ToString(paramType), false);
+            ReturnType returnType = ParseReturnType(IntrinsicTools.ToString(paramType), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
         }
@@ -289,7 +289,7 @@ namespace IntrinsicsDude.StatementCompletion
 
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
-            ReturnType returnType = IntrinsicTools.ParseReturnType(word.Span.GetText(), false);
+            ReturnType returnType = ParseReturnType(word.Span.GetText(), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
             return returnType;
         }
@@ -308,7 +308,7 @@ namespace IntrinsicsDude.StatementCompletion
                 Completion completion = e.Item1;
                 ReturnType returnType2 = e.Item2;
 
-                if (!IntrinsicTools.IsConversionPossible(returnType2, returnType))
+                if (!IsConversionPossible(returnType2, returnType))
                 {
                     if (!hideStatementCompletionIncompatibleReturnType)
                     {

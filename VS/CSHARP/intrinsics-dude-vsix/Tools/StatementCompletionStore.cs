@@ -114,7 +114,7 @@ namespace IntrinsicsDude.Tools
 
                 if (enabled && this._hide_mmx_reg_intrinsics)
                 {
-                    if (IntrinsicTools.Uses_MMX_Register(intrinsic))
+                    if (Uses_MMX_Register(intrinsic))
                     {
                         enabled = false;
                     }

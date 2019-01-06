@@ -114,7 +114,7 @@ namespace IntrinsicsDude.GenerateData
                     {
                         sb.AppendLine(entry.Key.ToUpper() + "\t" + entry.Value);
                     }
-                    System.IO.File.WriteAllText(filename_performance_full, sb.ToString());
+                    File.WriteAllText(filename_performance_full, sb.ToString());
                 }
             }
             Console.WriteLine("Press any key to continue");
