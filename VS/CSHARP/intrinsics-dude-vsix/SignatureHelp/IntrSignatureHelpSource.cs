@@ -31,13 +31,13 @@ using Microsoft.VisualStudio.Text.Operations;
 
 namespace IntrinsicsDude.SignHelp
 {
-    internal sealed class IntrSignHelpSource : ISignatureHelpSource
+    internal sealed class IntrSignatureHelpSource : ISignatureHelpSource
     {
         private readonly ITextBuffer _textBuffer;
         private readonly ITextStructureNavigator _navigator;
 
         // see https://msdn.microsoft.com/en-us/library/dd885244.aspx for help 
-        public IntrSignHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
+        public IntrSignatureHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
             this._textBuffer = buffer;
@@ -130,7 +130,7 @@ namespace IntrinsicsDude.SignHelp
 
         #region Private Methods
 
-        private IntrSign CreateSignature(ITextBuffer textBuffer, IntrinsicDataElement dataElement, int paramIndex, ITrackingSpan span)
+        private IntrSignature CreateSignature(ITextBuffer textBuffer, IntrinsicDataElement dataElement, int paramIndex, ITrackingSpan span)
         {
             int nParameters = dataElement.parameters.Count;
             Span[] locus = new Span[nParameters];
@@ -158,7 +158,7 @@ namespace IntrinsicsDude.SignHelp
 
 
             string doc = IntrinsicTools.Linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
-            IntrSign sig = new IntrSign(textBuffer, signatureText.ToString(), doc, null);
+            IntrSignature sig = new IntrSignature(textBuffer, signatureText.ToString(), doc, null);
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)

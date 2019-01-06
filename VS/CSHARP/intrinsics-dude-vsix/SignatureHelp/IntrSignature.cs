@@ -28,7 +28,7 @@ using System.Collections.ObjectModel;
 
 namespace IntrinsicsDude.SignHelp
 {
-    internal class IntrSign : ISignature
+    internal class IntrSignature : ISignature
     {
         private readonly ITextBuffer m_subjectBuffer;
         private IParameter m_currentParameter;
@@ -39,7 +39,7 @@ namespace IntrinsicsDude.SignHelp
         private string m_printContent;
 
 
-        internal IntrSign(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
+        internal IntrSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
             this.m_subjectBuffer = subjectBuffer;

@@ -31,15 +31,15 @@ using IntrinsicsDude.Tools;
 
 namespace IntrinsicsDude
 {
-    internal sealed class StatementCompletionCommandHandler : IOleCommandTarget
+    internal sealed class CodetCompletionCommandFilter : IOleCommandTarget
     {
-        private ICompletionSession _session;
+        private ICompletionSession _currrentSession;
         private const bool LOG_ON = false;
 
 
-        public StatementCompletionCommandHandler(IWpfTextView textView, ICompletionBroker broker)
+        public CodetCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
         {
-            this._session = null;
+            this._currrentSession = null;
             this.TextView = textView;
             this.Broker = broker;
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
@@ -51,6 +51,7 @@ namespace IntrinsicsDude
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec");
             try
             {
@@ -122,7 +123,9 @@ namespace IntrinsicsDude
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: QueryStatus");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: QueryStatus");
+
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             if (pguidCmdGroup == VSConstants.VSStd2K)
             {
                 switch ((VSConstants.VSStd2KCmdID)prgCmds[0].cmdID)
@@ -144,10 +147,10 @@ namespace IntrinsicsDude
         private bool StartSession()
         {
             #region Clear all existing sessions
-            if (this._session != null)
+            if (this._currrentSession != null)
             {
-                IntrinsicsDudeToolsStatic.Output_INFO("CodeCompletionCommandHandler: StartSession. dismissing already active session(" + this._session.GetTriggerPoint(this.TextView.TextBuffer) + ")");
-                this._session.Dismiss();
+                IntrinsicsDudeToolsStatic.Output_INFO("CodeCompletionCommandHandler: StartSession. dismissing already active session(" + this._currrentSession.GetTriggerPoint(this.TextView.TextBuffer) + ")");
+                this._currrentSession.Dismiss();
             }
             //this._broker.DismissAllSessions(this._textView);
             #endregion
@@ -155,7 +158,7 @@ namespace IntrinsicsDude
             SnapshotPoint caret = this.TextView.Caret.Position.BufferPosition;
             ITextSnapshot snapshot = caret.Snapshot;
 
-            this._session = this.Broker.TriggerCompletion(this.TextView);
+            this._currrentSession = this.Broker.TriggerCompletion(this.TextView);
             //this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
 
@@ -172,73 +175,73 @@ namespace IntrinsicsDude
 
         private bool Complete()
         {
-            if (this._session == null)
+            if (this._currrentSession == null)
             {
                 if (this.Broker.IsCompletionActive(this.TextView))
                 {
-                    this._session = this.Broker.GetSessions(this.TextView)[0];
+                    this._currrentSession = this.Broker.GetSessions(this.TextView)[0];
                     if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. current session was null; reusing existing session.");
                 }
-            } else if (this._session.IsDismissed)
+            } else if (this._currrentSession.IsDismissed)
             {
                 if (this.Broker.IsCompletionActive(this.TextView))
                 {
-                    this._session = this.Broker.GetSessions(this.TextView)[0];
+                    this._currrentSession = this.Broker.GetSessions(this.TextView)[0];
                     if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. current session was dismissed; reusing existing session.");
                 }
             }
-            if (this._session == null)
+            if (this._currrentSession == null)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. Session is null: no completions.");
                 return false;
             }
-            if (this._session.IsDismissed)
+            if (this._currrentSession.IsDismissed)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. Session is dismissed: no completions.");
                 return false;
             }
-            if (!this._session.IsStarted)
+            if (!this._currrentSession.IsStarted)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. Session is not started: no completions.");
                 return false;
             }
 
 
-            bool isSelected = this._session.SelectedCompletionSet.SelectionStatus.IsSelected;
-            bool isUnique = this._session.SelectedCompletionSet.SelectionStatus.IsUnique;
-            string insertionText = this._session.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
+            bool isSelected = this._currrentSession.SelectedCompletionSet.SelectionStatus.IsSelected;
+            bool isUnique = this._currrentSession.SelectedCompletionSet.SelectionStatus.IsUnique;
+            string insertionText = this._currrentSession.SelectedCompletionSet.SelectionStatus.Completion.InsertionText;
 
             if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. IsSelected=" + isSelected + "; IsUnique=" + isUnique+ "; insertionText="+ insertionText);
 
             if (isSelected)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. Committing InsertionText=" + insertionText);
-                this._session.Commit();
+                this._currrentSession.Commit();
                 return true;
             }
 
             if (isUnique)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. Committing InsertionText=" + insertionText);
-                this._session.Commit();
+                this._currrentSession.Commit();
                 return true;
             }
 
-            this._session.Dismiss();
+            this._currrentSession.Dismiss();
             if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Complete. exiting; no completion.");
             return false;
         }
 
         private bool Cancel()
         {
-            if (this._session == null)
+            if (this._currrentSession == null)
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Cancel: session==null");
                 return false;
             } else
             {
                 if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Cancel: session is not null");
-                this._session.Dismiss();
+                this._currrentSession.Dismiss();
                 return true;
             }
         }
@@ -248,17 +251,17 @@ namespace IntrinsicsDude
         /// </summary>
         private void Filter()
         {
-            if (this._session == null)
+            if (this._currrentSession == null)
             {
                 return;
             }
-            if (this._session.IsDismissed)
+            if (this._currrentSession.IsDismissed)
             {
                 return;
             }
             if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Filter: session is not null");
-            this._session.SelectedCompletionSet.Recalculate();
-            this._session.SelectedCompletionSet.SelectBestMatch();
+            this._currrentSession.SelectedCompletionSet.Recalculate();
+            this._currrentSession.SelectedCompletionSet.SelectBestMatch();
             //this._session.Filter();
         }
 

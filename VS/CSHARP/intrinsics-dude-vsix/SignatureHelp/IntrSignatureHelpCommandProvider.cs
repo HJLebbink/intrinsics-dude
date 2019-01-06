@@ -22,32 +22,38 @@
 
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Adornments;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio.Utilities;
-using System;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.StatementCompletion
+namespace IntrinsicsDude.SignHelp
 {
-    [Export(typeof(ICompletionSourceProvider))]
+    [Export(typeof(IVsTextViewCreationListener))]
+    [Name("Intrinsic Signature Help controller")] // make sure this name is unique!
+    [TextViewRole(PredefinedTextViewRoles.Editable)]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [Order(After = "default")] // order after default: let the default code completion trigger first, such that we can add our completions to the existing ones.
-    [Name("Intrinsic Statement Completion Source Provider")]
-    public sealed class StatementCompletionSourceProvider : ICompletionSourceProvider
+    internal sealed class IntrSignatureHelpCommandProvider : IVsTextViewCreationListener
     {
         [Import]
-        private ITextStructureNavigatorSelectorService NavigatorService = null;
+        private IVsEditorAdaptersFactoryService _adapterService = null;
 
-        public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
+        [Import]
+        private ITextStructureNavigatorSelectorService _navigatorService = null;
+
+        [Import]
+        private ISignatureHelpBroker _signatureHelpBroker = null;
+
+        public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            Func<StatementCompletionSource> sc = delegate () {
-                ITextStructureNavigator textNavigator = this.NavigatorService.GetTextStructureNavigator(buffer);
-                return new StatementCompletionSource(buffer, textNavigator);
-            };
-            return buffer.Properties.GetOrCreateSingletonProperty(sc);
+            ITextView textView = this._adapterService.GetWpfTextView(textViewAdapter);
+            if (textView != null)
+            {
+                textView.Properties.GetOrCreateSingletonProperty(
+                    () => new IntrSignatureHelpCommandFilter(textViewAdapter, textView, this._navigatorService.GetTextStructureNavigator(textView.TextBuffer), this._signatureHelpBroker)
+                );
+            }
         }
     }
 }

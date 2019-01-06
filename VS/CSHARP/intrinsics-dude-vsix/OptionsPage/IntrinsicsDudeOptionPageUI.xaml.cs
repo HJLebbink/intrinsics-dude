@@ -37,12 +37,12 @@ namespace IntrinsicsDude.OptionsPage {
 
         #region Syntax Highlighting
 
-        public bool useSyntaxHighlighting {
+        public bool UseSyntaxHighlighting {
             get { return this.useSyntaxHighlighting_UI.IsChecked ?? false; }
             set { this.useSyntaxHighlighting_UI.IsChecked = value; }
         }
 
-        public System.Drawing.Color colorMnemonic {
+        public System.Drawing.Color ColorMnemonic {
             get {
                 if (this.colorMnemonic_UI.SelectedColor.HasValue) {
                     return IntrinsicsDudeToolsStatic.ConvertColor(this.colorMnemonic_UI.SelectedColor.Value);
@@ -54,7 +54,7 @@ namespace IntrinsicsDude.OptionsPage {
             set { this.colorMnemonic_UI.SelectedColor = IntrinsicsDudeToolsStatic.ConvertColor(value); }
         }
 
-        public System.Drawing.Color colorRegister {
+        public System.Drawing.Color ColorRegister {
             get {
                 if (this.colorRegister_UI.SelectedColor.HasValue) {
                     return IntrinsicsDudeToolsStatic.ConvertColor(this.colorRegister_UI.SelectedColor.Value);
@@ -65,7 +65,7 @@ namespace IntrinsicsDude.OptionsPage {
             set { this.colorRegister_UI.SelectedColor = IntrinsicsDudeToolsStatic.ConvertColor(value); }
         }
 
-        public System.Drawing.Color colorMisc {
+        public System.Drawing.Color ColorMisc {
             get {
                 if (this.colorMisc_UI.SelectedColor.HasValue) {
                     return IntrinsicsDudeToolsStatic.ConvertColor(this.colorMisc_UI.SelectedColor.Value);
@@ -78,29 +78,29 @@ namespace IntrinsicsDude.OptionsPage {
         #endregion Syntax Highlighting
 
         #region Code Completion
-        public bool useCodeCompletion {
+        public bool UseCodeCompletion {
             get { return this.useCodeCompletion_UI.IsChecked ?? false; }
             set { this.useCodeCompletion_UI.IsChecked = value; }
         }
 
-        public bool hideStatementCompletionMmxRegisters {
+        public bool HideStatementCompletionMmxRegisters {
             get { return this.hideStatementCompletionMmxRegisters_UI.IsChecked ?? false; }
             set { this.hideStatementCompletionMmxRegisters_UI.IsChecked = value; }
         }
-        public bool hideStatementCompletionIncompatibleReturnType {
+        public bool HideStatementCompletionIncompatibleReturnType {
             get { return this.hideStatementCompletionIncompatibleReturnType_UI.IsChecked ?? false; }
             set { this.hideStatementCompletionIncompatibleReturnType_UI.IsChecked = value; }
         }
-        public bool decorateIncompatibleStatementCompletions {
+        public bool DecorateIncompatibleStatementCompletions {
             get { return this.decorateIncompatibleStatementCompletions_UI.IsChecked ?? false; }
             set { this.decorateIncompatibleStatementCompletions_UI.IsChecked = value; }
         }
 
-        public bool useSignatureHelp {
+        public bool UseSignatureHelp {
             get { return this.useSignatureHelp_UI.IsChecked ?? false; }
             set { this.useSignatureHelp_UI.IsChecked = value; }
         }
-        public bool useSvml {
+        public bool UseSvml {
             get { return this.useSvml_UI.IsChecked ?? false; }
             set { this.useSvml_UI.IsChecked = value; }
         }

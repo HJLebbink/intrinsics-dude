@@ -42,14 +42,14 @@ namespace IntrinsicsDude.StatementCompletion
         }
     }
 
-    public sealed class StatementCompletionSource : ICompletionSource
+    public sealed class CodeCompletionSource : ICompletionSource
     {
         private readonly ITextBuffer _buffer;
         private readonly ITextStructureNavigator _navigator;
         private readonly StatementCompletionStore _statement_Completion_Store;
         private bool _disposed = false;
 
-        public StatementCompletionSource(
+        public CodeCompletionSource(
             ITextBuffer buffer, 
             ITextStructureNavigator navigator)
         {

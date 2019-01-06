@@ -34,7 +34,7 @@ namespace IntrinsicsDude
 {
     internal sealed class IntrinsicClassifier : ITagger<ClassificationTag>
     {
-        private readonly ITextBuffer _buffer;
+        //private readonly ITextBuffer _buffer;
         private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
 
         private readonly ClassificationTag _intrinsic;
@@ -45,11 +45,11 @@ namespace IntrinsicsDude
         /// Construct the classifier and define search tokens
         /// </summary>
         internal IntrinsicClassifier(
-                ITextBuffer buffer,
+                //ITextBuffer buffer,
                 ITagAggregator<IntrinsicTokenTag> aggregator,
                 IClassificationTypeRegistryService typeService)
         {
-            this._buffer = buffer;
+           // this._buffer = buffer;
             this._aggregator = aggregator;
 
             this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic));
@@ -59,8 +59,8 @@ namespace IntrinsicsDude
         }
 
         event EventHandler<SnapshotSpanEventArgs> ITagger<ClassificationTag>.TagsChanged {
-            add { }
-            remove { }
+           add { }
+           remove { }
         }
 
         /// <summary>

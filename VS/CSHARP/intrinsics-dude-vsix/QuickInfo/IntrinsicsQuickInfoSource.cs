@@ -56,7 +56,7 @@ namespace IntrinsicsDude.QuickInfo
             this._sourceBuffer = buffer;
             this._aggregator = aggregator;
             this._intrinsicDudeTools = IntrinsicsDudeTools.Instance;
-            this._textForegroundColor = IntrinsicsDudeToolsStatic.GetFontColor();
+            this._textForegroundColor = IntrinsicsDudeToolsStatic.Get_Font_Color_Async().Result;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace IntrinsicsDude.QuickInfo
                     return;
                 }
 
-                Brush foreground = IntrinsicsDudeToolsStatic.GetFontColor();
+                Brush foreground = IntrinsicsDudeToolsStatic.Get_Font_Color_Async().Result;
 
                 IEnumerable<IMappingTagSpan<IntrinsicTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
                 if (enumerator.Count() > 1)

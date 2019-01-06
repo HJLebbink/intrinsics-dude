@@ -24,6 +24,7 @@ using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
@@ -33,7 +34,7 @@ using System.Runtime.InteropServices;
 
 namespace IntrinsicsDude.SignHelp
 {
-    internal sealed class IntrSignHelpCommandHandler : IOleCommandTarget
+    internal sealed class IntrSignatureHelpCommandFilter : IOleCommandTarget
     {
         private readonly ITextView _textView;
         private readonly ISignatureHelpBroker _broker;
@@ -42,7 +43,7 @@ namespace IntrinsicsDude.SignHelp
         private ISignatureHelpSession _session;
         private readonly IOleCommandTarget _nextCommandHandler;
 
-        internal IntrSignHelpCommandHandler(IVsTextView textViewAdapter, ITextView textView, ITextStructureNavigator nav, ISignatureHelpBroker broker)
+        internal IntrSignatureHelpCommandFilter(IVsTextView textViewAdapter, ITextView textView, ITextStructureNavigator nav, ISignatureHelpBroker broker)
         {
             this._textView = textView;
             this._broker = broker;
@@ -54,7 +55,8 @@ namespace IntrinsicsDude.SignHelp
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpCommandHandler: Exec");
+            ThreadHelper.ThrowIfNotOnUIThread();
             try
             {
                 if (Settings.Default.SignatureHelp_On)
@@ -122,6 +124,7 @@ namespace IntrinsicsDude.SignHelp
 
         public int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             return this._nextCommandHandler.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
         }
 

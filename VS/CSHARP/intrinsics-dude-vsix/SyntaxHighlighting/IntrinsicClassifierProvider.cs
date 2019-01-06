@@ -50,7 +50,7 @@ namespace IntrinsicsDude.SyntaxHighlighting
                     return this._aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
                 };
                 ITagAggregator<IntrinsicTokenTag> aggregator = buffer.Properties.GetOrCreateSingletonProperty(sc2);
-                return new IntrinsicClassifier(buffer, aggregator, this._classificationTypeRegistry) as ITagger<T>;
+                return new IntrinsicClassifier(aggregator, this._classificationTypeRegistry) as ITagger<T>;
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicClassifierProvider: CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);

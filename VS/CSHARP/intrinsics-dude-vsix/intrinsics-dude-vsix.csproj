@@ -44,7 +44,7 @@
     <AssemblyName>IntrinsicsDude</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
@@ -88,6 +88,7 @@
     <CopyVsixExtensionLocation>
     </CopyVsixExtensionLocation>
     <NoWarn>CS0162</NoWarn>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="icon-ID.png.ico" />
@@ -130,9 +131,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StatementCompletion\StatementCompletionCommandHandler.cs" />
-    <Compile Include="StatementCompletion\StatementCompletionSource.cs" />
-    <Compile Include="StatementCompletion\StatementCompletionSourceProvider.cs" />
+    <Compile Include="Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="CodeCompletion\CodeCompletionCommandFilter.cs" />
+    <Compile Include="CodeCompletion\StatementCompletionSource.cs" />
+    <Compile Include="CodeCompletion\StatementCompletionSourceProvider.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="OptionsPage\IntrinsicsDudeOptionPageUI.xaml.cs">
       <DependentUpon>IntrinsicsDudeOptionPageUI.xaml</DependentUpon>
@@ -144,22 +150,17 @@
     <Compile Include="Properties\Guids.cs" />
     <Compile Include="QuickInfo\IntrinsicsQuickInfoSource.cs" />
     <Compile Include="QuickInfo\IntrinsicsQuickInfoSourceProvider.cs" />
-    <Compile Include="Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="SignHelp\IntrParam.cs" />
-    <Compile Include="SignHelp\IntrSign.cs" />
-    <Compile Include="SignHelp\IntrSignHelpCommandHandler.cs" />
-    <Compile Include="SignHelp\IntrSignHelpCommandProvider.cs" />
-    <Compile Include="SignHelp\IntrSignHelpSource.cs" />
-    <Compile Include="SignHelp\IntrSignHelpSourceProvider.cs" />
+    <Compile Include="SignatureHelp\IntrParam.cs" />
+    <Compile Include="SignatureHelp\IntrSignature.cs" />
+    <Compile Include="SignatureHelp\IntrSignatureHelpCommandHandler.cs" />
+    <Compile Include="SignatureHelp\IntrSignatureHelpCommandProvider.cs" />
+    <Compile Include="SignatureHelp\IntrSignatureHelpSource.cs" />
+    <Compile Include="SignatureHelp\IntrSignatureHelpSourceProvider.cs" />
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
-    <Compile Include="StatementCompletion\TextAdornmnent.cs" />
-    <Compile Include="StatementCompletion\VsTextViewCreationListener.cs" />
+    <Compile Include="CodeCompletion\TextAdornmnent.cs" />
+    <Compile Include="CodeCompletion\VsTextViewCreationListener.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassificationDefinition.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifier.cs" />
     <Compile Include="SyntaxHighlighting\IntrinsicClassifierProvider.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Tools\StatementCompletionStore.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +234,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Language.StandardClassification">
       <Version>14.3.25407</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK.Analyzers">
+      <Version>15.8.36</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.14.0">
       <Version>14.3.25407</Version>
     </PackageReference>
@@ -250,11 +255,17 @@
     <PackageReference Include="Microsoft.VisualStudio.Text.UI.Wpf">
       <Version>14.3.25407</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
+      <Version>15.8.209</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Xaml">
       <Version>4.0.0.1</Version>
     </PackageReference>
     <PackageReference Include="SmartThreadPool.dll">
       <Version>2.2.4</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable">
+      <Version>1.5.0</Version>
     </PackageReference>
     <PackageReference Include="System.ComponentModel.Composition">
       <Version>4.5.0</Version>

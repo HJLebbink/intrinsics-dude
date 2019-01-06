@@ -80,7 +80,7 @@ namespace IntrinsicsDude.Tools
             description.Inlines.Add(MakeRunBold("  [" + IntrinsicTools.ToString(this.cpuID) + "]\n", foreground));
             description.Inlines.Add(new Run(IntrinsicTools.Linewrap(this.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips))
             {
-                Foreground = IntrinsicsDudeToolsStatic.GetFontColor()
+                Foreground = IntrinsicsDudeToolsStatic.Get_Font_Color_Async().Result
             });
 
             if ((this.operation != null) && (this.operation.Length > 0))
@@ -103,7 +103,7 @@ namespace IntrinsicsDude.Tools
                 }
             }
 
-            description.FontSize = IntrinsicsDudeToolsStatic.GetFontSize() + 2;
+            description.FontSize = IntrinsicsDudeToolsStatic.Get_Font_Size_Async().Result + 2;
             //description.FontFamily = IntrinsicsDudeToolsStatic.getFontType();
             //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:AugmentQuickInfoSession; setting description fontSize={1}; fontFamily={2}", this.ToString(), description.FontSize, description.FontFamily));
 

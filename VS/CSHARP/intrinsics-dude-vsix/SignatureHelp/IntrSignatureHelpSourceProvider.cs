@@ -54,17 +54,17 @@ namespace IntrinsicsDude.SignHelp
     }
     */
     [Export(typeof(ISignatureHelpSourceProvider))]
-    [Name("Intrinsic Signature Help source")] // make sure this name is unique otherwise it doesn't work!
+    [Name("Intrinsic Signature Help Source")] // make sure this name is unique otherwise it doesn't work!
     [Order(After = "default")] // let the default signature help trigger first, such that we can remove the signatures it adds
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    internal class IntrSignHelpSourceProvider : ISignatureHelpSourceProvider
+    internal class IntrSignatureHelpSourceProvider : ISignatureHelpSourceProvider
     {
         [Import]
         internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
 
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            return new IntrSignHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
+            return new IntrSignatureHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
         }
     }
 }

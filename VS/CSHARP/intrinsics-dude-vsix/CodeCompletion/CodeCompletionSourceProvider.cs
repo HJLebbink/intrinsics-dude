@@ -1,4 +1,4 @@
-// The MIT License (MIT)
+﻿// The MIT License (MIT)
 //
 // Copyright (c) 2018 Henk-Jan Lebbink
 // 
@@ -22,34 +22,32 @@
 
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Adornments;
 using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
+using System;
 using System.ComponentModel.Composition;
 
-namespace IntrinsicsDude.CodeCompletion
+namespace IntrinsicsDude.StatementCompletion
 {
-    [Export(typeof(IVsTextViewCreationListener))]
+    [Export(typeof(ICompletionSourceProvider))]
     [ContentType(IntrinsicsDudePackage.IntrinsicsDudeContentType)]
-    [TextViewRole(PredefinedTextViewRoles.Interactive)]
-    internal sealed class VsTextViewCreationListener : IVsTextViewCreationListener
+    [Order(After = "default")] // order after default: let the default code completion trigger first, such that we can add our completions to the existing ones.
+    [Name("Intrinsic Statement Completion Source Provider")]
+    public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        private IVsEditorAdaptersFactoryService _adaptersFactory = null;
+        private ITextStructureNavigatorSelectorService NavigatorService = null;
 
-        [Import]
-        private ICompletionBroker _completionBroker = null;
-
-        public void VsTextViewCreated(IVsTextView textViewAdapter)
+        public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
-            IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
-            if (view != null)
-            {
-                StatementCompletionCommandHandler filter = new StatementCompletionCommandHandler(view, this._completionBroker);
-                textViewAdapter.AddCommandFilter(filter, out var next);
-                filter.NextCommandHandler = next;
-            }
+            Func<CodeCompletionSource> sc = delegate () {
+                ITextStructureNavigator textNavigator = this.NavigatorService.GetTextStructureNavigator(buffer);
+                return new CodeCompletionSource(buffer, textNavigator);
+            };
+            return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }
 }

@@ -62,67 +62,51 @@ namespace IntrinsicsDude.Tools
         }
 
         /// <summary>
-        /// get the full filename (with path) for the provided buffer
+        /// get the full filename (with path) of the provided buffer; returns null if such name does not exist
         /// </summary>
-        public static string GetFileName(ITextBuffer buffer)
+        public static async Task<string> Get_Filename_Async(ITextBuffer buffer)
         {
-            buffer.Properties.TryGetProperty(typeof(Microsoft.VisualStudio.TextManager.Interop.IVsTextBuffer), out IVsTextBuffer bufferAdapter);
-            if (bufferAdapter != null)
-            {
-                IPersistFileFormat persistFileFormat = bufferAdapter as IPersistFileFormat;
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                string filename = null;
-                if (persistFileFormat != null)
-                {
-                    persistFileFormat.GetCurFile(out filename, out uint dummyInteger);
-                }
-                return filename;
-            }
-            else
-            {
-                return null;
-            }
+            buffer.Properties.TryGetProperty(typeof(ITextDocument), out ITextDocument document);
+            string filename = document?.FilePath;
+            //AsmDudeToolsStatic.Output_INFO(string.Format("{0}:Get_Filename_Async: retrieving filename {1}", typeof(AsmDudeToolsStatic), filename));
+            return filename;
         }
 
-        public static int GetFontSize()
+        public static async Task<int> Get_Font_Size_Async()
         {
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
-            EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
+            Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
             Property prop = propertiesList.Item("FontSize");
-            int fontSize = (System.Int16)prop.Value;
+            int fontSize = (short)prop.Value;
             return fontSize;
         }
 
-        public static FontFamily GetFontType()
+        public static async Task<Brush> Get_Font_Color_Async()
         {
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
-            EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
-            Property prop = propertiesList.Item("FontFamily");
-            string font = (string)prop.Value;
-            //IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:getFontType {0}", font));
-            return new FontFamily(font);
-        }
+            Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
+            Property prop = propertiesList.Item("FontsAndColorsItems");
 
-        public static Brush GetFontColor() {
-            try {
-                DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
-                EnvDTE.Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
-                Property prop = propertiesList.Item("FontsAndColorsItems");
+            FontsAndColorsItems fci = (FontsAndColorsItems)prop.Object;
 
-                FontsAndColorsItems fci = (FontsAndColorsItems)prop.Object;
-
-                for (int i = 1; i<fci.Count; ++i) {
-                    ColorableItems ci = fci.Item(i);
-                    if (ci.Name.Equals("PLAIN TEXT", StringComparison.OrdinalIgnoreCase))
-                    {
-                        //IntrinsicsDudeToolsStatic.Output("INFO:GetFontColor: i=" + i + ": " + ci.Name + "; " + ci.Foreground);
-                        return new SolidColorBrush(ConvertColor(System.Drawing.ColorTranslator.FromOle((int)ci.Foreground)));
-                    }
+            for (int i = 1; i < fci.Count; ++i)
+            {
+                ColorableItems ci = fci.Item(i);
+                if (ci.Name.Equals("PLAIN TEXT", StringComparison.OrdinalIgnoreCase))
+                {
+                    return new SolidColorBrush(ConvertColor(System.Drawing.ColorTranslator.FromOle((int)ci.Foreground)));
                 }
-            } catch (Exception e) {
-                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format(CultureInfo.CurrentCulture, "IntrinsicsDudeToolsStatic:GetFontColor {0}", e.Message));
             }
-            IntrinsicsDudeToolsStatic.Output_WARNING(string.Format(CultureInfo.CurrentCulture, "IntrinsicsDudeToolsStatic:GetFontColor: could not retrieve text color"));
+            Output_WARNING("IntrinsicsDudeToolsStatic:Get_Font_Color: could not retrieve text color");
             return new SolidColorBrush(Colors.Gray);
         }
 

@@ -52,7 +52,9 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         private IntrinsicsDudeTools()
         {
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: IntrinsicsDudeTools constructor"));
+            //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor", this.ToString()));
+
+            ThreadHelper.ThrowIfNotOnUIThread();
 
             #region Initialize ErrorListProvider
             if (false) // not used
@@ -76,8 +78,10 @@ namespace IntrinsicsDude.Tools
 
             #region load intrinsic store
             string path = IntrinsicsDudeToolsStatic.GetInstallPath() + "Resources" + Path.DirectorySeparatorChar;
-            string filename_intrinsics = path + "Intrinsics-Data.xml";
-            this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
+            {
+                string filename_intrinsics = path + "Intrinsics-Data.xml";
+                this._intrinsicStore = new IntrinsicStore(filename_intrinsics);
+            }
             #endregion
 
             this._statement_Completion_Store = new StatementCompletionStore(this._intrinsicStore);

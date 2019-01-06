@@ -36,7 +36,7 @@ namespace IntrinsicsDude.OptionsPage
     [Guid(Guids.GuidOptionsPageIntrinsicsDude)]
     public class IntrinsicsDudeOptionsPage : UIElementDialogPage
     {
-        private const bool logInfo = false;
+        //private const bool logInfo = false;
 
         private readonly IntrinsicsDudeOptionsPageUI _intrinsicsDudeOptionsPageUI;
 
@@ -63,21 +63,21 @@ namespace IntrinsicsDude.OptionsPage
             base.OnActivate(e);
 
             #region Syntax Highlighting
-            this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting = Settings.Default.SyntaxHighlighting_On;
-            this._intrinsicsDudeOptionsPageUI.colorMnemonic = Settings.Default.SyntaxHighlighting_Intrinsic;
-            this._intrinsicsDudeOptionsPageUI.colorRegister = Settings.Default.SyntaxHighlighting_Register;
-            this._intrinsicsDudeOptionsPageUI.colorMisc = Settings.Default.SyntaxHighlighting_Misc;
+            this._intrinsicsDudeOptionsPageUI.UseSyntaxHighlighting = Settings.Default.SyntaxHighlighting_On;
+            this._intrinsicsDudeOptionsPageUI.ColorMnemonic = Settings.Default.SyntaxHighlighting_Intrinsic;
+            this._intrinsicsDudeOptionsPageUI.ColorRegister = Settings.Default.SyntaxHighlighting_Register;
+            this._intrinsicsDudeOptionsPageUI.ColorMisc = Settings.Default.SyntaxHighlighting_Misc;
             #endregion
 
             #region Code Completion
-            this._intrinsicsDudeOptionsPageUI.useCodeCompletion = Settings.Default.StatementCompletion_On;
-            this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters = Settings.Default.HideStatementCompletionMmxRegisters_On;
-            this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;
-            this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
+            this._intrinsicsDudeOptionsPageUI.UseCodeCompletion = Settings.Default.StatementCompletion_On;
+            this._intrinsicsDudeOptionsPageUI.HideStatementCompletionMmxRegisters = Settings.Default.HideStatementCompletionMmxRegisters_On;
+            this._intrinsicsDudeOptionsPageUI.HideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;
+            this._intrinsicsDudeOptionsPageUI.DecorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
 
-            this._intrinsicsDudeOptionsPageUI.useSignatureHelp = Settings.Default.SignatureHelp_On;
+            this._intrinsicsDudeOptionsPageUI.UseSignatureHelp = Settings.Default.SignatureHelp_On;
 
-            this._intrinsicsDudeOptionsPageUI.useSvml = Settings.Default.USE_SVML;
+            this._intrinsicsDudeOptionsPageUI.UseSvml = Settings.Default.USE_SVML;
             this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.MakeToolTip(CpuID.SVML);
             this._intrinsicsDudeOptionsPageUI.UseArch_ADX = Settings.Default.ARCH_ADX;
             this._intrinsicsDudeOptionsPageUI.UseArch_ADX_UI.ToolTip = this.MakeToolTip(CpuID.ADX);
@@ -235,59 +235,59 @@ namespace IntrinsicsDude.OptionsPage
             StringBuilder sb = new StringBuilder();
 
             #region Syntax Highlighting
-            if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting)
+            if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.UseSyntaxHighlighting)
             {
-                sb.AppendLine("useSyntaxHighlighting=" + this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting);
+                sb.AppendLine("useSyntaxHighlighting=" + this._intrinsicsDudeOptionsPageUI.UseSyntaxHighlighting);
                 changed = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMnemonic.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorMnemonic.ToArgb())
             {
-                sb.AppendLine("stored=" + Settings.Default.SyntaxHighlighting_Intrinsic + "; new colorMnemonic=" + this._intrinsicsDudeOptionsPageUI.colorMnemonic);
+                sb.AppendLine("stored=" + Settings.Default.SyntaxHighlighting_Intrinsic + "; new colorMnemonic=" + this._intrinsicsDudeOptionsPageUI.ColorMnemonic);
                 changed = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorRegister.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorRegister.ToArgb())
             {
-                sb.AppendLine("colorRegister=" + this._intrinsicsDudeOptionsPageUI.colorRegister);
+                sb.AppendLine("colorRegister=" + this._intrinsicsDudeOptionsPageUI.ColorRegister);
                 changed = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMisc.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorMisc.ToArgb())
             {
-                sb.AppendLine("colorMisc=" + this._intrinsicsDudeOptionsPageUI.colorMisc);
+                sb.AppendLine("colorMisc=" + this._intrinsicsDudeOptionsPageUI.ColorMisc);
                 changed = true;
             }
             #endregion
 
             #region Code Completion
-            if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.useCodeCompletion)
+            if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.UseCodeCompletion)
             {
-                sb.AppendLine("useCodeCompletion=" + this._intrinsicsDudeOptionsPageUI.useCodeCompletion);
+                sb.AppendLine("useCodeCompletion=" + this._intrinsicsDudeOptionsPageUI.UseCodeCompletion);
                 changed = true;
             }
             
-            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters)
+            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.HideStatementCompletionMmxRegisters)
             {
-                sb.AppendLine("hideStatementCompletionMmxRegisters=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters);
+                sb.AppendLine("hideStatementCompletionMmxRegisters=" + this._intrinsicsDudeOptionsPageUI.HideStatementCompletionMmxRegisters);
                 changed = true;
             }
-            if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType)
+            if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.HideStatementCompletionIncompatibleReturnType)
             {
-                sb.AppendLine("hideStatementCompletionIncompatibleReturnType=" + this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType);
+                sb.AppendLine("hideStatementCompletionIncompatibleReturnType=" + this._intrinsicsDudeOptionsPageUI.HideStatementCompletionIncompatibleReturnType);
                 changed = true;
             }
-            if (Settings.Default.DecorateIncompatibleStatementCompletions_On != this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions)
+            if (Settings.Default.DecorateIncompatibleStatementCompletions_On != this._intrinsicsDudeOptionsPageUI.DecorateIncompatibleStatementCompletions)
             {
-                sb.AppendLine("decorateIncompatibleStatementCompletions=" + this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions);
+                sb.AppendLine("decorateIncompatibleStatementCompletions=" + this._intrinsicsDudeOptionsPageUI.DecorateIncompatibleStatementCompletions);
                 changed = true;
             }
 
-            if (Settings.Default.SignatureHelp_On != this._intrinsicsDudeOptionsPageUI.useSignatureHelp)
+            if (Settings.Default.SignatureHelp_On != this._intrinsicsDudeOptionsPageUI.UseSignatureHelp)
             {
-                sb.AppendLine("useSignatureHelp=" + this._intrinsicsDudeOptionsPageUI.useSignatureHelp);
+                sb.AppendLine("useSignatureHelp=" + this._intrinsicsDudeOptionsPageUI.UseSignatureHelp);
                 changed = true;
             }
-            if (Settings.Default.USE_SVML != this._intrinsicsDudeOptionsPageUI.useSvml)
+            if (Settings.Default.USE_SVML != this._intrinsicsDudeOptionsPageUI.UseSvml)
             {
-                sb.AppendLine("useSvml=" + this._intrinsicsDudeOptionsPageUI.useSvml);
+                sb.AppendLine("useSvml=" + this._intrinsicsDudeOptionsPageUI.UseSvml);
                 changed = true;
             }
             if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.UseArch_MMX)
@@ -585,62 +585,62 @@ namespace IntrinsicsDude.OptionsPage
             bool restartNeeded = false;
 
             #region Syntax Highlighting
-            if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting)
+            if (Settings.Default.SyntaxHighlighting_On != this._intrinsicsDudeOptionsPageUI.UseSyntaxHighlighting)
             {
-                Settings.Default.SyntaxHighlighting_On = this._intrinsicsDudeOptionsPageUI.useSyntaxHighlighting;
+                Settings.Default.SyntaxHighlighting_On = this._intrinsicsDudeOptionsPageUI.UseSyntaxHighlighting;
                 changed = true;
                 restartNeeded = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMnemonic.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Intrinsic.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorMnemonic.ToArgb())
             {
-                Settings.Default.SyntaxHighlighting_Intrinsic = this._intrinsicsDudeOptionsPageUI.colorMnemonic;
+                Settings.Default.SyntaxHighlighting_Intrinsic = this._intrinsicsDudeOptionsPageUI.ColorMnemonic;
                 changed = true;
                 restartNeeded = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorRegister.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Register.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorRegister.ToArgb())
             {
-                Settings.Default.SyntaxHighlighting_Register = this._intrinsicsDudeOptionsPageUI.colorRegister;
+                Settings.Default.SyntaxHighlighting_Register = this._intrinsicsDudeOptionsPageUI.ColorRegister;
                 changed = true;
                 restartNeeded = true;
             }
-            if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._intrinsicsDudeOptionsPageUI.colorMisc.ToArgb())
+            if (Settings.Default.SyntaxHighlighting_Misc.ToArgb() != this._intrinsicsDudeOptionsPageUI.ColorMisc.ToArgb())
             {
-                Settings.Default.SyntaxHighlighting_Misc = this._intrinsicsDudeOptionsPageUI.colorMisc;
+                Settings.Default.SyntaxHighlighting_Misc = this._intrinsicsDudeOptionsPageUI.ColorMisc;
                 changed = true;
                 restartNeeded = true;
             }
             #endregion
 
             #region Code Completion
-            if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.useCodeCompletion)
+            if (Settings.Default.StatementCompletion_On != this._intrinsicsDudeOptionsPageUI.UseCodeCompletion)
             {
-                Settings.Default.StatementCompletion_On = this._intrinsicsDudeOptionsPageUI.useCodeCompletion;
+                Settings.Default.StatementCompletion_On = this._intrinsicsDudeOptionsPageUI.UseCodeCompletion;
                 changed = true;
             }
-            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters)
+            if (Settings.Default.HideStatementCompletionMmxRegisters_On != this._intrinsicsDudeOptionsPageUI.HideStatementCompletionMmxRegisters)
             {
-                Settings.Default.HideStatementCompletionMmxRegisters_On = this._intrinsicsDudeOptionsPageUI.hideStatementCompletionMmxRegisters;
+                Settings.Default.HideStatementCompletionMmxRegisters_On = this._intrinsicsDudeOptionsPageUI.HideStatementCompletionMmxRegisters;
                 changed = true;
             }
-            if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType)
+            if (Settings.Default.HideStatementCompletionIncompatibleReturnType_On != this._intrinsicsDudeOptionsPageUI.HideStatementCompletionIncompatibleReturnType)
             {
-                Settings.Default.HideStatementCompletionIncompatibleReturnType_On = this._intrinsicsDudeOptionsPageUI.hideStatementCompletionIncompatibleReturnType;
+                Settings.Default.HideStatementCompletionIncompatibleReturnType_On = this._intrinsicsDudeOptionsPageUI.HideStatementCompletionIncompatibleReturnType;
                 changed = true;
             }
-            if (Settings.Default.DecorateIncompatibleStatementCompletions_On != this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions)
+            if (Settings.Default.DecorateIncompatibleStatementCompletions_On != this._intrinsicsDudeOptionsPageUI.DecorateIncompatibleStatementCompletions)
             {
-                Settings.Default.DecorateIncompatibleStatementCompletions_On = this._intrinsicsDudeOptionsPageUI.decorateIncompatibleStatementCompletions;
+                Settings.Default.DecorateIncompatibleStatementCompletions_On = this._intrinsicsDudeOptionsPageUI.DecorateIncompatibleStatementCompletions;
                 changed = true;
             }
 
-            if (Settings.Default.SignatureHelp_On != this._intrinsicsDudeOptionsPageUI.useSignatureHelp)
+            if (Settings.Default.SignatureHelp_On != this._intrinsicsDudeOptionsPageUI.UseSignatureHelp)
             {
-                Settings.Default.SignatureHelp_On = this._intrinsicsDudeOptionsPageUI.useSignatureHelp;
+                Settings.Default.SignatureHelp_On = this._intrinsicsDudeOptionsPageUI.UseSignatureHelp;
                 changed = true;
             }
-            if (Settings.Default.USE_SVML != this._intrinsicsDudeOptionsPageUI.useSvml)
+            if (Settings.Default.USE_SVML != this._intrinsicsDudeOptionsPageUI.UseSvml)
             {
-                Settings.Default.USE_SVML = this._intrinsicsDudeOptionsPageUI.useSvml;
+                Settings.Default.USE_SVML = this._intrinsicsDudeOptionsPageUI.UseSvml;
                 changed = true;
             }
             if (Settings.Default.ARCH_MMX != this._intrinsicsDudeOptionsPageUI.UseArch_MMX)
