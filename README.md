@@ -39,4 +39,4 @@ If you are reading this you are most likely a C/C++ programmer, if you are still
 * 25 Juli 2016: Start of project
 * 26 August 2016: First release (v1.0.0.7)
 * 2 September 2016: Added Performance data to QuickInfo tooltips (v1.1.0.0)
-* 6 January 2019: Assed VS2019 (v1.2.0.1)
+* 6 January 2019: Added VS2019 (v1.2.0.1)
