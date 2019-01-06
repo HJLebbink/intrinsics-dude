@@ -51,7 +51,7 @@ namespace IntrinsicsDude.Tools
                         instance.InitAsync().ConfigureAwait(true);
 
                         double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
-                        IntrinsicsDudeToolsStatic.Output_INFO(string.Format("IntrinsicsDudeTools.Instance: Done creating singleton IntrinsicsDudeTools. Took {0:F3} seconds to load {1} intrinsic definitions.", elapsedSec, instance.IntrinsicStore.Data.Count));
+                        IntrinsicsDudeToolsStatic.OutputAsync(string.Format("INFO: Done creating singleton IntrinsicsDudeTools. Took {0:F3} seconds to load {1} intrinsic definitions.", elapsedSec, instance.IntrinsicStore.Data.Count)).ConfigureAwait(true);
                     }
                     return instance;
                 }
