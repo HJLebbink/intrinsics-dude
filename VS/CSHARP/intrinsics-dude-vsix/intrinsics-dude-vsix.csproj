@@ -137,8 +137,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="CodeCompletion\CodeCompletionCommandFilter.cs" />
-    <Compile Include="CodeCompletion\StatementCompletionSource.cs" />
-    <Compile Include="CodeCompletion\StatementCompletionSourceProvider.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionSource.cs" />
+    <Compile Include="CodeCompletion\CodeCompletionSourceProvider.cs" />
     <Compile Include="IntrinsicsDudePackage.cs" />
     <Compile Include="OptionsPage\IntrinsicsDudeOptionPageUI.xaml.cs">
       <DependentUpon>IntrinsicsDudeOptionPageUI.xaml</DependentUpon>
@@ -152,7 +152,7 @@
     <Compile Include="QuickInfo\IntrinsicsQuickInfoSourceProvider.cs" />
     <Compile Include="SignatureHelp\IntrParam.cs" />
     <Compile Include="SignatureHelp\IntrSignature.cs" />
-    <Compile Include="SignatureHelp\IntrSignatureHelpCommandHandler.cs" />
+    <Compile Include="SignatureHelp\IntrSignatureHelpCommandFilter.cs" />
     <Compile Include="SignatureHelp\IntrSignatureHelpCommandProvider.cs" />
     <Compile Include="SignatureHelp\IntrSignatureHelpSource.cs" />
     <Compile Include="SignatureHelp\IntrSignatureHelpSourceProvider.cs" />

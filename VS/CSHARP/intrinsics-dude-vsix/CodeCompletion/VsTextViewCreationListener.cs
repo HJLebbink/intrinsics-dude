@@ -46,7 +46,7 @@ namespace IntrinsicsDude.CodeCompletion
             IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
             if (view != null)
             {
-                CodetCompletionCommandFilter filter = new CodetCompletionCommandFilter(view, this._completionBroker);
+                CodeCompletionCommandFilter filter = new CodeCompletionCommandFilter(view, this._completionBroker);
                 textViewAdapter.AddCommandFilter(filter, out var next);
                 filter.NextCommandHandler = next;
             }

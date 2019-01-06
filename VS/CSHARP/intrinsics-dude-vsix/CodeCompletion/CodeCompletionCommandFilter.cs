@@ -31,13 +31,13 @@ using IntrinsicsDude.Tools;
 
 namespace IntrinsicsDude
 {
-    internal sealed class CodetCompletionCommandFilter : IOleCommandTarget
+    internal sealed class CodeCompletionCommandFilter : IOleCommandTarget
     {
         private ICompletionSession _currrentSession;
         private const bool LOG_ON = false;
 
 
-        public CodetCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
+        public CodeCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
         {
             this._currrentSession = null;
             this.TextView = textView;

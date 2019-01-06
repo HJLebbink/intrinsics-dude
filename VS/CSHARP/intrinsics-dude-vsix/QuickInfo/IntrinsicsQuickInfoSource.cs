@@ -23,16 +23,17 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
-using IntrinsicsDude.SyntaxHighlighting;
-using IntrinsicsDude.Tools;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+
+using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Tagging;
+
+using IntrinsicsDude.SyntaxHighlighting;
+using IntrinsicsDude.Tools;
 using static IntrinsicsDude.Tools.IntrinsicTools;
 
 namespace IntrinsicsDude.QuickInfo
@@ -40,7 +41,7 @@ namespace IntrinsicsDude.QuickInfo
     /// <summary>
     /// Provides QuickInfo information to be displayed in a text buffer
     /// </summary>
-    internal sealed class IntrinsicsQuickInfoSource : IQuickInfoSource
+    internal sealed class IntrinsicsQuickInfoSource : IQuickInfoSource //TODO for IAsyncQuickInfoSource Reference Microsoft.VisualStudio.Language.Intellisense v16 is needed
     {
         private readonly ITextBuffer _sourceBuffer;
         private readonly ITagAggregator<IntrinsicTokenTag> _aggregator;
