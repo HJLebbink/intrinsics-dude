@@ -26,24 +26,24 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using IntrinsicsDude.OptionsPage;
 using System.Text;
 using IntrinsicsDude.Tools;
+using System.Threading;
 
 namespace IntrinsicsDude
 {
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
-    [ProvideAutoLoad(UIContextGuids.NoSolution)] //load this package once visual studio starts.
-    [Guid("00389BEF-8EAC-4E4E-8BC7-03151131B73E")]
+    [Guid(PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ComVisible(false)]
     [ProvideOptionPage(typeof(IntrinsicsDudeOptionsPage), "Intrinsics Dude", "General", 0, 0, true)]
 
-    public sealed class IntrinsicsDudePackage : Package
+    public sealed class IntrinsicsDudePackage : AsyncPackage
     {
         #region Global Constants
+        public const string PackageGuidString = "00389BEF-8EAC-4E4E-8BC7-03151131B73E";
 
         internal const string IntrinsicsDudeContentType = "C/C++";
         internal const double slowWarningThresholdSec = 0.3; // threshold to warn that actions are considered slow
@@ -57,14 +57,12 @@ namespace IntrinsicsDude
         public IntrinsicsDudePackage()
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "=========================================\nINFO: IntrinsicsDudePackage: Entering constructor"));
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudePackage2: Entering constructor");
+            IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudePackage: Entering constructor");
         }
 
-        #region Package Members
-
-        protected override void Initialize()
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            base.Initialize();
+            await base.InitializeAsync(cancellationToken, progress);
 
             StringBuilder sb = new StringBuilder();
             sb.Append("Welcome to\n");
@@ -75,9 +73,7 @@ namespace IntrinsicsDude
             sb.Append("INFO: Loaded IntrinsicsDude version " + typeof(IntrinsicsDudePackage).Assembly.GetName().Version + " (" + ApplicationInformation.CompileDate.ToString() + ")\n");
             sb.Append("INFO: More info at https://github.com/HJLebbink/intrinsics-dude \n");
             sb.Append("----------------------------------");
-            IntrinsicsDudeToolsStatic.Output(sb.ToString());
+            await IntrinsicsDudeToolsStatic.OutputAsync(sb.ToString());
         }
-
-        #endregion
     }
 }

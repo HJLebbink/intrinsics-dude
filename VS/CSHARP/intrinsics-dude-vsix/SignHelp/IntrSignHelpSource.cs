@@ -88,14 +88,14 @@ namespace IntrinsicsDude.SignHelp
 
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no intrinsic found at triggerPosition=" + triggerPosition + "; char='" + snapshot.GetText(triggerPosition, 1) + "'.");
                         return;
                     }
 
                     IList<IntrinsicDataElement> dataElements = IntrinsicsDudeTools.Instance.IntrinsicStore.Get(intrinsic);
                     if (dataElements.Count == 0)
                     {
-                        IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no dataElements for intrinsic " + intrinsic);
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(this._textBuffer) + "); no dataElements for intrinsic " + intrinsic);
                         return;
                     }
 
@@ -109,7 +109,7 @@ namespace IntrinsicsDude.SignHelp
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpSource:AugmentSignatureHelpSession; e="+ e.ToString());
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:AugmentSignatureHelpSession; e={1}", this.ToString(), e.ToString()));
             }
         }
 
@@ -124,7 +124,7 @@ namespace IntrinsicsDude.SignHelp
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
                 return session.Signatures[0];
             }
-            IntrinsicsDudeToolsStatic.Output("WARNING: IntrSignHelpSource:GetBestMatch: could not find intrinsic.");
+            IntrinsicsDudeToolsStatic.Output_WARNING("IntrSignHelpSource:GetBestMatch: could not find intrinsic.");
             return null;
         }
 

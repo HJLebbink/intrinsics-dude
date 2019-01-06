@@ -30,7 +30,7 @@ namespace IntrinsicsDude.OptionsPage {
     public partial class IntrinsicsDudeOptionsPageUI : UserControl {
 
         public IntrinsicsDudeOptionsPageUI() {
-            InitializeComponent();
+            this.InitializeComponent();
             this.version_UI.Content = "Intrinsics Dude v" + typeof(IntrinsicsDudePackage).Assembly.GetName().Version.ToString() + " (" + ApplicationInformation.CompileDate.ToUniversalTime().ToString()+")";
         }
 

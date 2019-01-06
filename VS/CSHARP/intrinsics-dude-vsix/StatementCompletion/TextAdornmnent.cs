@@ -80,7 +80,7 @@ public sealed class TextAdornment
         }
         if (line == null)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: WaitAdornment: constructor: could not fine linenumber " + lineNumber);
+            IntrinsicsDudeToolsStatic.Output_INFO("WaitAdornment: constructor: could not fine linenumber " + lineNumber);
         }
         return line;
     }

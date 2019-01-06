@@ -275,7 +275,7 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK64": return SimdRegisterType.__MMASK64;
                 case "__MMASK8": return SimdRegisterType.__MMASK8;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
                     return SimdRegisterType.NONE;
             }
         }
@@ -318,7 +318,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*":
                 case "VOID *": return ReturnType.VOID_PTR;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
                     return ReturnType.UNKNOWN;
             }
         }
@@ -417,7 +417,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID_PTR": return ParamType.VOID_PTR;
                 case "VOID_CONST_PTR": return ParamType.VOID_CONST_PTR;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType_InternalName: unknown ParamType \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseParamType_InternalName: unknown ParamType \"" + str + "\".");
                     return ParamType.NONE;
             }
         }
@@ -525,7 +525,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseParamType: unknown ParamType: str=\"" + str + "\"; str2=\"" + str2 + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseParamType: unknown ParamType: str=\"" + str + "\"; str2=\"" + str2 + "\".");
                     return ParamType.NONE;
             }
         }
@@ -610,7 +610,7 @@ namespace IntrinsicsDude.Tools
                 case "CLWB": return CpuID.CLWB;
 
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning "+CpuID.UNKNOWN);
                     return CpuID.UNKNOWN;
             }
         }
@@ -834,7 +834,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.UNSIGNED_SHORT_PTR: return "unsigned short *";
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ParamType \"" + type + "\".");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: ToString: unknown ParamType \"" + type + "\".");
                     return "UNKNOWN";
                     break;
             }
@@ -876,7 +876,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.VOID: return "void";
                 case ReturnType.VOID_PTR: return "void *";
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: ToString: unknown ReturnType \"" + type + "\".");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: ToString: unknown ReturnType \"" + type + "\".");
                     return type.ToString();
                     break;
             }
@@ -946,7 +946,7 @@ namespace IntrinsicsDude.Tools
 
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
                     return "";
             }
         }
@@ -1012,7 +1012,7 @@ namespace IntrinsicsDude.Tools
                     }
                     break;
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: conversionPossible: unknown or unrecognized ReturnType \"" + type1 + "\": returning false");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: conversionPossible: unknown or unrecognized ReturnType \"" + type1 + "\": returning false");
                     return false;
             }
         }
@@ -1351,17 +1351,17 @@ namespace IntrinsicsDude.Tools
         {
             if (str == null)
             {
-                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: str is null");
+                if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsic: str is null");
                 return Intrinsic.NONE;
             }
             if (str.Length < 4)
             {
-                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
                 return Intrinsic.NONE;
             }
             if (!str[0].Equals('_'))
             {
-                if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
                 return Intrinsic.NONE;
             }
             switch (str.ToUpper())
@@ -7107,7 +7107,7 @@ namespace IntrinsicsDude.Tools
                 case "_PTWRITE32": return Intrinsic._PTWRITE32;
                 case "_PTWRITE64": return Intrinsic._PTWRITE64;
                 default:
-                    if (warn) IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
+                    if (warn) IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsic: unknown Intrinsic \"" + str + "\".");
                     return Intrinsic.NONE;
             }
         }

@@ -59,7 +59,7 @@ namespace IntrinsicsDude.Tools
             {
                 return dataElements;
             }
-            IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore:get; intrinsic=" + intrinsic +" does not have data elements.");
+            IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore:get; intrinsic=" + intrinsic +" does not have data elements.");
             return empty;
         }
 
@@ -86,11 +86,11 @@ namespace IntrinsicsDude.Tools
 
                 if (File.Exists(filename))
                 {
-                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: going to load file " + filename);
+                    IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: going to load file " + filename);
                 }
                 else
                 {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadHtml: file " + filename + " does not exist.");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore: loadHtml: file " + filename + " does not exist.");
                     return;
                 }
 
@@ -172,7 +172,7 @@ namespace IntrinsicsDude.Tools
                                                 }
                                                 else
                                                 {
-                                                    IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: B: found unexpected element2Class=" + element2Class + "; " + element2.InnerHtml);
+                                                    IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: B: found unexpected element2Class=" + element2Class + "; " + element2.InnerHtml);
                                                 }
                                                 break;
                                         }
@@ -185,7 +185,7 @@ namespace IntrinsicsDude.Tools
                                     break;
                                 }
                             default:
-                                IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: found unexpected elementClass=" + elementClass);
+                                IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: found unexpected elementClass=" + elementClass);
                                 break;
                         }
 
@@ -228,13 +228,13 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadHtml: exception " + e.ToString());
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:loadHtml; e={1}", this.ToString(), e.ToString()));
             }
         }
 
         public void SaveXml(string filename)
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: saveXml: filename " + filename);
+            IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: saveXml: filename " + filename);
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version = \"1.0\" encoding = \"utf-8\" ?>");
             sb.AppendLine("<intrinsicsdudedata>");
@@ -314,7 +314,7 @@ namespace IntrinsicsDude.Tools
                                         }
                                         else
                                         {
-                                            IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: weird signature " + value);
+                                            IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore: loadXml: weird signature " + value);
                                         }
                                     }
                                 }
@@ -335,7 +335,7 @@ namespace IntrinsicsDude.Tools
                                 dataElement.performance = value;
                                 break;
                             default:
-                                IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());
+                                IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());
                                 break;
                         }
                     }
@@ -360,7 +360,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrinsicStore: loadXml: exception " + e.ToString());
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:loadXml; e={1}", this.ToString(), e.ToString()));
             }
         }
 
@@ -428,7 +428,7 @@ namespace IntrinsicsDude.Tools
                 string[] elements = lines[i].Split(new string[] { "</td>" }, StringSplitOptions.RemoveEmptyEntries);
                 if (elements.Length != 3)
                 {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicStore: testPerformance");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore: testPerformance");
                 }
             }
         }

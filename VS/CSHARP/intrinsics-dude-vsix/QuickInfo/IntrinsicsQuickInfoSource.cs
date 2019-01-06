@@ -81,7 +81,7 @@ namespace IntrinsicsDude.QuickInfo
                 IEnumerable<IMappingTagSpan<IntrinsicTokenTag>> enumerator = this._aggregator.GetTags(new SnapshotSpan(triggerPoint, triggerPoint));
                 if (enumerator.Count() > 1)
                 {
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: enumerator has " + enumerator.Count() + " elements");
+                    IntrinsicsDudeToolsStatic.Output_WARNING(string.Format("{0}:AugmentQuickInfoSession: enumerator has {1} elements", this.ToString(), enumerator.Count()));
                 }
                 if (enumerator.Count() > 0)
                 {
@@ -137,7 +137,7 @@ namespace IntrinsicsDude.QuickInfo
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:AugmentQuickInfoSession; e={1}", this.ToString(), e.ToString()));
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:AugmentQuickInfoSession; e={1}", this.ToString(), e.ToString()));
             }
         }
 

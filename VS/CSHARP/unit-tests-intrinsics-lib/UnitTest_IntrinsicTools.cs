@@ -81,18 +81,6 @@ namespace intrinsics_dude_unit_tests
         [TestMethod]
         public void TestIntrinsicEnum()
         {
-            if (false)
-            {
-                foreach (Intrinsic x in Enum.GetValues(typeof(Intrinsic)))
-                {
-                    string str = x.ToString().ToUpper();
-                    Intrinsic x2 = IntrinsicTools.ParseIntrinsic(str, false);
-                    if (x != x2)
-                    {
-                        Console.Write(" case \"" + str + "\": return Intrinsic." + str + ";\n");
-                    }
-                }
-            }
             foreach (Intrinsic x in Enum.GetValues(typeof(Intrinsic)))
             {
                 string str = x.ToString();

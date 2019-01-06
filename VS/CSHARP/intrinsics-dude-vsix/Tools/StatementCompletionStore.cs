@@ -158,7 +158,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (FileNotFoundException)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
+                IntrinsicsDudeToolsStatic.Output_ERROR("StatementCompletionSource: loadIcons. could not find file \"" + uri.AbsolutePath + "\".");
             }
         }
 

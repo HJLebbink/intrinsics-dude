@@ -113,7 +113,7 @@ namespace IntrinsicsDude.Tools
                     if (dataElements.Count > 0)
                     {
                         string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + dataElements[0].id;
-                        IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
+                        IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
                         return url;
                     }
                 }
@@ -121,7 +121,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output(string.Format("ERROR: {0}:getUrl: exception {1}.", this.ToString(), e.ToString()));
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:GetUrl; e={1}", this.ToString(), e.ToString()));
                 return "";
             }
         }

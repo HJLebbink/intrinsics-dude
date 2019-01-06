@@ -109,7 +109,7 @@ namespace IntrinsicsDude.StatementCompletion
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: StatementCompletionSource: AugmentCompletionSession; e=" + e.ToString());
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:AugmentCompletionSession; e={1}", this.ToString(), e.ToString()));
             }
         }
 
@@ -152,7 +152,7 @@ namespace IntrinsicsDude.StatementCompletion
                             nCompletionsAdded++;
                             if ((DateTime.Now.Ticks - startTime.Ticks) > (maxTimeMs * 10000))
                             {
-                                IntrinsicsDudeToolsStatic.Output("Warning: StatementCompletionSource: Truncated initialization: took more than the maximum "+maxTimeMs+" ms to initialize " + nCompletionsAdded + " existing statement completions (of total "+ existingCompletions.Completions.Count +")");
+                                IntrinsicsDudeToolsStatic.Output_WARNING("StatementCompletionSource: Truncated initialization: took more than the maximum "+maxTimeMs+" ms to initialize " + nCompletionsAdded + " existing statement completions (of total "+ existingCompletions.Completions.Count +")");
                                 break; 
                             }
                         }
@@ -236,7 +236,7 @@ namespace IntrinsicsDude.StatementCompletion
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
             if (returnType == ReturnType.UNKNOWN)
             {
-                returnType = FindEmbeddedType(currentKeywordExtent);
+                returnType = this.FindEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
@@ -312,7 +312,7 @@ namespace IntrinsicsDude.StatementCompletion
                 {
                     if (!hideStatementCompletionIncompatibleReturnType)
                     {
-                        completions.Add((decorateIncompatibleStatementCompletions) ? Decorate(completion, "[Incompatible]") : completion);
+                        completions.Add((decorateIncompatibleStatementCompletions) ? this.Decorate(completion, "[Incompatible]") : completion);
                     }
                 }
                 else

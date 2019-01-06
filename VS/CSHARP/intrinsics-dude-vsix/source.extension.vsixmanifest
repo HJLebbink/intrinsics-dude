@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="1.1.5.0" Language="en-US" Publisher="Henk-Jan Lebbink" />
+        <Identity Id="5BC76C2B-A941-40D2-9EB4-F0DB92DD7C06" Version="1.2.0.0" Language="en-US" Publisher="Henk-Jan Lebbink" />
         <DisplayName>Intrinsics Dude</DisplayName>
         <Description xml:space="preserve">Improved Statement Completion, Quickinfo Tooltips and Signature Help for Compiler Intrinsics in Visual Studio</Description>
         <MoreInfo>https://github.com/HJLebbink/intrinsics-dude</MoreInfo>
@@ -17,7 +17,7 @@
         <InstallationTarget Version="[14.0,16.0)" Id="Microsoft.VisualStudio.Enterprise" />
     </Installation>
     <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6.2,)" />
         <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
     </Dependencies>
     <Assets>

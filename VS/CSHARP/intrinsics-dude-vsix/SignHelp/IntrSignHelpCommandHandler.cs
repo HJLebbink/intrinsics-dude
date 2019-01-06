@@ -40,7 +40,7 @@ namespace IntrinsicsDude.SignHelp
         private readonly ITextStructureNavigator _navigator;
 
         private ISignatureHelpSession _session;
-        private IOleCommandTarget _nextCommandHandler;
+        private readonly IOleCommandTarget _nextCommandHandler;
 
         internal IntrSignHelpCommandHandler(IVsTextView textViewAdapter, ITextView textView, ITextStructureNavigator nav, ISignatureHelpBroker broker)
         {
@@ -115,7 +115,7 @@ namespace IntrinsicsDude.SignHelp
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("ERROR: IntrSignHelpCommandHandler: Exec; e=" + e.ToString());
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:Exec; e={1}", this.ToString(), e.ToString()));
             }
             return this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }

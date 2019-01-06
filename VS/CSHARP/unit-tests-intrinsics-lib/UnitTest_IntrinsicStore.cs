@@ -10,8 +10,8 @@ namespace intrinsics_dude_unit_tests
         [TestMethod]
         public void TestReturnType()
         {
-            string filename;
             /*
+            string filename;
             IntrinsicStore store = new IntrinsicStore(filename);
 
 

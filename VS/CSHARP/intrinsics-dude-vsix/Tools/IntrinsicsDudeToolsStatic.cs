@@ -33,6 +33,7 @@ using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using static IntrinsicsDude.Tools.IntrinsicTools;
+using System.Threading.Tasks;
 //using System.Drawing;
 
 namespace IntrinsicsDude.Tools
@@ -44,10 +45,10 @@ namespace IntrinsicsDude.Tools
             IBufferTagAggregatorFactoryService aggregatorFactory)
         {
 
-            Func<ITagAggregator<IntrinsicTokenTag>> sc = delegate ()
+            ITagAggregator<IntrinsicTokenTag> sc()
             {
                 return aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
-            };
+            }
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
 
@@ -56,7 +57,7 @@ namespace IntrinsicsDude.Tools
             double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
             if (elapsedSec > IntrinsicsDudePackage.slowWarningThresholdSec)
             {
-                IntrinsicsDudeToolsStatic.Output(string.Format("WARNING: SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
+                IntrinsicsDudeToolsStatic.Output_WARNING(string.Format("SLOW: took {0} {1:F3} seconds to finish", component, elapsedSec));
             }
         }
 
@@ -119,9 +120,9 @@ namespace IntrinsicsDude.Tools
                     }
                 }
             } catch (Exception e) {
-                IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "ERROR: IntrinsicsDudeToolsStatic:GetFontColor {0}", e.Message));
+                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format(CultureInfo.CurrentCulture, "IntrinsicsDudeToolsStatic:GetFontColor {0}", e.Message));
             }
-            IntrinsicsDudeToolsStatic.Output(string.Format(CultureInfo.CurrentCulture, "WARNING: IntrinsicsDudeToolsStatic:GetFontColor: could not retrieve text color"));
+            IntrinsicsDudeToolsStatic.Output_WARNING(string.Format(CultureInfo.CurrentCulture, "IntrinsicsDudeToolsStatic:GetFontColor: could not retrieve text color"));
             return new SolidColorBrush(Colors.Gray);
         }
 
@@ -164,7 +165,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception e)
             {
-                IntrinsicsDudeToolsStatic.Output("WARNING: bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
+                IntrinsicsDudeToolsStatic.Output_WARNING("bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
             }
             return bitmap;
         }
@@ -185,34 +186,61 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        /// <summary>
-        /// Output message to the IntrinsicsDude window
-        /// </summary>
-        public static void Output(string msg)
+        /// <summary>Output message to the AsmDude window</summary>
+        public static void Output_INFO(string msg)
         {
-            //IntrinsicsDudeTools.Instance.threadPool.QueueWorkItem(IntrinsicsDudeToolsStatic.Output_Sync, msg);
-            IntrinsicsDudeToolsStatic.Output_Sync(msg);
+#           if DEBUG
+            OutputAsync("INFO: " + msg).ConfigureAwait(false);
+#           endif
+        }
+        /// <summary>Output message to the AsmDude window</summary>
+        public static void Output_WARNING(string msg)
+        {
+            OutputAsync("WARNING: " + msg).ConfigureAwait(false);
+        }
+        /// <summary>Output message to the AsmDude window</summary>
+        public static void Output_ERROR(string msg)
+        {
+            OutputAsync("ERROR: " + msg).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Output message to the IntrinsicsDude window
+        /// Output message to the AsmSim window
         /// </summary>
-        public static void Output_Sync(string msg)
+        public static async System.Threading.Tasks.Task OutputAsync(string msg)
         {
-            IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            IVsOutputWindowPane outputPane = await GetOutputPaneAsync();
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
-            if (outputWindow == null)
+            if (outputPane == null)
             {
                 Debug.Write(msg2);
+            }
+            else
+            {
+                outputPane.OutputString(msg2);
+                outputPane.Activate();
+            }
+        }
+
+        public static async Task<IVsOutputWindowPane> GetOutputPaneAsync()
+        {
+            if (!ThreadHelper.CheckAccess())
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+            if (outputWindow == null)
+            {
+                return null;
             }
             else
             {
                 Guid paneGuid = new Guid("A9F2F5E5-C21D-4BB3-B4A7-FEE69DC0E03A");
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
                 outputWindow.GetPane(paneGuid, out var pane);
-                pane.OutputString(msg2);
-                pane.FlushToTaskList();
-                pane.Activate();
+                return pane;
             }
         }
 
@@ -307,7 +335,7 @@ namespace IntrinsicsDude.Tools
                 case CpuID.UNKNOWN: return false;
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
                     return false;
             }
         }
