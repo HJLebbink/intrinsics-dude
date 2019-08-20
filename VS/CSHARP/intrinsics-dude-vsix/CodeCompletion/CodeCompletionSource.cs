@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,24 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Operations;
-
-using IntrinsicsDude.Tools;
-using static IntrinsicsDude.Tools.IntrinsicTools;
-using Microsoft.VisualStudio.Text.Editor;
-
 namespace IntrinsicsDude.StatementCompletion
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using IntrinsicsDude.Tools;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Editor;
+    using Microsoft.VisualStudio.Text.Operations;
+    using static IntrinsicsDude.Tools.IntrinsicTools;
+
     public sealed class CompletionComparer : IComparer<Completion>
     {
         public int Compare(Completion x, Completion y)
         {
-            if ((y == null) || (x == null)) return -1;
+            if ((y == null) || (x == null))
+            {
+                return -1;
+            }
+
             return x.InsertionText.CompareTo(y.InsertionText);
         }
     }
@@ -50,7 +53,7 @@ namespace IntrinsicsDude.StatementCompletion
         private bool _disposed = false;
 
         public CodeCompletionSource(
-            ITextBuffer buffer, 
+            ITextBuffer buffer,
             ITextStructureNavigator navigator)
         {
             this._buffer = buffer;
@@ -60,20 +63,30 @@ namespace IntrinsicsDude.StatementCompletion
         }
 
         public void AugmentCompletionSession(
-            ICompletionSession session, 
+            ICompletionSession session,
             IList<CompletionSet> completionSets)
         {
             try
             {
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
 
-                if (this._disposed) return;
-                if (!Settings.Default.StatementCompletion_On) return;
+                if (this._disposed)
+                {
+                    return;
+                }
+
+                if (!Settings.Default.StatementCompletion_On)
+                {
+                    return;
+                }
 
                 DateTime time1 = DateTime.Now;
 
                 SnapshotPoint triggerPoint = (SnapshotPoint)session.GetTriggerPoint(this._buffer.CurrentSnapshot);
-                if (triggerPoint == null) return;
+                if (triggerPoint == null)
+                {
+                    return;
+                }
 
                 TextExtent extent = this._navigator.GetExtentOfWord(triggerPoint - 1); // minus one to get the previous word
                 if (extent.IsSignificant)
@@ -81,7 +94,7 @@ namespace IntrinsicsDude.StatementCompletion
                     string partialKeyword = extent.Span.GetText();
                     //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
 
-                    if ((partialKeyword.Length > 0) && (partialKeyword[0].Equals('_')))
+                    if ((partialKeyword.Length > 0) && partialKeyword[0].Equals('_'))
                     {
                         List<Completion> intrinsicCompletions = this.GetCompletions(this.FindCompletionRestriction(extent));
 
@@ -94,7 +107,8 @@ namespace IntrinsicsDude.StatementCompletion
                             //this.init_Cached_Completions_method2(existingCompletions, intrinsicCompletions, session);
                             intrinsicCompletions.Sort(new CompletionComparer());
                             completionSets.Insert(0, new CompletionSet("New", "New", existingCompletions.ApplicableTo, intrinsicCompletions, Enumerable.Empty<Completion>()));
-                        } else
+                        }
+                        else
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
 
@@ -125,8 +139,8 @@ namespace IntrinsicsDude.StatementCompletion
         #region Private Methods
 
         private void Init_Cached_Completions_method1(
-            CompletionSet existingCompletions, 
-            List<Completion> intrinsicCompletions, 
+            CompletionSet existingCompletions,
+            List<Completion> intrinsicCompletions,
             ICompletionSession session,
             string partialKeyword)
         {
@@ -152,19 +166,20 @@ namespace IntrinsicsDude.StatementCompletion
                             nCompletionsAdded++;
                             if ((DateTime.Now.Ticks - startTime.Ticks) > (maxTimeMs * 10000))
                             {
-                                IntrinsicsDudeToolsStatic.Output_WARNING("StatementCompletionSource: Truncated initialization: took more than the maximum "+maxTimeMs+" ms to initialize " + nCompletionsAdded + " existing statement completions (of total "+ existingCompletions.Completions.Count +")");
-                                break; 
+                                IntrinsicsDudeToolsStatic.Output_WARNING("StatementCompletionSource: Truncated initialization: took more than the maximum " + maxTimeMs + " ms to initialize " + nCompletionsAdded + " existing statement completions (of total " + existingCompletions.Completions.Count + ")");
+                                break;
                             }
                         }
                     }
                 }
             }
-           // IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
+
+            // IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
         }
 
         private void Init_Cached_Completions_method2(
-            CompletionSet existingCompletions, 
-            List<Completion> intrinsicCompletions, 
+            CompletionSet existingCompletions,
+            List<Completion> intrinsicCompletions,
             ICompletionSession session)
         {
             DateTime startTime = DateTime.Now;
@@ -188,6 +203,7 @@ namespace IntrinsicsDude.StatementCompletion
                     }
                 }
             }
+
             if (!is_Initialized)
             {
                 int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
@@ -195,30 +211,37 @@ namespace IntrinsicsDude.StatementCompletion
                 string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
                 TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }
+
             IntrinsicsDudeToolsStatic.PrintSpeedWarning(startTime, "Init-Cached-Completions");
         }
 
         private void AddRegisterCompletions(ref List<Completion> completions, ReturnType returnType)
         {
-            if (returnType == ReturnType.UNKNOWN) {
+            if (returnType == ReturnType.UNKNOWN)
+            {
                 CpuID selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
 
                 if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m64", "__m64", null, null, null));
                 }
+
                 if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE4_1 | CpuID.SSE4_2 | CpuID.SSSE3)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m128", "__m128 ", null, null, null));
                     completions.Add(new Completion("__m128d", "__m128d ", null, null, null));
                     completions.Add(new Completion("__m128i", "__m128i ", null, null, null));
                 }
-                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE) {
+
+                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE)
+                {
                     completions.Add(new Completion("__m256", "__m256 ", null, null, null));
                     completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
                     completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
                 }
-                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA52 | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE) {
+
+                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA52 | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE)
+                {
                     completions.Add(new Completion("__m512", "__m512 ", null, null, null));
                     completions.Add(new Completion("__m512d", "__m512d ", null, null, null));
                     completions.Add(new Completion("__m512i", "__m512i ", null, null, null));
@@ -239,6 +262,7 @@ namespace IntrinsicsDude.StatementCompletion
                 returnType = this.FindEmbeddedType(currentKeywordExtent);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
+
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
             return returnType;
         }
@@ -254,7 +278,7 @@ namespace IntrinsicsDude.StatementCompletion
 
             IntrinsicStore store = IntrinsicsDudeTools.Instance.IntrinsicStore;
             IntrinsicDataElement dataElement = store.Get(tup.Item1)[0];
-            ParamType paramType = dataElement.parameters[tup.Item2].Item1;
+            ParamType paramType = dataElement._parameters[tup.Item2].Item1;
             ReturnType returnType = ParseReturnType(IntrinsicTools.ToString(paramType), false);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
@@ -270,6 +294,7 @@ namespace IntrinsicsDude.StatementCompletion
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: B: word=\"" + word.Span.GetText() + "\".");
             }
+
             if (word.Span.GetText().Equals("="))
             {
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
@@ -279,11 +304,13 @@ namespace IntrinsicsDude.StatementCompletion
             {
                 return ReturnType.UNKNOWN;
             }
+
             if (word.Span.GetText().Equals(" "))
             {
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
                 //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: D: word=\"" + word.Span.GetText() + "\".");
             }
+
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
 
@@ -330,7 +357,7 @@ namespace IntrinsicsDude.StatementCompletion
             string displayText = completion.DisplayText.Replace(" [", " " + str + "[");
             return new Completion(displayText, completion.InsertionText, completion.Description, completion.IconSource, completion.IconAutomationText);
         }
-       
+
         #endregion
     }
 }

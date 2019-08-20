@@ -1,16 +1,10 @@
 ﻿using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace MefRegistration
 {
-    using System.ComponentModel.Composition;
-    using Microsoft.VisualStudio.Utilities;
-    using Microsoft.VisualStudio.Text.Editor;
-
     /*
         [Export(typeof(IWpfTextViewCreationListener))]
         [ContentType("text")]
@@ -44,17 +38,25 @@ public sealed class TextAdornment
 
         //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: constructor");
         ITextViewLine line = this.GetLine(this._view.TextViewLines, lineNumber);
-        if (line == null) return;
+        if (line == null)
+        {
+            return;
+        }
 
         //IntrinsicsDudeToolsStatic.Output("INFO: TextAdornment: show: line=\"" + line.Extent.GetText() + "\".");
-        var geometry = this._view.TextViewLines.GetMarkerGeometry(line.Extent);
-        if (geometry == null) return;
-        this._adornment = new TextBlock {
+        System.Windows.Media.Geometry geometry = this._view.TextViewLines.GetMarkerGeometry(line.Extent);
+        if (geometry == null)
+        {
+            return;
+        }
+
+        this._adornment = new TextBlock
+        {
             Text = message,
             Width = 400,
             Height = geometry.Bounds.Height,
             Background = System.Windows.Media.Brushes.Yellow,
-            Opacity = 0.4
+            Opacity = 0.4,
         };
         Canvas.SetLeft(this._adornment, pos);
         Canvas.SetTop(this._adornment, geometry.Bounds.Top);
@@ -78,10 +80,12 @@ public sealed class TextAdornment
                 break;
             }
         }
+
         if (line == null)
         {
             IntrinsicsDudeToolsStatic.Output_INFO("WaitAdornment: constructor: could not fine linenumber " + lineNumber);
         }
+
         return line;
     }
 }

@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,37 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.SyntaxHighlighting;
-using EnvDTE;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using static IntrinsicsDude.Tools.IntrinsicTools;
-using System.Threading.Tasks;
-using System.Text;
-
 namespace IntrinsicsDude.Tools
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using EnvDTE;
+    using IntrinsicsDude.SyntaxHighlighting;
+    using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Tagging;
+    using static IntrinsicsDude.Tools.IntrinsicTools;
+
     public static class IntrinsicsDudeToolsStatic
     {
         private static bool first_log_message = true;
-
 
         public static ITagAggregator<IntrinsicTokenTag> GetAggregator(
             ITextBuffer buffer,
             IBufferTagAggregatorFactoryService aggregatorFactory)
         {
-
             ITagAggregator<IntrinsicTokenTag> sc()
             {
                 return aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
             }
+
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
 
@@ -69,7 +68,9 @@ namespace IntrinsicsDude.Tools
         public static async Task<string> Get_Filename_Async(ITextBuffer buffer)
         {
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             buffer.Properties.TryGetProperty(typeof(ITextDocument), out ITextDocument document);
             string filename = document?.FilePath;
@@ -80,7 +81,9 @@ namespace IntrinsicsDude.Tools
         public static async Task<int> Get_Font_Size_Async()
         {
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
@@ -92,7 +95,9 @@ namespace IntrinsicsDude.Tools
         public static async Task<Brush> Get_Font_Color_Async()
         {
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             DTE dte = Package.GetGlobalService(typeof(SDTE)) as DTE;
             Properties propertiesList = dte.get_Properties("FontsAndColors", "TextEditor");
@@ -108,6 +113,7 @@ namespace IntrinsicsDude.Tools
                     return new SolidColorBrush(ConvertColor(System.Drawing.ColorTranslator.FromOle((int)ci.Foreground)));
                 }
             }
+
             Output_WARNING("IntrinsicsDudeToolsStatic:Get_Font_Color: could not retrieve text color");
             return new SolidColorBrush(Colors.Gray);
         }
@@ -125,7 +131,7 @@ namespace IntrinsicsDude.Tools
             }
             catch (Exception)
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -141,7 +147,7 @@ namespace IntrinsicsDude.Tools
 
         public static ImageSource BitmapFromUri(Uri bitmapUri)
         {
-            var bitmap = new BitmapImage();
+            BitmapImage bitmap = new BitmapImage();
             try
             {
                 bitmap.BeginInit();
@@ -153,6 +159,7 @@ namespace IntrinsicsDude.Tools
             {
                 Output_WARNING("bitmapFromUri: could not read icon from uri " + bitmapUri.ToString() + "; " + e.Message);
             }
+
             return bitmap;
         }
 
@@ -179,11 +186,13 @@ namespace IntrinsicsDude.Tools
             OutputAsync("INFO: " + msg).ConfigureAwait(false);
 #           endif
         }
+
         /// <summary>Output message to the AsmDude window</summary>
         public static void Output_WARNING(string msg)
         {
             OutputAsync("WARNING: " + msg).ConfigureAwait(false);
         }
+
         /// <summary>Output message to the AsmDude window</summary>
         public static void Output_ERROR(string msg)
         {
@@ -196,7 +205,9 @@ namespace IntrinsicsDude.Tools
         public static async System.Threading.Tasks.Task OutputAsync(string msg)
         {
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             IVsOutputWindowPane outputPane = await GetOutputPaneAsync();
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
@@ -231,7 +242,9 @@ namespace IntrinsicsDude.Tools
         public static async Task<IVsOutputWindowPane> GetOutputPaneAsync()
         {
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             if (outputWindow == null)
@@ -242,7 +255,7 @@ namespace IntrinsicsDude.Tools
             {
                 Guid paneGuid = new Guid("A9F2F5E5-C21D-4BB3-B4A7-FEE69DC0E03A");
                 outputWindow.CreatePane(paneGuid, "Intrinsics Dude", 1, 0);
-                outputWindow.GetPane(paneGuid, out var pane);
+                outputWindow.GetPane(paneGuid, out IVsOutputWindowPane pane);
                 return pane;
             }
         }
@@ -256,6 +269,7 @@ namespace IntrinsicsDude.Tools
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -269,6 +283,7 @@ namespace IntrinsicsDude.Tools
                     cpuID |= value;
                 }
             }
+
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuID));
             return cpuID;
         }
@@ -338,7 +353,7 @@ namespace IntrinsicsDude.Tools
                 case CpuID.UNKNOWN: return false;
 
                 default:
-                    Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch "+ arch);
+                    Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch " + arch);
                     return false;
             }
         }

@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,11 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
 using System;
 using System.Collections.ObjectModel;
+using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Text;
 
 namespace IntrinsicsDude.SignHelp
 {
@@ -38,7 +37,6 @@ namespace IntrinsicsDude.SignHelp
         private ReadOnlyCollection<IParameter> m_parameters;
         private string m_printContent;
 
-
         internal IntrSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
@@ -51,9 +49,11 @@ namespace IntrinsicsDude.SignHelp
         #region Public Stuff
         public event EventHandler<CurrentParameterChangedEventArgs> CurrentParameterChanged;
 
-        public IParameter CurrentParameter {
+        public IParameter CurrentParameter
+        {
             get { return this.m_currentParameter; }
-            internal set {
+            internal set
+            {
                 if (this.m_currentParameter != value)
                 {
                     IParameter prevCurrentParameter = this.m_currentParameter;
@@ -64,7 +64,8 @@ namespace IntrinsicsDude.SignHelp
             }
         }
 
-        public ITrackingSpan ApplicableToSpan {
+        public ITrackingSpan ApplicableToSpan
+        {
             get { return (this.m_applicableToSpan); }
             internal set { this.m_applicableToSpan = value; }
         }
@@ -75,31 +76,35 @@ namespace IntrinsicsDude.SignHelp
             this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
         }
 
-        public string Content {
+        public string Content
+        {
             get { return (this.m_content); }
             internal set { this.m_content = value; }
         }
 
-        public string Documentation {
+        public string Documentation
+        {
             get { return (this.m_documentation); }
             internal set { this.m_documentation = value; }
         }
 
-        public ReadOnlyCollection<IParameter> Parameters {
+        public ReadOnlyCollection<IParameter> Parameters
+        {
             get { return (this.m_parameters); }
             internal set { this.m_parameters = value; }
         }
 
-        public string PrettyPrintedContent {
+        public string PrettyPrintedContent
+        {
             get { return (this.m_printContent); }
             internal set { this.m_printContent = value; }
         }
 
         #endregion
-        
+
         #region Private Stuff
 
-        void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
+        private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
             this.CurrentParameterChanged?.Invoke(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));

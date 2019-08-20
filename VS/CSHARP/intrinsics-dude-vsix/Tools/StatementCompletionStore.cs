@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,17 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Language.Intellisense;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
-using System.Windows.Media;
-using static IntrinsicsDude.Tools.IntrinsicTools;
-
 namespace IntrinsicsDude.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Text;
+    using System.Windows.Media;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using static IntrinsicsDude.Tools.IntrinsicTools;
+
     public class StatementCompletionStore
     {
         private readonly IntrinsicStore _intrinsic_Store;
@@ -41,7 +41,7 @@ namespace IntrinsicsDude.Tools
         private bool _hide_mmx_reg_intrinsics;
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
-        
+
         public StatementCompletionStore(IntrinsicStore intrinsic_Store)
         {
             this._intrinsic_Store = intrinsic_Store;
@@ -51,12 +51,15 @@ namespace IntrinsicsDude.Tools
             this.Init();
         }
 
-        public ReadOnlyCollection<Tuple<Completion, ReturnType>> Intrinsic_Completions {
-            get {
+        public ReadOnlyCollection<Tuple<Completion, ReturnType>> Intrinsic_Completions
+        {
+            get
+            {
                 if (this.NeedInit())
                 {
                     this.Init();
                 }
+
                 return this._intrinsic_Completions.AsReadOnly();
             }
         }
@@ -65,12 +68,13 @@ namespace IntrinsicsDude.Tools
         {
             string insertion_Text = completion.InsertionText;
 
-            if (!this._cached_Completions.TryGetValue(insertion_Text, out var result))
+            if (!this._cached_Completions.TryGetValue(insertion_Text, out Completion result))
             {
                 //result = completion; // a reference to an existing completion does not work, you need to make a deep copy.
                 result = new Completion(completion.DisplayText, insertion_Text, completion.Description, completion.IconSource, completion.IconAutomationText);
                 this._cached_Completions.Add(insertion_Text, result);
-            };
+            }
+
             return result;
         }
 
@@ -84,10 +88,12 @@ namespace IntrinsicsDude.Tools
             {
                 return true;
             }
+
             if (this._hide_mmx_reg_intrinsics != Settings.Default.HideStatementCompletionMmxRegisters_On)
             {
                 return true;
             }
+
             return false;
         }
 
@@ -107,10 +113,10 @@ namespace IntrinsicsDude.Tools
                 CpuID cpuID = CpuID.NONE;
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
-                    cpuID |= dataElement.cpuID;
+                    cpuID |= dataElement._cpuID;
                 }
-                bool enabled = (cpuID & this._selectedCpuID) == cpuID;
 
+                bool enabled = (cpuID & this._selectedCpuID) == cpuID;
 
                 if (enabled && this._hide_mmx_reg_intrinsics)
                 {
@@ -124,13 +130,14 @@ namespace IntrinsicsDude.Tools
                 {
                     IntrinsicDataElement dataElementFirst = dataElements[0];
                     string intrinsicStr = intrinsic.ToString().ToLower();
-                    string displayText = this.CreateDisplayText(intrinsicStr, cpuID, dataElementFirst.description, true, true);
+                    string displayText = this.CreateDisplayText(intrinsicStr, cpuID, dataElementFirst._description, true, true);
                     //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
-                    Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.DocumenationString, this.icon_IF, "");
+                    Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.DocumenationString, this.icon_IF, string.Empty);
 
-                    this._intrinsic_Completions.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst.returnType));
+                    this._intrinsic_Completions.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst._returnType));
                 }
             }
+
             IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Statement-Completion-Store-Initialization");
         }
 

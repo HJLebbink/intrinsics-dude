@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude.Tools;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.Text.Operations;
-using Microsoft.VisualStudio.TextManager.Interop;
-using System;
-using System.Runtime.InteropServices;
-
 namespace IntrinsicsDude.SignHelp
 {
+    using System;
+    using System.Runtime.InteropServices;
+    using IntrinsicsDude.Tools;
+    using Microsoft.VisualStudio;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.OLE.Interop;
+    using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Editor;
+    using Microsoft.VisualStudio.Text.Operations;
+    using Microsoft.VisualStudio.TextManager.Interop;
+
     internal sealed class IntrSignatureHelpCommandFilter : IOleCommandTarget
     {
         private readonly ITextView _textView;
@@ -80,12 +80,14 @@ namespace IntrinsicsDude.SignHelp
                                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                         this._session.Dismiss();
                                     }
+
                                     this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
                                     this._session.Dismissed += (sender, args) => this._session = null;
                                     this._session.Start();
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: started a new session(" + m_session.GetTriggerPoint(m_textView.TextBuffer)+")");
                                 }
                             }
+
                             if (typedChar.Equals(','))
                             {
                                 SnapshotPoint point = this._textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
@@ -99,6 +101,7 @@ namespace IntrinsicsDude.SignHelp
                                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: dismissing session(" + m_session.GetTriggerPoint(m_textView.TextBuffer) + ")");
                                         this._session.Dismiss();
                                     }
+
                                     this._session = this._broker.CreateSignatureHelpSession(this._textView, this._textView.TextSnapshot.CreateTrackingPoint(point + 1, PointTrackingMode.Positive), true);
                                     this._session.Dismissed += (sender, args) => this._session = null;
                                     this._session.Start();
@@ -119,6 +122,7 @@ namespace IntrinsicsDude.SignHelp
             {
                 IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:Exec; e={1}", this.ToString(), e.ToString()));
             }
+
             return this._nextCommandHandler.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
         }
 

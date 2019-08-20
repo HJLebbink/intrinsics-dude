@@ -1,17 +1,17 @@
 // The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.Shell;
-using Amib.Threading;
-
 namespace IntrinsicsDude.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using Amib.Threading;
+    using Microsoft.VisualStudio.Shell;
+
     public sealed class IntrinsicsDudeTools : IDisposable
     {
         private ErrorListProvider _errorListProvider;
@@ -45,7 +45,7 @@ namespace IntrinsicsDude.Tools
                 {
                     if (instance == null)
                     {
-                        var startTime = DateTime.Now;
+                        DateTime startTime = DateTime.Now;
                         IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudeTools.Instance: going to create singleton IntrinsicsDudeTools");
                         instance = new IntrinsicsDudeTools();
                         instance.InitAsync().ConfigureAwait(true);
@@ -53,12 +53,12 @@ namespace IntrinsicsDude.Tools
                         double elapsedSec = (double)(DateTime.Now.Ticks - startTime.Ticks) / 10000000;
                         IntrinsicsDudeToolsStatic.OutputAsync(string.Format("INFO: Done creating singleton IntrinsicsDudeTools. Took {0:F3} seconds to load {1} intrinsic definitions.", elapsedSec, instance.IntrinsicStore.Data.Count)).ConfigureAwait(true);
                     }
+
                     return instance;
                 }
             }
         }
         #endregion Singleton Stuff
-
 
         /// <summary>
         /// Singleton pattern: use IntrinsicsDudeTools.Instance for the instance of this class
@@ -73,7 +73,9 @@ namespace IntrinsicsDude.Tools
             IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:InitAsync", this.ToString()));
 
             if (!ThreadHelper.CheckAccess())
+            {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            }
 
             #region Initialize ErrorListProvider
             if (false) // not used
@@ -82,7 +84,7 @@ namespace IntrinsicsDude.Tools
                 this._errorListProvider = new ErrorListProvider(serviceProvider)
                 {
                     ProviderName = "Intrinsics Errors",
-                    ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode)
+                    ProviderGuid = new Guid(EnvDTE.Constants.vsViewKindCode),
                 };
             }
             #endregion
@@ -90,7 +92,7 @@ namespace IntrinsicsDude.Tools
             #region Start thread pool
             this.ThreadPool = new SmartThreadPool()
             {
-                MaxThreads = 4
+                MaxThreads = 4,
             };
             this.ThreadPool.Start();
             #endregion
@@ -112,7 +114,7 @@ namespace IntrinsicsDude.Tools
 
         public IntrinsicStore IntrinsicStore { get { return this._intrinsicStore; } }
 
-        public StatementCompletionStore StatementCompletionStore {  get { return this._statement_Completion_Store; } }
+        public StatementCompletionStore StatementCompletionStore { get { return this._statement_Completion_Store; } }
 
         public SmartThreadPool ThreadPool { get; private set; }
 
@@ -129,17 +131,18 @@ namespace IntrinsicsDude.Tools
                     IList<IntrinsicDataElement> dataElements = this._intrinsicStore.Get(mnemonic);
                     if (dataElements.Count > 0)
                     {
-                        string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + dataElements[0].id;
+                        string url = "https://software.intel.com/sites/landingpage/IntrinsicsGuide/#expand=" + dataElements[0]._id;
                         IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:getUrl: keyword {1}; url {2}.", this.ToString(), keyword, url));
                         return url;
                     }
                 }
-                return "";
+
+                return string.Empty;
             }
             catch (Exception e)
             {
                 IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:GetUrl; e={1}", this.ToString(), e.ToString()));
-                return "";
+                return string.Empty;
             }
         }
 

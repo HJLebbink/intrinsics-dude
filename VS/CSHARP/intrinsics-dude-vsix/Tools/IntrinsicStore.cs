@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,17 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Text;
-using System.Xml.Linq;
-using static IntrinsicsDude.Tools.IntrinsicTools;
-
 namespace IntrinsicsDude.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Text;
+    using System.Xml.Linq;
+    using HtmlAgilityPack;
+    using static IntrinsicsDude.Tools.IntrinsicTools;
+
     public class IntrinsicStore
     {
         private readonly IDictionary<Intrinsic, IList<IntrinsicDataElement>> _data;
@@ -47,32 +47,36 @@ namespace IntrinsicsDude.Tools
             this.LoadXml(xmlfilename);
         }
 
-        public ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>> Data {
-            get {
+        public ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>> Data
+        {
+            get
+            {
                 return new ReadOnlyDictionary<Intrinsic, IList<IntrinsicDataElement>>(this._data);
             }
         }
 
         public IList<IntrinsicDataElement> Get(Intrinsic intrinsic)
         {
-            if (this._data.TryGetValue(intrinsic, out var dataElements))
+            if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
             {
                 return dataElements;
             }
-            IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore:get; intrinsic=" + intrinsic +" does not have data elements.");
+
+            IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore:get; intrinsic=" + intrinsic + " does not have data elements.");
             return empty;
         }
 
         public CpuID GetCpuID(Intrinsic intrinsic)
         {
             CpuID cpuID = CpuID.NONE;
-            if (this._data.TryGetValue(intrinsic, out var dataElements))
+            if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
             {
-                foreach(IntrinsicDataElement dataElement in dataElements)
+                foreach (IntrinsicDataElement dataElement in dataElements)
                 {
-                    cpuID |= dataElement.cpuID;
+                    cpuID |= dataElement._cpuID;
                 }
             }
+
             return cpuID;
         }
 
@@ -104,12 +108,12 @@ namespace IntrinsicsDude.Tools
                 {
                     IntrinsicDataElement dataElement = new IntrinsicDataElement()
                     {
-                        id = item.GetAttributeValue("id", -1),
-                        intrinsic = Intrinsic.NONE
+                        _id = item.GetAttributeValue("id", -1),
+                        _intrinsic = Intrinsic.NONE,
                     };
-                    if (item.GetAttributeValue("class", "").Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
+                    if (item.GetAttributeValue("class", string.Empty).Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
                     {
-                        dataElement.cpuID |= CpuID.SVML;
+                        dataElement._cpuID |= CpuID.SVML;
                     }
 
                     IList<string> paramName = new List<string>(2);
@@ -125,9 +129,10 @@ namespace IntrinsicsDude.Tools
                             case "INSTRUCTION":
                                 {
                                     string instruction = element.InnerText.ToUpper();
-                                    dataElement.instruction = (instruction.Equals("...")) ? "UNKNOWN" : instruction;
+                                    dataElement._instruction = (instruction.Equals("...")) ? "UNKNOWN" : instruction;
                                     break;
                                 }
+
                             case "SIGNATURE":
                                 break;
                             case "DETAILS":
@@ -141,23 +146,23 @@ namespace IntrinsicsDude.Tools
                                             case "NAME":
                                                 string intrinsicStr = element2.InnerText;
                                                 //allIntrinsicNames.Add(intrinsicStr);
-                                                dataElement.intrinsic = ParseIntrinsic(intrinsicStr); break;
-                                            case "RETTYPE": dataElement.returnType = ParseReturnType(element2.InnerText); break;
+                                                dataElement._intrinsic = ParseIntrinsic(intrinsicStr); break;
+                                            case "RETTYPE": dataElement._returnType = ParseReturnType(element2.InnerText); break;
                                             case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
                                             case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                             case "DESC_VAR": break;
 
-                                            case "DESCRIPTION": dataElement.description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
-                                            case "OPERATION": dataElement.operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
-                                            case "CPUID": dataElement.cpuID |= ParseCpuID(element2.InnerText.Trim()); break;
+                                            case "DESCRIPTION": dataElement._description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
+                                            case "OPERATION": dataElement._operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
+                                            case "CPUID": dataElement._cpuID |= ParseCpuID(element2.InnerText.Trim()); break;
                                             case "PERFORMANCE":
-                                                dataElement.performance = element2.InnerHtml;
-                                                TestPerformance(dataElement.performance);
+                                                dataElement._performance = element2.InnerHtml;
+                                                TestPerformance(dataElement._performance);
                                                 break;
                                             case "INSTRUCTION_NOTE":
-                                                dataElement.instructionNote = element2.InnerText; break;
+                                                dataElement._instructionNote = element2.InnerText; break;
                                             case "SYNOPSIS":
-                                                dataElement.asm = RetrieveAsmStr(element2.InnerHtml);
+                                                dataElement._asm = RetrieveAsmStr(element2.InnerHtml);
 
                                                 break;
                                             case "SIG":
@@ -174,16 +179,20 @@ namespace IntrinsicsDude.Tools
                                                 {
                                                     IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: B: found unexpected element2Class=" + element2Class + "; " + element2.InnerHtml);
                                                 }
+
                                                 break;
                                         }
                                     }
+
                                     break;
                                 }
+
                             case "ALSOKNC":
                                 {
-                                    dataElement.cpuID |= CpuID.KNCNI;
+                                    dataElement._cpuID |= CpuID.KNCNI;
                                     break;
                                 }
+
                             default:
                                 IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: found unexpected elementClass=" + elementClass);
                                 break;
@@ -191,18 +200,19 @@ namespace IntrinsicsDude.Tools
 
                         for (int i = 0; i < paramName.Count; ++i)
                         {
-                            dataElement.parameters.Add(new Tuple<ParamType, string>(ParseParamType(paramType[i]), paramName[i]));
+                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType(paramType[i]), paramName[i]));
                         }
                     }
-                    if (dataElement.cpuID == CpuID.NONE)
+
+                    if (dataElement._cpuID == CpuID.NONE)
                     {
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
-                        dataElement.cpuID = CpuID.IA32;
+                        dataElement._cpuID = CpuID.IA32;
                     }
 
                     #endregion
                     #region store the dataElement
-                    if (this._data.TryGetValue(dataElement.intrinsic, out var dataElements))
+                    if (this._data.TryGetValue(dataElement._intrinsic, out IList<IntrinsicDataElement> dataElements))
                     {
                         dataElements.Add(dataElement);
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
@@ -211,12 +221,13 @@ namespace IntrinsicsDude.Tools
                     {
                         dataElements = new List<IntrinsicDataElement>(0)
                         {
-                            dataElement
+                            dataElement,
                         };
-                        this._data.Add(dataElement.intrinsic, dataElements);
+                        this._data.Add(dataElement._intrinsic, dataElements);
                     }
                     #endregion
                 }
+
                 /*
                 foreach (string str in allIntrinsicNames)
                 {
@@ -244,30 +255,36 @@ namespace IntrinsicsDude.Tools
                 foreach (IntrinsicDataElement dataElement in this._data[intrinsic])
                 {
                     sb.AppendLine("<intrinsic>");
-                    sb.AppendLine("<id>" + dataElement.id + "</id>");
-                    sb.AppendLine("<name>" + dataElement.intrinsic + "</name>");
-                    sb.AppendLine("<cpuid>" + IntrinsicTools.ToString(dataElement.cpuID) + "</cpuid>");
-                    sb.AppendLine("<ret>" + IntrinsicTools.ToString(dataElement.returnType) + "</ret>");
+                    sb.AppendLine("<id>" + dataElement._id + "</id>");
+                    sb.AppendLine("<name>" + dataElement._intrinsic + "</name>");
+                    sb.AppendLine("<cpuid>" + IntrinsicTools.ToString(dataElement._cpuID) + "</cpuid>");
+                    sb.AppendLine("<ret>" + IntrinsicTools.ToString(dataElement._returnType) + "</ret>");
 
                     sb.Append("<sign>");
-                    foreach (Tuple<ParamType, string> parameter in dataElement.parameters)
+                    foreach (Tuple<ParamType, string> parameter in dataElement._parameters)
                     {
                         sb.Append(parameter.Item1);
                         sb.Append(' ');
                         sb.Append(parameter.Item2);
                         sb.Append(',');
                     }
-                    if (dataElement.parameters.Count > 0) sb.Length--; // remove the trailing comma
+
+                    if (dataElement._parameters.Count > 0)
+                    {
+                        sb.Length--; // remove the trailing comma
+                    }
+
                     sb.AppendLine("</sign>");
 
-                    sb.AppendLine("<instr>" + dataElement.instruction + "</instr>");
-                    sb.AppendLine("<asm>" + dataElement.asm + "</asm>");
-                    sb.AppendLine("<desc>" + AddHtml(dataElement.description) + "</desc>");
-                    sb.AppendLine("<oper>" + AddHtml(dataElement.operation) + "</oper>");
-                    sb.AppendLine("<performance>" + AddHtml(dataElement.performance) + "</performance>");
+                    sb.AppendLine("<instr>" + dataElement._instruction + "</instr>");
+                    sb.AppendLine("<asm>" + dataElement._asm + "</asm>");
+                    sb.AppendLine("<desc>" + AddHtml(dataElement._description) + "</desc>");
+                    sb.AppendLine("<oper>" + AddHtml(dataElement._operation) + "</oper>");
+                    sb.AppendLine("<performance>" + AddHtml(dataElement._performance) + "</performance>");
                     sb.AppendLine("</intrinsic>");
                 }
             }
+
             sb.AppendLine("</intrinsicsdudedata>");
             File.WriteAllText(filename, sb.ToString());
         }
@@ -291,16 +308,20 @@ namespace IntrinsicsDude.Tools
                         switch (element.Name.ToString())
                         {
                             case "name":
-                                dataElement.intrinsic = ParseIntrinsic(value);
+                                dataElement._intrinsic = ParseIntrinsic(value);
                                 break;
                             case "id":
-                                if (!int.TryParse(value, out dataElement.id)) dataElement.id = -1;
+                                if (!int.TryParse(value, out dataElement._id))
+                                {
+                                    dataElement._id = -1;
+                                }
+
                                 break;
                             case "cpuid":
-                                dataElement.cpuID = ParseCpuID_multiple(value);
+                                dataElement._cpuID = ParseCpuID_multiple(value);
                                 break;
                             case "ret":
-                                dataElement.returnType = ParseReturnType(value);
+                                dataElement._returnType = ParseReturnType(value);
                                 break;
                             case "sign":
                                 if (value.Length > 0)
@@ -310,7 +331,7 @@ namespace IntrinsicsDude.Tools
                                         string[] a2 = s1.Split(' ');
                                         if (a2.Length == 2)
                                         {
-                                            dataElement.parameters.Add(new Tuple<ParamType, string>(ParseParamType_InternalName(a2[0]), a2[1]));
+                                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType_InternalName(a2[0]), a2[1]));
                                         }
                                         else
                                         {
@@ -318,21 +339,22 @@ namespace IntrinsicsDude.Tools
                                         }
                                     }
                                 }
+
                                 break;
                             case "instr":
-                                dataElement.instruction = value;
+                                dataElement._instruction = value;
                                 break;
                             case "asm":
-                                dataElement.asm = value;
+                                dataElement._asm = value;
                                 break;
                             case "desc":
-                                dataElement.description = value;
+                                dataElement._description = value;
                                 break;
                             case "oper":
-                                dataElement.operation = ReplaceHtml(value);
+                                dataElement._operation = ReplaceHtml(value);
                                 break;
                             case "performance":
-                                dataElement.performance = value;
+                                dataElement._performance = value;
                                 break;
                             default:
                                 IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicStore: loadXml: unsupported name " + element.Name.ToString());
@@ -341,7 +363,7 @@ namespace IntrinsicsDude.Tools
                     }
 
                     #region store the dataElement
-                    if (this._data.TryGetValue(dataElement.intrinsic, out var dataElements))
+                    if (this._data.TryGetValue(dataElement._intrinsic, out IList<IntrinsicDataElement> dataElements))
                     {
                         dataElements.Add(dataElement);
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
@@ -350,12 +372,13 @@ namespace IntrinsicsDude.Tools
                     {
                         dataElements = new List<IntrinsicDataElement>(0)
                         {
-                            dataElement
+                            dataElement,
                         };
-                        this._data.Add(dataElement.intrinsic, dataElements);
+                        this._data.Add(dataElement._intrinsic, dataElements);
                     }
                     #endregion
                 }
+
                 IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "XML-Data-Loader");
             }
             catch (Exception e)
@@ -365,7 +388,7 @@ namespace IntrinsicsDude.Tools
         }
 
         #endregion
-       
+
         #region Private Methods
 
         private static string RetrieveAsmStr(string str)
@@ -374,17 +397,25 @@ namespace IntrinsicsDude.Tools
             string endKeyword = "<br>";
 
             int startPos = str.IndexOf(startKeyword);
-            if (startPos == -1) return "";
+            if (startPos == -1)
+            {
+                return string.Empty;
+            }
+
             startPos += startKeyword.Length;
             int endPos = str.IndexOf(endKeyword, startPos);
-            if (endPos == -1) return "";
+            if (endPos == -1)
+            {
+                return string.Empty;
+            }
+
             string result = str.Substring(startPos, endPos - startPos);
             // the result string may contain a hazard remark, remove it.
             result = Remove1SpanTag(result).ToUpper();
 
             result = result.Replace(", ", ",");
-            result = result.Replace(" {ER}", "");
-            result = result.Replace(" {K}", "");
+            result = result.Replace(" {ER}", string.Empty);
+            result = result.Replace(" {K}", string.Empty);
             return result;
         }
 
@@ -399,16 +430,19 @@ namespace IntrinsicsDude.Tools
             string endKeyword = "</span>";
 
             int endPos = str.IndexOf(endKeyword);
-            if (endPos == -1) return str;
+            if (endPos == -1)
+            {
+                return str;
+            }
+
             endPos--;
 
-
-            string result = "";
-            for (int i = endPos; i>0; --i)
+            string result = string.Empty;
+            for (int i = endPos; i > 0; --i)
             {
                 if (str[i].Equals(beginChar))
                 {
-                    result = str.Substring(i+1, endPos - i);
+                    result = str.Substring(i + 1, endPos - i);
                     break;
                 }
             }
@@ -421,7 +455,7 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         private static void TestPerformance(string str)
         {
-            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", "").Replace("</tbody>", "").Replace("<tr>", "").Replace("<td>", "");
+            string str2 = str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("<tbody>", string.Empty).Replace("</tbody>", string.Empty).Replace("<tr>", string.Empty).Replace("<td>", string.Empty);
             string[] lines = str2.Split(new string[] { "</tr>" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 1; i < lines.Length; ++i)
             {
@@ -440,17 +474,26 @@ namespace IntrinsicsDude.Tools
         /// <returns></returns>
         private static string ReplaceHtml(string str)
         {
-            if (str == null) return null;
+            if (str == null)
+            {
+                return null;
+            }
+
             return str.Replace("&lt;", "<").Replace("&gt;", ">").Replace("&amp;", "&");
         }
 
         private static string AddHtml(string str)
         {
-            if (str == null) return null;
+            if (str == null)
+            {
+                return null;
+            }
+
             return str.Replace("<", "&lt;").Replace(">", "&gt;").Replace("&", "&amp;");
         }
 
-        private static string AddAcronyms(string str) {
+        private static string AddAcronyms(string str)
+        {
             return str.
                 Replace("floating-point", "FP").
                 Replace("double-precision", "DP").

@@ -1,17 +1,17 @@
 // The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,23 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-using IntrinsicsDude.Tools;
-using Microsoft.VisualStudio.Text.Operations;
-
 namespace IntrinsicsDude.SignHelp
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Text;
+    using IntrinsicsDude.Tools;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Operations;
+
     internal sealed class IntrSignatureHelpSource : ISignatureHelpSource
     {
         private readonly ITextBuffer _textBuffer;
         private readonly ITextStructureNavigator _navigator;
 
-        // see https://msdn.microsoft.com/en-us/library/dd885244.aspx for help 
+        // see https://msdn.microsoft.com/en-us/library/dd885244.aspx for help
         public IntrSignatureHelpSource(ITextBuffer buffer, ITextStructureNavigator nav)
         {
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: constructor");
@@ -46,7 +46,10 @@ namespace IntrinsicsDude.SignHelp
 
         public void AugmentSignatureHelpSession(ISignatureHelpSession session, IList<ISignature> signatures)
         {
-            if (!Settings.Default.SignatureHelp_On) return;
+            if (!Settings.Default.SignatureHelp_On)
+            {
+                return;
+            }
 
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession");
             try
@@ -71,7 +74,7 @@ namespace IntrinsicsDude.SignHelp
 
                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: AugmentSignatureHelpSession: session(" + session.GetTriggerPoint(m_textBuffer) + "); text=\"" + text+"\".");
 
-                    // this method is called either: 
+                    // this method is called either:
                     // 1] when opening parenthesis "(" is typed after an intrinsic function, or
                     // 2] when an comma "," is typed as an parameter separator in an intrinsic function.
 
@@ -104,6 +107,7 @@ namespace IntrinsicsDude.SignHelp
                     {
                         signatures.Add(this.CreateSignature(this._textBuffer, dataElement, paramIndex, applicableToSpan));
                     }
+
                     IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Signature Help");
                 }
             }
@@ -124,6 +128,7 @@ namespace IntrinsicsDude.SignHelp
                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
                 return session.Signatures[0];
             }
+
             IntrinsicsDudeToolsStatic.Output_WARNING("IntrSignHelpSource:GetBestMatch: could not find intrinsic.");
             return null;
         }
@@ -132,39 +137,42 @@ namespace IntrinsicsDude.SignHelp
 
         private IntrSignature CreateSignature(ITextBuffer textBuffer, IntrinsicDataElement dataElement, int paramIndex, ITrackingSpan span)
         {
-            int nParameters = dataElement.parameters.Count;
+            int nParameters = dataElement._parameters.Count;
             Span[] locus = new Span[nParameters];
 
             #region Create Signature Text
             StringBuilder signatureText = new StringBuilder();
-            signatureText.Append(IntrinsicTools.ToString(dataElement.returnType));
+            signatureText.Append(IntrinsicTools.ToString(dataElement._returnType));
             signatureText.Append(" ");
-            signatureText.Append(dataElement.intrinsic.ToString().ToLower());
+            signatureText.Append(dataElement._intrinsic.ToString().ToLower());
             signatureText.Append("(");
 
             for (int i = 0; i < nParameters; ++i)
             {
                 int locusStart = signatureText.Length;
-                signatureText.Append(IntrinsicTools.ToString(dataElement.parameters[i].Item1).ToLower());
+                signatureText.Append(IntrinsicTools.ToString(dataElement._parameters[i].Item1).ToLower());
                 signatureText.Append(" ");
-                signatureText.Append(dataElement.parameters[i].Item2);
+                signatureText.Append(dataElement._parameters[i].Item2);
                 locus[i] = new Span(locusStart, signatureText.Length - locusStart);
-                if (i < nParameters - 1) signatureText.Append(", ");
+                if (i < nParameters - 1)
+                {
+                    signatureText.Append(", ");
+                }
             }
+
             signatureText.Append(")  [");
-            signatureText.Append(IntrinsicTools.ToString(dataElement.cpuID));
+            signatureText.Append(IntrinsicTools.ToString(dataElement._cpuID));
             signatureText.Append("]");
             #endregion Create Signature Text
 
-
-            string doc = IntrinsicTools.Linewrap(dataElement.description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
+            string doc = IntrinsicTools.Linewrap(dataElement._description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips);
             IntrSignature sig = new IntrSignature(textBuffer, signatureText.ToString(), doc, null);
 
             List<IParameter> paramList = new List<IParameter>();
             for (int i = 0; i < nParameters; ++i)
             {
-                string operandType = IntrinsicTools.ToString(dataElement.parameters[i].Item1);
-                string operandName = dataElement.parameters[i].Item2;
+                string operandType = IntrinsicTools.ToString(dataElement._parameters[i].Item1);
+                string operandName = dataElement._parameters[i].Item2;
                 string documentation = operandType;
                 paramList.Add(new IntrParam(documentation, locus[i], operandType + " " + operandName, sig));
             }
@@ -174,9 +182,9 @@ namespace IntrinsicsDude.SignHelp
             sig.SetCurrentParameter(paramIndex);
             return sig;
         }
-        
+
         #endregion
-        
+
         private bool _isDisposed;
 
         public void Dispose()

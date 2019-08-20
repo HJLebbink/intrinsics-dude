@@ -83,8 +83,8 @@ namespace IntrinsicsDude.GenerateData
 
                         foreach (IntrinsicDataElement y in x.Value)
                         {
-                            string perf = y.performance;
-                            string asm = y.asm;
+                            string perf = y._performance;
+                            string asm = y._asm;
 
                             if ((perf == null) || (perf.Length == 0))
                             {

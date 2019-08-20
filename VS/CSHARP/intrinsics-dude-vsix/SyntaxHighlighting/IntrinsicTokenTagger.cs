@@ -1,17 +1,17 @@
 ﻿// The MIT License (MIT)
 //
 // Copyright (c) 2019 Henk-Jan Lebbink
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-
+//
 // The above copyright notice and this permission notice shall be included in all
 // copies or substantial portions of the Software.
-
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,18 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.Text.Operations;
-
-using IntrinsicsDude.SyntaxHighlighting;
-using IntrinsicsDude.Tools;
-using static IntrinsicsDude.Tools.IntrinsicTools;
-
 namespace IntrinsicsDude
 {
+    using System;
+    using System.Collections.Generic;
+    using IntrinsicsDude.SyntaxHighlighting;
+    using IntrinsicsDude.Tools;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Operations;
+    using Microsoft.VisualStudio.Text.Tagging;
+    using static IntrinsicsDude.Tools.IntrinsicTools;
+
     internal sealed class IntrinsicTokenTagger : ITagger<IntrinsicTokenTag>
     {
         private readonly ITextBuffer _buffer;
@@ -53,7 +52,8 @@ namespace IntrinsicsDude
             this._UNKNOWN = new IntrinsicTokenTag(IntrinsicTokenType.UNKNOWN);
         }
 
-        event EventHandler<SnapshotSpanEventArgs> ITagger<IntrinsicTokenTag>.TagsChanged {
+        event EventHandler<SnapshotSpanEventArgs> ITagger<IntrinsicTokenTag>.TagsChanged
+        {
             add { }
             remove { }
         }
@@ -66,6 +66,7 @@ namespace IntrinsicsDude
             {  //there is no content in the buffer
                 yield break;
             }
+
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: nSpans=" + spans.Count);
 
             foreach (SnapshotSpan curSpan in spans)
@@ -93,14 +94,17 @@ namespace IntrinsicsDude
                             yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic));
                         }
                     }
+
                     if (extent.Span.End.Position >= curSpan.End.Position)
                     {
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: leaving the loop. point=" + point + "; curSpan.End=" + curSpan.End);
                         break;
                     }
+
                     point = extent.Span.End + 1;
                 }
             }
+
             //IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Token-Tagger");
         }
     }
