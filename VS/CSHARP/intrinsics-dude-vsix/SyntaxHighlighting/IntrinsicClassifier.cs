@@ -42,12 +42,10 @@ namespace IntrinsicsDude
         /// Construct the classifier and define search tokens
         /// </summary>
         internal IntrinsicClassifier(
-                //ITextBuffer buffer,
                 ITagAggregator<IntrinsicTokenTag> aggregator,
                 IClassificationTypeRegistryService typeService)
         {
-            // this._buffer = buffer;
-            this._aggregator = aggregator;
+            this._aggregator = aggregator ?? throw new ArgumentNullException(nameof(aggregator));
 
             this._intrinsic = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Intrinsic));
             this._register = new ClassificationTag(typeService.GetClassificationType(IntrinsicClassificationDefinition.ClassificationTypeNames.Register));
@@ -69,7 +67,7 @@ namespace IntrinsicsDude
             if (Settings.Default.SyntaxHighlighting_On)
             {
                 if (spans.Count == 0)
-                {  //there is no content in the buffer
+                { //there is no content in the buffer
                     yield break;
                 }
 

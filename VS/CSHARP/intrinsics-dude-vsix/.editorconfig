@@ -76,7 +76,7 @@ dotnet_diagnostic.SA1401.severity = none
 dotnet_diagnostic.SA1108.severity = none
 
 # SA1611: Element parameters should be documented
-dotnet_diagnostic.SA1611.severity = suggestion
+dotnet_diagnostic.SA1611.severity = silent
 
 # CA1055: Uri return values should not be strings
 dotnet_diagnostic.CA1055.severity = silent
@@ -116,3 +116,12 @@ dotnet_diagnostic.SA1214.severity = silent
 
 # CA1720: Identifier contains type name
 dotnet_diagnostic.CA1720.severity = silent
+
+# CA1051: Do not declare visible instance fields
+dotnet_diagnostic.CA1051.severity = silent
+
+# SA1203: Constants should appear before fields
+dotnet_diagnostic.SA1203.severity = none
+
+# SA1306: Field names should begin with lower-case letter
+dotnet_diagnostic.SA1306.severity = silent

@@ -56,8 +56,8 @@ namespace IntrinsicsDude.StatementCompletion
             ITextBuffer buffer,
             ITextStructureNavigator navigator)
         {
-            this._buffer = buffer;
-            this._navigator = navigator;
+            this._buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
+            this._navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
             this._statement_Completion_Store = IntrinsicsDudeTools.Instance.StatementCompletionStore;
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
         }

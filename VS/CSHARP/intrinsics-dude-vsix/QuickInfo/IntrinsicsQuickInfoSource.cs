@@ -52,8 +52,8 @@ namespace IntrinsicsDude.QuickInfo
             ITextBuffer buffer,
             ITagAggregator<IntrinsicTokenTag> aggregator)
         {
-            this._sourceBuffer = buffer;
-            this._aggregator = aggregator;
+            this._sourceBuffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
+            this._aggregator = aggregator ?? throw new ArgumentNullException(nameof(aggregator));
             this._intrinsicDudeTools = IntrinsicsDudeTools.Instance;
             this._textForegroundColor = IntrinsicsDudeToolsStatic.Get_Font_Color_Async().Result;
         }
@@ -83,7 +83,7 @@ namespace IntrinsicsDude.QuickInfo
                     IntrinsicsDudeToolsStatic.Output_WARNING(string.Format("{0}:AugmentQuickInfoSession: enumerator has {1} elements", this.ToString(), enumerator.Count()));
                 }
 
-                if (enumerator.Count() > 0)
+                if (enumerator.Any())
                 {
                     IMappingTagSpan<IntrinsicTokenTag> tokenTag = enumerator.First();
                     switch (tokenTag.Tag.Type)
@@ -169,7 +169,7 @@ namespace IntrinsicsDude.QuickInfo
             return r1;
         }
 
-        private static Run MakeRun2(string str, Brush foreground) ///System.Drawing.Color color)
+        private static Run MakeRun2(string str, Brush foreground) // System.Drawing.Color color)
         {
             Run r1 = new Run(str)
             {
@@ -182,4 +182,3 @@ namespace IntrinsicsDude.QuickInfo
         #endregion Private Methods
     }
 }
-

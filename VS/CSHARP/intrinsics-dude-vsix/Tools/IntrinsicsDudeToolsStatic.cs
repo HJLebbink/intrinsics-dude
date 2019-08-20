@@ -147,6 +147,11 @@ namespace IntrinsicsDude.Tools
 
         public static ImageSource BitmapFromUri(Uri bitmapUri)
         {
+            if (bitmapUri is null)
+            {
+                throw new ArgumentNullException(nameof(bitmapUri));
+            }
+
             BitmapImage bitmap = new BitmapImage();
             try
             {

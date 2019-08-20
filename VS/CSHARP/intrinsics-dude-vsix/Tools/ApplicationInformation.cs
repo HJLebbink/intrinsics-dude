@@ -59,7 +59,7 @@ namespace IntrinsicsDude.Tools
                     compileDate = RetrieveLinkerTimestamp(ExecutingAssembly.Location);
                 }
 
-                return compileDate ?? new System.DateTime();
+                return compileDate ?? default(System.DateTime);
             }
         }
 
@@ -69,7 +69,6 @@ namespace IntrinsicsDude.Tools
         /// Retrieves the linker timestamp.
         /// </summary>
         /// <param name="filePath">The file path.</param>
-        /// <returns></returns>
         /// <remarks>http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html</remarks>
         private static System.DateTime RetrieveLinkerTimestamp(string filePath)
         {

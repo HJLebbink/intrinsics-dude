@@ -1073,6 +1073,7 @@ namespace IntrinsicsDude.Tools
         }
 
         #region Text Wrap
+
         /// <summary>
         /// Forces the string to word wrap so that each line doesn't exceed the maxLineLength.
         /// </summary>
@@ -1113,7 +1114,8 @@ namespace IntrinsicsDude.Tools
                     lines.Add(newLine);
                     remainingLine = remainingLine.Substring(newLine.Length).TrimEnd();
                     // Keep iterating as int as we've got words remaining in the line.
-                } while (remainingLine.Length > 0);
+                }
+                while (remainingLine.Length > 0);
             }
 
             return string.Join(Environment.NewLine + prefix, lines.ToArray());

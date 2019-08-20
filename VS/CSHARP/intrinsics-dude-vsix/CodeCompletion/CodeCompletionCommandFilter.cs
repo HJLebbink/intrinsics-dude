@@ -39,8 +39,8 @@ namespace IntrinsicsDude
         public CodeCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
         {
             this._currrentSession = null;
-            this.TextView = textView;
-            this.Broker = broker;
+            this.TextView = textView ?? throw new ArgumentNullException(nameof(textView));
+            this.Broker = broker ?? throw new ArgumentNullException(nameof(broker));
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
         }
 

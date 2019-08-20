@@ -1,7 +1,7 @@
-﻿using IntrinsicsDude.Tools;
+﻿using System.Windows.Controls;
+using IntrinsicsDude.Tools;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
-using System.Windows.Controls;
 
 namespace MefRegistration
 {

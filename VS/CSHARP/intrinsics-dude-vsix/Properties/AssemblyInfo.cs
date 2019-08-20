@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using IntrinsicsDude;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using IntrinsicsDude;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -59,4 +59,3 @@ using System.Runtime.InteropServices;
 // Mark the assembly as not CLSCompliant
 //[assembly: System.CLSCompliant(false)]
 [assembly: Guid("c729d6b2-f412-49ed-893d-a8f61f25db98")]
-

@@ -36,13 +36,13 @@ namespace IntrinsicsDude.StatementCompletion
     public sealed class CodeCompletionSourceProvider : ICompletionSourceProvider
     {
         [Import]
-        private readonly ITextStructureNavigatorSelectorService NavigatorService = null;
+        private readonly ITextStructureNavigatorSelectorService navigatorService = null;
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
             Func<CodeCompletionSource> sc = () =>
             {
-                ITextStructureNavigator textNavigator = this.NavigatorService.GetTextStructureNavigator(buffer);
+                ITextStructureNavigator textNavigator = this.navigatorService.GetTextStructureNavigator(buffer);
                 return new CodeCompletionSource(buffer, textNavigator);
             };
             return buffer.Properties.GetOrCreateSingletonProperty(sc);

@@ -38,14 +38,14 @@ namespace IntrinsicsDude
     internal sealed class IntrinsicsTokenTagProvider : ITaggerProvider
     {
         [Import]
-        private readonly ITextStructureNavigatorSelectorService NavigatorService = null;
+        private readonly ITextStructureNavigatorSelectorService navigatorService = null;
 
         public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
             where T : ITag
         {
             Func<ITagger<T>> sc = () =>
             {
-                return new IntrinsicTokenTagger(buffer, this.NavigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
+                return new IntrinsicTokenTagger(buffer, this.navigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
             };
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
