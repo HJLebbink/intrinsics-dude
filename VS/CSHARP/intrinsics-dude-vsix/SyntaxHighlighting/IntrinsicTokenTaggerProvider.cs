@@ -40,9 +40,10 @@ namespace IntrinsicsDude
         [Import]
         private readonly ITextStructureNavigatorSelectorService NavigatorService = null;
 
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
+            where T : ITag
         {
-            Func<ITagger<T>> sc = delegate ()
+            Func<ITagger<T>> sc = () =>
             {
                 return new IntrinsicTokenTagger(buffer, this.NavigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
             };

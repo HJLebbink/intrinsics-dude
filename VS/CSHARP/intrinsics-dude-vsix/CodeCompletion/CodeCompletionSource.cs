@@ -207,7 +207,7 @@ namespace IntrinsicsDude.StatementCompletion
             if (!is_Initialized)
             {
                 int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
-                int pos = 0;// session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
+                int pos = 0; // session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
                 string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
                 TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }

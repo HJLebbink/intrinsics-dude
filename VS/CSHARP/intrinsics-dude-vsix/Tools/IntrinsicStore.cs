@@ -422,8 +422,6 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Remove one xml tag, nothing more.
         /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
         private static string Remove1SpanTag(string str)
         {
             char beginChar = '>';
@@ -470,8 +468,6 @@ namespace IntrinsicsDude.Tools
         /// <summary>
         /// Replace some html special chars with asci chars
         /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
         private static string ReplaceHtml(string str)
         {
             if (str == null)

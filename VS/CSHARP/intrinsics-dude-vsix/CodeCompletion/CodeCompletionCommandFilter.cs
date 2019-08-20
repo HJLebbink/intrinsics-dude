@@ -45,7 +45,9 @@ namespace IntrinsicsDude
         }
 
         public IWpfTextView TextView { get; private set; }
+
         public ICompletionBroker Broker { get; private set; }
+
         public IOleCommandTarget NextCommandHandler { get; set; }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -120,7 +122,6 @@ namespace IntrinsicsDude
                 #endregion
 
                 return hresult;
-
             }
             catch (Exception e)
             {

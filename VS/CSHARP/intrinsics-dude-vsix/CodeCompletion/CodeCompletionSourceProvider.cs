@@ -40,7 +40,7 @@ namespace IntrinsicsDude.StatementCompletion
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
-            Func<CodeCompletionSource> sc = delegate ()
+            Func<CodeCompletionSource> sc = () =>
             {
                 ITextStructureNavigator textNavigator = this.NavigatorService.GetTextStructureNavigator(buffer);
                 return new CodeCompletionSource(buffer, textNavigator);

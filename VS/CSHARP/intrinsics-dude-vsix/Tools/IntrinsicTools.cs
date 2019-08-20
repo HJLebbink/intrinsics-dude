@@ -20,15 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using Microsoft.VisualStudio.Text;
-using Microsoft.VisualStudio.Text.Operations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace IntrinsicsDude.Tools
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Microsoft.VisualStudio.Text;
+    using Microsoft.VisualStudio.Text.Operations;
+
     public static partial class IntrinsicTools
     {
         public enum SimdRegisterType
@@ -115,6 +115,7 @@ namespace IntrinsicsDude.Tools
             /// Read Processor ID
             /// </summary>
             RDPID = 1L << 47,
+
             /// <summary>
             /// Cache Line Write Back
             /// </summary>
@@ -1077,7 +1078,6 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         /// <param name="str">The string to wrap.</param>
         /// <param name="maxLength">The maximum number of characters per line.</param>
-        /// <returns></returns>
         public static string Linewrap(this string str, int maxLength)
         {
             return Linewrap(str, maxLength, string.Empty);
@@ -1089,7 +1089,6 @@ namespace IntrinsicsDude.Tools
         /// <param name="str">The string to wrap.</param>
         /// <param name="maxLength">The maximum number of characters per line.</param>
         /// <param name="prefix">Adds this string to the beginning of each line.</param>
-        /// <returns></returns>
         private static string Linewrap(string str, int maxLength, string prefix)
         {
             if (string.IsNullOrEmpty(str))
@@ -1113,8 +1112,7 @@ namespace IntrinsicsDude.Tools
                     string newLine = GetLine(remainingLine, maxLength - prefix.Length);
                     lines.Add(newLine);
                     remainingLine = remainingLine.Substring(newLine.Length).TrimEnd();
-                    // Keep iterating as int as we've got words remaining
-                    // in the line.
+                    // Keep iterating as int as we've got words remaining in the line.
                 } while (remainingLine.Length > 0);
             }
 

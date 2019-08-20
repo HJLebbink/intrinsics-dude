@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using System;
-using System.Collections.ObjectModel;
-using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text;
-
 namespace IntrinsicsDude.SignHelp
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using Microsoft.VisualStudio.Language.Intellisense;
+    using Microsoft.VisualStudio.Text;
+
     internal class IntrSignature : ISignature
     {
         private readonly ITextBuffer m_subjectBuffer;
@@ -52,6 +52,7 @@ namespace IntrinsicsDude.SignHelp
         public IParameter CurrentParameter
         {
             get { return this.m_currentParameter; }
+
             internal set
             {
                 if (this.m_currentParameter != value)

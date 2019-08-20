@@ -41,17 +41,20 @@ namespace IntrinsicsDude.SyntaxHighlighting
         [Import]
         private readonly IBufferTagAggregatorFactoryService _aggregatorFactory = null;
 
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
+        public ITagger<T> CreateTagger<T>(ITextBuffer buffer)
+            where T : ITag
         {
-            Func<ITagger<T>> sc = delegate ()
+            ITagger<T> sc()
             {
-                Func<ITagAggregator<IntrinsicTokenTag>> sc2 = delegate ()
+                ITagAggregator<IntrinsicTokenTag> sc2()
                 {
                     return this._aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
-                };
+                }
+
                 ITagAggregator<IntrinsicTokenTag> aggregator = buffer.Properties.GetOrCreateSingletonProperty(sc2);
                 return new IntrinsicClassifier(aggregator, this._classificationTypeRegistry) as ITagger<T>;
-            };
+            }
+
             //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicClassifierProvider: CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }

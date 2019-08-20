@@ -63,7 +63,7 @@ namespace IntrinsicsDude
             //DateTime time1 = DateTime.Now;
 
             if (spans.Count == 0)
-            {  //there is no content in the buffer
+            { //there is no content in the buffer
                 yield break;
             }
 

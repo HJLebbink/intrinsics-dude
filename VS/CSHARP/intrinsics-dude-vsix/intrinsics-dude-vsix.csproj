@@ -261,6 +261,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Text.UI.Wpf">
       <Version>14.3.25407</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading">
+      <Version>16.3.13</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
       <Version>16.3.13</Version>
     </PackageReference>

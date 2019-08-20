@@ -37,6 +37,7 @@ namespace IntrinsicsDude.Tools
         #region Singleton Stuff
         private static IntrinsicsDudeTools instance = null;
         private static readonly object padlock = new object();
+
         public static IntrinsicsDudeTools Instance
         {
             get
@@ -136,7 +137,6 @@ namespace IntrinsicsDude.Tools
                         return url;
                     }
                 }
-
                 return string.Empty;
             }
             catch (Exception e)

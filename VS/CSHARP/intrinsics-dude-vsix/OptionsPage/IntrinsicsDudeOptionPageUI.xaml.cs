@@ -58,6 +58,7 @@ namespace IntrinsicsDude.OptionsPage
                     return System.Drawing.Color.Blue;
                 }
             }
+
             set { this.colorMnemonic_UI.SelectedColor = IntrinsicsDudeToolsStatic.ConvertColor(value); }
         }
 
@@ -74,6 +75,7 @@ namespace IntrinsicsDude.OptionsPage
                     return System.Drawing.Color.DarkRed;
                 }
             }
+
             set { this.colorRegister_UI.SelectedColor = IntrinsicsDudeToolsStatic.ConvertColor(value); }
         }
 
@@ -90,6 +92,7 @@ namespace IntrinsicsDude.OptionsPage
                     return System.Drawing.Color.DarkOrange;
                 }
             }
+
             set { this.colorMisc_UI.SelectedColor = IntrinsicsDudeToolsStatic.ConvertColor(value); }
         }
         #endregion Syntax Highlighting
