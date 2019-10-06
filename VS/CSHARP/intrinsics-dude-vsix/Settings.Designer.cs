@@ -12,7 +12,7 @@ namespace IntrinsicsDude {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.4.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -409,18 +409,6 @@ namespace IntrinsicsDude {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool USE_SVML {
-            get {
-                return ((bool)(this["USE_SVML"]));
-            }
-            set {
-                this["USE_SVML"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ARCH_AVX512_PF {
             get {
@@ -434,12 +422,12 @@ namespace IntrinsicsDude {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ARCH_AVX512_IFMA52 {
+        public bool ARCH_AVX512_IFMA {
             get {
-                return ((bool)(this["ARCH_AVX512_IFMA52"]));
+                return ((bool)(this["ARCH_AVX512_IFMA"]));
             }
             set {
-                this["ARCH_AVX512_IFMA52"] = value;
+                this["ARCH_AVX512_IFMA"] = value;
             }
         }
         
@@ -752,6 +740,114 @@ namespace IntrinsicsDude {
             }
             set {
                 this["ARCH_AVX512_4FMAPS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VBMI2 {
+            get {
+                return ((bool)(this["ARCH_AVX512_VBMI2"]));
+            }
+            set {
+                this["ARCH_AVX512_VBMI2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VNNI {
+            get {
+                return ((bool)(this["ARCH_AVX512_VNNI"]));
+            }
+            set {
+                this["ARCH_AVX512_VNNI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_BITALG {
+            get {
+                return ((bool)(this["ARCH_AVX512_BITALG"]));
+            }
+            set {
+                this["ARCH_AVX512_BITALG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_GFNI {
+            get {
+                return ((bool)(this["ARCH_AVX512_GFNI"]));
+            }
+            set {
+                this["ARCH_AVX512_GFNI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VAES {
+            get {
+                return ((bool)(this["ARCH_AVX512_VAES"]));
+            }
+            set {
+                this["ARCH_AVX512_VAES"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VPCLMULQDQ {
+            get {
+                return ((bool)(this["ARCH_AVX512_VPCLMULQDQ"]));
+            }
+            set {
+                this["ARCH_AVX512_VPCLMULQDQ"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_BF16 {
+            get {
+                return ((bool)(this["ARCH_AVX512_BF16"]));
+            }
+            set {
+                this["ARCH_AVX512_BF16"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_VP2INTERSECT {
+            get {
+                return ((bool)(this["ARCH_AVX512_VP2INTERSECT"]));
+            }
+            set {
+                this["ARCH_AVX512_VP2INTERSECT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_SVML {
+            get {
+                return ((bool)(this["ARCH_SVML"]));
+            }
+            set {
+                this["ARCH_SVML"] = value;
             }
         }
     }

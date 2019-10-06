@@ -136,13 +136,13 @@ namespace IntrinsicsDude.SignHelp
 
         public ISignature GetBestMatch(ISignatureHelpSession session)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpSource: GetBestMatch");
             int nSignatures = session.Signatures.Count;
             if (nSignatures > 0)
             {
                 //ITrackingSpan applicableToSpan = session.Signatures[0].ApplicableToSpan;
                 //string text = applicableToSpan.GetText(applicableToSpan.TextBuffer.CurrentSnapshot);
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
+                //IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpSource: GetBestMatch: text " + text +"; returning signature "+session.Signatures[0].Content);
                 return session.Signatures[0];
             }
 
@@ -206,7 +206,7 @@ namespace IntrinsicsDude.SignHelp
 
         public void Dispose()
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpSource: Dispose");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpSource: Dispose");
             if (!this._isDisposed)
             {
                 GC.SuppressFinalize(this);

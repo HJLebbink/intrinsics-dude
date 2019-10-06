@@ -55,7 +55,7 @@ namespace IntrinsicsDude.SyntaxHighlighting
                 return new IntrinsicClassifier(aggregator, this._classificationTypeRegistry) as ITagger<T>;
             }
 
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicClassifierProvider: CreateTagger");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicClassifierProvider: CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }

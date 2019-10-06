@@ -39,7 +39,7 @@ namespace IntrinsicsDude.SignHelp
 
         internal IntrSignature(ITextBuffer subjectBuffer, string content, string doc, ReadOnlyCollection<IParameter> parameters)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: constructor");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSign: constructor");
             this.m_subjectBuffer = subjectBuffer;
             this.m_content = content;
             this.m_documentation = doc;
@@ -59,7 +59,7 @@ namespace IntrinsicsDude.SignHelp
                 {
                     IParameter prevCurrentParameter = this.m_currentParameter;
                     this.m_currentParameter = value;
-                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: CurrentParameter: going to RaiseCurrentParameterChanged.");
+                    //IntrinsicsDudeToolsStatic.Output_INFO("IntrSign: CurrentParameter: going to RaiseCurrentParameterChanged.");
                     this.RaiseCurrentParameterChanged(prevCurrentParameter, this.m_currentParameter);
                 }
             }
@@ -73,7 +73,7 @@ namespace IntrinsicsDude.SignHelp
 
         public void SetCurrentParameter(int paramIndex)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: SetCurrentParameter: paramIndex="+ paramIndex+ "; this.Parameters.Count="+this.Parameters.Count);
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSign: SetCurrentParameter: paramIndex="+ paramIndex+ "; this.Parameters.Count="+this.Parameters.Count);
             this.CurrentParameter = ((paramIndex >= 0) && (paramIndex < this.Parameters.Count)) ? this.Parameters[paramIndex] : null;
         }
 
@@ -107,7 +107,7 @@ namespace IntrinsicsDude.SignHelp
 
         private void RaiseCurrentParameterChanged(IParameter prevCurrentParameter, IParameter newCurrentParameter)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrSign: RaiseCurrentParameterChanged");
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrSign: RaiseCurrentParameterChanged");
             this.CurrentParameterChanged?.Invoke(this, new CurrentParameterChangedEventArgs(prevCurrentParameter, newCurrentParameter));
         }
         #endregion

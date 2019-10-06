@@ -103,7 +103,7 @@ namespace IntrinsicsDude
                     }
                     #endregion
 
-                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; hresult=" + hresult +"; VSConstants.S_OK=" + VSConstants.S_OK + "; ");
+                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Exec; hresult=" + hresult +"; VSConstants.S_OK=" + VSConstants.S_OK + "; ");
 
                     #region Post-process
                     if (ErrorHandler.Succeeded(hresult))
@@ -115,7 +115,7 @@ namespace IntrinsicsDude
                                 case VSConstants.VSStd2KCmdID.TYPECHAR:
                                 case VSConstants.VSStd2KCmdID.BACKSPACE:
                                 case VSConstants.VSStd2KCmdID.DELETE:
-                                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; Post-process");
+                                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Exec; Post-process");
                                     this.Filter();
                                     break;
                             }
@@ -182,16 +182,16 @@ namespace IntrinsicsDude
 
             this._currrentSession = this.Broker.TriggerCompletion(this.TextView);
             //this._session = this._broker.CreateCompletionSession(this._textView, snapshot.CreateTrackingPoint(caret, PointTrackingMode.Positive), false);
-            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+            //IntrinsicsDudeToolsStatic.Output_INFO("CodeCompletionCommandHandler: StartSession. Created a new auto-complete session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
 
             //this._session.Dismissed += (sender, args) => _session = null;
             //if (!this._session.IsStarted)
             //{
-            //IntrinsicsDudeToolsStatic.Output("INFO: CodeCompletionCommandHandler: StartSession: starting session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
+            //IntrinsicsDudeToolsStatic.Output_INFO("CodeCompletionCommandHandler: StartSession: starting session(" + _session.GetTriggerPoint(this._textView.TextBuffer) + ")");
             //   this._session.Start();
             //}
 
-            //IntrinsicsDudeToolsStatic.Output(string.Format("INFO: {0}:StartSession", this.ToString()));
+            //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:StartSession", this.ToString()));
             return true;
         }
 

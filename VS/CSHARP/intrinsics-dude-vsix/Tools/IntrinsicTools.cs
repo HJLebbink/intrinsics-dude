@@ -79,77 +79,85 @@ namespace IntrinsicsDude.Tools
             /// <summary>
             /// NONE is used to denote no CPUID id is present
             /// </summary>
-            NONE = 0L,
-            ADX = 1L << 0,
-            AES = 1L << 1,
-            AVX = 1L << 2,
-            AVX2 = 1L << 3,
-            AVX512_BW = 1L << 4,
-            AVX512_CD = 1L << 5,
-            AVX512_DQ = 1L << 6,
-            AVX512_ER = 1L << 7,
-            AVX512_F = 1L << 8,
-            AVX512_PF = 1L << 9,
-            AVX512_VL = 1L << 10,
-            AVX512_IFMA52 = 1L << 28,
-            AVX512_VBMI = 1L << 31,
-            AVX512_4VNNIW = 1L << 49,
-            AVX512_4FMAPS = 1L << 50,
-            AVX512_VPOPCNTDQ = 1L << 51,
+            ARCH_NONE = 0L,
+            ARCH_ADX = 1L << 0,
+            ARCH_AES = 1L << 1,
+            ARCH_AVX = 1L << 2,
+            ARCH_AVX2 = 1L << 3,
+            ARCH_AVX512_BW = 1L << 4,
+            ARCH_AVX512_CD = 1L << 5,
+            ARCH_AVX512_DQ = 1L << 6,
+            ARCH_AVX512_ER = 1L << 7,
+            ARCH_AVX512_F = 1L << 8,
+            ARCH_AVX512_PF = 1L << 9,
+            ARCH_AVX512_VL = 1L << 10,
+            ARCH_AVX512_IFMA = 1L << 11,
+            ARCH_AVX512_VBMI = 1L << 12,
+            ARCH_AVX512_4VNNIW = 1L << 13,
+            ARCH_AVX512_4FMAPS = 1L << 14,
+            ARCH_AVX512_VPOPCNTDQ = 1L << 15,
+            ARCH_AVX512_VBMI2 = 1L << 16,
+            ARCH_AVX512_VNNI = 1L << 17,
+            ARCH_AVX512_BITALG = 1L << 18,
+            ARCH_AVX512_GFNI = 1L << 19,
+            ARCH_AVX512_VAES = 1L << 20,
+            ARCH_AVX512_VPCLMULQDQ = 1L << 21,
+            ARCH_AVX512_BF16 = 1L << 22,
+            ARCH_AVX512_VP2INTERSECT = 1L << 23,
 
-            BMI1 = 1L << 11,
-            BMI2 = 1L << 12,
-            CLFLUSHOPT = 1L << 13,
-            FMA = 1L << 14,
-            FP16C = 1L << 15,
-            FXSR = 1L << 16,
-            KNCNI = 1L << 17,
-            MMX = 1L << 18,
-            MPX = 1L << 19,
-            PCLMULQDQ = 1L << 20,
-            SSE = 1L << 21,
-            SSE2 = 1L << 22,
-            SSE3 = 1L << 23,
-            SSE4_1 = 1L << 24,
-            SSE4_2 = 1L << 25,
-            SSSE3 = 1L << 26,
+            ARCH_BMI1 = 1L << 24,
+            ARCH_BMI2 = 1L << 25,
+            ARCH_CLFLUSHOPT = 1L << 26,
+            ARCH_FMA = 1L << 27,
+            ARCH_FP16C = 1L << 28,
+            ARCH_FXSR = 1L << 29,
+            ARCH_KNCNI = 1L << 30,
+            ARCH_MMX = 1L << 31,
+            ARCH_MPX = 1L << 32,
+            ARCH_PCLMULQDQ = 1L << 33,
+            ARCH_SSE = 1L << 34,
+            ARCH_SSE2 = 1L << 35,
+            ARCH_SSE3 = 1L << 36,
+            ARCH_SSE41 = 1L << 37,
+            ARCH_SSE42 = 1L << 38,
+            ARCH_SSSE3 = 1L << 39,
 
-            LZCNT = 1L << 27,
-            INVPCID = 1L << 29,
-            MONITOR = 1L << 30,
-            POPCNT = 1L << 32,
-            RDRAND = 1L << 33,
-            RDSEED = 1L << 34,
-            TSC = 1L << 35,
-            RDTSCP = 1L << 36,
-            FSGSBASE = 1L << 37,
-            SHA = 1L << 38,
-            RTM = 1L << 39,
-            XSAVE = 1L << 40,
-            XSAVEC = 1L << 41,
-            XSS = 1L << 42,
-            XSAVEOPT = 1L << 43,
-            PREFETCHWT1 = 1L << 44,
+            ARCH_LZCNT = 1L << 40,
+            ARCH_INVPCID = 1L << 41,
+            ARCH_MONITOR = 1L << 42,
+            ARCH_POPCNT = 1L << 43,
+            ARCH_RDRAND = 1L << 44,
+            ARCH_RDSEED = 1L << 45,
+            ARCH_TSC = 1L << 46,
+            ARCH_RDTSCP = 1L << 47,
+            ARCH_FSGSBASE = 1L << 48,
+            ARCH_SHA = 1L << 49,
+            ARCH_RTM = 1L << 50,
+            ARCH_XSAVE = 1L << 51,
+            ARCH_XSAVEC = 1L << 52,
+            ARCH_XSS = 1L << 53,
+            ARCH_XSAVEOPT = 1L << 54,
+            ARCH_PREFETCHWT1 = 1L << 55,
 
-            SVML = 1L << 45,
-            IA32 = 1L << 46,
+            ARCH_SVML = 1L << 56,
+            ARCH_IA32 = 1L << 57,
 
             /// <summary>
             /// Read Processor ID
             /// </summary>
-            RDPID = 1L << 47,
+            ARCH_RDPID = 1L << 58,
 
             /// <summary>
             /// Cache Line Write Back
             /// </summary>
-            CLWB = 1L << 48,
+            ARCH_CLWB = 1L << 59,
 
             // bits 47-62 are reserved for future use
 
             /// <summary>
             /// UNKNOWN is used for an unknown or unrecognized CPUID.
             /// </summary>
-            UNKNOWN = 1L << 63,
+            ARCH_UNKNOWN = 1L << 63,
         }
 
         public enum ReturnType
@@ -580,93 +588,95 @@ namespace IntrinsicsDude.Tools
             switch (ToCapitals(str, strIsCapitals))
             {
                 case "":
-                case "NONE": return CpuID.NONE;
-                case "IA32": return CpuID.IA32;
+                case "NONE": return CpuID.ARCH_NONE;
+                case "IA32": return CpuID.ARCH_IA32;
 
-                case "ADX": return CpuID.ADX;
-                case "AES": return CpuID.AES;
-                case "AVX": return CpuID.AVX;
-                case "AVX2": return CpuID.AVX2;
+                case "ADX": return CpuID.ARCH_ADX;
+                case "AES": return CpuID.ARCH_AES;
+                case "AVX": return CpuID.ARCH_AVX;
+                case "AVX2": return CpuID.ARCH_AVX2;
 
                 case "AVX512BW":
-                case "AVX512_BW": return CpuID.AVX512_BW;
+                case "AVX512_BW": return CpuID.ARCH_AVX512_BW;
                 case "AVX512CD":
-                case "AVX512_CD": return CpuID.AVX512_CD;
+                case "AVX512_CD": return CpuID.ARCH_AVX512_CD;
                 case "AVX512DQ":
-                case "AVX512_DQ": return CpuID.AVX512_DQ;
+                case "AVX512_DQ": return CpuID.ARCH_AVX512_DQ;
                 case "AVX512ER":
-                case "AVX512_ER": return CpuID.AVX512_ER;
+                case "AVX512_ER": return CpuID.ARCH_AVX512_ER;
                 case "AVX512":
                 case "AVX512F":
-                case "AVX512_F": return CpuID.AVX512_F;
+                case "AVX512_F": return CpuID.ARCH_AVX512_F;
                 case "AVX512PF":
-                case "AVX512_PF": return CpuID.AVX512_PF;
+                case "AVX512_PF": return CpuID.ARCH_AVX512_PF;
                 case "AVX512VL":
-                case "AVX512_VL": return CpuID.AVX512_VL;
+                case "AVX512_VL": return CpuID.ARCH_AVX512_VL;
                 case "AVX5124VNNIW":
-                case "AVX512_4VNNIW": return CpuID.AVX512_4VNNIW;
+                case "AVX512_4VNNIW": return CpuID.ARCH_AVX512_4VNNIW;
                 case "AVX5124FMAPS":
-                case "AVX512_4FMAPS": return CpuID.AVX512_4FMAPS;
+                case "AVX512_4FMAPS": return CpuID.ARCH_AVX512_4FMAPS;
                 case "AVX512VPOPCNTDQ":
-                case "AVX512_VPOPCNTDQ": return CpuID.AVX512_VPOPCNTDQ;
+                case "AVX512_VPOPCNTDQ": return CpuID.ARCH_AVX512_VPOPCNTDQ;
 
-                case "BMI1": return CpuID.BMI1;
-                case "BMI2": return CpuID.BMI2;
-                case "CLFLUSHOPT": return CpuID.CLFLUSHOPT;
-                case "FMA": return CpuID.FMA;
-                case "FP16C": return CpuID.FP16C;
-                case "FXSR": return CpuID.FXSR;
-                case "KNCNI": return CpuID.KNCNI;
-                case "MMX": return CpuID.MMX;
-                case "MPX": return CpuID.MPX;
-                case "PCLMULQDQ": return CpuID.PCLMULQDQ;
-                case "SSE": return CpuID.SSE;
-                case "SSE2": return CpuID.SSE2;
-                case "SSE3": return CpuID.SSE3;
+                case "BMI1": return CpuID.ARCH_BMI1;
+                case "BMI2": return CpuID.ARCH_BMI2;
+                case "CLFLUSHOPT": return CpuID.ARCH_CLFLUSHOPT;
+                case "FMA": return CpuID.ARCH_FMA;
+                case "FP16C": return CpuID.ARCH_FP16C;
+                case "FXSR": return CpuID.ARCH_FXSR;
+                case "KNCNI": return CpuID.ARCH_KNCNI;
+                case "MMX": return CpuID.ARCH_MMX;
+                case "MPX": return CpuID.ARCH_MPX;
+                case "PCLMULQDQ": return CpuID.ARCH_PCLMULQDQ;
+                case "SSE": return CpuID.ARCH_SSE;
+                case "SSE2": return CpuID.ARCH_SSE2;
+                case "SSE3": return CpuID.ARCH_SSE3;
                 case "SSE4_1":
-                case "SSE4.1": return CpuID.SSE4_1;
+                case "SSE4.1": return CpuID.ARCH_SSE41;
                 case "SSE4_2":
-                case "SSE4.2": return CpuID.SSE4_2;
-                case "SSSE3": return CpuID.SSSE3;
+                case "SSE4.2": return CpuID.ARCH_SSE42;
+                case "SSSE3": return CpuID.ARCH_SSSE3;
 
-                case "LZCNT": return CpuID.LZCNT;
+                case "LZCNT": return CpuID.ARCH_LZCNT;
                 case "AVX512IFMA52":
-                case "AVX512_IFMA52": return CpuID.AVX512_IFMA52;
-                case "INVPCID": return CpuID.INVPCID;
-                case "MONITOR": return CpuID.MONITOR;
+                case "AVX512IFMA":
+                case "AVX512_IFMA":
+                case "AVX512_IFMA52": return CpuID.ARCH_AVX512_IFMA;
+                case "INVPCID": return CpuID.ARCH_INVPCID;
+                case "MONITOR": return CpuID.ARCH_MONITOR;
                 case "AVX512VBMI":
-                case "AVX512_VBMI": return CpuID.AVX512_VBMI;
-                case "POPCNT": return CpuID.POPCNT;
-                case "RDRAND": return CpuID.RDRAND;
-                case "RDSEED": return CpuID.RDSEED;
-                case "TSC": return CpuID.TSC;
-                case "RDTSCP": return CpuID.RDTSCP;
-                case "FSGSBASE": return CpuID.FSGSBASE;
-                case "SHA": return CpuID.SHA;
-                case "RTM": return CpuID.RTM;
-                case "XSAVE": return CpuID.XSAVE;
-                case "XSAVEC": return CpuID.XSAVEC;
-                case "XSS": return CpuID.XSS;
-                case "XSAVEOPT": return CpuID.XSAVEOPT;
-                case "PREFETCHWT1": return CpuID.PREFETCHWT1;
+                case "AVX512_VBMI": return CpuID.ARCH_AVX512_VBMI;
+                case "POPCNT": return CpuID.ARCH_POPCNT;
+                case "RDRAND": return CpuID.ARCH_RDRAND;
+                case "RDSEED": return CpuID.ARCH_RDSEED;
+                case "TSC": return CpuID.ARCH_TSC;
+                case "RDTSCP": return CpuID.ARCH_RDTSCP;
+                case "FSGSBASE": return CpuID.ARCH_FSGSBASE;
+                case "SHA": return CpuID.ARCH_SHA;
+                case "RTM": return CpuID.ARCH_RTM;
+                case "XSAVE": return CpuID.ARCH_XSAVE;
+                case "XSAVEC": return CpuID.ARCH_XSAVEC;
+                case "XSS": return CpuID.ARCH_XSS;
+                case "XSAVEOPT": return CpuID.ARCH_XSAVEOPT;
+                case "PREFETCHWT1": return CpuID.ARCH_PREFETCHWT1;
 
-                case "SVML": return CpuID.SVML;
-                case "RDPID": return CpuID.RDPID;
-                case "CLWB": return CpuID.CLWB;
+                case "SVML": return CpuID.ARCH_SVML;
+                case "RDPID": return CpuID.ARCH_RDPID;
+                case "CLWB": return CpuID.ARCH_CLWB;
 
                 default:
                     if (warn)
                     {
-                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning " + CpuID.UNKNOWN);
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning " + CpuID.ARCH_UNKNOWN);
                     }
 
-                    return CpuID.UNKNOWN;
+                    return CpuID.ARCH_UNKNOWN;
             }
         }
 
         public static CpuID ParseCpuID_multiple(string str, bool strIsCapitals, bool warn)
         {
-            CpuID cpuID = CpuID.NONE;
+            CpuID cpuID = CpuID.ARCH_NONE;
             foreach (string cpuID_str in str.Split(','))
             {
                 cpuID |= ParseCpuID(cpuID_str.Trim(), strIsCapitals, warn);
@@ -771,7 +781,7 @@ namespace IntrinsicsDude.Tools
             //TODO it is inefficient to test every bit, would be faster to do a bitscanforward
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
-                if (value == CpuID.NONE)
+                if (value == CpuID.ARCH_NONE)
                 {
                     continue;
                 }
@@ -780,10 +790,10 @@ namespace IntrinsicsDude.Tools
                 {
                     switch (value)
                     {
-                        case CpuID.SSE4_1:
+                        case CpuID.ARCH_SSE41:
                             sb.Append("SSE4.1, ");
                             break;
-                        case CpuID.SSE4_2:
+                        case CpuID.ARCH_SSE42:
                             sb.Append("SSE4.2, ");
                             break;
                         default:
@@ -947,63 +957,71 @@ namespace IntrinsicsDude.Tools
         {
             switch (cpuID)
             {
-                case CpuID.NONE: return string.Empty;
-                case CpuID.SVML: return string.Empty;
-                case CpuID.IA32: return string.Empty;
-                case CpuID.ADX: return "Multi-Precision Add-Carry Instruction Extension";
-                case CpuID.AES: return "Advanced Encryption Standard Extension";
-                case CpuID.AVX: return string.Empty;
-                case CpuID.AVX2: return string.Empty;
-                case CpuID.AVX512_F: return "Instruction set AVX512 Foundation (Xeon Phi Knights Landing, Xeon Skylake)";
-                case CpuID.AVX512_CD: return "Instruction set AVX512 Conflict Detection (Xeon Phi Knights Landing, Xeon Skylake)";
-                case CpuID.AVX512_ER: return "Instruction set AVX512 Exponential and Reciprocal (Xeon Phi Knights Landing)";
-                case CpuID.AVX512_PF: return "Instruction set AVX512 Prefetch (Xeon Phi Knights Landing)";
-                case CpuID.AVX512_BW: return "Instruction set AVX512 Byte and Word (Xeon Skylake)";
-                case CpuID.AVX512_DQ: return "Instruction set AVX512 Doubleword and QuadWord (Xeon Skylake)";
-                case CpuID.AVX512_VL: return "Instruction set AVX512 Vector Length Extensions (Xeon Skylake)";
-                case CpuID.AVX512_IFMA52: return "Instruction set AVX512 52-bit Integer Multiply-Add (Xeon Cannonlake)";
-                case CpuID.AVX512_VBMI: return "Instruction set AVX512 Vector Bit-Manipulation (Xeon Cannonlake)";
+                case CpuID.ARCH_NONE: return string.Empty;
+                case CpuID.ARCH_SVML: return string.Empty;
+                case CpuID.ARCH_IA32: return string.Empty;
+                case CpuID.ARCH_ADX: return "Multi-Precision Add-Carry Instruction Extension";
+                case CpuID.ARCH_AES: return "Advanced Encryption Standard Extension";
+                case CpuID.ARCH_AVX: return string.Empty;
+                case CpuID.ARCH_AVX2: return string.Empty;
 
-                case CpuID.BMI1: return "Bit Manipulation Instruction Set 1";
-                case CpuID.BMI2: return "Bit Manipulation Instruction Set 2";
-                case CpuID.CLFLUSHOPT: return string.Empty;
-                case CpuID.FMA: return "Fused Multiply-Add Instructions";
-                case CpuID.FP16C: return "Half Precision Floating Point Conversion Instructions";
-                case CpuID.FXSR: return string.Empty;
-                case CpuID.KNCNI: return string.Empty;
-                case CpuID.MMX: return string.Empty;
-                case CpuID.MPX: return "Memory Protection Extensions";
-                case CpuID.PCLMULQDQ: return "Carry-Less Multiplication Instructions";
-                case CpuID.SSE: return string.Empty;
-                case CpuID.SSE2: return string.Empty;
-                case CpuID.SSE3: return string.Empty;
-                case CpuID.SSE4_1: return string.Empty;
-                case CpuID.SSE4_2: return string.Empty;
-                case CpuID.SSSE3: return string.Empty;
+                case CpuID.ARCH_AVX512_F: return "AVX512-F - Foundation";
+                case CpuID.ARCH_AVX512_CD: return "AVX512-CD - Conflict Detection";
+                case CpuID.ARCH_AVX512_ER: return "AVX512-ER - Exponential and Reciprocal";
+                case CpuID.ARCH_AVX512_PF: return "AVX512-PF - Prefetch";
+                case CpuID.ARCH_AVX512_BW: return "AVX512-BW - Byte and Word";
+                case CpuID.ARCH_AVX512_DQ: return "AVX512-DQ - Doubleword and QuadWord";
+                case CpuID.ARCH_AVX512_VL: return "AVX512-VL - Vector Length Extensions";
+                case CpuID.ARCH_AVX512_IFMA: return "AVX512-IFMA - Integer Fused Multiply Add";
+                case CpuID.ARCH_AVX512_VBMI: return "AVX512-VBMI - Vector Byte Manipulation Instructions";
+                case CpuID.ARCH_AVX512_VPOPCNTDQ: return "AVX512-VPOPCNTDQ - Vector Population Count instructions for Dwords and Qwords";
+                case CpuID.ARCH_AVX512_4VNNIW: return "AVX512-4VNNIW - Vector Neural Network Instructions Word variable precision";
+                case CpuID.ARCH_AVX512_4FMAPS: return "AVX512-4FMAPS - Fused Multiply Accumulation Packed Single precision";
+                case CpuID.ARCH_AVX512_VBMI2: return "AVX512-VBMI2 - Vector Byte Manipulation Instructions 2";
+                case CpuID.ARCH_AVX512_VNNI: return "AVX512-VNNI - Vector Neural Network Instructions";
+                case CpuID.ARCH_AVX512_BITALG: return "AVX512-BITALG - Bit Algorithms";
+                case CpuID.ARCH_AVX512_GFNI: return " AVX512-GFNI - Galois Field New Instructions";
+                case CpuID.ARCH_AVX512_VAES: return "AVX512-VPCLMULQDQ - EVEX-encoded Advanced Encryption Standard";
+                case CpuID.ARCH_AVX512_VPCLMULQDQ: return "AVX512-VPCLMULQDQ";
+                case CpuID.ARCH_AVX512_BF16: return "AVX512-BF16 - Brain Float 16 extension (Bfloat16)";
+                case CpuID.ARCH_AVX512_VP2INTERSECT: return "AVX512-VP2INTERSECT - ";
 
-                case CpuID.LZCNT: return string.Empty;
-                case CpuID.INVPCID: return string.Empty;
-                case CpuID.MONITOR: return string.Empty;
-                case CpuID.POPCNT: return string.Empty;
-                case CpuID.RDRAND: return string.Empty;
-                case CpuID.RDSEED: return string.Empty;
-                case CpuID.TSC: return string.Empty;
-                case CpuID.RDTSCP: return string.Empty;
-                case CpuID.FSGSBASE: return string.Empty;
-                case CpuID.SHA: return string.Empty;
-                case CpuID.RTM: return string.Empty;
-                case CpuID.XSAVE: return string.Empty;
-                case CpuID.XSAVEC: return string.Empty;
-                case CpuID.XSS: return string.Empty;
-                case CpuID.XSAVEOPT: return string.Empty;
-                case CpuID.PREFETCHWT1: return string.Empty;
+                case CpuID.ARCH_BMI1: return "Bit Manipulation Instruction Set 1";
+                case CpuID.ARCH_BMI2: return "Bit Manipulation Instruction Set 2";
+                case CpuID.ARCH_CLFLUSHOPT: return string.Empty;
+                case CpuID.ARCH_FMA: return "Fused Multiply-Add Instructions";
+                case CpuID.ARCH_FP16C: return "Half Precision Floating Point Conversion Instructions";
+                case CpuID.ARCH_FXSR: return string.Empty;
+                case CpuID.ARCH_KNCNI: return string.Empty;
+                case CpuID.ARCH_MMX: return string.Empty;
+                case CpuID.ARCH_MPX: return "Memory Protection Extensions";
+                case CpuID.ARCH_PCLMULQDQ: return "Carry-Less Multiplication Instructions";
+                case CpuID.ARCH_SSE: return string.Empty;
+                case CpuID.ARCH_SSE2: return string.Empty;
+                case CpuID.ARCH_SSE3: return string.Empty;
+                case CpuID.ARCH_SSE41: return string.Empty;
+                case CpuID.ARCH_SSE42: return string.Empty;
+                case CpuID.ARCH_SSSE3: return string.Empty;
 
-                case CpuID.RDPID: return "Read Processor ID";
-                case CpuID.CLWB: return "Cache Line Write Back";
+                case CpuID.ARCH_LZCNT: return string.Empty;
+                case CpuID.ARCH_INVPCID: return string.Empty;
+                case CpuID.ARCH_MONITOR: return string.Empty;
+                case CpuID.ARCH_POPCNT: return string.Empty;
+                case CpuID.ARCH_RDRAND: return string.Empty;
+                case CpuID.ARCH_RDSEED: return string.Empty;
+                case CpuID.ARCH_TSC: return string.Empty;
+                case CpuID.ARCH_RDTSCP: return string.Empty;
+                case CpuID.ARCH_FSGSBASE: return string.Empty;
+                case CpuID.ARCH_SHA: return string.Empty;
+                case CpuID.ARCH_RTM: return string.Empty;
+                case CpuID.ARCH_XSAVE: return string.Empty;
+                case CpuID.ARCH_XSAVEC: return string.Empty;
+                case CpuID.ARCH_XSS: return string.Empty;
+                case CpuID.ARCH_XSAVEOPT: return string.Empty;
+                case CpuID.ARCH_PREFETCHWT1: return string.Empty;
 
-                case CpuID.AVX512_4VNNIW: return string.Empty;
-                case CpuID.AVX512_4FMAPS: return string.Empty;
-                case CpuID.AVX512_VPOPCNTDQ: return string.Empty;
+                case CpuID.ARCH_RDPID: return "Read Processor ID";
+                case CpuID.ARCH_CLWB: return "Cache Line Write Back";
 
                 default:
                     IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
@@ -1085,14 +1103,14 @@ namespace IntrinsicsDude.Tools
 
         public static bool IsCpuID_Enabled(CpuID cpuID_intrisic, CpuID selectedArchitectures)
         {
-            if (cpuID_intrisic.HasFlag(CpuID.SVML) && !selectedArchitectures.HasFlag(CpuID.SVML))
+            if (cpuID_intrisic.HasFlag(CpuID.ARCH_SVML) && !selectedArchitectures.HasFlag(CpuID.ARCH_SVML))
             {
                 return false;
             }
 
             CpuID commonCpuID = (selectedArchitectures & cpuID_intrisic);
-            //IntrinsicsDudeToolsStatic.Output("WARNING: IntrinsicTools: isCpuID_Enabled: cpuID_intrisic=" + IntrinsicTools.ToString(cpuID_intrisic) + "; selectedArchitectures="+IntrinsicTools.ToString(selectedArchitectures) +"; commonCpuID " + IntrinsicTools.ToString(commonCpuID));
-            return (commonCpuID != CpuID.NONE);
+            //IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: isCpuID_Enabled: cpuID_intrisic=" + IntrinsicTools.ToString(cpuID_intrisic) + "; selectedArchitectures="+IntrinsicTools.ToString(selectedArchitectures) +"; commonCpuID " + IntrinsicTools.ToString(commonCpuID));
+            return (commonCpuID != CpuID.ARCH_NONE);
         }
 
         #region Text Wrap
@@ -1390,7 +1408,7 @@ namespace IntrinsicsDude.Tools
             {
                 TextExtent extent = nav.GetExtentOfWord(currentPos);
                 string word = extent.Span.GetText();
-                //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=\"" + word+"\".");
+                //IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpCommandHandler: getIntrinsicAndParamIndex: word=\"" + word+"\".");
 
                 if (word.Contains(";"))
                 {
@@ -1456,6 +1474,7 @@ namespace IntrinsicsDude.Tools
             {
                 if (_intrinsic_cache.TryGetValue(ToCapitals(str, strIsCapitals), out Intrinsic value))
                 {
+                    //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:ParseIntrinsic: parsed Intrinsic \"{1}\".", "IntrinsicTools", value));
                     return value;
                 }
                 else

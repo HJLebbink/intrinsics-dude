@@ -110,7 +110,7 @@ namespace IntrinsicsDude.Tools
                 Intrinsic intrinsic = pair.Key;
                 IList<IntrinsicDataElement> dataElements = pair.Value;
 
-                CpuID cpuID = CpuID.NONE;
+                CpuID cpuID = CpuID.ARCH_NONE;
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
                     cpuID |= dataElement._cpuID;
@@ -131,7 +131,7 @@ namespace IntrinsicsDude.Tools
                     IntrinsicDataElement dataElementFirst = dataElements[0];
                     string intrinsicStr = intrinsic.ToString().ToLower();
                     string displayText = this.CreateDisplayText(intrinsicStr, cpuID, dataElementFirst._description, true, true);
-                    //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
+                    //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
                     Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.DocumenationString, this.icon_IF, string.Empty);
 
                     this._intrinsic_Completions.Add(new Tuple<Completion, ReturnType>(completion, dataElementFirst._returnType));

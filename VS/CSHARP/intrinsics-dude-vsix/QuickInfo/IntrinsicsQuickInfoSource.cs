@@ -94,7 +94,7 @@ namespace IntrinsicsDude.QuickInfo
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
+                                //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
 
                                 bool is_capitals = false;
                                 bool warn = false;
@@ -104,10 +104,10 @@ namespace IntrinsicsDude.QuickInfo
                                     IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.IntrinsicStore.Get(intrinsic);
                                     if (dataElements.Count > 0)
                                     {
-                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
+                                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsQuickInfoSource: AugmentQuickInfoSession: intrinsic=" + intrinsic);
                                         if (quickInfoContent.Count > 0)
                                         {
-                                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
+                                            //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsQuickInfoSource: AugmentQuickInfoSession: removing existing content: intrinsic=" + intrinsic + "; " + quickInfoContent[0].ToString());
                                             quickInfoContent.Clear(); // throw the existing quickinfo away
                                         }
 
@@ -128,7 +128,7 @@ namespace IntrinsicsDude.QuickInfo
                                 SimdRegisterType reg = ParseSimdRegisterType(keyword, is_capitals, warn);
                                 if (reg != SimdRegisterType.NONE)
                                 {
-                                    //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
+                                    //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);
                                     TextBlock description = this.MakeRegisterDescription(reg);
                                     if (description != null)
                                     {

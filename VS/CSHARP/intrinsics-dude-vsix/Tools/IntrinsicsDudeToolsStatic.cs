@@ -280,7 +280,7 @@ namespace IntrinsicsDude.Tools
 
         public static CpuID GetCpuIDSwithedOn()
         {
-            CpuID cpuID = CpuID.NONE;
+            CpuID cpuID = CpuID.ARCH_NONE;
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
                 if (IsArchSwitchedOn(value))
@@ -289,7 +289,7 @@ namespace IntrinsicsDude.Tools
                 }
             }
 
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuID));
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuID));
             return cpuID;
         }
 
@@ -297,65 +297,74 @@ namespace IntrinsicsDude.Tools
         {
             switch (arch)
             {
-                case CpuID.NONE: return false;
-                case CpuID.ADX: return Settings.Default.ARCH_ADX;
-                case CpuID.AES: return Settings.Default.ARCH_AES;
-                case CpuID.AVX: return Settings.Default.ARCH_AVX;
-                case CpuID.AVX2: return Settings.Default.ARCH_AVX2;
-                case CpuID.AVX512_F: return Settings.Default.ARCH_AVX512_F;
-                case CpuID.AVX512_CD: return Settings.Default.ARCH_AVX512_CD;
-                case CpuID.AVX512_ER: return Settings.Default.ARCH_AVX512_ER;
-                case CpuID.AVX512_VL: return Settings.Default.ARCH_AVX512_VL;
-                case CpuID.AVX512_DQ: return Settings.Default.ARCH_AVX512_DQ;
-                case CpuID.AVX512_PF: return Settings.Default.ARCH_AVX512_PF;
-                case CpuID.AVX512_BW: return Settings.Default.ARCH_AVX512_BW;
-                case CpuID.AVX512_IFMA52: return Settings.Default.ARCH_AVX512_IFMA52;
-                case CpuID.AVX512_VBMI: return Settings.Default.ARCH_AVX512_VBMI;
-                case CpuID.AVX512_VPOPCNTDQ: return Settings.Default.ARCH_AVX512_VPOPCNTDQ;
-                case CpuID.AVX512_4VNNIW: return Settings.Default.ARCH_AVX512_4VNNIW;
-                case CpuID.AVX512_4FMAPS: return Settings.Default.ARCH_AVX512_4FMAPS;
+                case CpuID.ARCH_NONE: return false;
+                case CpuID.ARCH_ADX: return Settings.Default.ARCH_ADX;
+                case CpuID.ARCH_AES: return Settings.Default.ARCH_AES;
+                case CpuID.ARCH_AVX: return Settings.Default.ARCH_AVX;
+                case CpuID.ARCH_AVX2: return Settings.Default.ARCH_AVX2;
+                case CpuID.ARCH_AVX512_F: return Settings.Default.ARCH_AVX512_F;
+                case CpuID.ARCH_AVX512_CD: return Settings.Default.ARCH_AVX512_CD;
+                case CpuID.ARCH_AVX512_ER: return Settings.Default.ARCH_AVX512_ER;
+                case CpuID.ARCH_AVX512_VL: return Settings.Default.ARCH_AVX512_VL;
+                case CpuID.ARCH_AVX512_DQ: return Settings.Default.ARCH_AVX512_DQ;
+                case CpuID.ARCH_AVX512_PF: return Settings.Default.ARCH_AVX512_PF;
+                case CpuID.ARCH_AVX512_BW: return Settings.Default.ARCH_AVX512_BW;
+                case CpuID.ARCH_AVX512_IFMA: return Settings.Default.ARCH_AVX512_IFMA;
+                case CpuID.ARCH_AVX512_VBMI: return Settings.Default.ARCH_AVX512_VBMI;
+                case CpuID.ARCH_AVX512_VPOPCNTDQ: return Settings.Default.ARCH_AVX512_VPOPCNTDQ;
+                case CpuID.ARCH_AVX512_4VNNIW: return Settings.Default.ARCH_AVX512_4VNNIW;
+                case CpuID.ARCH_AVX512_4FMAPS: return Settings.Default.ARCH_AVX512_4FMAPS;
 
-                case CpuID.BMI1: return Settings.Default.ARCH_BMI1;
-                case CpuID.BMI2: return Settings.Default.ARCH_BMI2;
-                case CpuID.CLFLUSHOPT: return Settings.Default.ARCH_CLFLUSHOPT;
-                case CpuID.FMA: return Settings.Default.ARCH_FMA;
-                case CpuID.FP16C: return Settings.Default.ARCH_FP16C;
-                case CpuID.FXSR: return Settings.Default.ARCH_FXSR;
-                case CpuID.KNCNI: return Settings.Default.ARCH_KNCNI;
-                case CpuID.MMX: return Settings.Default.ARCH_MMX;
-                case CpuID.MPX: return Settings.Default.ARCH_MPX;
-                case CpuID.PCLMULQDQ: return Settings.Default.ARCH_PCLMULQDQ;
-                case CpuID.SSE: return Settings.Default.ARCH_SSE;
-                case CpuID.SSE2: return Settings.Default.ARCH_SSE2;
-                case CpuID.SSE3: return Settings.Default.ARCH_SSE3;
-                case CpuID.SSE4_1: return Settings.Default.ARCH_SSE41;
-                case CpuID.SSE4_2: return Settings.Default.ARCH_SSE42;
-                case CpuID.SSSE3: return Settings.Default.ARCH_SSSE3;
+                case CpuID.ARCH_AVX512_VBMI2: return Settings.Default.ARCH_AVX512_VBMI2;
+                case CpuID.ARCH_AVX512_VNNI: return Settings.Default.ARCH_AVX512_VNNI;
+                case CpuID.ARCH_AVX512_BITALG: return Settings.Default.ARCH_AVX512_BITALG;
+                case CpuID.ARCH_AVX512_GFNI: return Settings.Default.ARCH_AVX512_GFNI;
+                case CpuID.ARCH_AVX512_VAES: return Settings.Default.ARCH_AVX512_VAES;
+                case CpuID.ARCH_AVX512_VPCLMULQDQ: return Settings.Default.ARCH_AVX512_VPCLMULQDQ;
+                case CpuID.ARCH_AVX512_BF16: return Settings.Default.ARCH_AVX512_BF16;
+                case CpuID.ARCH_AVX512_VP2INTERSECT: return Settings.Default.ARCH_AVX512_VP2INTERSECT;
 
-                case CpuID.LZCNT: return Settings.Default.ARCH_LZCNT;
-                case CpuID.INVPCID: return Settings.Default.ARCH_INVPCID;
-                case CpuID.MONITOR: return Settings.Default.ARCH_MONITOR;
-                case CpuID.POPCNT: return Settings.Default.ARCH_POPCNT;
-                case CpuID.RDRAND: return Settings.Default.ARCH_RDRAND;
-                case CpuID.RDSEED: return Settings.Default.ARCH_RDSEED;
-                case CpuID.TSC: return Settings.Default.ARCH_TSC;
-                case CpuID.RDTSCP: return Settings.Default.ARCH_RDTSCP;
-                case CpuID.FSGSBASE: return Settings.Default.ARCH_FSGSBASE;
-                case CpuID.SHA: return Settings.Default.ARCH_SHA;
-                case CpuID.RTM: return Settings.Default.ARCH_RTM;
-                case CpuID.XSAVE: return Settings.Default.ARCH_XSAVE;
-                case CpuID.XSAVEC: return Settings.Default.ARCH_XSAVEC;
-                case CpuID.XSS: return Settings.Default.ARCH_XSS;
-                case CpuID.XSAVEOPT: return Settings.Default.ARCH_XSAVEOPT;
-                case CpuID.PREFETCHWT1: return Settings.Default.ARCH_PREFETCHWT1;
+                case CpuID.ARCH_BMI1: return Settings.Default.ARCH_BMI1;
+                case CpuID.ARCH_BMI2: return Settings.Default.ARCH_BMI2;
+                case CpuID.ARCH_CLFLUSHOPT: return Settings.Default.ARCH_CLFLUSHOPT;
+                case CpuID.ARCH_FMA: return Settings.Default.ARCH_FMA;
+                case CpuID.ARCH_FP16C: return Settings.Default.ARCH_FP16C;
+                case CpuID.ARCH_FXSR: return Settings.Default.ARCH_FXSR;
+                case CpuID.ARCH_KNCNI: return Settings.Default.ARCH_KNCNI;
+                case CpuID.ARCH_MMX: return Settings.Default.ARCH_MMX;
+                case CpuID.ARCH_MPX: return Settings.Default.ARCH_MPX;
+                case CpuID.ARCH_PCLMULQDQ: return Settings.Default.ARCH_PCLMULQDQ;
+                case CpuID.ARCH_SSE: return Settings.Default.ARCH_SSE;
+                case CpuID.ARCH_SSE2: return Settings.Default.ARCH_SSE2;
+                case CpuID.ARCH_SSE3: return Settings.Default.ARCH_SSE3;
+                case CpuID.ARCH_SSE41: return Settings.Default.ARCH_SSE41;
+                case CpuID.ARCH_SSE42: return Settings.Default.ARCH_SSE42;
+                case CpuID.ARCH_SSSE3: return Settings.Default.ARCH_SSSE3;
 
-                case CpuID.SVML: return Settings.Default.USE_SVML;
-                case CpuID.IA32: return Settings.Default.ARCH_IA32;
+                case CpuID.ARCH_LZCNT: return Settings.Default.ARCH_LZCNT;
+                case CpuID.ARCH_INVPCID: return Settings.Default.ARCH_INVPCID;
+                case CpuID.ARCH_MONITOR: return Settings.Default.ARCH_MONITOR;
+                case CpuID.ARCH_POPCNT: return Settings.Default.ARCH_POPCNT;
+                case CpuID.ARCH_RDRAND: return Settings.Default.ARCH_RDRAND;
+                case CpuID.ARCH_RDSEED: return Settings.Default.ARCH_RDSEED;
+                case CpuID.ARCH_TSC: return Settings.Default.ARCH_TSC;
+                case CpuID.ARCH_RDTSCP: return Settings.Default.ARCH_RDTSCP;
+                case CpuID.ARCH_FSGSBASE: return Settings.Default.ARCH_FSGSBASE;
+                case CpuID.ARCH_SHA: return Settings.Default.ARCH_SHA;
+                case CpuID.ARCH_RTM: return Settings.Default.ARCH_RTM;
+                case CpuID.ARCH_XSAVE: return Settings.Default.ARCH_XSAVE;
+                case CpuID.ARCH_XSAVEC: return Settings.Default.ARCH_XSAVEC;
+                case CpuID.ARCH_XSS: return Settings.Default.ARCH_XSS;
+                case CpuID.ARCH_XSAVEOPT: return Settings.Default.ARCH_XSAVEOPT;
+                case CpuID.ARCH_PREFETCHWT1: return Settings.Default.ARCH_PREFETCHWT1;
 
-                case CpuID.RDPID: return Settings.Default.ARCH_RDPID;
-                case CpuID.CLWB: return Settings.Default.ARCH_CLWB;
+                case CpuID.ARCH_SVML: return Settings.Default.ARCH_SVML;
+                case CpuID.ARCH_IA32: return Settings.Default.ARCH_IA32;
 
-                case CpuID.UNKNOWN: return false;
+                case CpuID.ARCH_RDPID: return Settings.Default.ARCH_RDPID;
+                case CpuID.ARCH_CLWB: return Settings.Default.ARCH_CLWB;
+
+                case CpuID.ARCH_UNKNOWN: return false;
 
                 default:
                     Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch " + arch);

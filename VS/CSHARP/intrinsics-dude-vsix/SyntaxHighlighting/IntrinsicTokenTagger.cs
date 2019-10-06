@@ -24,6 +24,7 @@ namespace IntrinsicsDude
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using IntrinsicsDude.SyntaxHighlighting;
     using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Text;
@@ -43,8 +44,11 @@ namespace IntrinsicsDude
 
         internal IntrinsicTokenTagger(ITextBuffer buffer, ITextStructureNavigator navigator)
         {
-            this._buffer = buffer;
-            this._navigator = navigator;
+            Contract.Requires(buffer != null);
+            Contract.Requires(navigator != null);
+
+            this._buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
+            this._navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
 
             this._mnemonic = new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic);
             this._register = new IntrinsicTokenTag(IntrinsicTokenType.RegType);
@@ -60,14 +64,15 @@ namespace IntrinsicsDude
 
         public IEnumerable<ITagSpan<IntrinsicTokenTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
+            Contract.Requires(spans != null);
             //DateTime time1 = DateTime.Now;
+
+            //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: nSpans={1}", this.ToString(), spans.Count));
 
             if (spans.Count == 0)
             { //there is no content in the buffer
                 yield break;
             }
-
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: nSpans=" + spans.Count);
 
             foreach (SnapshotSpan curSpan in spans)
             {
@@ -77,29 +82,29 @@ namespace IntrinsicsDude
                     TextExtent extent = this._navigator.GetExtentOfWord(point);
                     if (extent.IsSignificant)
                     {
-                        string keyword = extent.Span.GetText().ToUpper();
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
+                        string keyword = extent.Span.GetText();
+                        //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: at point={1}, found keyword \"{2}\".", this.ToString(), point.Position, keyword));
 
-                        bool is_capitals = true;
+                        bool is_capitals = false;
                         bool warn = false;
                         if (ParseIntrinsic(keyword, is_capitals, warn) == Intrinsic.NONE)
                         {
                             if (ParseSimdRegisterType(keyword, is_capitals, warn) != SimdRegisterType.NONE)
                             {
-                                //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic type \"" + keyword + "\".");
+                                //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: found intrinsic type \"{1}\".", this.ToString(), keyword));
                                 yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.RegType));
                             }
                         }
                         else
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic instruction \"" + keyword + "\".");
+                            //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: found intrinsic instruction \"{1}\".", this.ToString(), keyword));
                             yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.Intrinsic));
                         }
                     }
 
                     if (extent.Span.End.Position >= curSpan.End.Position)
                     {
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: leaving the loop. point=" + point + "; curSpan.End=" + curSpan.End);
+                        //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: leaving the loop. point={1}; curSpan.End={2}.", this.ToString(), point, curSpan.End));
                         break;
                     }
 

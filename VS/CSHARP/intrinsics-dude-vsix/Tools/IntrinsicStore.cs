@@ -68,7 +68,7 @@ namespace IntrinsicsDude.Tools
 
         public CpuID GetCpuID(Intrinsic intrinsic)
         {
-            CpuID cpuID = CpuID.NONE;
+            CpuID cpuID = CpuID.ARCH_NONE;
             if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
             {
                 foreach (IntrinsicDataElement dataElement in dataElements)
@@ -116,7 +116,7 @@ namespace IntrinsicsDude.Tools
                     };
                     if (item.GetAttributeValue("class", string.Empty).Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
                     {
-                        dataElement._cpuID |= CpuID.SVML;
+                        dataElement._cpuID |= CpuID.ARCH_SVML;
                     }
 
                     IList<string> paramName = new List<string>(2);
@@ -126,7 +126,7 @@ namespace IntrinsicsDude.Tools
                     foreach (HtmlNode element in item.ChildNodes)
                     {
                         string elementClass = element.GetAttributeValue("class", "NONE").ToUpper();
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: element.class=" + elementClass);
+                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: element.class=" + elementClass);
                         switch (elementClass)
                         {
                             case "INSTRUCTION":
@@ -143,7 +143,7 @@ namespace IntrinsicsDude.Tools
                                     foreach (HtmlNode element2 in element.Descendants())
                                     {
                                         string element2Class = element2.GetAttributeValue("class", "NONE").ToUpper();
-                                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
+                                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: B: element2Class=" + element2Class + "; element2 " + element2.InnerText);
                                         switch (element2Class)
                                         {
                                             case "NAME":
@@ -192,7 +192,7 @@ namespace IntrinsicsDude.Tools
 
                             case "ALSOKNC":
                                 {
-                                    dataElement._cpuID |= CpuID.KNCNI;
+                                    dataElement._cpuID |= CpuID.ARCH_KNCNI;
                                     break;
                                 }
 
@@ -207,10 +207,10 @@ namespace IntrinsicsDude.Tools
                         }
                     }
 
-                    if (dataElement._cpuID == CpuID.NONE)
+                    if (dataElement._cpuID == CpuID.ARCH_NONE)
                     {
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
-                        dataElement._cpuID = CpuID.IA32;
+                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
+                        dataElement._cpuID = CpuID.ARCH_IA32;
                     }
 
                     #endregion
@@ -218,7 +218,7 @@ namespace IntrinsicsDude.Tools
                     if (this._data.TryGetValue(dataElement._intrinsic, out IList<IntrinsicDataElement> dataElements))
                     {
                         dataElements.Add(dataElement);
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
+                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
                     }
                     else
                     {
@@ -230,14 +230,6 @@ namespace IntrinsicsDude.Tools
                     }
                     #endregion
                 }
-
-                /*
-                foreach (string str in allIntrinsicNames)
-                {
-                    //IntrinsicsDudeToolsStatic.Output("    "+str.ToUpper() + ",");
-                    IntrinsicsDudeToolsStatic.Output("case \""+str.ToUpper()+"\": return Intrinsic."+str.ToUpper() +";");
-                }
-                */
                 IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Load HTML");
             }
             catch (Exception e)
@@ -294,7 +286,7 @@ namespace IntrinsicsDude.Tools
 
         public void LoadXml(string filename)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadXml: filename " + filename);
+            //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadXml: filename " + filename);
             try
             {
                 DateTime time1 = DateTime.Now;
@@ -372,7 +364,7 @@ namespace IntrinsicsDude.Tools
                     if (this._data.TryGetValue(dataElement._intrinsic, out IList<IntrinsicDataElement> dataElements))
                     {
                         dataElements.Add(dataElement);
-                        //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
+                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
                     }
                     else
                     {

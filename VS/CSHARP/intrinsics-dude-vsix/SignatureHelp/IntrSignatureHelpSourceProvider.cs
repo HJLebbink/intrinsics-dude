@@ -39,16 +39,16 @@ namespace IntrinsicsDude.SignHelp
     {
         public IntrSignHelpPresenterStyle()
         {
-            IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: constructor");
+            IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpPresenterStyle: constructor");
         }
 
         public override TextRunProperties SignatureDocumentationTextRunProperties {
             get {
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: get");
+                IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: get");
                 return null;
             }
             protected set {
-                IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: set");
+                IntrinsicsDudeToolsStatic.Output_INFO("IntrSignHelpPresenterStyle: SignatureDocumentationTextRunProperties: set");
             }
         }
     }
@@ -71,6 +71,7 @@ namespace IntrinsicsDude.SignHelp
 
             if (Settings.Default.SignatureHelp_On)
             {
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:TryCreateSignatureHelpSource: signature help is switched on", this.ToString()));
                 return new IntrSignatureHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
             }
             else

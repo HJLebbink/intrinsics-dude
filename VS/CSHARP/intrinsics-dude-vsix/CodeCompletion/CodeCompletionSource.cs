@@ -97,7 +97,7 @@ namespace IntrinsicsDude.StatementCompletion
                 if (extent.IsSignificant)
                 {
                     string partialKeyword = extent.Span.GetText();
-                    //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
+                    //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: AugmentCompletionSession: partialKeyword=\"" + partialKeyword + "\".");
 
                     if ((partialKeyword.Length > 0) && partialKeyword[0].Equals('_'))
                     {
@@ -105,7 +105,7 @@ namespace IntrinsicsDude.StatementCompletion
 
                         if (completionSets.Count > 0)
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
+                            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource:updateCompletionsSets_method1: there are existing completionSets");
 
                             CompletionSet existingCompletions = completionSets[0];
                             this.Init_Cached_Completions_method1(existingCompletions, intrinsicCompletions, session, partialKeyword);
@@ -115,7 +115,7 @@ namespace IntrinsicsDude.StatementCompletion
                         }
                         else
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
+                            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: updateCompletionsSets_method1: no existing completionSet");
 
                             ITrackingSpan applicableTo = this._buffer.CurrentSnapshot.CreateTrackingSpan(extent.Span, SpanTrackingMode.EdgeExclusive, TrackingFidelityMode.Forward);
                             intrinsicCompletions.Sort(new CompletionComparer());
@@ -151,7 +151,7 @@ namespace IntrinsicsDude.StatementCompletion
         {
             DateTime startTime = DateTime.Now;
             string partialKeyword2 = (partialKeyword.Length < 2) ? "__" : partialKeyword.Substring(0, 2);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions_method1: partialKeyword=" + partialKeyword+ "; partialKeyword2="+ partialKeyword2);
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions_method1: partialKeyword=" + partialKeyword+ "; partialKeyword2="+ partialKeyword2);
 
             int nCompletionsAdded = 0;
             int maxTimeMs = 1000;
@@ -169,7 +169,7 @@ namespace IntrinsicsDude.StatementCompletion
                     {
                         if (!IsSimdRegister(insertionText, is_capitals))
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
+                            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
                             nCompletionsAdded++;
                             if ((DateTime.Now.Ticks - startTime.Ticks) > (maxTimeMs * 10000))
@@ -182,7 +182,7 @@ namespace IntrinsicsDude.StatementCompletion
                 }
             }
 
-            // IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
+            // IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: initialized " + nCompletionsAdded + " existing statement completions of the total " + existingCompletions.Completions.Count);
         }
 
         private void Init_Cached_Completions_method2(
@@ -191,7 +191,7 @@ namespace IntrinsicsDude.StatementCompletion
             ICompletionSession session)
         {
             DateTime startTime = DateTime.Now;
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions");
 
             bool is_Initialized = this._statement_Completion_Store.Is_Initialized;
 
@@ -208,7 +208,7 @@ namespace IntrinsicsDude.StatementCompletion
                     {
                         if (!IsSimdRegister(insertionText, is_capitals))
                         {
-                            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
+                            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
                         }
                     }
@@ -231,26 +231,26 @@ namespace IntrinsicsDude.StatementCompletion
             {
                 CpuID selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
 
-                if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
+                if ((selectedCpuID & (CpuID.ARCH_MMX)) != CpuID.ARCH_NONE)
                 {
                     completions.Add(new Completion("__m64", "__m64", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE4_1 | CpuID.SSE4_2 | CpuID.SSSE3)) != CpuID.NONE)
+                if ((selectedCpuID & (CpuID.ARCH_SSE | CpuID.ARCH_SSE2 | CpuID.ARCH_SSE3 | CpuID.ARCH_SSE41 | CpuID.ARCH_SSE42 | CpuID.ARCH_SSSE3)) != CpuID.ARCH_NONE)
                 {
                     completions.Add(new Completion("__m128", "__m128 ", null, null, null));
                     completions.Add(new Completion("__m128d", "__m128d ", null, null, null));
                     completions.Add(new Completion("__m128i", "__m128i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE)
+                if ((selectedCpuID & (CpuID.ARCH_AVX | CpuID.ARCH_AVX2)) != CpuID.ARCH_NONE)
                 {
                     completions.Add(new Completion("__m256", "__m256 ", null, null, null));
                     completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
                     completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA52 | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE)
+                if ((selectedCpuID & (CpuID.ARCH_AVX512_BW | CpuID.ARCH_AVX512_CD | CpuID.ARCH_AVX512_DQ | CpuID.ARCH_AVX512_ER | CpuID.ARCH_AVX512_F | CpuID.ARCH_AVX512_IFMA | CpuID.ARCH_AVX512_PF | CpuID.ARCH_AVX512_VBMI | CpuID.ARCH_AVX512_VL | CpuID.ARCH_KNCNI)) != CpuID.ARCH_NONE)
                 {
                     completions.Add(new Completion("__m512", "__m512 ", null, null, null));
                     completions.Add(new Completion("__m512d", "__m512d ", null, null, null));
@@ -266,14 +266,14 @@ namespace IntrinsicsDude.StatementCompletion
         private ReturnType FindCompletionRestriction(TextExtent currentKeywordExtent)
         {
             ReturnType returnType = this.FindLeftHandType(currentKeywordExtent);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findCompletionRestriction: A: returnType=" + returnType);
             if (returnType == ReturnType.UNKNOWN)
             {
                 returnType = this.FindEmbeddedType(currentKeywordExtent);
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
+                //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findCompletionRestriction: B: returnType=" + returnType);
             }
 
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findCompletionRestriction: C: returnType=" + returnType);
             return returnType;
         }
 
@@ -293,25 +293,25 @@ namespace IntrinsicsDude.StatementCompletion
             bool is_capital = false;
             bool warn = false;
             ReturnType returnType = ParseReturnType(IntrinsicTools.ToString(paramType), is_capital, warn);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
         }
 
         private ReturnType FindLeftHandType(TextExtent currentKeywordExtent)
         {
             TextExtent word = this._navigator.GetExtentOfWord(currentKeywordExtent.Span.Start - 1);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: A: word=\"" + word.Span.GetText() + "\".");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: A: word=\"" + word.Span.GetText() + "\".");
 
             if (word.Span.GetText().Equals(" "))
             {
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: B: word=\"" + word.Span.GetText() + "\".");
+                //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: B: word=\"" + word.Span.GetText() + "\".");
             }
 
             if (word.Span.GetText().Equals("="))
             {
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: C: word=\"" + word.Span.GetText() + "\".");
+                //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: C: word=\"" + word.Span.GetText() + "\".");
             }
             else
             {
@@ -321,25 +321,25 @@ namespace IntrinsicsDude.StatementCompletion
             if (word.Span.GetText().Equals(" "))
             {
                 word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: D: word=\"" + word.Span.GetText() + "\".");
+                //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: D: word=\"" + word.Span.GetText() + "\".");
             }
 
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
 
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
 
             bool is_capitals = false;
             bool warn = false;
             ReturnType returnType = ParseReturnType(word.Span.GetText(), is_capitals, warn);
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
             return returnType;
         }
 
         private List<Completion> GetCompletions(ReturnType returnType)
         {
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: getCompletions: returnType=" + returnType);
+            //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: getCompletions: returnType=" + returnType);
 
             bool decorateIncompatibleStatementCompletions = Settings.Default.DecorateIncompatibleStatementCompletions_On;
             bool hideStatementCompletionIncompatibleReturnType = Settings.Default.HideStatementCompletionIncompatibleReturnType_On;

@@ -25,6 +25,7 @@ namespace IntrinsicsDude
     using System;
     using System.Collections.Generic;
     using IntrinsicsDude.SyntaxHighlighting;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Classification;
     using Microsoft.VisualStudio.Text.Tagging;
@@ -86,6 +87,10 @@ namespace IntrinsicsDude
                 }
 
                 //IntrinsicsDudeToolsStatic.printSpeedWarning(time1, "Intrinsic-Classifier");
+            }
+            else
+            {
+                //IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:GetTags: syntax highlighting is switched off", this.ToString()));
             }
         }
     }

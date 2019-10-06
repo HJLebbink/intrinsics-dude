@@ -25,6 +25,7 @@ namespace IntrinsicsDude
     using System;
     using System.ComponentModel.Composition;
     using IntrinsicsDude.SyntaxHighlighting;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Operations;
     using Microsoft.VisualStudio.Text.Tagging;
@@ -47,7 +48,7 @@ namespace IntrinsicsDude
             {
                 return new IntrinsicTokenTagger(buffer, this.navigatorService.GetTextStructureNavigator(buffer)) as ITagger<T>;
             };
-            //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsTokenTagProvider:CreateTagger");
+            IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsTokenTagProvider:CreateTagger");
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }

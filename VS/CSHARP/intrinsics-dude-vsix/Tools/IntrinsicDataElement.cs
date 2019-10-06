@@ -50,7 +50,7 @@ namespace IntrinsicsDude.Tools
         public IntrinsicDataElement()
         {
             this._parameters = new List<Tuple<ParamType, string>>();
-            this._cpuID = CpuID.NONE;
+            this._cpuID = CpuID.ARCH_NONE;
         }
 
         public TextBlock DocumentationTextBlock(Brush foreground)
@@ -156,8 +156,8 @@ namespace IntrinsicsDude.Tools
         {
             TextBlock textBlock = new TextBlock();
 
-            str = str.ToUpper();
-            bool is_capitals = true;
+            //str = str.ToUpper();
+            bool is_capitals = false;
             bool warn = false;
 
             string[] a2 = str.Split('.');
@@ -189,15 +189,15 @@ namespace IntrinsicsDude.Tools
                                 //textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
                                 textBlock.Inlines.Add(MakeRunBold(str3, foreground));
                                 break;
-                            case "CONST":
-                            case "VOID":
-                            case "UNSIGNED":
-                            case "CHAR":
-                            case "BYTE":
-                            case "SHORT":
-                            case "INT":
-                            case "DOUBLE":
-                            case "FLOAT":
+                            case "const":
+                            case "void":
+                            case "unsigned":
+                            case "char":
+                            case "byte":
+                            case "short":
+                            case "int":
+                            case "double":
+                            case "float":
                                 //textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
                                 textBlock.Inlines.Add(MakeRunBold(str3.ToLower(), foreground));
                                 break;
