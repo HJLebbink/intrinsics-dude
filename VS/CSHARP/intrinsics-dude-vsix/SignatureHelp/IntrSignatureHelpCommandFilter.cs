@@ -23,6 +23,7 @@
 namespace IntrinsicsDude.SignHelp
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Runtime.InteropServices;
     using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio;
@@ -45,12 +46,24 @@ namespace IntrinsicsDude.SignHelp
 
         internal IntrSignatureHelpCommandFilter(IVsTextView textViewAdapter, ITextView textView, ITextStructureNavigator nav, ISignatureHelpBroker broker)
         {
+            Contract.Requires(textViewAdapter != null);
+            Contract.Requires(textView != null);
+            Contract.Requires(nav != null);
+            Contract.Requires(broker != null);
+
             this._textView = textView ?? throw new ArgumentNullException(nameof(textView));
             this._broker = broker ?? throw new ArgumentNullException(nameof(broker));
             this._navigator = nav ?? throw new ArgumentNullException(nameof(nav));
 
-            //add this to the filter chain
-            textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
+            if (Settings.Default.SignatureHelp_On)
+            {
+                //add this to the filter chain
+                textViewAdapter.AddCommandFilter(this, out this._nextCommandHandler);
+            }
+            else
+            {
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor: signature help is switched off", this.ToString()));
+            }
         }
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
@@ -116,6 +129,10 @@ namespace IntrinsicsDude.SignHelp
                             }
                         }
                     }
+                }
+                else
+                {
+                    IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec: signature help is switched off", this.ToString()));
                 }
             }
             catch (Exception e)

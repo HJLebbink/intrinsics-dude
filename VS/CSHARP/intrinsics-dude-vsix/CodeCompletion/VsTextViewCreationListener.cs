@@ -23,6 +23,8 @@
 namespace IntrinsicsDude.CodeCompletion
 {
     using System.ComponentModel.Composition;
+    using System.Diagnostics.Contracts;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Editor;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Text.Editor;
@@ -42,12 +44,20 @@ namespace IntrinsicsDude.CodeCompletion
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
-            if (view != null)
+            Contract.Requires(textViewAdapter != null);
+            if (Settings.Default.StatementCompletion_On)
             {
-                CodeCompletionCommandFilter filter = new CodeCompletionCommandFilter(view, this._completionBroker);
-                textViewAdapter.AddCommandFilter(filter, out Microsoft.VisualStudio.OLE.Interop.IOleCommandTarget next);
-                filter.NextCommandHandler = next;
+                IWpfTextView view = this._adaptersFactory.GetWpfTextView(textViewAdapter);
+                if (view != null)
+                {
+                    CodeCompletionCommandFilter filter = new CodeCompletionCommandFilter(view, this._completionBroker);
+                    textViewAdapter.AddCommandFilter(filter, out Microsoft.VisualStudio.OLE.Interop.IOleCommandTarget next);
+                    filter.NextCommandHandler = next;
+                }
+            }
+            else
+            {
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:VsTextViewCreated: signature help is switched off.", this.ToString()));
             }
         }
     }

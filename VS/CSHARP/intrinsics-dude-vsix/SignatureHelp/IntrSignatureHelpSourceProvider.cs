@@ -23,6 +23,8 @@
 namespace IntrinsicsDude.SignHelp
 {
     using System.ComponentModel.Composition;
+    using System.Diagnostics.Contracts;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Operations;
@@ -51,6 +53,7 @@ namespace IntrinsicsDude.SignHelp
         }
     }
     */
+
     [Export(typeof(ISignatureHelpSourceProvider))]
     [Name("Intrinsic Signature Help Source")] // make sure this name is unique otherwise it doesn't work!
     [Order(After = "default")] // let the default signature help trigger first, such that we can remove the signatures it adds
@@ -60,9 +63,21 @@ namespace IntrinsicsDude.SignHelp
         [Import]
         internal ITextStructureNavigatorSelectorService NavigatorService { get; set; }
 
+        //Returns A valid signature help provider, or null if none could be created.
         public ISignatureHelpSource TryCreateSignatureHelpSource(ITextBuffer textBuffer)
         {
-            return new IntrSignatureHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
+            Contract.Requires(textBuffer != null);
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:TryCreateSignatureHelpSource", this.ToString()));
+
+            if (Settings.Default.SignatureHelp_On)
+            {
+                return new IntrSignatureHelpSource(textBuffer, this.NavigatorService.GetTextStructureNavigator(textBuffer));
+            }
+            else
+            {
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:TryCreateSignatureHelpSource: signature help is switched off", this.ToString()));
+                return null;
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace IntrinsicsDude.StatementCompletion
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Language.Intellisense;
@@ -59,16 +60,19 @@ namespace IntrinsicsDude.StatementCompletion
             this._buffer = buffer ?? throw new ArgumentNullException(nameof(buffer));
             this._navigator = navigator ?? throw new ArgumentNullException(nameof(navigator));
             this._statement_Completion_Store = IntrinsicsDudeTools.Instance.StatementCompletionStore;
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: constructor");
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor.", this.ToString()));
         }
 
         public void AugmentCompletionSession(
             ICompletionSession session,
             IList<CompletionSet> completionSets)
         {
+            Contract.Requires(session != null);
+            Contract.Requires(completionSets != null);
+
             try
             {
-                //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: AugmentCompletionSession");
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:AugmentCompletionSession", this.ToString()));
 
                 if (this._disposed)
                 {
@@ -77,6 +81,7 @@ namespace IntrinsicsDude.StatementCompletion
 
                 if (!Settings.Default.StatementCompletion_On)
                 {
+                    IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:AugmentCompletionSession: code completion is switched off.", this.ToString()));
                     return;
                 }
 
@@ -209,7 +214,6 @@ namespace IntrinsicsDude.StatementCompletion
                 int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
                 int pos = 0; // session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
                 string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
-                TextAdornment textAdornment = new TextAdornment((IWpfTextView)session.TextView, lineNumber, pos, message);
             }
 
             IntrinsicsDudeToolsStatic.PrintSpeedWarning(startTime, "Init-Cached-Completions");

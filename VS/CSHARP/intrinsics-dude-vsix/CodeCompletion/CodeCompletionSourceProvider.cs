@@ -24,6 +24,8 @@ namespace IntrinsicsDude.StatementCompletion
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Diagnostics.Contracts;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Operations;
@@ -40,11 +42,14 @@ namespace IntrinsicsDude.StatementCompletion
 
         public ICompletionSource TryCreateCompletionSource(ITextBuffer buffer)
         {
-            Func<CodeCompletionSource> sc = () =>
+            Contract.Requires(buffer != null);
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor", this.ToString()));
+
+            CodeCompletionSource sc()
             {
                 ITextStructureNavigator textNavigator = this.navigatorService.GetTextStructureNavigator(buffer);
                 return new CodeCompletionSource(buffer, textNavigator);
-            };
+            }
             return buffer.Properties.GetOrCreateSingletonProperty(sc);
         }
     }

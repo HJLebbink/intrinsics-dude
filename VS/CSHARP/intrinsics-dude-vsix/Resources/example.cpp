@@ -1,5 +1,7 @@
 //Intrinsics Dude Example
 
+#include <vector>
+
 //#inlcude "intrin.h"  // declarations/definitions for platform specific intrinsic functions.
 //#include "mmintrin.h"  // mmx
 //#include "emmintrin.h"  // sse
@@ -22,7 +24,8 @@ void main() {
 		*/
 		
 
-		const __m256d x2 = _mm25
+		std::vector<int> vec;
+		vec.push_back();
 
 
 		// SIGNATURE HELP: OK;

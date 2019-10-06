@@ -28,20 +28,21 @@ namespace IntrinsicsDude
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.OLE.Interop;
+    using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Text;
     using Microsoft.VisualStudio.Text.Editor;
 
     internal sealed class CodeCompletionCommandFilter : IOleCommandTarget
     {
         private ICompletionSession _currrentSession;
-        private const bool LOG_ON = false;
+        private const bool LOG_ON = true;
 
         public CodeCompletionCommandFilter(IWpfTextView textView, ICompletionBroker broker)
         {
             this._currrentSession = null;
             this.TextView = textView ?? throw new ArgumentNullException(nameof(textView));
             this.Broker = broker ?? throw new ArgumentNullException(nameof(broker));
-            //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: constructor");
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:constructor.", this.ToString()));
         }
 
         public IWpfTextView TextView { get; private set; }
@@ -52,81 +53,83 @@ namespace IntrinsicsDude
 
         public int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
         {
-            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
-            //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec");
-            try
+            ThreadHelper.ThrowIfNotOnUIThread();
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec", this.ToString()));
+
+            if (!Settings.Default.StatementCompletion_On)
             {
-                bool handledChar = false;
-                int hresult = VSConstants.S_OK;
-                char typedChar = char.MinValue;
-
-                #region 1. Pre-process
-                if (pguidCmdGroup == VSConstants.VSStd2K)
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec: code completion is switched off.", this.ToString()));
+                int hresult = this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                return hresult;
+            }
+            else
+            {
+                try
                 {
-                    switch ((VSConstants.VSStd2KCmdID)nCmdID)
-                    {
-                        case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
-                        case VSConstants.VSStd2KCmdID.COMPLETEWORD:
-                            //handledChar = this.StartSession(); // do not start the session; the existing commandHandler does that for you, otherwise you may create multiple sessions at the same time.
-                            break;
-                        case VSConstants.VSStd2KCmdID.RETURN:
-                        case VSConstants.VSStd2KCmdID.TAB:
-                            if (LOG_ON)
-                            {
-                                IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Exec; tab or enter pressed.");
-                            }
+                    bool handledChar = false;
+                    int hresult = VSConstants.S_OK;
+                    char typedChar = char.MinValue;
 
-                            handledChar = this.Complete();
-                            break;
-                        case VSConstants.VSStd2KCmdID.CANCEL:
-                            if (LOG_ON)
-                            {
-                                IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionCommandHandler: Exec; cancel pressed.");
-                            }
-
-                            handledChar = this.Cancel();
-                            break;
-                        case VSConstants.VSStd2KCmdID.TYPECHAR:
-                            //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; "+typedChar+" pressed.");
-                            typedChar = this.GetTypeChar(pvaIn);
-                            break;
-                    }
-                }
-                #endregion
-
-                #region 2. Handle the typed char
-                if (!handledChar)
-                {
-                    hresult = this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-                }
-                #endregion
-
-                //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; hresult=" + hresult +"; VSConstants.S_OK=" + VSConstants.S_OK + "; ");
-
-                #region Post-process
-                if (ErrorHandler.Succeeded(hresult))
-                {
+                    #region 1. Pre-process
                     if (pguidCmdGroup == VSConstants.VSStd2K)
                     {
                         switch ((VSConstants.VSStd2KCmdID)nCmdID)
                         {
+                            case VSConstants.VSStd2KCmdID.AUTOCOMPLETE:
+                            case VSConstants.VSStd2KCmdID.COMPLETEWORD:
+                                //handledChar = this.StartSession(); // do not start the session; the existing commandHandler does that for you, otherwise you may create multiple sessions at the same time.
+                                break;
+                            case VSConstants.VSStd2KCmdID.RETURN:
+                            case VSConstants.VSStd2KCmdID.TAB:
+                                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec; tab or enter pressed", this.ToString()));
+                                handledChar = this.Complete();
+                                break;
+                            case VSConstants.VSStd2KCmdID.CANCEL:
+                                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec cancel pressed", this.ToString()));
+                                handledChar = this.Cancel();
+                                break;
                             case VSConstants.VSStd2KCmdID.TYPECHAR:
-                            case VSConstants.VSStd2KCmdID.BACKSPACE:
-                            case VSConstants.VSStd2KCmdID.DELETE:
-                                //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; Post-process");
-                                this.Filter();
+                                typedChar = this.GetTypeChar(pvaIn);
+                                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:Exec {1} pressed", this.ToString(), typedChar));
                                 break;
                         }
                     }
-                }
-                #endregion
+                    #endregion
 
-                return hresult;
-            }
-            catch (Exception e)
-            {
-                IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:StatementCompletionCommandHandler; e={1}", this.ToString(), e.ToString()));
-                return this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                    #region 2. Handle the typed char
+                    if (!handledChar)
+                    {
+                        hresult = this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                    }
+                    #endregion
+
+                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; hresult=" + hresult +"; VSConstants.S_OK=" + VSConstants.S_OK + "; ");
+
+                    #region Post-process
+                    if (ErrorHandler.Succeeded(hresult))
+                    {
+                        if (pguidCmdGroup == VSConstants.VSStd2K)
+                        {
+                            switch ((VSConstants.VSStd2KCmdID)nCmdID)
+                            {
+                                case VSConstants.VSStd2KCmdID.TYPECHAR:
+                                case VSConstants.VSStd2KCmdID.BACKSPACE:
+                                case VSConstants.VSStd2KCmdID.DELETE:
+                                    //if (LOG_ON) IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionCommandHandler: Exec; Post-process");
+                                    this.Filter();
+                                    break;
+                            }
+                        }
+                    }
+                    #endregion
+
+                    return hresult;
+                }
+                catch (Exception e)
+                {
+                    IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:StatementCompletionCommandHandler; e={1}", this.ToString(), e.ToString()));
+                    return this.NextCommandHandler.Exec(pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+                }
             }
         }
 

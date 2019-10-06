@@ -23,6 +23,8 @@
 namespace IntrinsicsDude.SignHelp
 {
     using System.ComponentModel.Composition;
+    using System.Diagnostics.Contracts;
+    using IntrinsicsDude.Tools;
     using Microsoft.VisualStudio.Editor;
     using Microsoft.VisualStudio.Language.Intellisense;
     using Microsoft.VisualStudio.Text.Editor;
@@ -47,11 +49,21 @@ namespace IntrinsicsDude.SignHelp
 
         public void VsTextViewCreated(IVsTextView textViewAdapter)
         {
-            ITextView textView = this._adapterService.GetWpfTextView(textViewAdapter);
-            if (textView != null)
+            Contract.Requires(textViewAdapter != null);
+            IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:VsTextViewCreated", this.ToString()));
+
+            if (Settings.Default.SignatureHelp_On)
             {
-                textView.Properties.GetOrCreateSingletonProperty(
-                    () => new IntrSignatureHelpCommandFilter(textViewAdapter, textView, this._navigatorService.GetTextStructureNavigator(textView.TextBuffer), this._signatureHelpBroker));
+                ITextView textView = this._adapterService.GetWpfTextView(textViewAdapter);
+                if (textView != null)
+                {
+                    textView.Properties.GetOrCreateSingletonProperty(
+                        () => new IntrSignatureHelpCommandFilter(textViewAdapter, textView, this._navigatorService.GetTextStructureNavigator(textView.TextBuffer), this._signatureHelpBroker));
+                }
+            }
+            else
+            {
+                IntrinsicsDudeToolsStatic.Output_INFO(string.Format("{0}:VsTextViewCreated: signature help is switched off", this.ToString()));
             }
         }
     }
