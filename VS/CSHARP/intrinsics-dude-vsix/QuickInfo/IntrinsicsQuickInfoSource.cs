@@ -95,7 +95,10 @@ namespace IntrinsicsDude.QuickInfo
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: keyword=" + keyword);
-                                Intrinsic intrinsic = ParseIntrinsic(keyword, false);
+
+                                bool is_capitals = false;
+                                bool warn = false;
+                                Intrinsic intrinsic = ParseIntrinsic(keyword, is_capitals, warn);
                                 if (intrinsic != Intrinsic.NONE)
                                 {
                                     IList<IntrinsicDataElement> dataElements = this._intrinsicDudeTools.IntrinsicStore.Get(intrinsic);
@@ -120,7 +123,9 @@ namespace IntrinsicsDude.QuickInfo
                                 string keyword = tagSpan.GetText();
                                 applicableToSpan = snapshot.CreateTrackingSpan(tagSpan, SpanTrackingMode.EdgeExclusive);
 
-                                SimdRegisterType reg = ParseSimdRegisterType(keyword, true);
+                                bool is_capitals = false;
+                                bool warn = true;
+                                SimdRegisterType reg = ParseSimdRegisterType(keyword, is_capitals, warn);
                                 if (reg != SimdRegisterType.NONE)
                                 {
                                     //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicsQuickInfoSource: AugmentQuickInfoSession: reg=" + reg);

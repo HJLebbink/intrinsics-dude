@@ -104,6 +104,9 @@ namespace IntrinsicsDude.Tools
                 //SortedSet<string> allIntrinsicNames = new SortedSet<string>();
                 this._data.Clear();
 
+                bool is_capitals = false;
+                bool warn = true;
+
                 foreach (HtmlNode item in doc.GetElementbyId("intrinsics_list").ChildNodes)
                 {
                     IntrinsicDataElement dataElement = new IntrinsicDataElement()
@@ -146,15 +149,15 @@ namespace IntrinsicsDude.Tools
                                             case "NAME":
                                                 string intrinsicStr = element2.InnerText;
                                                 //allIntrinsicNames.Add(intrinsicStr);
-                                                dataElement._intrinsic = ParseIntrinsic(intrinsicStr); break;
-                                            case "RETTYPE": dataElement._returnType = ParseReturnType(element2.InnerText); break;
+                                                dataElement._intrinsic = ParseIntrinsic(intrinsicStr, is_capitals, warn); break;
+                                            case "RETTYPE": dataElement._returnType = ParseReturnType(element2.InnerText, is_capitals, warn); break;
                                             case "PARAM_TYPE": paramType.Add(element2.InnerText); break;
                                             case "PARAM_NAME": paramName.Add(element2.InnerText); break;
                                             case "DESC_VAR": break;
 
                                             case "DESCRIPTION": dataElement._description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
                                             case "OPERATION": dataElement._operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
-                                            case "CPUID": dataElement._cpuID |= ParseCpuID(element2.InnerText.Trim()); break;
+                                            case "CPUID": dataElement._cpuID |= ParseCpuID(element2.InnerText.Trim(), is_capitals, warn); break;
                                             case "PERFORMANCE":
                                                 dataElement._performance = element2.InnerHtml;
                                                 TestPerformance(dataElement._performance);
@@ -200,7 +203,7 @@ namespace IntrinsicsDude.Tools
 
                         for (int i = 0; i < paramName.Count; ++i)
                         {
-                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType(paramType[i]), paramName[i]));
+                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType(paramType[i], is_capitals, warn), paramName[i]));
                         }
                     }
 
@@ -297,6 +300,9 @@ namespace IntrinsicsDude.Tools
                 DateTime time1 = DateTime.Now;
                 XElement booksFromFile = XElement.Load(filename);
 
+                bool is_capitals = false;
+                bool warn = true;
+
                 this._data.Clear();
 
                 foreach (XElement intrinsicNode in booksFromFile.Nodes())
@@ -308,7 +314,7 @@ namespace IntrinsicsDude.Tools
                         switch (element.Name.ToString())
                         {
                             case "name":
-                                dataElement._intrinsic = ParseIntrinsic(value);
+                                dataElement._intrinsic = ParseIntrinsic(value, is_capitals, warn);
                                 break;
                             case "id":
                                 if (!int.TryParse(value, out dataElement._id))
@@ -318,10 +324,10 @@ namespace IntrinsicsDude.Tools
 
                                 break;
                             case "cpuid":
-                                dataElement._cpuID = ParseCpuID_multiple(value);
+                                dataElement._cpuID = ParseCpuID_multiple(value, is_capitals, warn);
                                 break;
                             case "ret":
-                                dataElement._returnType = ParseReturnType(value);
+                                dataElement._returnType = ParseReturnType(value, is_capitals, warn);
                                 break;
                             case "sign":
                                 if (value.Length > 0)
@@ -331,7 +337,7 @@ namespace IntrinsicsDude.Tools
                                         string[] a2 = s1.Split(' ');
                                         if (a2.Length == 2)
                                         {
-                                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType_InternalName(a2[0]), a2[1]));
+                                            dataElement._parameters.Add(new Tuple<ParamType, string>(ParseParamType_InternalName(a2[0], warn), a2[1]));
                                         }
                                         else
                                         {

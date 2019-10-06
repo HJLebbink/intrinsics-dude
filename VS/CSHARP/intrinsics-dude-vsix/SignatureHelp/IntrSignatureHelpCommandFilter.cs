@@ -84,7 +84,9 @@ namespace IntrinsicsDude.SignHelp
                             {
                                 SnapshotPoint point = this._textView.Caret.Position.BufferPosition - 1; //move the point back so it's in the preceding word
                                 string word = this._navigator.GetExtentOfWord(point).Span.GetText();
-                                Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(word, false);
+                                bool is_capitals = false;
+                                bool warn = false;
+                                Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(word, is_capitals, warn);
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrSignHelpCommandHandler: Exec: after '(', word=\"" + word + "\"; intrinsic=" + intrinsic);
                                 if (intrinsic != Intrinsic.NONE)
                                 {

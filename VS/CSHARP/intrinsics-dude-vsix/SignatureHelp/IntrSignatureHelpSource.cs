@@ -84,7 +84,9 @@ namespace IntrinsicsDude.SignHelp
                     // 1] when opening parenthesis "(" is typed after an intrinsic function, or
                     // 2] when an comma "," is typed as an parameter separator in an intrinsic function.
 
-                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(text, false);
+                    bool is_capitals = false;
+                    bool warn = false;
+                    Intrinsic intrinsic = IntrinsicTools.ParseIntrinsic(text, is_capitals, warn);
                     int paramIndex = 0;
 
                     if (intrinsic == Intrinsic.NONE)

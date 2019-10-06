@@ -126,7 +126,9 @@ namespace IntrinsicsDude.Tools
         {
             try
             {
-                Intrinsic mnemonic = IntrinsicTools.ParseIntrinsic(keyword, false);
+                bool is_capitals = false;
+                bool warn = false;
+                Intrinsic mnemonic = IntrinsicTools.ParseIntrinsic(keyword, is_capitals, warn);
                 if (mnemonic != Intrinsic.NONE)
                 {
                     IList<IntrinsicDataElement> dataElements = this._intrinsicStore.Get(mnemonic);

@@ -161,10 +161,13 @@ namespace IntrinsicsDude.StatementCompletion
                 string insertionText = completion.InsertionText;
                 if ((insertionText != null) && (insertionText.Length > 0) && (insertionText[0].Equals('_')) && (insertionText.StartsWith(partialKeyword2)))
                 {
-                    Intrinsic intrinsic = ParseIntrinsic(insertionText, false);
+                    insertionText = insertionText.ToUpper();
+                    bool is_capitals = true;
+                    bool warn = false;
+                    Intrinsic intrinsic = ParseIntrinsic(insertionText, is_capitals, warn);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IsSimdRegister(insertionText))
+                        if (!IsSimdRegister(insertionText, is_capitals))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
@@ -197,10 +200,13 @@ namespace IntrinsicsDude.StatementCompletion
                 string insertionText = completion.InsertionText;
                 if (insertionText != null)
                 {
-                    Intrinsic intrinsic = ParseIntrinsic(insertionText, false);
+                    insertionText = insertionText.ToUpper();
+                    bool is_capitals = true;
+                    bool warn = false;
+                    Intrinsic intrinsic = ParseIntrinsic(insertionText, is_capitals, warn);
                     if (intrinsic == Intrinsic.NONE)
                     {
-                        if (!IsSimdRegister(insertionText))
+                        if (!IsSimdRegister(insertionText, is_capitals))
                         {
                             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: init_Cached_Completions: adding completion "+insertionText);
                             intrinsicCompletions.Add(this._statement_Completion_Store.Get_Cached_Completion(completion));
@@ -283,7 +289,10 @@ namespace IntrinsicsDude.StatementCompletion
             IntrinsicStore store = IntrinsicsDudeTools.Instance.IntrinsicStore;
             IntrinsicDataElement dataElement = store.Get(tup.Item1)[0];
             ParamType paramType = dataElement._parameters[tup.Item2].Item1;
-            ReturnType returnType = ParseReturnType(IntrinsicTools.ToString(paramType), false);
+
+            bool is_capital = false;
+            bool warn = false;
+            ReturnType returnType = ParseReturnType(IntrinsicTools.ToString(paramType), is_capital, warn);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findEmbeddedType: B: returnType=" + returnType+"; intrinsic="+tup.Item1+"; param="+tup.Item2);
             return returnType;
         }
@@ -320,7 +329,10 @@ namespace IntrinsicsDude.StatementCompletion
 
             word = this._navigator.GetExtentOfWord(word.Span.Start - 1);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: E: word=\"" + word.Span.GetText() + "\".");
-            ReturnType returnType = ParseReturnType(word.Span.GetText(), false);
+
+            bool is_capitals = false;
+            bool warn = false;
+            ReturnType returnType = ParseReturnType(word.Span.GetText(), is_capitals, warn);
             //IntrinsicsDudeToolsStatic.Output("INFO: StatementCompletionSource: findLeftHandType: F: ReturnType=\"" + returnType + "\".");
             return returnType;
         }

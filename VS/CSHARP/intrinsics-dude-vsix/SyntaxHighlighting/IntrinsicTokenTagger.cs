@@ -77,12 +77,14 @@ namespace IntrinsicsDude
                     TextExtent extent = this._navigator.GetExtentOfWord(point);
                     if (extent.IsSignificant)
                     {
-                        string keyword = extent.Span.GetText();
+                        string keyword = extent.Span.GetText().ToUpper();
                         //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: at point=" + point.Position + ", found keyword \"" + keyword + "\".");
 
-                        if (ParseIntrinsic(keyword, false) == Intrinsic.NONE)
+                        bool is_capitals = true;
+                        bool warn = false;
+                        if (ParseIntrinsic(keyword, is_capitals, warn) == Intrinsic.NONE)
                         {
-                            if (ParseSimdRegisterType(keyword, false) != SimdRegisterType.NONE)
+                            if (ParseSimdRegisterType(keyword, is_capitals, warn) != SimdRegisterType.NONE)
                             {
                                 //IntrinsicsDudeToolsStatic.Output("INFO: IntrinsicTokenTagger:GetTags: found intrinsic type \"" + keyword + "\".");
                                 yield return new TagSpan<IntrinsicTokenTag>(extent.Span, new IntrinsicTokenTag(IntrinsicTokenType.RegType));

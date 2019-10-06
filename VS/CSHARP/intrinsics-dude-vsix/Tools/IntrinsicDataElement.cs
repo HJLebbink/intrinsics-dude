@@ -156,15 +156,19 @@ namespace IntrinsicsDude.Tools
         {
             TextBlock textBlock = new TextBlock();
 
+            str = str.ToUpper();
+            bool is_capitals = true;
+            bool warn = false;
+
             string[] a2 = str.Split('.');
             for (int i2 = 0; i2 < a2.Length; ++i2)
             {
                 string str2 = a2[i2];
-                if (ParseSimdRegisterType(str2, false) != SimdRegisterType.NONE)
+                if (ParseSimdRegisterType(str2, is_capitals, warn) != SimdRegisterType.NONE)
                 {
                     textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Register))));
                 }
-                else if (ParseIntrinsic(str2, false) != Intrinsic.NONE)
+                else if (ParseIntrinsic(str2, is_capitals, warn) != Intrinsic.NONE)
                 {
                     textBlock.Inlines.Add(MakeRun2(str2, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(Settings.Default.SyntaxHighlighting_Intrinsic))));
                 }
@@ -182,17 +186,20 @@ namespace IntrinsicsDude.Tools
                             case "__INT16":
                             case "__INT32":
                             case "__INT64":
-                            case "const":
-                            case "void":
-                            case "unsigned":
-                            case "char":
-                            case "byte":
-                            case "short":
-                            case "int":
-                            case "double":
-                            case "float":
                                 //textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
                                 textBlock.Inlines.Add(MakeRunBold(str3, foreground));
+                                break;
+                            case "CONST":
+                            case "VOID":
+                            case "UNSIGNED":
+                            case "CHAR":
+                            case "BYTE":
+                            case "SHORT":
+                            case "INT":
+                            case "DOUBLE":
+                            case "FLOAT":
+                                //textBlock.Inlines.Add(MakeRun2(str3, new SolidColorBrush(IntrinsicsDudeToolsStatic.ConvertColor(System.Drawing.Color.Blue))));
+                                textBlock.Inlines.Add(MakeRunBold(str3.ToLower(), foreground));
                                 break;
                             default:
                                 textBlock.Inlines.Add(MakeRunBold(str3, foreground));
