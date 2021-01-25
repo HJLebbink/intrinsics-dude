@@ -60,12 +60,15 @@ namespace IntrinsicsDude.Tools
             __M128,
             __M128D,
             __M128I,
+            __M128BH,
             __M256,
             __M256D,
             __M256I,
+            __M256BH,
             __M512,
             __M512D,
             __M512I,
+            __M512BH,
             __M64,
             __MMASK16,
             __MMASK32,
@@ -170,12 +173,15 @@ namespace IntrinsicsDude.Tools
             __M128,
             __M128D,
             __M128I,
+            __M128BH,
             __M256,
             __M256D,
             __M256I,
+            __M256BH,
             __M512,
             __M512D,
             __M512I,
+            __M512BH,
             __M64,
             __MMASK16,
             __MMASK32,
@@ -215,6 +221,7 @@ namespace IntrinsicsDude.Tools
             __M128I,
             __M128I_CONST_PTR,
             __M128I_PTR,
+            __M128BH,
             __M256,
             __M256_PTR,
             __M256D,
@@ -222,11 +229,13 @@ namespace IntrinsicsDude.Tools
             __M256I,
             __M256I_CONST_PTR,
             __M256I_PTR,
+            __M256BH,
             __M512,
             __M512_PTR,
             __M512D,
             __M512D_PTR,
             __M512I,
+            __M512BH,
             __M64,
             __M64_CONST_PTR,
             __M64_PTR,
@@ -235,6 +244,7 @@ namespace IntrinsicsDude.Tools
             __MMASK32,
             __MMASK64,
             __MMASK8,
+            __MMASK8_PTR,
             _MM_BROADCAST32_ENUM,
             _MM_BROADCAST64_ENUM,
             _MM_DOWNCONV_EPI32_ENUM,
@@ -299,12 +309,15 @@ namespace IntrinsicsDude.Tools
                 case "__M128": return SimdRegisterType.__M128;
                 case "__M128D": return SimdRegisterType.__M128D;
                 case "__M128I": return SimdRegisterType.__M128I;
+                case "__M128BH": return SimdRegisterType.__M128BH;
                 case "__M256": return SimdRegisterType.__M256;
                 case "__M256D": return SimdRegisterType.__M256D;
                 case "__M256I": return SimdRegisterType.__M256I;
+                case "__M256BH": return SimdRegisterType.__M256BH;
                 case "__M512": return SimdRegisterType.__M512;
                 case "__M512D": return SimdRegisterType.__M512D;
                 case "__M512I": return SimdRegisterType.__M512I;
+                case "__M512BH": return SimdRegisterType.__M512BH;
                 case "__M64": return SimdRegisterType.__M64;
                 case "__MMASK16": return SimdRegisterType.__MMASK16;
                 case "__MMASK32": return SimdRegisterType.__MMASK32;
@@ -390,6 +403,7 @@ namespace IntrinsicsDude.Tools
                 case "__M128I": return ParamType.__M128I;
                 case "__M128I_CONST_PTR": return ParamType.__M128I_CONST_PTR;
                 case "__M128I_PTR": return ParamType.__M128I_PTR;
+                case "__M128BH": return ParamType.__M128BH;
                 case "__M256": return ParamType.__M256;
                 case "__M256_PTR": return ParamType.__M256_PTR;
                 case "__M256D": return ParamType.__M256D;
@@ -397,11 +411,13 @@ namespace IntrinsicsDude.Tools
                 case "__M256I": return ParamType.__M256I;
                 case "__M256I_CONST_PTR": return ParamType.__M256I_CONST_PTR;
                 case "__M256I_PTR": return ParamType.__M256I_PTR;
+                case "__M256BH": return ParamType.__M256BH;
                 case "__M512": return ParamType.__M512;
                 case "__M512_PTR": return ParamType.__M512_PTR;
                 case "__M512D": return ParamType.__M512D;
                 case "__M512D_PTR": return ParamType.__M512D_PTR;
                 case "__M512I": return ParamType.__M512I;
+                case "__M512BH": return ParamType.__M512BH;
                 case "__M64": return ParamType.__M64;
                 case "__M64_CONST_PTR": return ParamType.__M64_CONST_PTR;
                 case "__M64_PTR": return ParamType.__M64_PTR;
@@ -410,6 +426,7 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK32": return ParamType.__MMASK32;
                 case "__MMASK64": return ParamType.__MMASK64;
                 case "__MMASK8": return ParamType.__MMASK8;
+                case "__MMASK8_PTR": return ParamType.__MMASK8_PTR;
                 case "_MM_BROADCAST32_ENUM": return ParamType._MM_BROADCAST32_ENUM;
                 case "_MM_BROADCAST64_ENUM": return ParamType._MM_BROADCAST64_ENUM;
                 case "_MM_DOWNCONV_EPI32_ENUM": return ParamType._MM_DOWNCONV_EPI32_ENUM;
@@ -497,10 +514,12 @@ namespace IntrinsicsDude.Tools
                 case "CONST __M128I*": return ParamType.__M128I_CONST_PTR;
                 case "_M128I*": return ParamType.__M128I_PTR;
                 case "__M128I*": return ParamType.__M128I_PTR;
+                case "__M128BH": return ParamType.__M128BH;
                 case "__M256": return ParamType.__M256;
                 case "__M256*": return ParamType.__M256_PTR;
                 case "__M256D": return ParamType.__M256D;
                 case "__M256D*": return ParamType.__M256D_PTR;
+                case "__M256BH": return ParamType.__M256BH;
                 case "__M256I": return ParamType.__M256I;
                 case "__M256I CONST*": return ParamType.__M256I_CONST_PTR;
                 case "__M256I*": return ParamType.__M256I_PTR;
@@ -511,6 +530,7 @@ namespace IntrinsicsDude.Tools
                 case "__M512D*": return ParamType.__M512D_PTR;
                 case "_M512I": return ParamType.__M512I;
                 case "__M512I": return ParamType.__M512I;
+                case "__M512BH": return ParamType.__M512BH;
                 case "__M64": return ParamType.__M64;
                 case "__M64*": return ParamType.__M64_PTR;
                 case "__M64 CONST*": return ParamType.__M64_CONST_PTR;
@@ -520,6 +540,7 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK32": return ParamType.__MMASK32;
                 case "__MMASK64": return ParamType.__MMASK64;
                 case "__MMASK8": return ParamType.__MMASK8;
+                case "__MMASK8*": return ParamType.__MMASK8_PTR;
                 case "_MM_BROADCAST32_ENUM": return ParamType._MM_BROADCAST32_ENUM;
                 case "_MM_BROADCAST64_ENUM": return ParamType._MM_BROADCAST64_ENUM;
                 case "_MM_DOWNCONV_EPI32_ENUM": return ParamType._MM_DOWNCONV_EPI32_ENUM;
@@ -606,17 +627,33 @@ namespace IntrinsicsDude.Tools
                 case "AVX512_ER": return CpuID.ARCH_AVX512_ER;
                 case "AVX512":
                 case "AVX512F":
-                case "AVX512_F": return CpuID.ARCH_AVX512_F;
+                case "ARCH_AVX512_F": return CpuID.ARCH_AVX512_F;
                 case "AVX512PF":
                 case "AVX512_PF": return CpuID.ARCH_AVX512_PF;
                 case "AVX512VL":
                 case "AVX512_VL": return CpuID.ARCH_AVX512_VL;
                 case "AVX5124VNNIW":
                 case "AVX512_4VNNIW": return CpuID.ARCH_AVX512_4VNNIW;
+                case "AVX512_VNNI": return CpuID.ARCH_AVX512_VNNI;
                 case "AVX5124FMAPS":
                 case "AVX512_4FMAPS": return CpuID.ARCH_AVX512_4FMAPS;
                 case "AVX512VPOPCNTDQ":
                 case "AVX512_VPOPCNTDQ": return CpuID.ARCH_AVX512_VPOPCNTDQ;
+                case "AVX512_VP2INTERSECT": return CpuID.ARCH_AVX512_VP2INTERSECT;
+                case "AVX512VBMI":
+                case "AVX512_VBMI": return CpuID.ARCH_AVX512_VBMI;
+                case "AVX512_VBMI2": return CpuID.ARCH_AVX512_VBMI2;
+                case "GFNI": return CpuID.ARCH_AVX512_GFNI;
+
+                case "AVX512IFMA52":
+                case "AVX512IFMA":
+                case "AVX512_IFMA":
+                case "AVX512_IFMA52": return CpuID.ARCH_AVX512_IFMA;
+                case "VAES": return CpuID.ARCH_AVX512_VAES;
+                case "AVX512_BITALG": return CpuID.ARCH_AVX512_BITALG;
+                case "VPCLMULQDQ": return CpuID.ARCH_AVX512_VPCLMULQDQ;
+                case "AVX512_BF16": return CpuID.ARCH_AVX512_BF16;
+
 
                 case "BMI1": return CpuID.ARCH_BMI1;
                 case "BMI2": return CpuID.ARCH_BMI2;
@@ -638,14 +675,10 @@ namespace IntrinsicsDude.Tools
                 case "SSSE3": return CpuID.ARCH_SSSE3;
 
                 case "LZCNT": return CpuID.ARCH_LZCNT;
-                case "AVX512IFMA52":
-                case "AVX512IFMA":
-                case "AVX512_IFMA":
-                case "AVX512_IFMA52": return CpuID.ARCH_AVX512_IFMA;
+
+
                 case "INVPCID": return CpuID.ARCH_INVPCID;
                 case "MONITOR": return CpuID.ARCH_MONITOR;
-                case "AVX512VBMI":
-                case "AVX512_VBMI": return CpuID.ARCH_AVX512_VBMI;
                 case "POPCNT": return CpuID.ARCH_POPCNT;
                 case "RDRAND": return CpuID.ARCH_RDRAND;
                 case "RDSEED": return CpuID.ARCH_RDSEED;
@@ -692,12 +725,15 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.__M128:
                 case ReturnType.__M128D:
                 case ReturnType.__M128I:
+                case ReturnType.__M128BH:
                 case ReturnType.__M256:
                 case ReturnType.__M256D:
                 case ReturnType.__M256I:
+                case ReturnType.__M256BH:
                 case ReturnType.__M512:
                 case ReturnType.__M512D:
                 case ReturnType.__M512I:
+                case ReturnType.__M512BH:
                 case ReturnType.__M64:
                 case ReturnType.__MMASK16:
                 case ReturnType.__MMASK32:
@@ -722,6 +758,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M128I:
                 case ParamType.__M128I_CONST_PTR:
                 case ParamType.__M128I_PTR:
+                case ParamType.__M128BH:
                 case ParamType.__M256:
                 case ParamType.__M256_PTR:
                 case ParamType.__M256D:
@@ -729,11 +766,13 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M256I:
                 case ParamType.__M256I_CONST_PTR:
                 case ParamType.__M256I_PTR:
+                case ParamType.__M256BH:
                 case ParamType.__M512:
                 case ParamType.__M512_PTR:
                 case ParamType.__M512D:
                 case ParamType.__M512D_PTR:
                 case ParamType.__M512I:
+                case ParamType.__M512BH:
                 case ParamType.__M64:
                 case ParamType.__M64_CONST_PTR:
                 case ParamType.__M64_PTR:
@@ -742,6 +781,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__MMASK32:
                 case ParamType.__MMASK64:
                 case ParamType.__MMASK8:
+                case ParamType.__MMASK8_PTR:
                     return true;
                 default:
                     return false;
@@ -755,12 +795,15 @@ namespace IntrinsicsDude.Tools
                 case "__M128":
                 case "__M128D":
                 case "__M128I":
+                case "__M128BH":
                 case "__M256":
                 case "__M256D":
                 case "__M256I":
+                case "__M256BH":
                 case "__M512":
                 case "__M512D":
                 case "__M512I":
+                case "__M512BH":
                 case "__M64":
                 case "__MMASK16":
                 case "__MMASK32":
@@ -826,18 +869,22 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M128D: return "__m128d";
                 case ParamType.__M128D_CONST_PTR: return "__m128d const *";
                 case ParamType.__M128I: return "__m128i";
+                case ParamType.__M128BH: return "__m128bh";
                 case ParamType.__M256: return "__m256";
                 case ParamType.__M256D: return "__m256d";
                 case ParamType.__M256I: return "__m256i";
+                case ParamType.__M256BH: return "__m256bh";
                 case ParamType.__M512: return "__m512";
                 case ParamType.__M512D: return "__m512d";
                 case ParamType.__M512I: return "__m512i";
+                case ParamType.__M512BH: return "__m512bh";
                 case ParamType.__M64: return "__m64";
                 case ParamType.__MMASK16: return "__mmask16";
                 case ParamType.__MMASK16_PTR: return "__mmask16 *";
                 case ParamType.__MMASK32: return "__mmask32";
                 case ParamType.__MMASK64: return "__mmask64";
                 case ParamType.__MMASK8: return "__mmask8";
+                case ParamType.__MMASK8_PTR: return "__mmask8 *";
                 case ParamType._MM_BROADCAST32_ENUM: return "_MM_BROADCAST32_ENUM";
                 case ParamType._MM_BROADCAST64_ENUM: return "_MM_BROADCAST64_ENUM";
                 case ParamType._MM_DOWNCONV_EPI32_ENUM: return "_MM_DOWNCONV_EPI32_ENUM";
@@ -882,12 +929,15 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__M128D_PTR: return "__m128d *";
                 case ParamType.__M128I_CONST_PTR: return "__m128i const *";
                 case ParamType.__M128I_PTR: return "__m128i *";
+                case ParamType.__M128BH: return "__m128bh";
                 case ParamType.__M256_PTR: return "__m256 *";
                 case ParamType.__M256D_PTR: return "__m256d *";
                 case ParamType.__M256I_CONST_PTR: return "__m256i const *";
                 case ParamType.__M256I_PTR: return "__m256i *";
+                case ParamType.__M256BH: return "__m256bh";
                 case ParamType.__M512_PTR: return "__m512 *";
                 case ParamType.__M512D_PTR: return "__m512d *";
+                case ParamType.__M512BH: return "__m512bh";
                 case ParamType.__M64_CONST_PTR: return "__m64 const *";
                 case ParamType.__M64_PTR: return "__m64 *";
                 case ParamType._MM_PERM_ENUM: return "_MM_PERM_ENUM";
@@ -1481,6 +1531,7 @@ namespace IntrinsicsDude.Tools
                 {
                     if (warn)
                     {
+                        Console.WriteLine("unknown intrinsic: " + str.ToUpper() + ",");
                         IntrinsicsDudeToolsStatic.Output_WARNING(string.Format("{0}:ParseIntrinsic: unknown Intrinsic \"{1}\".", "IntrinsicTools", str));
                     }
                     return Intrinsic.NONE;

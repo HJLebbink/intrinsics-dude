@@ -115,6 +115,7 @@ namespace IntrinsicsDude.GenerateData
                     {
                         sb.AppendLine(entry.Key.ToUpper() + "\t" + entry.Value);
                     }
+                    Console.WriteLine("Going to save " + filename_performance_full);
                     File.WriteAllText(filename_performance_full, sb.ToString());
                 }
             }
