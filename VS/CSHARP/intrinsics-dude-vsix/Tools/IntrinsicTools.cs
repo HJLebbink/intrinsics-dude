@@ -266,7 +266,7 @@ namespace IntrinsicsDude.Tools
             _MM_UPCONV_PS_ENUM,
             _MM_PERM_ENUM,
             _MM_SWIZZLE_ENUM,
-            CONST_MM_CMPINT_ENUM,
+            _MM_CMPINT_ENUM,
             CONST_INT,
             CONST_UNSIGNED_INT,
             CONST_VOID_PTR,
@@ -435,7 +435,9 @@ namespace IntrinsicsDude.Tools
                 case "__MMASK16": return ParamType.__MMASK16;
                 case "__MMASK16_PTR": return ParamType.__MMASK16_PTR;
                 case "__MMASK32": return ParamType.__MMASK32;
+                case "__MMASK32_PTR": return ParamType.__MMASK32_PTR;
                 case "__MMASK64": return ParamType.__MMASK64;
+                case "__MMASK64_PTR": return ParamType.__MMASK64_PTR;
                 case "__MMASK8": return ParamType.__MMASK8;
                 case "__MMASK8_PTR": return ParamType.__MMASK8_PTR;
                 case "_MM_BROADCAST32_ENUM": return ParamType._MM_BROADCAST32_ENUM;
@@ -479,6 +481,7 @@ namespace IntrinsicsDude.Tools
                 case "UNSIGNED__INT64": return ParamType.UNSIGNED__INT64;
                 case "UNSIGNED__INT64_PTR": return ParamType.UNSIGNED__INT64_PTR;
                 case "UNSIGNED_CHAR": return ParamType.UNSIGNED_CHAR;
+                case "UNSIGNED_CHAR_PTR": return ParamType.UNSIGNED_CHAR_PTR;
                 case "UNSIGNED_INT": return ParamType.UNSIGNED_INT;
                 case "UNSIGNED_INT_PTR": return ParamType.UNSIGNED_INT_PTR;
                 case "UNSIGNED_LONG": return ParamType.UNSIGNED_LONG;
@@ -488,6 +491,7 @@ namespace IntrinsicsDude.Tools
                 case "VOID": return ParamType.VOID;
                 case "VOID_PTR": return ParamType.VOID_PTR;
                 case "VOID_CONST_PTR": return ParamType.VOID_CONST_PTR;
+                case "__TILE": return ParamType.__TILE;
                 default:
                     if (warn)
                     {
@@ -569,8 +573,8 @@ namespace IntrinsicsDude.Tools
                 case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
                 case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
                 case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
-                case "_MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM; //TODO test if the const is still necessary
-                case "CONST _MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM;
+                case "_MM_CMPINT_ENUM": 
+                case "CONST _MM_CMPINT_ENUM": return ParamType._MM_CMPINT_ENUM; //TODO test if the const is still necessary
 
                 case "CONST INT": return ParamType.CONST_INT;
                 case "CONST UNSIGNED INT": return ParamType.CONST_UNSIGNED_INT;
@@ -600,13 +604,13 @@ namespace IntrinsicsDude.Tools
                 case "UNSIGNED __INT64": return ParamType.UNSIGNED__INT64;
                 case "UNSIGNED __INT64*": return ParamType.UNSIGNED__INT64_PTR;
                 case "UNSIGNED CHAR": return ParamType.UNSIGNED_CHAR;
+                case "UNSIGNED CHAR*": return ParamType.UNSIGNED_CHAR_PTR;
                 case "UNSIGNED INT": return ParamType.UNSIGNED_INT;
                 case "UNSIGNED INT*": return ParamType.UNSIGNED_INT_PTR;
                 case "UNSIGNED LONG": return ParamType.UNSIGNED_LONG;
                 case "UNSIGNED LONG*": return ParamType.UNSIGNED_LONG_PTR;
                 case "UNSIGNED SHORT": return ParamType.UNSIGNED_SHORT;
                 case "UNSIGNED SHORT*": return ParamType.UNSIGNED_SHORT_PTR;
-                case "UNSIGNED CHAR*": return ParamType.UNSIGNED_CHAR_PTR;
                 case "VOID": return ParamType.VOID;
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
@@ -644,7 +648,7 @@ namespace IntrinsicsDude.Tools
                 case "AVX512_ER": return CpuID.AVX512_ER;
                 case "AVX512":
                 case "AVX512F":
-                case "ARCH_AVX512_F": return CpuID.AVX512_F;
+                case "AVX512_F": return CpuID.AVX512_F;
                 case "AVX512PF":
                 case "AVX512_PF": return CpuID.AVX512_PF;
                 case "AVX512VL":
@@ -660,14 +664,17 @@ namespace IntrinsicsDude.Tools
                 case "AVX512VBMI":
                 case "AVX512_VBMI": return CpuID.AVX512_VBMI;
                 case "AVX512_VBMI2": return CpuID.AVX512_VBMI2;
+                case "AVX512_GFNI":
                 case "GFNI": return CpuID.AVX512_GFNI;
 
                 case "AVX512IFMA52":
                 case "AVX512IFMA":
                 case "AVX512_IFMA":
                 case "AVX512_IFMA52": return CpuID.AVX512_IFMA;
+                case "AVX512_VAES":
                 case "VAES": return CpuID.AVX512_VAES;
                 case "AVX512_BITALG": return CpuID.AVX512_BITALG;
+                case "AVX512_VPCLMULQDQ":
                 case "VPCLMULQDQ": return CpuID.AVX512_VPCLMULQDQ;
                 case "AVX512_BF16": return CpuID.AVX512_BF16;
 
@@ -903,7 +910,9 @@ namespace IntrinsicsDude.Tools
                 case ParamType.__MMASK16: return "__mmask16";
                 case ParamType.__MMASK16_PTR: return "__mmask16 *";
                 case ParamType.__MMASK32: return "__mmask32";
+                case ParamType.__MMASK32_PTR: return "__mmask32 *";
                 case ParamType.__MMASK64: return "__mmask64";
+                case ParamType.__MMASK64_PTR: return "__mmask64 *";
                 case ParamType.__MMASK8: return "__mmask8";
                 case ParamType.__MMASK8_PTR: return "__mmask8 *";
                 case ParamType._MM_BROADCAST32_ENUM: return "_MM_BROADCAST32_ENUM";

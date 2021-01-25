@@ -11,7 +11,7 @@ namespace intrinsics_dude_unit_tests
         [TestMethod]
         public void TestReturnType()
         {
-            bool is_capitals = true;
+            bool is_capitals = false;
             bool warn = true;
 
             foreach (ReturnType x in Enum.GetValues(typeof(ReturnType)))
@@ -28,7 +28,7 @@ namespace intrinsics_dude_unit_tests
         [TestMethod]
         public void TestParamType()
         {
-            bool is_capitals = true;
+            bool is_capitals = false;
             bool warn = true;
 
             foreach (ParamType x in Enum.GetValues(typeof(ParamType)))
