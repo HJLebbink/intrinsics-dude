@@ -155,10 +155,19 @@ namespace IntrinsicsDude.Tools
             CLWB,
 
             CET_SS,
-
             AMXTILE,
-
             TSXLDTRK,
+            
+            CLDEMOTE,
+            MOVDIRI,
+            MOVBE,
+            MOVDIR64B,
+            PCONFIG,
+            SERIALIZE,
+            AMXBF16,
+            AMXINT8,
+            WAITPKG,
+            WBNOINVD,
 
             /// <summary>
             /// UNKNOWN is used for an unknown or unrecognized CPUID.
@@ -723,6 +732,17 @@ namespace IntrinsicsDude.Tools
                 case "CET_SS": return CpuID.CET_SS;
                 case "AMXTILE": return CpuID.AMXTILE;
                 case "TSXLDTRK": return CpuID.TSXLDTRK;
+
+                case "CLDEMOTE": return CpuID.CLDEMOTE;
+                case "MOVDIRI": return CpuID.MOVDIRI;
+                case "MOVBE": return CpuID.MOVBE;
+                case "MOVDIR64B": return CpuID.MOVDIR64B;
+                case "PCONFIG": return CpuID.PCONFIG;
+                case "SERIALIZE": return CpuID.SERIALIZE;
+                case "AMXBF16": return CpuID.AMXBF16;
+                case "AMXINT8": return CpuID.AMXINT8;
+                case "WAITPKG": return CpuID.WAITPKG;
+                case "WBNOINVD": return CpuID.WBNOINVD;
 
                 default:
                     if (warn)
