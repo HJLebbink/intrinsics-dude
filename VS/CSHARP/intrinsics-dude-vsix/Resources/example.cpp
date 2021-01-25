@@ -23,6 +23,8 @@ void main() {
 		const __m512d x = _mm512_atan_pd(x); // svml
 		*/
 		
+		_mm_gf2p8affine_epi64_epi8()
+
 
 		std::vector<int> vec;
 		vec.push_back();

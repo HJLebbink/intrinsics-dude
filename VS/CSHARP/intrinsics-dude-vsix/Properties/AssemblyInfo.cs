@@ -32,7 +32,7 @@ using IntrinsicsDude;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Lebbink")]
 [assembly: AssemblyProduct("IntrinsicsDude")]
-[assembly: AssemblyCopyright("Copyright © Henk-Jan Lebbink")]
+[assembly: AssemblyCopyright("Copyright © 2021 Henk-Jan Lebbink")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
