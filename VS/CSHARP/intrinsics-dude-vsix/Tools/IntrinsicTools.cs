@@ -155,7 +155,11 @@ namespace IntrinsicsDude.Tools
             /// </summary>
             CLWB = 1L << 59,
 
-            // bits 47-62 are reserved for future use
+            CET_SS = 1L << 60,
+
+            AMXTILE = 1L << 61,
+
+            TSXLDTRK = 1L << 62,
 
             /// <summary>
             /// UNKNOWN is used for an unknown or unrecognized CPUID.
@@ -239,12 +243,14 @@ namespace IntrinsicsDude.Tools
             __M64,
             __M64_CONST_PTR,
             __M64_PTR,
+            __MMASK8,
+            __MMASK8_PTR,
             __MMASK16,
             __MMASK16_PTR,
             __MMASK32,
+            __MMASK32_PTR,
             __MMASK64,
-            __MMASK8,
-            __MMASK8_PTR,
+            __MMASK64_PTR,
             _MM_BROADCAST32_ENUM,
             _MM_BROADCAST64_ENUM,
             _MM_DOWNCONV_EPI32_ENUM,
@@ -286,6 +292,7 @@ namespace IntrinsicsDude.Tools
             UNSIGNED__INT64,
             UNSIGNED__INT64_PTR,
             UNSIGNED_CHAR,
+            UNSIGNED_CHAR_PTR,
             UNSIGNED_INT,
             UNSIGNED_INT_PTR,
             UNSIGNED_LONG,
@@ -295,6 +302,7 @@ namespace IntrinsicsDude.Tools
             VOID,
             VOID_PTR,
             VOID_CONST_PTR,
+            __TILE,
         }
 
         public static SimdRegisterType ParseSimdRegisterType(string str, bool strIsCapitals, bool warn)
@@ -326,7 +334,7 @@ namespace IntrinsicsDude.Tools
                 default:
                     if (warn)
                     {
-                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 1ce38f3a: parseIntrinsicRegisterType: unknown IntrinsicRegisterType \"" + str + "\".");
                     }
 
                     return SimdRegisterType.NONE;
@@ -344,12 +352,15 @@ namespace IntrinsicsDude.Tools
                 case "__M128": return ReturnType.__M128;
                 case "__M128D": return ReturnType.__M128D;
                 case "__M128I": return ReturnType.__M128I;
+                case "__M128BH": return ReturnType.__M128BH;
                 case "__M256": return ReturnType.__M256;
                 case "__M256D": return ReturnType.__M256D;
                 case "__M256I": return ReturnType.__M256I;
+                case "__M256BH": return ReturnType.__M256BH;
                 case "__M512": return ReturnType.__M512;
                 case "__M512D": return ReturnType.__M512D;
                 case "__M512I": return ReturnType.__M512I;
+                case "__M512BH": return ReturnType.__M512BH;
                 case "__M64": return ReturnType.__M64;
                 case "__MMASK16": return ReturnType.__MMASK16;
                 case "__MMASK32": return ReturnType.__MMASK32;
@@ -373,7 +384,7 @@ namespace IntrinsicsDude.Tools
                 default:
                     if (warn)
                     {
-                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseReturnType: unknown ReturnType \"" + str + "\".");
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 9f1ea461: parseReturnType: unknown ReturnType \"" + str + "\".");
                     }
 
                     return ReturnType.UNKNOWN;
@@ -534,13 +545,15 @@ namespace IntrinsicsDude.Tools
                 case "__M64": return ParamType.__M64;
                 case "__M64*": return ParamType.__M64_PTR;
                 case "__M64 CONST*": return ParamType.__M64_CONST_PTR;
+                case "__MMASK8": return ParamType.__MMASK8;
+                case "__MMASK8*": return ParamType.__MMASK8_PTR;
                 case "_MMASK16": return ParamType.__MMASK16;
                 case "__MMASK16": return ParamType.__MMASK16;
                 case "__MMASK16*": return ParamType.__MMASK16_PTR;
                 case "__MMASK32": return ParamType.__MMASK32;
+                case "__MMASK32*": return ParamType.__MMASK32_PTR;
                 case "__MMASK64": return ParamType.__MMASK64;
-                case "__MMASK8": return ParamType.__MMASK8;
-                case "__MMASK8*": return ParamType.__MMASK8_PTR;
+                case "__MMASK64*": return ParamType.__MMASK64_PTR;
                 case "_MM_BROADCAST32_ENUM": return ParamType._MM_BROADCAST32_ENUM;
                 case "_MM_BROADCAST64_ENUM": return ParamType._MM_BROADCAST64_ENUM;
                 case "_MM_DOWNCONV_EPI32_ENUM": return ParamType._MM_DOWNCONV_EPI32_ENUM;
@@ -556,7 +569,9 @@ namespace IntrinsicsDude.Tools
                 case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
                 case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
                 case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
+                case "_MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM; //TODO test if the const is still necessary
                 case "CONST _MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM;
+
                 case "CONST INT": return ParamType.CONST_INT;
                 case "CONST UNSIGNED INT": return ParamType.CONST_UNSIGNED_INT;
                 case "CONST VOID*": return ParamType.CONST_VOID_PTR;
@@ -591,13 +606,15 @@ namespace IntrinsicsDude.Tools
                 case "UNSIGNED LONG*": return ParamType.UNSIGNED_LONG_PTR;
                 case "UNSIGNED SHORT": return ParamType.UNSIGNED_SHORT;
                 case "UNSIGNED SHORT*": return ParamType.UNSIGNED_SHORT_PTR;
+                case "UNSIGNED CHAR*": return ParamType.UNSIGNED_CHAR_PTR;
                 case "VOID": return ParamType.VOID;
                 case "VOID*": return ParamType.VOID_PTR;
                 case "VOID CONST*": return ParamType.VOID_CONST_PTR;
+                case "__TILE": return ParamType.__TILE;
                 default:
                     if (warn)
                     {
-                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseParamType: unknown ParamType: str=\"" + str + "\"; str2=\"" + str2 + "\".");
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 55b617de: parseParamType: unknown ParamType: str=\"" + str + "\"; str2=\"" + str2 + "\".");
                     }
 
                     return ParamType.NONE;
@@ -697,10 +714,14 @@ namespace IntrinsicsDude.Tools
                 case "RDPID": return CpuID.RDPID;
                 case "CLWB": return CpuID.CLWB;
 
+                case "CET_SS": return CpuID.CET_SS;
+                case "AMXTILE": return CpuID.AMXTILE;
+                case "TSXLDTRK": return CpuID.TSXLDTRK;
+
                 default:
                     if (warn)
                     {
-                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning " + CpuID.UNKNOWN);
+                        IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 43adcf52: parseCpuID: unknown or unrecognized CpuID \"" + str + "\": returning " + CpuID.UNKNOWN);
                     }
 
                     return CpuID.UNKNOWN;
@@ -952,7 +973,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType.UNSIGNED_SHORT_PTR: return "unsigned short *";
 
                 default:
-                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: ToString: unknown ParamType \"" + type + "\".");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 1e1cdf49: ToString: unknown ParamType \"" + type + "\".");
                     return "UNKNOWN";
                     break;
             }
@@ -969,12 +990,15 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.__M128: return "__m128";
                 case ReturnType.__M128D: return "__m128d";
                 case ReturnType.__M128I: return "__m128i";
+                case ReturnType.__M128BH: return "__m128bh";
                 case ReturnType.__M256: return "__m256";
                 case ReturnType.__M256D: return "__m256d";
                 case ReturnType.__M256I: return "__m256i";
+                case ReturnType.__M256BH: return "__m256bh";
                 case ReturnType.__M512: return "__m512";
                 case ReturnType.__M512D: return "__m512d";
                 case ReturnType.__M512I: return "__m512i";
+                case ReturnType.__M512BH: return "__m512bh";
                 case ReturnType.__M64: return "__m64";
                 case ReturnType.__MMASK16: return "__mmask16";
                 case ReturnType.__MMASK32: return "__mmask32";
@@ -994,7 +1018,7 @@ namespace IntrinsicsDude.Tools
                 case ReturnType.VOID: return "void";
                 case ReturnType.VOID_PTR: return "void *";
                 default:
-                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: ToString: unknown ReturnType \"" + type + "\".");
+                    IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: 18c91ce6: ToString: unknown ReturnType \"" + type + "\".");
                     return type.ToString();
                     break;
             }

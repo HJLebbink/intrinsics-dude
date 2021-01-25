@@ -209,10 +209,10 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public static async System.Threading.Tasks.Task OutputAsync(string msg)
         {
-            if (!ThreadHelper.CheckAccess())
-            {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            }
+            //if (!ThreadHelper.CheckAccess())
+            //{
+            //    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            //}
 
             IVsOutputWindowPane outputPane = await GetOutputPaneAsync();
             string msg2 = string.Format(CultureInfo.CurrentCulture, "{0}", msg.Trim() + Environment.NewLine);
@@ -246,10 +246,10 @@ namespace IntrinsicsDude.Tools
 
         public static async Task<IVsOutputWindowPane> GetOutputPaneAsync()
         {
-            if (!ThreadHelper.CheckAccess())
-            {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-            }
+            //if (!ThreadHelper.CheckAccess())
+            //{
+            //    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            //}
 
             IVsOutputWindow outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             if (outputWindow == null)
