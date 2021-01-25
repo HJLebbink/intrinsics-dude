@@ -76,95 +76,94 @@ namespace IntrinsicsDude.Tools
             __MMASK8,
         }
 
-        [Flags]
-        public enum CpuID : long
+         public enum CpuID
         {
             /// <summary>
             /// NONE is used to denote no CPUID id is present
             /// </summary>
-            NONE = 0L,
-            ADX = 1L << 0,
-            AES = 1L << 1,
-            AVX = 1L << 2,
-            AVX2 = 1L << 3,
-            AVX512_BW = 1L << 4,
-            AVX512_CD = 1L << 5,
-            AVX512_DQ = 1L << 6,
-            AVX512_ER = 1L << 7,
-            AVX512_F = 1L << 8,
-            AVX512_PF = 1L << 9,
-            AVX512_VL = 1L << 10,
-            AVX512_IFMA = 1L << 11,
-            AVX512_VBMI = 1L << 12,
-            AVX512_4VNNIW = 1L << 13,
-            AVX512_4FMAPS = 1L << 14,
-            AVX512_VPOPCNTDQ = 1L << 15,
-            AVX512_VBMI2 = 1L << 16,
-            AVX512_VNNI = 1L << 17,
-            AVX512_BITALG = 1L << 18,
-            AVX512_GFNI = 1L << 19,
-            AVX512_VAES = 1L << 20,
-            AVX512_VPCLMULQDQ = 1L << 21,
-            AVX512_BF16 = 1L << 22,
-            AVX512_VP2INTERSECT = 1L << 23,
+            NONE,
+            ADX,
+            AES,
+            AVX,
+            AVX2,
+            AVX512_BW,
+            AVX512_CD,
+            AVX512_DQ,
+            AVX512_ER,
+            AVX512_F,
+            AVX512_PF,
+            AVX512_VL,
+            AVX512_IFMA,
+            AVX512_VBMI,
+            AVX512_4VNNIW,
+            AVX512_4FMAPS,
+            AVX512_VPOPCNTDQ,
+            AVX512_VBMI2,
+            AVX512_VNNI,
+            AVX512_BITALG,
+            AVX512_GFNI,
+            AVX512_VAES,
+            AVX512_VPCLMULQDQ,
+            AVX512_BF16,
+            AVX512_VP2INTERSECT,
 
-            BMI1 = 1L << 24,
-            BMI2 = 1L << 25,
-            CLFLUSHOPT = 1L << 26,
-            FMA = 1L << 27,
-            FP16C = 1L << 28,
-            FXSR = 1L << 29,
-            KNCNI = 1L << 30,
-            MMX = 1L << 31,
-            MPX = 1L << 32,
-            PCLMULQDQ = 1L << 33,
-            SSE = 1L << 34,
-            SSE2 = 1L << 35,
-            SSE3 = 1L << 36,
-            SSE41 = 1L << 37,
-            SSE42 = 1L << 38,
-            SSSE3 = 1L << 39,
+            BMI1,
+            BMI2,
+            CLFLUSHOPT,
+            FMA,
+            FP16C,
+            FXSR,
+            KNCNI,
+            MMX,
+            MPX,
+            PCLMULQDQ,
+            SSE,
+            SSE2,
+            SSE3,
+            SSE41,
+            SSE42,
+            SSSE3,
 
-            LZCNT = 1L << 40,
-            INVPCID = 1L << 41,
-            MONITOR = 1L << 42,
-            POPCNT = 1L << 43,
-            RDRAND = 1L << 44,
-            RDSEED = 1L << 45,
-            TSC = 1L << 46,
-            RDTSCP = 1L << 47,
-            FSGSBASE = 1L << 48,
-            SHA = 1L << 49,
-            RTM = 1L << 50,
-            XSAVE = 1L << 51,
-            XSAVEC = 1L << 52,
-            XSS = 1L << 53,
-            XSAVEOPT = 1L << 54,
-            PREFETCHWT1 = 1L << 55,
+            LZCNT,
+            INVPCID,
+            MONITOR,
+            POPCNT,
+            RDRAND,
+            RDSEED,
+            TSC,
+            RDTSCP,
+            FSGSBASE,
+            SHA,
+            RTM,
+            XSAVE,
+            XSAVEC,
+            XSS,
+            XSAVEOPT,
+            PREFETCHWT1,
 
-            SVML = 1L << 56,
-            IA32 = 1L << 57,
+            SVML,
+            IA32,
 
             /// <summary>
             /// Read Processor ID
             /// </summary>
-            RDPID = 1L << 58,
+            RDPID,
 
             /// <summary>
             /// Cache Line Write Back
             /// </summary>
-            CLWB = 1L << 59,
+            CLWB,
 
-            CET_SS = 1L << 60,
+            CET_SS,
 
-            AMXTILE = 1L << 61,
+            AMXTILE,
 
-            TSXLDTRK = 1L << 62,
+            TSXLDTRK,
 
             /// <summary>
             /// UNKNOWN is used for an unknown or unrecognized CPUID.
             /// </summary>
-            UNKNOWN = 1L << 63,
+            UNKNOWN,
         }
 
         public enum ReturnType
@@ -455,7 +454,7 @@ namespace IntrinsicsDude.Tools
                 case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
                 case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
                 case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
-                case "CONST_MM_CMPINT_ENUM": return ParamType.CONST_MM_CMPINT_ENUM;
+                case "_MM_CMPINT_ENUM": return ParamType._MM_CMPINT_ENUM;
                 case "CONST_INT": return ParamType.CONST_INT;
                 case "CONST_UNSIGNED_INT": return ParamType.CONST_UNSIGNED_INT;
                 case "CONST_VOID_PTR": return ParamType.CONST_VOID_PTR;
@@ -843,13 +842,21 @@ namespace IntrinsicsDude.Tools
             }
         }
 
+        public static string ToString(CpuID cpuID)
+        {
+            switch (cpuID)
+            {
+                case CpuID.SSE41: return "SSE4.1";
+                case CpuID.SSE42: return "SSE4.2";
+                default: return cpuID.ToString();
+            }
+        }
         /// <summary>
         /// Write cpuIDs to string. If silence_DEFAULT is true, the CpuID.DEFAULT is not written.
         /// </summary>
-        public static string ToString(CpuID cpuIDs)
+        public static string ToString(ISet<CpuID> cpuIDs)
         {
             StringBuilder sb = new StringBuilder();
-            //TODO it is inefficient to test every bit, would be faster to do a bitscanforward
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
                 if (value == CpuID.NONE)
@@ -857,21 +864,9 @@ namespace IntrinsicsDude.Tools
                     continue;
                 }
 
-                if (cpuIDs.HasFlag(value))
+                if (cpuIDs.Contains(value))
                 {
-                    switch (value)
-                    {
-                        case CpuID.SSE41:
-                            sb.Append("SSE4.1, ");
-                            break;
-                        case CpuID.SSE42:
-                            sb.Append("SSE4.2, ");
-                            break;
-                        default:
-                            sb.Append(value.ToString());
-                            sb.Append(", ");
-                            break;
-                    }
+                    sb.Append(ToString(value) + ", ");
                 }
             }
 
@@ -928,7 +923,7 @@ namespace IntrinsicsDude.Tools
                 case ParamType._MM_UPCONV_EPI64_ENUM: return "_MM_UPCONV_EPI64_ENUM";
                 case ParamType._MM_UPCONV_PD_ENUM: return "_MM_UPCONV_PD_ENUM";
                 case ParamType._MM_UPCONV_PS_ENUM: return "_MM_UPCONV_PS_ENUM";
-                case ParamType.CONST_MM_CMPINT_ENUM: return "const _MM_CMPINT_ENUM";
+                case ParamType._MM_CMPINT_ENUM: return "_MM_CMPINT_ENUM";
                 case ParamType.CONST_INT: return "const int";
                 case ParamType.CONST_VOID_PTR: return "const void *";
                 case ParamType.CONST_VOID_PTR_PTR: return "const void **";

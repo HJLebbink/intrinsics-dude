@@ -37,7 +37,7 @@ namespace IntrinsicsDude.Tools
         private readonly List<Tuple<Completion, ReturnType>> _intrinsic_Completions;
         private readonly IDictionary<string, Completion> _cached_Completions;
 
-        private CpuID _selectedCpuID;
+        private ISet<CpuID> _selectedCpuID;
         private bool _hide_mmx_reg_intrinsics;
 
         private ImageSource icon_IF; // icon created with http://www.sciweavers.org/free-online-latex-equation-editor Plum Modern 36
@@ -110,13 +110,14 @@ namespace IntrinsicsDude.Tools
                 Intrinsic intrinsic = pair.Key;
                 IList<IntrinsicDataElement> dataElements = pair.Value;
 
-                CpuID cpuID = CpuID.NONE;
+                ISet<CpuID> cpuIDs = new HashSet<CpuID>();
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
-                    cpuID |= dataElement._cpuID;
+                    cpuIDs.Add(dataElement._cpuID);
                 }
 
-                bool enabled = (cpuID & this._selectedCpuID) == cpuID;
+                //bool enabled = (cpuID & this._selectedCpuID) == cpuID;
+                bool enabled = cpuIDs.IsSupersetOf(this._selectedCpuID);
 
                 if (enabled && this._hide_mmx_reg_intrinsics)
                 {
@@ -130,7 +131,7 @@ namespace IntrinsicsDude.Tools
                 {
                     IntrinsicDataElement dataElementFirst = dataElements[0];
                     string intrinsicStr = intrinsic.ToString().ToLower();
-                    string displayText = this.CreateDisplayText(intrinsicStr, cpuID, dataElementFirst._description, true, true);
+                    string displayText = this.CreateDisplayText(intrinsicStr, cpuIDs, dataElementFirst._description, true, true);
                     //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: getAllowedMnemonics; adding displayText=" + displayText);
                     Completion completion = new Completion(displayText, intrinsicStr, dataElementFirst.DocumenationString, this.icon_IF, string.Empty);
 
@@ -141,12 +142,12 @@ namespace IntrinsicsDude.Tools
             IntrinsicsDudeToolsStatic.PrintSpeedWarning(time1, "Statement-Completion-Store-Initialization");
         }
 
-        public string CreateDisplayText(string intrinsicStr, CpuID cpuID, string description, bool correctType, bool decorateIncompatibleStatementCompletion)
+        public string CreateDisplayText(string intrinsicStr, ISet<CpuID> cpuIDs, string description, bool correctType, bool decorateIncompatibleStatementCompletion)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(intrinsicStr);
             sb.Append(" [");
-            sb.Append(IntrinsicTools.ToString(cpuID));
+            sb.Append(IntrinsicTools.ToString(cpuIDs));
             sb.Append("] - ");
             sb.Append(description);
 

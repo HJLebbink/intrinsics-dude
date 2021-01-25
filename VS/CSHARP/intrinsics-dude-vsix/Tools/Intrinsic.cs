@@ -6213,6 +6213,6 @@ namespace IntrinsicsDude.Tools
         _MM_XOR_EPI64,
         _MM256_XOR_EPI64,
         _XRESLDTRK,
-        _XSUSLDTRK
+        _XSUSLDTRK,
     }
 }

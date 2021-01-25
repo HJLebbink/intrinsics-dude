@@ -229,28 +229,43 @@ namespace IntrinsicsDude.StatementCompletion
         {
             if (returnType == ReturnType.UNKNOWN)
             {
-                CpuID selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
+                ISet<CpuID> selectedCpuIDs = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
 
-                if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
+                if (selectedCpuIDs.Contains(CpuID.MMX))
                 {
                     completions.Add(new Completion("__m64", "__m64", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE41 | CpuID.SSE42 | CpuID.SSSE3)) != CpuID.NONE)
+                if (selectedCpuIDs.Contains(CpuID.SSE) ||
+                    selectedCpuIDs.Contains(CpuID.SSE2) ||
+                    selectedCpuIDs.Contains(CpuID.SSE3) ||
+                    selectedCpuIDs.Contains(CpuID.SSE41) ||
+                    selectedCpuIDs.Contains(CpuID.SSE42) ||
+                    selectedCpuIDs.Contains(CpuID.SSSE3))
                 {
                     completions.Add(new Completion("__m128", "__m128 ", null, null, null));
                     completions.Add(new Completion("__m128d", "__m128d ", null, null, null));
                     completions.Add(new Completion("__m128i", "__m128i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE)
+                if (selectedCpuIDs.Contains(CpuID.AVX) ||
+                    selectedCpuIDs.Contains(CpuID.AVX2))
                 {
                     completions.Add(new Completion("__m256", "__m256 ", null, null, null));
                     completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
                     completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE)
+                if (selectedCpuIDs.Contains(CpuID.AVX512_F) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_CD) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_DQ) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_ER) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_BW) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_IFMA) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_PF) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_VBMI) ||
+                    selectedCpuIDs.Contains(CpuID.AVX512_VL) ||
+                    selectedCpuIDs.Contains(CpuID.KNCNI))
                 {
                     completions.Add(new Completion("__m512", "__m512 ", null, null, null));
                     completions.Add(new Completion("__m512d", "__m512d ", null, null, null));

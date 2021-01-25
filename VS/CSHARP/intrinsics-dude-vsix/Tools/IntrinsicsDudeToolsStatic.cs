@@ -23,6 +23,7 @@
 namespace IntrinsicsDude.Tools
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.Text;
@@ -278,19 +279,18 @@ namespace IntrinsicsDude.Tools
             return true;
         }
 
-        public static CpuID GetCpuIDSwithedOn()
+        public static ISet<CpuID> GetCpuIDSwithedOn()
         {
-            CpuID cpuID = CpuID.NONE;
+            ISet<CpuID> cpuIDs = new HashSet<CpuID>();
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
                 if (IsArchSwitchedOn(value))
                 {
-                    cpuID |= value;
+                    cpuIDs.Add(value);
                 }
             }
-
-            //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuID));
-            return cpuID;
+            IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicsDudeToolsStatic:getCpuIDSwithedOn: returns " + IntrinsicTools.ToString(cpuIDs));
+            return cpuIDs;
         }
 
         public static bool IsArchSwitchedOn(CpuID arch)
