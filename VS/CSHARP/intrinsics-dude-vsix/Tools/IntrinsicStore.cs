@@ -68,7 +68,7 @@ namespace IntrinsicsDude.Tools
 
         public CpuID GetCpuID(Intrinsic intrinsic)
         {
-            CpuID cpuID = CpuID.ARCH_NONE;
+            CpuID cpuID = CpuID.NONE;
             if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
             {
                 foreach (IntrinsicDataElement dataElement in dataElements)
@@ -116,7 +116,7 @@ namespace IntrinsicsDude.Tools
                     };
                     if (item.GetAttributeValue("class", string.Empty).Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
                     {
-                        dataElement._cpuID |= CpuID.ARCH_SVML;
+                        dataElement._cpuID |= CpuID.SVML;
                     }
 
                     IList<string> paramName = new List<string>(2);
@@ -192,7 +192,7 @@ namespace IntrinsicsDude.Tools
 
                             case "ALSOKNC":
                                 {
-                                    dataElement._cpuID |= CpuID.ARCH_KNCNI;
+                                    dataElement._cpuID |= CpuID.KNCNI;
                                     break;
                                 }
 
@@ -207,10 +207,10 @@ namespace IntrinsicsDude.Tools
                         }
                     }
 
-                    if (dataElement._cpuID == CpuID.ARCH_NONE)
+                    if (dataElement._cpuID == CpuID.NONE)
                     {
                         //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
-                        dataElement._cpuID = CpuID.ARCH_IA32;
+                        dataElement._cpuID = CpuID.IA32;
                     }
 
                     #endregion

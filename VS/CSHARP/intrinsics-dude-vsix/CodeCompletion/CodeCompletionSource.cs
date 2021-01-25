@@ -231,26 +231,26 @@ namespace IntrinsicsDude.StatementCompletion
             {
                 CpuID selectedCpuID = IntrinsicsDudeToolsStatic.GetCpuIDSwithedOn();
 
-                if ((selectedCpuID & (CpuID.ARCH_MMX)) != CpuID.ARCH_NONE)
+                if ((selectedCpuID & (CpuID.MMX)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m64", "__m64", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.ARCH_SSE | CpuID.ARCH_SSE2 | CpuID.ARCH_SSE3 | CpuID.ARCH_SSE41 | CpuID.ARCH_SSE42 | CpuID.ARCH_SSSE3)) != CpuID.ARCH_NONE)
+                if ((selectedCpuID & (CpuID.SSE | CpuID.SSE2 | CpuID.SSE3 | CpuID.SSE41 | CpuID.SSE42 | CpuID.SSSE3)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m128", "__m128 ", null, null, null));
                     completions.Add(new Completion("__m128d", "__m128d ", null, null, null));
                     completions.Add(new Completion("__m128i", "__m128i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.ARCH_AVX | CpuID.ARCH_AVX2)) != CpuID.ARCH_NONE)
+                if ((selectedCpuID & (CpuID.AVX | CpuID.AVX2)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m256", "__m256 ", null, null, null));
                     completions.Add(new Completion("__m256d", "__m256d ", null, null, null));
                     completions.Add(new Completion("__m256i", "__m256i ", null, null, null));
                 }
 
-                if ((selectedCpuID & (CpuID.ARCH_AVX512_BW | CpuID.ARCH_AVX512_CD | CpuID.ARCH_AVX512_DQ | CpuID.ARCH_AVX512_ER | CpuID.ARCH_AVX512_F | CpuID.ARCH_AVX512_IFMA | CpuID.ARCH_AVX512_PF | CpuID.ARCH_AVX512_VBMI | CpuID.ARCH_AVX512_VL | CpuID.ARCH_KNCNI)) != CpuID.ARCH_NONE)
+                if ((selectedCpuID & (CpuID.AVX512_BW | CpuID.AVX512_CD | CpuID.AVX512_DQ | CpuID.AVX512_ER | CpuID.AVX512_F | CpuID.AVX512_IFMA | CpuID.AVX512_PF | CpuID.AVX512_VBMI | CpuID.AVX512_VL | CpuID.KNCNI)) != CpuID.NONE)
                 {
                     completions.Add(new Completion("__m512", "__m512 ", null, null, null));
                     completions.Add(new Completion("__m512d", "__m512d ", null, null, null));

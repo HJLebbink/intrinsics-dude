@@ -50,7 +50,7 @@ namespace IntrinsicsDude.Tools
         public IntrinsicDataElement()
         {
             this._parameters = new List<Tuple<ParamType, string>>();
-            this._cpuID = CpuID.ARCH_NONE;
+            this._cpuID = CpuID.NONE;
         }
 
         public TextBlock DocumentationTextBlock(Brush foreground)

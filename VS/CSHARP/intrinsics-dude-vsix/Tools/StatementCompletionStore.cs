@@ -110,7 +110,7 @@ namespace IntrinsicsDude.Tools
                 Intrinsic intrinsic = pair.Key;
                 IList<IntrinsicDataElement> dataElements = pair.Value;
 
-                CpuID cpuID = CpuID.ARCH_NONE;
+                CpuID cpuID = CpuID.NONE;
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
                     cpuID |= dataElement._cpuID;
