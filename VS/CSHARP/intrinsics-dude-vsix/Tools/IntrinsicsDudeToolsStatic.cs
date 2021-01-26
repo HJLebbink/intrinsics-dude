@@ -375,10 +375,24 @@ namespace IntrinsicsDude.Tools
                 case CpuID.RDPID: return Settings.Default.ARCH_RDPID;
                 case CpuID.CLWB: return Settings.Default.ARCH_CLWB;
 
+                case CpuID.CET_SS: return Settings.Default.ARCH_CET_SS;
+                case CpuID.AMXTILE: return Settings.Default.ARCH_AMXTILE;
+                case CpuID.TSXLDTRK: return Settings.Default.ARCH_TSXLDTRK;
+                case CpuID.CLDEMOTE: return Settings.Default.ARCH_CLDEMOTE;
+                case CpuID.MOVDIRI: return Settings.Default.ARCH_MOVDIRI;
+                case CpuID.MOVBE: return Settings.Default.ARCH_MOVBE;
+                case CpuID.MOVDIR64B: return Settings.Default.ARCH_MOVDIR64B;
+                case CpuID.PCONFIG: return Settings.Default.ARCH_PCONFIG;
+                case CpuID.SERIALIZE: return Settings.Default.ARCH_SERIALIZE;
+                case CpuID.AMXBF16: return Settings.Default.ARCH_AMXBF16;
+                case CpuID.AMXINT8: return Settings.Default.ARCH_AMXINT8;
+                case CpuID.WAITPKG: return Settings.Default.ARCH_WAITPKG;
+                case CpuID.WBNOINVD: return Settings.Default.ARCH_WBNOINVD;
+
                 case CpuID.UNKNOWN: return false;
 
                 default:
-                    Output_WARNING("IntrinsicsDudeToolsStatic: isArchSwitchedOn; unsupported arch " + arch);
+                    Output_WARNING("IntrinsicsDudeToolsStatic: b33b1a6b: isArchSwitchedOn; unsupported arch " + arch);
                     return false;
             }
         }

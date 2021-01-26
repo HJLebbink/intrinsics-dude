@@ -862,5 +862,161 @@ namespace IntrinsicsDude {
                 this["ARCH_AVX512_ENQCMD"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_CET_SS {
+            get {
+                return ((bool)(this["ARCH_CET_SS"]));
+            }
+            set {
+                this["ARCH_CET_SS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AMXTILE {
+            get {
+                return ((bool)(this["ARCH_AMXTILE"]));
+            }
+            set {
+                this["ARCH_AMXTILE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_TSXLDTRK {
+            get {
+                return ((bool)(this["ARCH_TSXLDTRK"]));
+            }
+            set {
+                this["ARCH_TSXLDTRK"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_CLDEMOTE {
+            get {
+                return ((bool)(this["ARCH_CLDEMOTE"]));
+            }
+            set {
+                this["ARCH_CLDEMOTE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_MOVDIRI {
+            get {
+                return ((bool)(this["ARCH_MOVDIRI"]));
+            }
+            set {
+                this["ARCH_MOVDIRI"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_MOVBE {
+            get {
+                return ((bool)(this["ARCH_MOVBE"]));
+            }
+            set {
+                this["ARCH_MOVBE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_MOVDIR64B {
+            get {
+                return ((bool)(this["ARCH_MOVDIR64B"]));
+            }
+            set {
+                this["ARCH_MOVDIR64B"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_PCONFIG {
+            get {
+                return ((bool)(this["ARCH_PCONFIG"]));
+            }
+            set {
+                this["ARCH_PCONFIG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_SERIALIZE {
+            get {
+                return ((bool)(this["ARCH_SERIALIZE"]));
+            }
+            set {
+                this["ARCH_SERIALIZE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AMXBF16 {
+            get {
+                return ((bool)(this["ARCH_AMXBF16"]));
+            }
+            set {
+                this["ARCH_AMXBF16"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AMXINT8 {
+            get {
+                return ((bool)(this["ARCH_AMXINT8"]));
+            }
+            set {
+                this["ARCH_AMXINT8"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_WAITPKG {
+            get {
+                return ((bool)(this["ARCH_WAITPKG"]));
+            }
+            set {
+                this["ARCH_WAITPKG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_WBNOINVD {
+            get {
+                return ((bool)(this["ARCH_WBNOINVD"]));
+            }
+            set {
+                this["ARCH_WBNOINVD"] = value;
+            }
+        }
     }
 }

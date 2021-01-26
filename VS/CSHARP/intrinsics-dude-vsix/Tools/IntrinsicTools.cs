@@ -37,7 +37,7 @@ namespace IntrinsicsDude.Tools
         /// <summary>Static class initializer for AsmSourceTools</summary>
         static IntrinsicTools()
         {
-            _intrinsic_cache = new Dictionary<string, Intrinsic>();
+            _intrinsic_cache = new Dictionary<string, Intrinsic>(6000);
             foreach (Intrinsic intrinsic in Enum.GetValues(typeof(Intrinsic)))
             {
                 _intrinsic_cache.Add(intrinsic.ToString(), intrinsic);
@@ -739,7 +739,6 @@ namespace IntrinsicsDude.Tools
                 case "CET_SS": return CpuID.CET_SS;
                 case "AMXTILE": return CpuID.AMXTILE;
                 case "TSXLDTRK": return CpuID.TSXLDTRK;
-
                 case "CLDEMOTE": return CpuID.CLDEMOTE;
                 case "MOVDIRI": return CpuID.MOVDIRI;
                 case "MOVBE": return CpuID.MOVBE;
@@ -1071,8 +1070,8 @@ namespace IntrinsicsDude.Tools
                 case CpuID.IA32: return string.Empty;
                 case CpuID.ADX: return "Multi-Precision Add-Carry Instruction Extension";
                 case CpuID.AES: return "Advanced Encryption Standard Extension";
-                case CpuID.AVX: return string.Empty;
-                case CpuID.AVX2: return string.Empty;
+                case CpuID.AVX: return "Advanced Vector Extensions";
+                case CpuID.AVX2: return "Advanced Vector Extensions 2";
 
                 case CpuID.AVX512_F: return "AVX512-F - Foundation";
                 case CpuID.AVX512_CD: return "AVX512-CD - Conflict Detection";
@@ -1097,20 +1096,20 @@ namespace IntrinsicsDude.Tools
 
                 case CpuID.BMI1: return "Bit Manipulation Instruction Set 1";
                 case CpuID.BMI2: return "Bit Manipulation Instruction Set 2";
-                case CpuID.CLFLUSHOPT: return string.Empty;
+                case CpuID.CLFLUSHOPT: return "Flush Cache Line Optimized";
                 case CpuID.FMA: return "Fused Multiply-Add Instructions";
                 case CpuID.FP16C: return "Half Precision Floating Point Conversion Instructions";
-                case CpuID.FXSR: return string.Empty;
-                case CpuID.KNCNI: return string.Empty;
-                case CpuID.MMX: return string.Empty;
+                case CpuID.FXSR: return "FXSAVE, FXRESTOR instructions, CR4 bit 9";
+                case CpuID.KNCNI: return "Intel Xeon Phi coprocessors ('KNC')";
+                case CpuID.MMX: return "MMX = meaningless initialism";
                 case CpuID.MPX: return "Memory Protection Extensions";
                 case CpuID.PCLMULQDQ: return "Carry-Less Multiplication Instructions";
-                case CpuID.SSE: return string.Empty;
-                case CpuID.SSE2: return string.Empty;
-                case CpuID.SSE3: return string.Empty;
-                case CpuID.SSE41: return string.Empty;
-                case CpuID.SSE42: return string.Empty;
-                case CpuID.SSSE3: return string.Empty;
+                case CpuID.SSE: return "Streaming SIMD Extensions";
+                case CpuID.SSE2: return "Streaming SIMD Extensions 2";
+                case CpuID.SSE3: return "Streaming SIMD Extensions 3";
+                case CpuID.SSE41: return "Streaming SIMD Extensions 4.1";
+                case CpuID.SSE42: return "Streaming SIMD Extensions 4.2";
+                case CpuID.SSSE3: return "Supplemental Streaming SIMD Extensions 3";
 
                 case CpuID.LZCNT: return string.Empty;
                 case CpuID.INVPCID: return string.Empty;
@@ -1131,6 +1130,20 @@ namespace IntrinsicsDude.Tools
 
                 case CpuID.RDPID: return "Read Processor ID";
                 case CpuID.CLWB: return "Cache Line Write Back";
+
+                case CpuID.CET_SS: return string.Empty;
+                case CpuID.AMXTILE: return string.Empty;
+                case CpuID.TSXLDTRK: return string.Empty;
+                case CpuID.CLDEMOTE: return string.Empty;
+                case CpuID.MOVDIRI: return string.Empty;
+                case CpuID.MOVBE: return string.Empty;
+                case CpuID.MOVDIR64B: return string.Empty;
+                case CpuID.PCONFIG: return string.Empty;
+                case CpuID.SERIALIZE: return string.Empty;
+                case CpuID.AMXBF16: return string.Empty;
+                case CpuID.AMXINT8: return string.Empty;
+                case CpuID.WAITPKG: return string.Empty;
+                case CpuID.WBNOINVD: return string.Empty;
 
                 default:
                     IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
