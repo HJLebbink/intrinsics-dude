@@ -1066,8 +1066,8 @@ namespace IntrinsicsDude.Tools
             switch (cpuID)
             {
                 case CpuID.NONE: return string.Empty;
-                case CpuID.SVML: return string.Empty;
-                case CpuID.IA32: return string.Empty;
+                case CpuID.SVML: return "Short Vector Math Library";
+                case CpuID.IA32: return "Intel Architecture, 32-bit (80386)";
                 case CpuID.ADX: return "Multi-Precision Add-Carry Instruction Extension";
                 case CpuID.AES: return "Advanced Encryption Standard Extension";
                 case CpuID.AVX: return "Advanced Vector Extensions";
@@ -1112,38 +1112,38 @@ namespace IntrinsicsDude.Tools
                 case CpuID.SSSE3: return "Supplemental Streaming SIMD Extensions 3";
 
                 case CpuID.LZCNT: return string.Empty;
-                case CpuID.INVPCID: return string.Empty;
+                case CpuID.INVPCID: return "INVPCID instruction";
                 case CpuID.MONITOR: return string.Empty;
-                case CpuID.POPCNT: return string.Empty;
-                case CpuID.RDRAND: return string.Empty;
+                case CpuID.POPCNT: return "POPCNT instruction";
+                case CpuID.RDRAND: return "	RDRAND (on-chip random number generator) feature";
                 case CpuID.RDSEED: return string.Empty;
-                case CpuID.TSC: return string.Empty;
-                case CpuID.RDTSCP: return string.Empty;
-                case CpuID.FSGSBASE: return string.Empty;
-                case CpuID.SHA: return string.Empty;
-                case CpuID.RTM: return string.Empty;
-                case CpuID.XSAVE: return string.Empty;
+                case CpuID.TSC: return "Time Stamp Counter";
+                case CpuID.RDTSCP: return "RDTSCP instruction";
+                case CpuID.FSGSBASE: return "Access to base of %fs and %gs";
+                case CpuID.SHA: return "Intel SHA extensions";
+                case CpuID.RTM: return "TSX Restricted Transactional Memory";
+                case CpuID.XSAVE: return "	XSAVE, XRESTOR, XSETBV, XGETBV";
                 case CpuID.XSAVEC: return string.Empty;
                 case CpuID.XSS: return string.Empty;
                 case CpuID.XSAVEOPT: return string.Empty;
-                case CpuID.PREFETCHWT1: return string.Empty;
+                case CpuID.PREFETCHWT1: return "PREFETCHWT1 instruction";
 
                 case CpuID.RDPID: return "Read Processor ID";
                 case CpuID.CLWB: return "Cache Line Write Back";
 
-                case CpuID.CET_SS: return string.Empty;
+                case CpuID.CET_SS: return "Control flow enforcement (CET) shadow stack";
                 case CpuID.AMXTILE: return string.Empty;
                 case CpuID.TSXLDTRK: return string.Empty;
-                case CpuID.CLDEMOTE: return string.Empty;
+                case CpuID.CLDEMOTE: return "Cache line demote";
                 case CpuID.MOVDIRI: return string.Empty;
-                case CpuID.MOVBE: return string.Empty;
+                case CpuID.MOVBE: return "MOVBE instruction (big-endian)";
                 case CpuID.MOVDIR64B: return string.Empty;
-                case CpuID.PCONFIG: return string.Empty;
+                case CpuID.PCONFIG: return "Platform configuration (Memory Encryption Technologies Instructions)";
                 case CpuID.SERIALIZE: return string.Empty;
                 case CpuID.AMXBF16: return string.Empty;
                 case CpuID.AMXINT8: return string.Empty;
-                case CpuID.WAITPKG: return string.Empty;
-                case CpuID.WBNOINVD: return string.Empty;
+                case CpuID.WAITPKG: return "Timed pause and user-level monitor/wait";
+                case CpuID.WBNOINVD: return "Write Back and Do Not Invalidate Cache";
 
                 default:
                     IntrinsicsDudeToolsStatic.Output_WARNING("IntrinsicTools: getCpuID_Documentation: unknown CpuID \"" + cpuID + "\".");
