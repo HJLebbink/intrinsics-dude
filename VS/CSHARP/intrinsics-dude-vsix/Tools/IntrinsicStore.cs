@@ -43,7 +43,7 @@ namespace IntrinsicsDude.Tools
             this._cpuIDs = new Dictionary<Intrinsic, ISet<CpuID>>();
         }
 
-        public IntrinsicStore(string xmlfilename) 
+        public IntrinsicStore(string xmlfilename)
             : this()
         {
             this.LoadXml(xmlfilename);
