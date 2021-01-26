@@ -25,6 +25,7 @@ namespace IntrinsicsDude.Tools
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Text;
     using System.Windows.Media;
@@ -66,6 +67,8 @@ namespace IntrinsicsDude.Tools
 
         public Completion Get_Cached_Completion(Completion completion)
         {
+            Contract.Requires(completion != null);
+
             string insertion_Text = completion.InsertionText;
 
             if (!this._cached_Completions.TryGetValue(insertion_Text, out Completion result))
@@ -113,7 +116,7 @@ namespace IntrinsicsDude.Tools
                 ISet<CpuID> cpuIDs = new HashSet<CpuID>();
                 foreach (IntrinsicDataElement dataElement in dataElements)
                 {
-                    cpuIDs.Add(dataElement._cpuID);
+                    cpuIDs.UnionWith(dataElement._cpuIDs);
                 }
 
                 //bool enabled = (cpuID & this._selectedCpuID) == cpuID;

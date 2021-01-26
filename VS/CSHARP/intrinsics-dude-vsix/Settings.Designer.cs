@@ -850,5 +850,17 @@ namespace IntrinsicsDude {
                 this["ARCH_SVML"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ARCH_AVX512_ENQCMD {
+            get {
+                return ((bool)(this["ARCH_AVX512_ENQCMD"]));
+            }
+            set {
+                this["ARCH_AVX512_ENQCMD"] = value;
+            }
+        }
     }
 }

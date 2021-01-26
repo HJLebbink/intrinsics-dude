@@ -24,6 +24,7 @@ namespace IntrinsicsDude.Tools
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Text;
     using Microsoft.VisualStudio.Text;
@@ -45,6 +46,7 @@ namespace IntrinsicsDude.Tools
 
         private static string ToCapitals(string str, bool strIsCapitals)
         {
+            Contract.Requires(str != null);
 #if DEBUG
             if (strIsCapitals && (str != str.ToUpper()))
             {
@@ -76,7 +78,7 @@ namespace IntrinsicsDude.Tools
             __MMASK8,
         }
 
-         public enum CpuID
+        public enum CpuID
         {
             /// <summary>
             /// NONE is used to denote no CPUID id is present
@@ -157,7 +159,7 @@ namespace IntrinsicsDude.Tools
             CET_SS,
             AMXTILE,
             TSXLDTRK,
-            
+
             CLDEMOTE,
             MOVDIRI,
             MOVBE,
@@ -315,6 +317,8 @@ namespace IntrinsicsDude.Tools
 
         public static SimdRegisterType ParseSimdRegisterType(string str, bool strIsCapitals, bool warn)
         {
+            Contract.Requires(str != null);
+
             if (!str.StartsWith("__"))
             {
                 return SimdRegisterType.NONE;
@@ -351,6 +355,8 @@ namespace IntrinsicsDude.Tools
 
         public static ReturnType ParseReturnType(string str, bool strIsCapitals, bool warn)
         {
+            Contract.Requires(str != null);
+
             switch (ToCapitals(str, strIsCapitals))
             {
                 case "__INT16": return ReturnType.__INT16;
@@ -515,6 +521,8 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public static ParamType ParseParamType(string str, bool strIsCapitals, bool warn)
         {
+            Contract.Requires(str != null);
+
             string str2 = ToCapitals(str, strIsCapitals).Replace(" *", "*");
 
             switch (str2)
@@ -581,7 +589,7 @@ namespace IntrinsicsDude.Tools
                 case "_MM_UPCONV_PS_ENUM": return ParamType._MM_UPCONV_PS_ENUM;
                 case "_MM_PERM_ENUM": return ParamType._MM_PERM_ENUM;
                 case "_MM_SWIZZLE_ENUM": return ParamType._MM_SWIZZLE_ENUM;
-                case "_MM_CMPINT_ENUM": 
+                case "_MM_CMPINT_ENUM":
                 case "CONST _MM_CMPINT_ENUM": return ParamType._MM_CMPINT_ENUM; //TODO test if the const is still necessary
 
                 case "CONST INT": return ParamType.CONST_INT;
@@ -635,6 +643,7 @@ namespace IntrinsicsDude.Tools
 
         public static CpuID ParseCpuID(string str, bool strIsCapitals, bool warn)
         {
+            Contract.Requires(str != null);
             switch (ToCapitals(str, strIsCapitals))
             {
                 case "":
@@ -686,7 +695,6 @@ namespace IntrinsicsDude.Tools
                 case "VPCLMULQDQ": return CpuID.AVX512_VPCLMULQDQ;
                 case "AVX512_BF16": return CpuID.AVX512_BF16;
 
-
                 case "BMI1": return CpuID.BMI1;
                 case "BMI2": return CpuID.BMI2;
                 case "CLFLUSHOPT": return CpuID.CLFLUSHOPT;
@@ -707,7 +715,6 @@ namespace IntrinsicsDude.Tools
                 case "SSSE3": return CpuID.SSSE3;
 
                 case "LZCNT": return CpuID.LZCNT;
-
 
                 case "INVPCID": return CpuID.INVPCID;
                 case "MONITOR": return CpuID.MONITOR;
@@ -754,15 +761,17 @@ namespace IntrinsicsDude.Tools
             }
         }
 
-        public static CpuID ParseCpuID_multiple(string str, bool strIsCapitals, bool warn)
+        public static ISet<CpuID> ParseCpuID_multiple(string str, bool strIsCapitals, bool warn)
         {
-            CpuID cpuID = CpuID.NONE;
+            Contract.Requires(str != null);
+
+            ISet<CpuID> cpuIDs = new HashSet<CpuID>();
             foreach (string cpuID_str in str.Split(','))
             {
-                cpuID |= ParseCpuID(cpuID_str.Trim(), strIsCapitals, warn);
+                cpuIDs.Add(ParseCpuID(cpuID_str.Trim(), strIsCapitals, warn));
             }
 
-            return cpuID;
+            return cpuIDs;
         }
 
         public static bool IsSimdRegister(ReturnType type)
@@ -837,6 +846,8 @@ namespace IntrinsicsDude.Tools
 
         public static bool IsSimdRegister(string str, bool strIsCapitals)
         {
+            Contract.Requires(str != null);
+
             switch (ToCapitals(str, strIsCapitals))
             {
                 case "__M128":
@@ -871,11 +882,14 @@ namespace IntrinsicsDude.Tools
                 default: return cpuID.ToString();
             }
         }
+
         /// <summary>
         /// Write cpuIDs to string. If silence_DEFAULT is true, the CpuID.DEFAULT is not written.
         /// </summary>
         public static string ToString(ISet<CpuID> cpuIDs)
         {
+            Contract.Requires(cpuIDs != null);
+
             StringBuilder sb = new StringBuilder();
             foreach (CpuID value in Enum.GetValues(typeof(CpuID)))
             {
@@ -1495,6 +1509,8 @@ namespace IntrinsicsDude.Tools
 
         public static Tuple<Intrinsic, int> GetIntrinsicAndParamIndex(SnapshotPoint point, ITextStructureNavigator nav)
         {
+            Contract.Requires(nav != null);
+
             int nClosingParenthesis = 0;
             int nParameters = 0;
 

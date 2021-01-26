@@ -25,6 +25,7 @@ namespace IntrinsicsDude.OptionsPage
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.Contracts;
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Text;
@@ -51,6 +52,17 @@ namespace IntrinsicsDude.OptionsPage
         ARCH_AVX512_VBMI,
         ARCH_AVX512_VL,
         ARCH_AVX512_VPOPCNTDQ,
+
+        ARCH_AVX512_VBMI2,
+        ARCH_AVX512_VNNI,
+        ARCH_AVX512_BITALG,
+        ARCH_AVX512_GFNI,
+        ARCH_AVX512_VAES,
+        ARCH_AVX512_VPCLMULQDQ,
+        ARCH_AVX512_BF16,
+        ARCH_AVX512_VP2INTERSECT,
+        ARCH_AVX512_ENQCMD,
+
         ARCH_BMI1,
         ARCH_BMI2,
         ARCH_CLFLUSHOPT,
@@ -409,23 +421,23 @@ namespace IntrinsicsDude.OptionsPage
             this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_4FMAPS_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_4FMAPS);
 
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VBMI2 = Settings.Default.ARCH_AVX512_VBMI2;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VBMI2_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_VBMI2);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VBMI2_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VBMI2);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VNNI = Settings.Default.ARCH_AVX512_VNNI;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VNNI_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_VNNI);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VNNI_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VNNI);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_BITALG = Settings.Default.ARCH_AVX512_BITALG;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_BITALG_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_BITALG);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BITALG_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_BITALG);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_GFNI = Settings.Default.ARCH_AVX512_GFNI;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_GFNI_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_GFNI);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_GFNI_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_GFNI);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VAES = Settings.Default.ARCH_AVX512_VAES;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VAES_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_VAES);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VAES_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VAES);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VPCLMULQDQ = Settings.Default.ARCH_AVX512_VPCLMULQDQ;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VPCLMULQDQ_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_VPCLMULQDQ);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VPCLMULQDQ_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VPCLMULQDQ);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_BF16 = Settings.Default.ARCH_AVX512_BF16;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_BF16_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_BF16);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_BF16_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_BF16);
             this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VP2INTERSECT = Settings.Default.ARCH_AVX512_VP2INTERSECT;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_AVX512_VP2INTERSECT_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_AVX512_VP2INTERSECT);
+            this._intrinsicsDudeOptionsPageUI.UseArch_AVX512_VP2INTERSECT_UI.ToolTip = this.MakeToolTip(CpuID.AVX512_VP2INTERSECT);
             this._intrinsicsDudeOptionsPageUI.ARCH_SVML = Settings.Default.ARCH_SVML;
-            //this._intrinsicsDudeOptionsPageUI.ARCH_SVML_UI.ToolTip = this.MakeToolTip(CpuID.ARCH_SVML);
+            this._intrinsicsDudeOptionsPageUI.useSvml_UI.ToolTip = this.MakeToolTip(CpuID.SVML);
 
             this._intrinsicsDudeOptionsPageUI.ARCH_IA32 = Settings.Default.ARCH_IA32;
             this._intrinsicsDudeOptionsPageUI.UseArch_IA32_UI.ToolTip = this.MakeToolTip(CpuID.IA32);
@@ -516,7 +528,7 @@ namespace IntrinsicsDude.OptionsPage
 
             foreach (Intrinsic mnemonic in Enum.GetValues(typeof(Intrinsic)))
             {
-                if (store.GetCpuID(mnemonic).HasFlag(arch))
+                if (store.GetCpuID(mnemonic).Contains(arch))
                 {
                     sb.Append(mnemonic.ToString());
                     sb.Append(", ");
@@ -552,6 +564,8 @@ namespace IntrinsicsDude.OptionsPage
         /// </remarks>
         protected override void OnDeactivate(CancelEventArgs e)
         {
+            Contract.Requires(e != null);
+
             bool changed = false;
             StringBuilder sb = new StringBuilder();
 
@@ -617,7 +631,6 @@ namespace IntrinsicsDude.OptionsPage
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             }
-
 
             //Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "INFO:{0}:save", this.ToString()));
             bool changed = false;
@@ -685,7 +698,7 @@ namespace IntrinsicsDude.OptionsPage
             {
                 if (this.Setting_Update(arch))
                 {
-                    changed = true; 
+                    changed = true;
                     archChanged = true;
                 }
             }

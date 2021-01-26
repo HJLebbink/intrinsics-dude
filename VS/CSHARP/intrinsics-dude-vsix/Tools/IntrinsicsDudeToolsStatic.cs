@@ -25,6 +25,7 @@ namespace IntrinsicsDude.Tools
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Text;
     using System.Threading.Tasks;
@@ -46,6 +47,8 @@ namespace IntrinsicsDude.Tools
             ITextBuffer buffer,
             IBufferTagAggregatorFactoryService aggregatorFactory)
         {
+            Contract.Requires(buffer != null);
+
             ITagAggregator<IntrinsicTokenTag> sc()
             {
                 return aggregatorFactory.CreateTagAggregator<IntrinsicTokenTag>(buffer);
@@ -68,6 +71,8 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public static async Task<string> Get_Filename_Async(ITextBuffer buffer)
         {
+            Contract.Requires(buffer != null);
+
             if (!ThreadHelper.CheckAccess())
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -186,7 +191,9 @@ namespace IntrinsicsDude.Tools
         }
 
         /// <summary>Output message to the AsmDude window</summary>
+#pragma warning disable CA1801 // Review unused parameters
         public static void Output_INFO(string msg)
+#pragma warning restore CA1801 // Review unused parameters
         {
 #           if DEBUG
             OutputAsync("INFO: " + msg).ConfigureAwait(false);
@@ -210,6 +217,8 @@ namespace IntrinsicsDude.Tools
         /// </summary>
         public static async System.Threading.Tasks.Task OutputAsync(string msg)
         {
+            Contract.Requires(msg != null);
+
             if (!ThreadHelper.CheckAccess())
             {
                 await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -268,6 +277,8 @@ namespace IntrinsicsDude.Tools
 
         public static bool IsAllUpper(string input)
         {
+            Contract.Requires(input != null);
+
             for (int i = 0; i < input.Length; i++)
             {
                 if (char.IsLetter(input[i]) && !char.IsUpper(input[i]))

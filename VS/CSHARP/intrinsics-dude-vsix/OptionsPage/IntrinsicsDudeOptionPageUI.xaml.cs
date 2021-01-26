@@ -69,13 +69,12 @@ namespace IntrinsicsDude.OptionsPage
                     //AsmDudeToolsStatic.Output_INFO(string.Format("{0}:SetPropValue: propName={1}; o={2}", this.ToString(), propName, o.ToString()));
                     this.GetType().GetProperty(propName).SetValue(this, o);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     IntrinsicsDudeToolsStatic.Output_ERROR(string.Format("{0}:SetPropValue: Could not find property={1}; o={2}", this.ToString(), propName, o.ToString()));
                 }
             }
         }
-
 
         #region Event Handlers to disable options
 
@@ -330,31 +329,37 @@ namespace IntrinsicsDude.OptionsPage
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_BITALG
         {
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_GFNI
         {
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_VAES
         {
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_VPCLMULQDQ
         {
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_BF16
         {
             get { return false; }
             set { }
         }
+
         public bool ARCH_AVX512_VP2INTERSECT
         {
             get { return false; }

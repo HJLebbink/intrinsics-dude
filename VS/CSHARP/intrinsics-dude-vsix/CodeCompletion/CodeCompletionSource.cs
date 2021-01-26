@@ -149,6 +149,8 @@ namespace IntrinsicsDude.StatementCompletion
             ICompletionSession session,
             string partialKeyword)
         {
+            Contract.Requires(session != null);
+
             DateTime startTime = DateTime.Now;
             string partialKeyword2 = (partialKeyword.Length < 2) ? "__" : partialKeyword.Substring(0, 2);
             //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions_method1: partialKeyword=" + partialKeyword+ "; partialKeyword2="+ partialKeyword2);
@@ -190,6 +192,8 @@ namespace IntrinsicsDude.StatementCompletion
             List<Completion> intrinsicCompletions,
             ICompletionSession session)
         {
+            Contract.Requires(session != null);
+
             DateTime startTime = DateTime.Now;
             //IntrinsicsDudeToolsStatic.Output_INFO("StatementCompletionSource: init_Cached_Completions");
 
@@ -217,9 +221,9 @@ namespace IntrinsicsDude.StatementCompletion
 
             if (!is_Initialized)
             {
-                int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
-                int pos = 0; // session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
-                string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
+                //int lineNumber = session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().LineNumber;
+                //int pos = 0; // session.TextView.Selection.Start.Position - session.TextView.Selection.StreamSelectionSpan.SnapshotSpan.Start.GetContainingLine().Start;
+                //string message = "Done Initializing Intrinsic Statement Completions. Sorry for that";
             }
 
             IntrinsicsDudeToolsStatic.PrintSpeedWarning(startTime, "Init-Cached-Completions");

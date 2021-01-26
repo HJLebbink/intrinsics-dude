@@ -34,16 +34,18 @@ namespace IntrinsicsDude.Tools
     public class IntrinsicStore
     {
         private readonly IDictionary<Intrinsic, IList<IntrinsicDataElement>> _data;
+        private readonly IDictionary<Intrinsic, ISet<CpuID>> _cpuIDs;
         private static readonly IList<IntrinsicDataElement> empty = new List<IntrinsicDataElement>(0);
 
         public IntrinsicStore()
         {
             this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
+            this._cpuIDs = new Dictionary<Intrinsic, ISet<CpuID>>();
         }
 
-        public IntrinsicStore(string xmlfilename)
+        public IntrinsicStore(string xmlfilename) 
+            : this()
         {
-            this._data = new Dictionary<Intrinsic, IList<IntrinsicDataElement>>();
             this.LoadXml(xmlfilename);
         }
 
@@ -66,18 +68,28 @@ namespace IntrinsicsDude.Tools
             return empty;
         }
 
-        public CpuID GetCpuID(Intrinsic intrinsic)
+        public ISet<CpuID> GetCpuID(Intrinsic intrinsic)
         {
-            CpuID cpuID = CpuID.NONE;
-            if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
+            if (this._cpuIDs.TryGetValue(intrinsic, out ISet<CpuID> result))
             {
-                foreach (IntrinsicDataElement dataElement in dataElements)
-                {
-                    cpuID |= dataElement._cpuID;
-                }
+                return result;
             }
-
-            return cpuID;
+            else
+            {
+                ISet<CpuID> cpuIDs = new HashSet<CpuID>();
+                if (this._data.TryGetValue(intrinsic, out IList<IntrinsicDataElement> dataElements))
+                {
+                    foreach (IntrinsicDataElement dataElement in dataElements)
+                    {
+                        foreach (CpuID cpuID in dataElement._cpuIDs)
+                        {
+                            cpuIDs.Add(cpuID);
+                        }
+                    }
+                }
+                this._cpuIDs.Add(intrinsic, cpuIDs);
+                return cpuIDs;
+            }
         }
 
         #region Loading/Saving
@@ -116,7 +128,7 @@ namespace IntrinsicsDude.Tools
                     };
                     if (item.GetAttributeValue("class", string.Empty).Equals("intrinsic SVML", StringComparison.OrdinalIgnoreCase))
                     {
-                        dataElement._cpuID |= CpuID.SVML;
+                        dataElement._cpuIDs.Add(CpuID.SVML);
                     }
 
                     IList<string> paramName = new List<string>(2);
@@ -157,7 +169,7 @@ namespace IntrinsicsDude.Tools
 
                                             case "DESCRIPTION": dataElement._description = AddAcronyms(ReplaceHtml(element2.InnerText)); break;
                                             case "OPERATION": dataElement._operation = AddAcronyms(ReplaceHtml(element2.InnerHtml)); break;
-                                            case "CPUID": dataElement._cpuID |= ParseCpuID(element2.InnerText.Trim(), is_capitals, warn); break;
+                                            case "CPUID": dataElement._cpuIDs.Add(ParseCpuID(element2.InnerText.Trim(), is_capitals, warn)); break;
                                             case "PERFORMANCE":
                                                 dataElement._performance = element2.InnerHtml;
                                                 TestPerformance(dataElement._performance);
@@ -192,7 +204,7 @@ namespace IntrinsicsDude.Tools
 
                             case "ALSOKNC":
                                 {
-                                    dataElement._cpuID |= CpuID.KNCNI;
+                                    dataElement._cpuIDs.Add(CpuID.KNCNI);
                                     break;
                                 }
 
@@ -207,10 +219,10 @@ namespace IntrinsicsDude.Tools
                         }
                     }
 
-                    if (dataElement._cpuID == CpuID.NONE)
+                    if (dataElement._cpuIDs.Add(CpuID.NONE))
                     {
                         //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: Intrinsic " + dataElement.intrinsic + " does not have an cpuID, assuming IA32");
-                        dataElement._cpuID = CpuID.IA32;
+                        dataElement._cpuIDs.Add(CpuID.IA32);
                     }
 
                     #endregion
@@ -252,7 +264,7 @@ namespace IntrinsicsDude.Tools
                     sb.AppendLine("<intrinsic>");
                     sb.AppendLine("<id>" + dataElement._id + "</id>");
                     sb.AppendLine("<name>" + dataElement._intrinsic + "</name>");
-                    sb.AppendLine("<cpuid>" + IntrinsicTools.ToString(dataElement._cpuID) + "</cpuid>");
+                    sb.AppendLine("<cpuid>" + IntrinsicTools.ToString(dataElement._cpuIDs) + "</cpuid>");
                     sb.AppendLine("<ret>" + IntrinsicTools.ToString(dataElement._returnType) + "</ret>");
 
                     sb.Append("<sign>");
@@ -316,7 +328,7 @@ namespace IntrinsicsDude.Tools
 
                                 break;
                             case "cpuid":
-                                dataElement._cpuID = ParseCpuID_multiple(value, is_capitals, warn);
+                                dataElement._cpuIDs = ParseCpuID_multiple(value, is_capitals, warn);
                                 break;
                             case "ret":
                                 dataElement._returnType = ParseReturnType(value, is_capitals, warn);
@@ -364,7 +376,7 @@ namespace IntrinsicsDude.Tools
                     if (this._data.TryGetValue(dataElement._intrinsic, out IList<IntrinsicDataElement> dataElements))
                     {
                         dataElements.Add(dataElement);
-                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadHtml: multiple data elements for intrinsic " + dataElement.intrinsic);
+                        //IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadXml: multiple data elements for intrinsic " + dataElement._intrinsic);
                     }
                     else
                     {
@@ -373,6 +385,14 @@ namespace IntrinsicsDude.Tools
                             dataElement,
                         };
                         this._data.Add(dataElement._intrinsic, dataElements);
+                    }
+
+                    if (false)
+                    {
+                        if (dataElement._cpuIDs.Contains(CpuID.AVX512_VAES))
+                        {
+                            IntrinsicsDudeToolsStatic.Output_INFO("IntrinsicStore: loadXml: found intrinsic with AVX512_VAES " + dataElement._intrinsic);
+                        }
                     }
                     #endregion
                 }

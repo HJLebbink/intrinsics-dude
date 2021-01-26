@@ -178,7 +178,7 @@ namespace IntrinsicsDude.SignHelp
             }
 
             signatureText.Append(")  [");
-            signatureText.Append(IntrinsicTools.ToString(dataElement._cpuID));
+            signatureText.Append(IntrinsicTools.ToString(dataElement._cpuIDs));
             signatureText.Append("]");
             #endregion Create Signature Text
 

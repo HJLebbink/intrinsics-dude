@@ -37,7 +37,7 @@ namespace IntrinsicsDude.Tools
         public Intrinsic _intrinsic;
         public ReturnType _returnType;
         public readonly IList<Tuple<ParamType, string>> _parameters;
-        public CpuID _cpuID;
+        public ISet<CpuID> _cpuIDs;
         public int _id;
         public string _instruction;
         public string _instructionNote;
@@ -50,7 +50,7 @@ namespace IntrinsicsDude.Tools
         public IntrinsicDataElement()
         {
             this._parameters = new List<Tuple<ParamType, string>>();
-            this._cpuID = CpuID.NONE;
+            this._cpuIDs = new HashSet<CpuID>();
         }
 
         public TextBlock DocumentationTextBlock(Brush foreground)
@@ -77,7 +77,7 @@ namespace IntrinsicsDude.Tools
 
             TextBlock description = this.AddSyntaxHighlighting(sb.ToString(), foreground);
 
-            description.Inlines.Add(MakeRunBold("  [" + IntrinsicTools.ToString(this._cpuID) + "]\n", foreground));
+            description.Inlines.Add(MakeRunBold("  [" + IntrinsicTools.ToString(this._cpuIDs) + "]\n", foreground));
             description.Inlines.Add(new Run(IntrinsicTools.Linewrap(this._description, IntrinsicsDudePackage.maxNumberOfCharsInToolTips))
             {
                 Foreground = IntrinsicsDudeToolsStatic.Get_Font_Color_Async().Result,
@@ -135,7 +135,7 @@ namespace IntrinsicsDude.Tools
                 }
 
                 sb.Append(")  [");
-                sb.Append(IntrinsicTools.ToString(this._cpuID));
+                sb.Append(IntrinsicTools.ToString(this._cpuIDs));
                 sb.AppendLine("]");
                 #endregion
 
