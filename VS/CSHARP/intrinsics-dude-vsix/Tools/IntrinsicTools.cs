@@ -1132,7 +1132,6 @@ namespace IntrinsicsDude.Tools
                 case CpuID.CLWB: return "Cache Line Write Back";
 
                 case CpuID.CET_SS: return "Control flow enforcement (CET) shadow stack";
-                case CpuID.AMXTILE: return string.Empty;
                 case CpuID.TSXLDTRK: return string.Empty;
                 case CpuID.CLDEMOTE: return "Cache line demote";
                 case CpuID.MOVDIRI: return string.Empty;
@@ -1140,8 +1139,9 @@ namespace IntrinsicsDude.Tools
                 case CpuID.MOVDIR64B: return string.Empty;
                 case CpuID.PCONFIG: return "Platform configuration (Memory Encryption Technologies Instructions)";
                 case CpuID.SERIALIZE: return string.Empty;
-                case CpuID.AMXBF16: return string.Empty;
-                case CpuID.AMXINT8: return string.Empty;
+                case CpuID.AMXTILE: return "Advanced Matrix Extension (AMX) Tile";
+                case CpuID.AMXBF16: return "Advanced Matrix Extension (AMX) Brain Float 16";
+                case CpuID.AMXINT8: return "Advanced Matrix Extension (AMX) Int8";
                 case CpuID.WAITPKG: return "Timed pause and user-level monitor/wait";
                 case CpuID.WBNOINVD: return "Write Back and Do Not Invalidate Cache";
 
